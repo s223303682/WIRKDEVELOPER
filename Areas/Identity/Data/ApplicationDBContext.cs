@@ -38,4 +38,6 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<PatientVisit> patientVisits { get; set;}
     public DbSet<PatientVitals> patientVitals { get; set; }
     public DbSet<Vitals> vitals { get; set; }
+    public DbSet<Prescription> prescriptions { get; set; }
+    public DbSet<PrescriptionItem> prescriptionItems { get; set; }
 }

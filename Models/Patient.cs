@@ -26,11 +26,11 @@ namespace WIRKDEVELOPER.Models
         public string? EmailAddress { get; set;}
         [Required]
         [DisplayName("Date of birth")]
-        public DateOnly? DateOfBirth { get; set;}
+        public DateTime? DateOfBirth { get; set;}
         [Required]
         public string? Gender { get; set; }
 
-        public string? AdminID { get; set; }
+        public int? AdminID { get; set; }
         [ForeignKey("AdminID")]
         public virtual Admin? admin { get; set; }
 

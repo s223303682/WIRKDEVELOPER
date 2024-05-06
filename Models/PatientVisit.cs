@@ -9,7 +9,7 @@ namespace WIRKDEVELOPER.Models
         [Key] 
         public int PatientVisitID { get; set; }
         [Required]
-        public DateAndTime? Date {  get; set; }
+        public DateTime? Date {  get; set; }
         [Required]
         public DateTime? AdmissionTime { get; set; }
         [Required]
@@ -19,10 +19,10 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public int Height { get; set; }
         [Required]
-        public string? PatientID { get; set; }
+        public int? PatientID { get; set; }
         [ForeignKey("PatientID")]
         public virtual Patient? patient { get; set; }
-        public string? BedID { get; set; }
+        public int? BedID { get; set; }
         [ForeignKey("BedID")]
         public virtual Bed? bed { get; set; }
         //public string?NurseID { get; set; }

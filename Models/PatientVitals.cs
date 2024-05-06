@@ -13,7 +13,7 @@ namespace WIRKDEVELOPER.Models
         public DateTime? Time { get; set; }
         [Required]
         public string? Reading {  get; set; }
-        public string? PatientID { get; set; }
+        public int? PatientID { get; set; }
         [ForeignKey("PatientID")]
         public virtual Patient? Patient { get; set; }
     }

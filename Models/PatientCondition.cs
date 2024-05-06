@@ -7,10 +7,10 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int PatientConditionID { get; set; }
-        public string ? PatientID { get; set; }
+        public int ? PatientID { get; set; }
         [ForeignKey("PatientID")]
         public virtual Patient? Patient { get; set; }
-        public string? ConditionID { get; set; }
+        public int? ConditionID { get; set; }
         [ForeignKey("ConditionID")]
         public virtual Condition? Condition { get; set; }
 
