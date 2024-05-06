@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WIRKDEVELOPER.Areas.Identity.Data;
+using WIRKDEVELOPER.Models;
 
 namespace WIRKDEVELOPER.Areas.Identity.Data;
 
@@ -29,4 +30,12 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
             builder.Property(u => u.LastName).HasMaxLength(255);
         }
     }
+    public DbSet<Admin> admins { get; set; }
+    public DbSet<Bed> beds { get; set; }
+    public DbSet<Condition> conditions { get; set; }
+    public DbSet<Patient> patients { get; set; }
+    public DbSet<PatientCondition> patientConditions { get; set; }
+    public DbSet<PatientVisit> patientVisits { get; set;}
+    public DbSet<PatientVitals> patientVitals { get; set; }
+    public DbSet<Vitals> vitals { get; set; }
 }
