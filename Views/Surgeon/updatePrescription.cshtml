@@ -1,5 +1,87 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model WIRKDEVELOPER.Models.Prescription
+<div class="mt-2 p-2 bg-primary text-center text-white rounded">
+    <h6>UPDATE PRESCRIPTION</h6>
+
+</div>
+<hr/>
+<div class="container p-3 bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
+    <form method="post" asp-action="updateAppointment" class="bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
+        <input asp-for="PrescriptionID" hidden />
+      <div>
+            <div class="col">
+                <label asp-for="PatientID"></label>
+                <input asp-for="PatientID" class="form-control" />
+            </div>
+            <div class="col">
+                <label asp-for="Date"></label>
+                <input asp-for="Date" class="form-control" />
+            </div>
+
+                <div class="col">
+                    <label asp-for="QuantityAndInstractions"></label>
+                    <input asp-for="QuantityAndInstractions" class="form-control" />
+                </div>
+            <div class="col">
+                <label asp-for="Urgent"></label>
+                <div col-sm>
+                    <select id="NurseDropdown" asp-for="Urgent" class=" form-control" id="validationName" required>
+                        <option value="select">select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <label asp-for="status"></label>
+                <div col-sm>
+                    <select id="Dropdown" asp-for="status" class=" form-control" id="validationName" required>
+                        <option value="select">select</option>
+                        <option value="Yes">Sent to Pharmacist</option>
+                       
+
+                    </select>
+                </div>
+            </div>
+                @if (User.IsInRole("Pharmacist"))
+                {
+                    <div class="col">
+                        <label asp-for="status"></label>
+                        <div col-sm>
+                            <select id="Dropdown" asp-for="status" class=" form-control" id="validationName" required>
+                                <option value="select">select</option>
+                                <option value="POSTPONE">DESCLINE</option>
+                                <option value="ACCEPTED">ACCEPTED</option>
+
+                            </select>
+                        </div>
+                    </div>
+                }
+                @if (User.IsInRole("Surgeon"))
+                {
+                    <div class="col">
+                        <label asp-for="status"></label>
+                        <div col-sm>
+                            <select id="Dropdown" asp-for="status" class=" form-control" id="validationName" required>
+                                <option value="PENDING">PENDING</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                }
+
+
+                <div class=" form-group row">
+                    <div class="col-6 ">
+                        <input type="submit" class="btn btn-info w-75" value="update" />
+                    </div>
+                    <div class="col-6">
+                        <a asp-action="PrescriptionList" class="btn btn-danger w-75"> Back</a>
+                    </div>
+                </div>
+
+            </div>
+
+    </form>
+</div>
