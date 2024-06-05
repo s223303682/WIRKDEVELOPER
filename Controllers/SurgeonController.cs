@@ -30,21 +30,21 @@ namespace WIRKDEVELOPER.Controllers
             }
             return View(prescription);
         }
-        public IActionResult CreatePrescriptionItem()
+        public IActionResult CreateBooking()
         {
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreatePrescriptionItem(PrescriptionItem prescriptionItem)
+        public IActionResult CreateBooking(BookSurgery bookSurgery)
         {
             if (ModelState.IsValid)
             {
-                _Context.prescriptionItems.Add(prescriptionItem);
+                _Context.bookSurgeries.Add(bookSurgery);
                 _Context.SaveChanges();
                 return RedirectToAction("");
             }
-            return View(prescriptionItem);
+            return View(bookSurgery);
         }
     } 
 }
