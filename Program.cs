@@ -107,7 +107,7 @@ using (var scope = app.Services.CreateScope())
     string firstName = "Sipho";
     string lastName = "Nzimande";
     string email = "pharmacist@gmail.com";
-    string password = "Pharmaciste@1";
+    string password = "Pharmacist@1";
     bool confirmEmail = true;
 
     if (await userManager.FindByEmailAsync(email) == null)

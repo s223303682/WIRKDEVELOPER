@@ -17,9 +17,9 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public string? EmailAddress { get; set; }
         [Required]
-        public DateOnly? Date { get; set; }
+        public DateTime Date { get; set; }
         [Required]
-        public TimeOnly? Time { get; set; }
+        public DateTime? Time { get; set; }
         //[Required]
         //public string? Theatre { get; set; }
         //[ForeignKey("Name")]

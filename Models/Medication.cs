@@ -8,6 +8,7 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int MedicationID { get; set; }
+        
         [Required]
         [DisplayName("Medication Name")]
         public string? MedicationName { get; set; }

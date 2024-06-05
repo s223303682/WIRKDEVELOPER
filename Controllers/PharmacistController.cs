@@ -12,6 +12,10 @@ namespace WIRKDEVELOPER.Controllers
         {
             _Context = applicationDBContext;
         }
+        public IActionResult Pharmacy()
+        {
+            return View();
+        }
         public IActionResult Createmedication()
         {
             return View();

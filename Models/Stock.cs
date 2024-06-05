@@ -9,7 +9,7 @@ namespace WIRKDEVELOPER.Models
         [Key]
         public int stockID { get; set; }
         [Required]
-        public string? MedicationName { get; set; }
+        public int? MedicationID { get; set; }
         [ForeignKey("MedicationName")]
         public virtual Medication? Medication { get; set; }
         [Required]
