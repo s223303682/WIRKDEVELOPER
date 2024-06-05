@@ -14,13 +14,18 @@ namespace WIRKDEVELOPER.Controllers
         {
             _Context = applicationDBContext;
         }
+        public IActionResult PrescriptionList()
+        {
+            IEnumerable<Prescription> list = _Context.prescriptions;
+            return View(list);
+        }
         public IActionResult CreatePrescription()
         {
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        private IActionResult CreatePrescription( Prescription prescription)
+        private IActionResult CreatePrescription(Prescription prescription)
         {
             if (ModelState.IsValid)
             {
@@ -29,6 +34,48 @@ namespace WIRKDEVELOPER.Controllers
                 return RedirectToAction("");
             }
             return View(prescription);
+        }
+        public IActionResult updatePrescription(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var list = _Context.bookSurgeries.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return View(list);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updatePrescription(Prescription prescription)
+        {
+            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //bookSurgery.PatientID = user;
+            _Context.prescriptions.Update(prescription);
+            _Context.SaveChanges();
+            return RedirectToAction("PrescriptionList");
+        }
+        public IActionResult DeletePrescription(int? ID)
+        {
+            var list = _Context.prescriptions.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+            _Context.prescriptions.Remove(list);
+            _Context.SaveChanges();
+            return RedirectToAction("PrescitionList");
+
+        }
+        public IActionResult BookingList()
+        {
+            IEnumerable<BookSurgery> list = _Context.bookSurgeries;
+            return View(list);
         }
         public IActionResult CreateBooking()
         {
@@ -45,6 +92,43 @@ namespace WIRKDEVELOPER.Controllers
                 return RedirectToAction("");
             }
             return View(bookSurgery);
+        }
+        public IActionResult updateBooking(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var list = _Context.bookSurgeries.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return View(list);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updateBooking(BookSurgery bookSurgery)
+        {
+            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //bookSurgery.PatientID = user;
+            _Context.bookSurgeries.Update(bookSurgery);
+            _Context.SaveChanges();
+            return RedirectToAction("BookingList");
+        }
+        public IActionResult DeleteBooking(int? ID)
+        {
+            var list = _Context.bookSurgeries.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+            _Context.bookSurgeries.Remove(list);
+            _Context.SaveChanges();
+            return RedirectToAction("BookingList");
+
         }
     } 
 }
