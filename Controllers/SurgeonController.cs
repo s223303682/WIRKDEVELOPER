@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿  using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Web.WebPages.Html;
@@ -25,7 +25,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        private IActionResult CreatePrescription(Prescription prescription)
+        public IActionResult CreatePrescription(Prescription prescription)
         {
             if (ModelState.IsValid)
             {

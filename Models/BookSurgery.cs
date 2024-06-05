@@ -20,14 +20,18 @@ namespace WIRKDEVELOPER.Models
         public DateOnly? Date { get; set; }
         [Required]
         public TimeOnly? Time { get; set; }
-        [Required]
-        public string? Theatre { get; set; }
-        [Required]
+        //[Required]
+        //public string? Theatre { get; set; }
+        //[ForeignKey("Name")]
+        //public virtual Anasthesiologist? Anasthesiologist { get; set; }
+        //[Required]
         //public string? Anasthesiologist { get; set; }
         //[ForeignKey("Name")]
         //public virtual Anasthesiologist? Anasthesiologist { get; set; }
-        [Required]
-        public string? TreatmentCode { get; set; }
+        //[Required]
+        //public string? TreatmentCode { get; set; }
+        //[ForeignKey("Name")]
+        //public virtual Anasthesiologist? Anasthesiologist { get; set; }
 
     }
 }

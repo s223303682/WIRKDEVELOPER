@@ -18,7 +18,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        private IActionResult CreateMedication(Medication medication)
+        public IActionResult CreateMedication(Medication medication)
         {
             if (ModelState.IsValid)
             {
@@ -27,6 +27,11 @@ namespace WIRKDEVELOPER.Controllers
                 return RedirectToAction("");
             }
             return View(medication);
+        }
+        public IActionResult MedicationList()
+        {
+            IEnumerable<Medication> list = _Context.medications;
+            return View(list);
         }
         public IActionResult Createstock()
         {
@@ -43,6 +48,36 @@ namespace WIRKDEVELOPER.Controllers
                 return RedirectToAction("");
             }
             return View(stock);
+        }
+        public IActionResult StockList()
+        {
+            IEnumerable<Stock> list = _Context.stocks;
+            return View(list);
+        }
+        public IActionResult updateStock(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var list = _Context.stocks.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return View(list);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updateStock( Stock stock)
+        {
+            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //bookSurgery.PatientID = user;
+            _Context.stocks.Update(stock);
+            _Context.SaveChanges();
+            return RedirectToAction("StockList");
         }
     }
 }
