@@ -4,24 +4,27 @@
     <h6>Add Booking</h6>
 </dv>
 <hr />
-<form method="post" asp-action="CreateAppointment" class=" form-horizontal   bg-green-300  p-2 text-dark bg-opacity-20">
+<form method="post" asp-action="CreateAppointment" class="form-horizontal  bg-info  p-2 text-dark bg-opacity-20">
     <div asp-validation-summary="ModelOnly" class=" text-danger"></div>
+    <div class="row align-items-center">
     <div class="col">
-      <div class="row-cols-1">
+     
        <div class=" form-group border-5 border-success">
         <label asp-for="Name"></label>
-        <div col-sm-7>
+        <div col-sm-5>
             <input asp-for="Name" class=" form-control" id="validationName" required />
         </div>
         <div class="invalid-feedback">
         </div>
         <span asp-validation-for="Name" class=" text-danger"></span>
        </div>
-      </div>
-     <div class="row-cols-2">
+     </div>
+   
+     <div class="col">
+     
       <div class=" form-group border-5 border-success">
         <label asp-for="Surname"></label>
-        <div col-sm-7>
+        <div col-sm-5>
             <input asp-for="Surname" class=" form-control" id="validationSurname" required />
         </div>
         <div class="invalid-feedback">
@@ -29,36 +32,38 @@
         <span asp-validation-for="Surname" class=" text-danger"></span>
       </div>
      </div>
-     <div class="row">
+    <div class="col">
+     
    
       <div class=" form-group border-5 border-success">
         <label asp-for="Gender"></label>
-        <div col-sm-7>
+        <div col-sm-5>
             <input asp-for="Gender" class=" form-control" id="validationAge" required />
         </div>
         <div class="invalid-feedback">
         </div>
         <span asp-validation-for="Gender" class=" text-danger"></span>
       </div>
-     </div>
+     
     </div>
-
+    </div>
+    <div class="row align-items-center">
     <div class="col">
-        <div class="row">
+        
     <div class=" form-group border-5 border-success">
         <label asp-for="EmailAddress"></label>
-        <div col-sm-7>
+        <div col-sm-5>
             <input asp-for="EmailAddress" class=" form-control" id="validationEmail" required />
         </div>
         <div class="invalid-feedback">
         </div>
         <span asp-validation-for="EmailAddress" class=" text-danger"></span>
     </div>
-        </div>
-        <div class="row">
+    </div>
+     <div class="col">
     <div class=" form-group border-5 border-success">
         <label asp-for="Date"></label>
-        <div col-sm-7>
+        <div col-sm-5>
             <input asp-for="Date" class=" form-control" id="validationDate" required />
         </div>
         <div class="invalid-feedback">
@@ -66,18 +71,19 @@
         <span asp-validation-for="Date" class=" text-danger"></span>
     </div>
     </div>
-    <div class="row">
+    <div class="col">
     <div class=" form-group border-5 border-success">
         <label asp-for="Time"></label>
-        <div col-sm-7>
+        <div col-sm-5>
             <input asp-for="Time" class=" form-control" id="validationTime" required />
         </div>
         <div class="invalid-feedback">
         </div>
         <span asp-validation-for="Time" class=" text-danger"></span>
     </div>
-        </div>
     </div>
+    </div>
+    
    @* <div class="col">
         <div class="row">
             <div class="form-group border-5 border-success">
@@ -113,15 +119,19 @@
             </div>
         </div>*@
     @*</div>*@
+    
     <div class=" form-group row">
-        <div class=" col-8 offset-2 row">
+        @*<div class=" col-8 offset-2 row">*@
+            <div class="row align-items-center">
             <div class=" col">
                 <input type="submit" class="btn-primary btn-lg  " value="submit" />
             </div>
-            <div class=" col-1">
+            <div class=" col">
                 <a asp-action="BookingListList" class=" btn btn-primary btn-lg ">Bookings</a>
             </div>
-        </div>
+            </div>
+        @*</div>*@
     </div>
+    
 </form>
 
