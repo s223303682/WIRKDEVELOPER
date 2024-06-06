@@ -1,4 +1,4 @@
-﻿  using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Web.WebPages.Html;
@@ -14,7 +14,11 @@ namespace WIRKDEVELOPER.Controllers
         {
             _Context = applicationDBContext;
         }
-        public IActionResult PrescriptionList()
+		public IActionResult SearchPatient()
+		{
+			return View();
+		}
+		public IActionResult PrescriptionList()
         {
             IEnumerable<Prescription> list = _Context.prescriptions;
             return View(list);

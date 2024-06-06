@@ -128,7 +128,7 @@ namespace WIRKDEVELOPER.Areas.Identity.Pages.Account
                     }
                     else if (Role.Contains("Surgeon"))
                     {
-                        return RedirectToAction("Surgeon", "Surgeon");
+                        return RedirectToAction("SearchPatient", "Surgeon");
                     }
                 }
                 if (result.RequiresTwoFactor)
