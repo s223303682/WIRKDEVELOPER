@@ -1,13 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace WIRKDEVELOPER.Models
 {
-    //public class Ward
-    //{
-    //    public int WardID { get; set; }
-    //    public string WardName { get; set; }
-    //    public int NurseID { get; set; }
-    //    [ForeignKey("NurseID")]
+    public class Ward
+    {
+        [Key]
+        public int WardID { get; set; }
+       
+        public int NurseID { get; set; }
+        [ForeignKey("NurseID")]
+        public string WardName { get; set; }
 
-    //}
+    }
 }
