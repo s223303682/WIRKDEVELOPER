@@ -7,13 +7,12 @@ namespace WIRKDEVELOPER.Models
         public int AdmissionID { get; set; }
         public int PatientID { get; set; }
         [ForeignKey("PatientID")]
-        public int WardID { get;set; }
-        [ForeignKey("WardID")]
-        public int BedID { get; set; }
-        [ForeignKey("BedID")]
-        public int ConditionID { get; set; }
-        [ForeignKey("ConditionID")]
-        public DateTime AdmissionDate { get; set; }
+        public string Address1 { get; set; } 
+        public string Address2 { get; set; }
+        public string City { get; set; }
+        public string Suburb { get; set; } 
+        public string PostalCode { get; set; }
+        
        
        
     }
