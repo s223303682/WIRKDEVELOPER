@@ -130,7 +130,11 @@ namespace WIRKDEVELOPER.Areas.Identity.Pages.Account
                     {
                         return RedirectToAction("CreatePrescription", "Surgeon");
                     }
-                }
+					else if (Role.Contains("Anaesthesiologist"))
+					{
+						return RedirectToAction("Anaesthesiologist", "Anaesthesiologist");
+					}
+				}
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });

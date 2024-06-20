@@ -46,7 +46,7 @@ using (var scope = app.Services.CreateScope())
     var roleManager =
         scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    var roles = new[] { "Admin", "Nurse", "Pharmacist", "Surgeon" };
+    var roles = new[] { "Admin", "Nurse", "Pharmacist", "Surgeon","Anaesthesiologist"};
 
     foreach (var role in roles)
     {
@@ -144,6 +144,29 @@ using (var scope = app.Services.CreateScope())
         await userManager.CreateAsync(User, password);
         await userManager.AddToRoleAsync(User, "Surgeon");
     }
+
+}
+using (var scope = app.Services.CreateScope())
+{
+	var userManager =
+		scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+	string firstName = "John";
+	string lastName = "Doe";
+	string email = "Anaesthesiologist@gmail.com";
+	string password = "Anaesthesiologist@1";
+	bool confirmEmail = true;
+
+	if (await userManager.FindByEmailAsync(email) == null)
+	{
+		var User = new ApplicationUser();
+		User.FirstName = firstName;
+		User.LastName = lastName;
+		User.UserName = email;
+		User.Email = email;
+		User.EmailConfirmed = confirmEmail;
+		await userManager.CreateAsync(User, password);
+		await userManager.AddToRoleAsync(User, "Anaesthesiologist");
+	}
 
 }
 app.Run();

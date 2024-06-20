@@ -45,4 +45,12 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Admission> admission { get; set; } 
     public DbSet<Bed> bed { get; set; }
     public DbSet<MedicationAdministration> medAdmin { get; set; }
+    public DbSet<ViewPatient> viewrecords { get; set; }
+    public DbSet<AnAllergies> anallergies { get; set; }
+    public DbSet<AnVitals> anvitals { get; set; }
+    public DbSet<AnConditions> anconditions { get; set; }
+    public DbSet<AnCurrentMedication> ancurrentmedication { get; set; }
+    public DbSet<Order> order { get; set; }
+    public DbSet<VitalRanges> vitalranges { get; set; }
+    public DbSet<Notes> notes { get; set; }
 }
