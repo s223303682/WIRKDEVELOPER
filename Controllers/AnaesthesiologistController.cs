@@ -85,6 +85,62 @@ namespace WIRKDEVELOPER.Controllers
 		{
 			return View();
 		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Order(Order order)
+		{
+			var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			order.Patient = user;
+
+			if (ModelState.IsValid)
+			{
+
+				_Context.order.Add(order);
+				_Context.SaveChanges();
+				return RedirectToAction("IndexOrder");
+			}
+			ViewData["AdmissionID"] = new SelectList(_Context.Users, "Id", "Id", order.Patient);
+			return View(order);
+
+		}
+		public IActionResult NewUpdateOrder(int? ID)
+		{
+			if (ID == null || ID == 0)
+			{
+				return NotFound();
+			}
+			var obj = _Context.order.Find(ID);
+
+			if (ID == null)
+			{
+				return NotFound();
+			}
+			return View(obj);
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult NewUpdateOrder(Order order)
+		{
+			if (ModelState.IsValid)
+			{
+				_Context.order.Update(order);
+				_Context.SaveChanges();
+				return RedirectToAction("IndexOrder");
+			}
+			return View(order);
+		}
+		public IActionResult DeleteOrder(int? ID)
+		{
+			var obj = _Context.order.Find(ID);
+
+			if (obj == null)
+			{
+				return NotFound();
+			}
+			_Context.order.Remove(obj);
+			_Context.SaveChanges();
+			return RedirectToAction("IndexOrder");
+		}
 		public IActionResult IndexVitalRanges()
 		{
 			IEnumerable<VitalRanges> objList = _Context.vitalranges;

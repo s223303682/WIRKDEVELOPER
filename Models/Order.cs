@@ -17,6 +17,8 @@ namespace WIRKDEVELOPER.Models
 		[Required]
 		[DisplayName("Patient")]
 		public string? Patient { get; set; }
+		[ForeignKey("AdmissionID")]
+
 
 
 		[Required]
