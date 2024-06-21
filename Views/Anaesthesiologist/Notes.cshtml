@@ -1,0 +1,25 @@
+﻿@model WIRKDEVELOPER.Models.Notes
+
+@{
+    Layout = "AnaesthesiologistLayout";
+}
+
+<h1>Patient Details</h1>
+
+@if (Model != null)
+{
+    <div>
+        <h2>@Model.Patient</h2>
+        <p>Date: @Model.Date</p>
+        <p>Medication Ordered: @Model.Medicationordered</p>
+        <p>Quantity: @Model.Quantity</p>
+        <p>Notes: @Model.notes</p>
+    </div>
+}
+else
+{
+    <p>No patient found.</p>
+}
+
+<a asp-action="IndexNotes" class="btn btn-primary">New Search</a>
+

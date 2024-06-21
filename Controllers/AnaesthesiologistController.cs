@@ -81,7 +81,7 @@ namespace WIRKDEVELOPER.Controllers
 			return View(objList);
 
 		}
-		public IActionResult AnOrder()
+		public IActionResult Order()
 		{
 			return View();
 		}

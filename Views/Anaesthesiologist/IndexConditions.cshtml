@@ -1,0 +1,69 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.AnConditions>
+
+
+@if (User.IsInRole("Anaesthesiologist"))
+{
+    <div class="container p-3">
+        <div class="row pt-4">
+            <div class="col-6">
+                <h2 class="text-primary">List of your screenings</h2>
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Anaesthesiologist" asp-action="AnConditions" class="btn btn-primary"><i class="bi bi-plus-circle"></i> SCREEN YOURSELF</a>
+            </div>
+        </div>
+        <br />
+        @if (Model.Count() > 0)
+        {
+            @*<table class="table table-bordered table-striped" style="width:100%">*@
+            <table class="table table-info table-hover">
+
+                <thead>
+                    <tr>
+                        <th>
+                            Conditions
+                        </th>
+                        @* <th>
+                Dosage
+                </th> *@
+                        @* <th>
+                Status
+                </th> *@
+                        @*  <th>
+                Date
+                </th> *@
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var condi in Model)
+                    {
+                        <tr>
+                            <td width="20%">@condi.Condition</td>
+                            @*                             <td width="20%">@currentMedication.Dosage</td>
+                *@                            @* <td width="20%">@allergy.Status</td> *@
+                            @*                         <td width="20%">@Scree.Date</td>
+                *@
+                            <td>
+                                <a asp-controller="Vaccs" asp-action="NewUpdateScreening" asp-route-ID="@condi.AnConditionID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
+
+                                <a asp-controller="Vaccs" asp-action="DeleteScreen" asp-route-ID="@condi.AnConditionID" class="btn btn-danger">
+                                    <i class="bi bi-trash3-fill"></i>Delete
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        }
+        else
+        {
+            <p>No Screenings created yet</p>
+        }
+
+    </div>
+}
+

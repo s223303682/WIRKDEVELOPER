@@ -1,0 +1,120 @@
+﻿@model WIRKDEVELOPER.Models.ViewPatient
+
+@using WIRKDEVELOPER.Models
+@using Microsoft.AspNetCore.Identity
+@using WIRKDEVELOPER.Areas.Identity.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    Layout = "AnaesthesiologistLayout";
+}
+<div class="mx-0 mx-sm-auto">
+    <div class="card w-75">
+        <div class="card-body ">
+            <div class="card-header bg-primary">
+
+                <h3 class="card-title text-white mt-2" id="exampleModalLabel"> PATIENT RECORS</h3>
+            </div>
+            @* <form method="post" asp-action="IndexViewPatient"> *@
+            <div class="border p-3 #FBD603">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+
+                <div class="row">
+
+                    <div class="form-group">
+
+
+                        <div class="col-12">
+                            <div class="row">
+
+                                <div class="col-12">
+                                    <div class="row">
+
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <h4>PATIENT INFORMATION</h4>
+                                                <p>Patient Name:@ViewBag.PatientID</p>
+                                                <p>Date Of Birth:@ViewBag.PatientID</p>
+                                                <p>Gender:@ViewBag.PatientID</p>
+                                                @* <p>Last Name: @UserManager.GetUserAsync(User).Result.LastName</p>
+                                                <p>Email Address: @UserManager.GetUserAsync(User).Result.Email</p> *@
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-8 row">
+                                        <div class="col">
+                                            <div class="row">
+                                                <a asp-controller="Anaesthesiologist" asp-action="AnVitals" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>VITALS</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-8 row">
+                                        <div class="col">
+                                            <div class="row">
+                                                <a asp-controller="Anaesthesiologist" asp-action="AnAllergies" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>ALLERGIES</a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-8 row">
+                                        <div class="col">
+                                            <div class="row">
+                                                <a asp-controller="Anaesthesiologist" asp-action="AnCurrentMedication" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>CURRENT MEDICATION</a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-8 row">
+                                        <div class="col">
+                                            <div class="row">
+                                                <a asp-controller="Anaesthesiologist" asp-action="AnConditions" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>CONDITIONS</a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-8 row">
+                                        <div class="col">
+                                            <div class="row">
+                                                <a asp-controller="Anaesthesiologist" asp-action="Order" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>CURRENT ORDER</a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                @*  </div> *@
+                                @*  <div class="col">
+                                <a asp-action="IndexScree" class="btn btn-danger w-75"><i class="bi bi-arrow-left-circle"></i>BACK</a>
+                                </div> *@
+                                @*  </div>
+                                </div> *@
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            @*    </form> *@
+        </div>
+    </div>
+
+</div>
+

@@ -1,0 +1,137 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Notes>
+@* @model WIRKDEVELOPER.Models.Notes
+@* using WIRKDEVELOPER.Models; *@
+@{
+    Layout = "AnaesthesiologistLayout";
+}
+
+@if (User.IsInRole("Anaesthesiologist"))
+{
+    <form method="post" asp-action="Notes">
+        <div class="border p-3 #FBD603">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+
+            <div class="row">
+
+                <div class="form-group">
+
+
+                    <div class="col-12">
+                        <div class="row">
+
+                            <div class="col-12">
+                                <div class="row">
+
+                                    <label for="patientId">Patient</label>
+                                    <select id="patientId" name="patientId" class="form-control">
+                                        @foreach (var patient in (List<SelectListItem>)ViewBag.PatientList)
+                                        {
+                                            <option value="@patient.Value">@patient.Text</option>
+                                        }
+                                    </select>
+
+                                    @*  <div class="col-md-2">
+                                <h4><label asp-for="Patient"></label></h4>
+                                <select id="PurposeDropdown" asp-for="Units" class="form-control" id="validationName" required>
+                                <option value="Select" class="bg-opacity-50">Select</option>
+                                <option value="bpm">bpm</option>
+                                <option value="mmHg">mmHg</option>
+                                <option value="°C">°C</option>
+                                </select>
+                                <span asp-validation-for="Units" class="text-danger"></span>
+                                </div> *@
+
+                                </div>
+
+                            </div>
+                            <button type="submit" class="btn btn-primary">Search</button>
+
+                            <div class="form-group row">
+                                <div class="col-8 offset-2 row">
+                                    <div class="col">
+                                        <input type="submit" class="btn btn-primary w-75 bi bi-arrow-left-circle" value="VIEW" />
+                                    </div>
+                                    @*  <div class="col">
+                                <a asp-action="IndexScree" class="btn btn-danger w-75"><i class="bi bi-arrow-left-circle"></i>BACK</a>
+                                </div> *@
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="container p-3">
+        <div class="row pt-4">
+            <div class="col-6">
+                <h2 class="text-primary">View Patients</h2>
+            </div>
+        </div>
+        <br />
+        @if (Model.Count() > 0)
+        {
+
+            <table class="table table-info table-hover">
+
+                <thead>
+                    <tr>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Patient
+                        </th>
+                        <th>
+                            Medicationordered
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Notes
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var notes in Model)
+                    {
+                        <tr>
+                            <td width="20%">@notes.Date</td>
+                            <td width="20%">@notes.Patient </td>
+                            <td width="20%">@notes.Medicationordered</td>
+                            <td width="20%">@notes.Quantity</td>
+                            <td width="20%">@notes.notes</td>
+
+
+                            <td>
+                                <a asp-controller="Anaesthesiologist" asp-action="ViewPatientRec" asp-route-ID="@notes.NotesID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>View Records</a>
+
+                                <a asp-controller="Anaesthesiologist" asp-action="Order" asp-route-ID="@notes.NotesID" class="btn btn-danger">
+                                    <i class="bi bi-trash3-fill"></i>Order
+                                </a>
+
+                            </td>
+
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        }
+        else
+        {
+            <p>No Appointments created yet</p>
+        }
+
+    </div>
+
+}
+
