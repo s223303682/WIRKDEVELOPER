@@ -11,9 +11,12 @@ namespace WIRKDEVELOPER.Models
         public string Address2 { get; set; }
         public string City { get; set; }
         public string Suburb { get; set; } 
+        public int BedID { get; set; }
+        [ForeignKey("BedID")]
+        public int ConditionID { get; set; }
+        [ForeignKey("ConditionID")]
+        public int WardID { get; set; }
+        [ForeignKey("WardID")]
         public string PostalCode { get; set; }
-        
-       
-       
     }
 }

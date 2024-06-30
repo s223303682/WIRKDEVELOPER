@@ -37,7 +37,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 Context.admission.Add(admission);
                 Context.SaveChanges();
-                return RedirectToAction("");
+                return RedirectToAction("ViewAddmission");
             }
             return View(admission);
         } 
