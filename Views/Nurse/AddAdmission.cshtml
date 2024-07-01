@@ -1,5 +1,104 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model WIRKDEVELOPER.Models.Admission
 @{
+    Layout = "_Nurse";
 }
+<form method="post" asp-action="AddAdmission">
+    <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <br />
+        <div class="form-group row">
+            <h2 class="text-black-50 pt-3">Add Admission</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="validityPeriod">PatientName</label>
+                <select id="PatientDropdown" asp-for="PatientID" class="form-control" id="validationName" required>
+                    <option value="Select">Mzu</option> 
+                    <option value="Select">Liso</option>
+                    <option value="Select">Lona</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
