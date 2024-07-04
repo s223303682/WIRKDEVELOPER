@@ -134,6 +134,10 @@ namespace WIRKDEVELOPER.Areas.Identity.Pages.Account
 					{
 						return RedirectToAction("Anaesthesiologist", "Anaesthesiologist");
 					}
+                    else if (Role.Contains("Nurse"))
+					{
+						return RedirectToAction("_Nurse", "Nurse");
+					}
 				}
                 if (result.RequiresTwoFactor)
                 {
