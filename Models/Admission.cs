@@ -16,7 +16,13 @@ namespace WIRKDEVELOPER.Models
         public int ConditionID { get; set; }
         [ForeignKey("ConditionID")]
         public int WardID { get; set; }
-        [ForeignKey("WardID")]
+        [ForeignKey("WardID")] 
+        public int AllergiesID { get; set; }
+        [ForeignKey("AlergiesID")] 
+        public int MedicationID { get; set; }
+        [ForeignKey("MedicationID")] 
+        public int TreatmentID { get; set; }
+        [ForeignKey("TreatmentID")]
         public string PostalCode { get; set; }
     }
 }

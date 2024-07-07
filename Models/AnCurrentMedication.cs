@@ -19,6 +19,6 @@ namespace WIRKDEVELOPER.Models
 
 
 		[Key]
-		public int AnCurrentMedicationID { get; set; }
+		public int CurrentMedicationID { get; set; }
 	}
 }
