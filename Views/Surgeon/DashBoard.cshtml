@@ -1,0 +1,110 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WIRKDEVELOPER.Areas.Identity.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "index";
+    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="n">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="~/css/Style.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <title> Health Care</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WIRKDEVELOPER</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Surgeon" asp-action="CreateBooking">booking</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Surgeon" asp-action="BookingList">book</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Surgeon" asp-action="CreatePrescription">Create Presc</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Surgeon" asp-action="PrescriptionList">Presc</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Surgeon" asp-action="SearchPatient">Search</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Surgeon" asp-action="DashBoard">Search</a>
+                        </li>
+                    </ul>
+                </div>
+                <partial name="_LoginPartial" />
+            </div>
+        </nav>
+        <div class="mycontainer">
+            <h2 class="text-info">Welcome to Health Care services</h2>
+        </div>
+    </header>
+
+    <div class="card-container">
+        <div class="card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/css/images/card1.jpg" width="10%" height="10%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Surgeon" asp-action="SearchPatient">Create booking</a>
+            </div>
+        </div>
+        <div class="card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/css/images/card1.jpg" width="10%" height="10%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Surgeon" asp-action="Createbooking">Create booking</a>
+            </div>
+        </div>
+        <div class="card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/css/images/card2.jpg" width="10%" height="10%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Surgeon" asp-action="Createbooking">Bookings</a>
+            </div>
+        </div>
+        <div class="card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/css/images/card1.jpg" width="10%" height="10%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Surgeon" asp-action="Createbooking">Create prescription</a>
+            </div>
+        </div>
+        <div class="card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/css/images/card1.jpg" width="10%" height="10%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Surgeon" asp-action="Createbooking">prescriptions</a>
+            </div>
+        </div>
+    </div>
+    <div class="mycontainer ">
+        <div class="text-white text-center">providing the best experience for patients</div>
+        <p class="text-white text-center">
+            welcome to a place where our first priority is our patients.<br />
+            trust us with your wealth and have a great experience
+        </p>
+    </div>
+</body>
+
+</html>

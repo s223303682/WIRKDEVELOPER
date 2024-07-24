@@ -1,0 +1,186 @@
+﻿@import url('https.//fonts.googleapis.com/css2?family=poppins:wgth@400;600;700&display');
+:root{
+    --primary-color:#12ac8e;
+    --primary-color-dark:#0d846c;
+    --primary-color-light:#e9f7f7;
+    --primary-color:#fb923c;
+    --text-dark:#333333;
+    --text-light:#767268;
+    --white:##ffffff;
+    max-width:auto;
+
+}
+*{
+    padding:0;
+    margin:0;
+    box-sizing:border-box;
+
+}
+.section_container{
+    max-width:var(--max-width);
+    margin:auto;
+    padding:5rem 1rem;
+
+}
+.section_header{
+    margin-bottom:5rem;
+    font-size:2rem;
+    font-weight:600;
+    color:var(--text-dark);
+
+}
+.btn{
+    padding: .75rem 2rem;
+    outline: none;
+    font-size:1rem;
+    white-space:nowrap;
+    color:var(--white);
+    background-color: var(--secondary-color);
+    border-radius:5px;
+    cursor:pointer;
+}
+img{
+    width:100px;
+    display:flex;
+}
+a{
+    text-decoration:none;
+}
+body{
+    background-color:#eee;
+    background-image:url(images/Dashboard.jpg);
+    background-position:center;
+    background-size:1320px;
+    background-repeat:no-repeat;
+
+}
+header{
+     background-image:linear-gradient(
+         to right,
+     rgba(18,172,142, .9),
+         rgba(18,172,142, .7)
+     ),
+}
+.nav_container {
+    background-color:lightblue;
+    padding: 2rem 1rem;
+    display:flex;
+    justify-content:space-between;
+}
+.nav_logo{
+    font-size:1.5rem;
+    font-weight:600;
+    color:var(--white);
+}
+.nav_logo span {
+    color:var(--secondary-color);
+}
+.nav_links{
+    list-style:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:2rem;
+}
+.link a{
+    padding:0.5rem;
+   
+    color:var(--primary-color-light);
+}
+.link a:hover{
+    color:var(--white)
+}
+.header_container{
+    text-align-last:center;
+    
+}
+.mycontainer{
+    text-align:left;
+    font-size:25px;
+}
+a {
+    box-sizing: border-box;
+}
+
+
+.close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 12px 16px 12px 16px;
+}
+
+    .close:hover {
+        background-color: lightblue;
+        color: white;
+    }
+
+.header {
+    background-color: lightblue;
+    color: white;
+    text-align: center;
+}
+
+    .header:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+.card-container{
+    text-align:center;
+    align-content:center;
+   
+}
+input {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    width: 75%;
+    padding: 10px;
+    float: left;
+    font-size: 16px;
+}
+
+.addBtn {
+    padding: 10px;
+    width: 25%;
+    background: #d9d9d9;
+    color: #555;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 0;
+}
+
+ .addBtn:hover {
+     background-color: #bbb;
+        
+ }
+
+.note-container{
+    position:relative;
+    display:inline-block;
+}
+#note{
+    width:200px;
+    height:100px;
+    padding:10px;
+    font-size:16px;
+}
+#save-note{
+    position:absolute;
+    top:0;
+    right:0;
+    padding:10px;
+    background-color#4CAF50;
+    color:#fff;
+    cursor:pointer;
+}
+#save-notes{
+    margin-top:20px;
+    padding:20px;
+    background-color:#f7f7f7;
+    border:1px solid #ccc;
+}

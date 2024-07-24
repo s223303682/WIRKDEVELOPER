@@ -6,23 +6,9 @@
 <div class=" col-10 text-right">
     <a asp-controller="Surgeon" asp-action="CreateBooking" style="width:100%"></a>
 </div>
-<div class="bg-info bg-opacity-50">
-    @using (Html.BeginForm("SearchPatient", "Surgeon", FormMethod.Get))
-    {
-        <b>search by:</b>
-        @Html.RadioButton("searchby", "Date", true)
-
-        <text>date</text>
-        @Html.RadioButton("searchby", "Name", true) <text>name</text>
-
-        <br>
-        @Html.TextBox("search", "", htmlAttributes: new { @class = "form-control" })
-        <input type="submit" value="search" class="btn btn-info " />
-    }
-</div>
 @if (Model.Count() > 0)
 {
-    <table class=" table table-bordered table-striped table-info">
+    <table id="BookingsTable" class=" table table-bordered table-striped table-white">
         <thead>
             <tr>
                 <th>Name</th>
@@ -30,9 +16,14 @@
                 <th>Gender</th>
                 <th>email</th>
                 <th>date</th>
-                <th>Theatre</th>
-                <th>treatmentcode</th>
-                <th> Anasthesiologist</th>
+                <th>date</th>
+                @* <th>Theatre</th>
+            <th>treatmentcode</th>
+            <th> Anasthesiologist</th> *@
+                <th>Delete</th>
+                <th> Update</th>
+                <th> select</th>
+
 
             </tr>
         </thead>
@@ -51,6 +42,17 @@
             <td>@booking.treatmentcode</td>
             <td>@booking.Anasthesiologist</td> *@
 
+                    <td>
+                        <div class="">
+                            <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Update</a>
+                        </div>
+                    </td>
+                    <td>
+                        <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Delete</a>
+                    </td>
+                    <td>
+                        <button class="edit-btn">select</button>
+                    </td>
 
                 </tr>
 
@@ -63,5 +65,5 @@
 }
 else
 {
-    <p>NO Record  has been done</p>
+    <p>NO bookings  has been done</p>
 }

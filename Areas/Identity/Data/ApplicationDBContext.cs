@@ -53,4 +53,5 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Order> order { get; set; }
     public DbSet<VitalRanges> vitalranges { get; set; }
     public DbSet<Notes> notes { get; set; }
+    public DbSet<Booking> bookings { get; set; }
 }

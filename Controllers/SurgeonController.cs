@@ -14,11 +14,23 @@ namespace WIRKDEVELOPER.Controllers
         {
             _Context = applicationDBContext;
         }
-		public IActionResult SearchPatient()
-		{
-			return View();
-		}
-		public IActionResult PrescriptionList()
+        public IActionResult DashBoard()
+        {
+            return View();
+        }
+        public IActionResult SearchPatient(string searchby, string search)
+        {
+            if (searchby == "Gender")
+            {
+                return View(_Context.bookings.Where(x => x.Gender == search || search == null).ToList());
+            }
+            else
+            {
+                return NotFound();
+
+            }
+        }
+        public IActionResult PrescriptionList()
         {
             IEnumerable<Prescription> list = _Context.prescriptions;
             return View(list);

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WIRKDEVELOPER.Areas.Identity.Data;
 
 namespace WIRKDEVELOPER.Models
 {
@@ -15,19 +16,21 @@ namespace WIRKDEVELOPER.Models
         [Required]
         [DisplayName("Prescription Date")]
         public DateTime? Date { get; set; }
-        //public string ? MedicationID { get; set; }
-        //[ForeignKey("MedicationName")]
-        //public virtual Medication? medication { get; set; }
+        public string? prescriber { get; set; }
+        [ForeignKey("ID")]
+        public virtual ApplicationUser? ApplicationUser { get; set; }
         [Required]
-        [DisplayName("Quantity And Instractions")]
-        public string? QuantityAndInstractions { get; set; }
+        public string? Medication { get; set; }
+        [Required]
+        [DisplayName(" Quantity And Instructions")]
+        public string? QuantityAndInstructions { get; set; }
         [Required]
         public string? Urgent { get; set; }
         [Required]
         public string? status { get; set; }
-        
 
-       
-        
+
+
+
     }
 }
