@@ -124,11 +124,11 @@ namespace WIRKDEVELOPER.Areas.Identity.Pages.Account
 
                     if (Role.Contains("Pharmacist"))
                     {
-                        return RedirectToAction("Pharmacy", "Pharmacist");
+                        return RedirectToAction("CreateMedication", "Pharmacist");
                     }
                     else if (Role.Contains("Surgeon"))
                     {
-                        return RedirectToAction("CreatePrescription", "Surgeon");
+                        return RedirectToAction("DashBoard", "Surgeon");
                     }
 					else if (Role.Contains("Anaesthesiologist"))
 					{
