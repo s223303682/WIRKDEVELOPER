@@ -87,6 +87,22 @@ namespace WIRKDEVELOPER.Controllers
             }
             return View(conditions);
         }
+        public IActionResult AddVitals()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddVitals(Vitals vitals)
+        {
+            if (ModelState.IsValid)
+            {
+                Context.vitals.Add(vitals);
+                Context.SaveChanges();
+                return RedirectToAction("");
+            }
+            return View(vitals);
+        }
         public IActionResult ViewVital()
         {
             IEnumerable<Vitals> vitals = Context.vitals;
@@ -97,6 +113,22 @@ namespace WIRKDEVELOPER.Controllers
             IEnumerable<Prescription> prescriptions = Context.prescriptions;
             return View(prescriptions);
         } 
+        public IActionResult AddmedAdmin()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddmedAdmin(MedicationAdministration medAdmin)
+        {
+            if (ModelState.IsValid) 
+            {
+                Context.medAdmin.Add(medAdmin);
+                Context.SaveChanges();
+                return RedirectToAction("");
+            }
+            return View();
+        }
         public IActionResult ViewmedAdmin()
         {
             IEnumerable<MedicationAdministration> medAdmin = Context.medAdmin;
