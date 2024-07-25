@@ -53,7 +53,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 Context.bed.Add(bed);
                 Context.SaveChanges();
-                return RedirectToAction("");
+                return RedirectToAction("AddBed");
             }
             return View(bed);
         }
@@ -83,7 +83,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 Context.conditions.Add(conditions);
                 Context.SaveChanges();
-                return RedirectToAction("");
+                return RedirectToAction("AddCondition");
             }
             return View(conditions);
         }
@@ -99,11 +99,11 @@ namespace WIRKDEVELOPER.Controllers
             {
                 Context.vitals.Add(vitals);
                 Context.SaveChanges();
-                return RedirectToAction("");
+                return RedirectToAction("ViewVitals");
             }
             return View(vitals);
         }
-        public IActionResult ViewVital()
+        public IActionResult ViewVitals()
         {
             IEnumerable<Vitals> vitals = Context.vitals;
             return View(vitals);
@@ -125,7 +125,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 Context.medAdmin.Add(medAdmin);
                 Context.SaveChanges();
-                return RedirectToAction("");
+                return RedirectToAction("ViewmedAdmin");
             }
             return View();
         }
@@ -133,6 +133,27 @@ namespace WIRKDEVELOPER.Controllers
         {
             IEnumerable<MedicationAdministration> medAdmin = Context.medAdmin;
             return View(medAdmin);
+        }
+        public IActionResult ViewDischargedPatient()
+        {
+            IEnumerable<DischargePatient> discharge = Context.discharge;
+            return View(discharge);
+        }
+        public IActionResult AddDischargePatient()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddDischargedPatient(DischargePatient discharge)
+        {
+            if (ModelState.IsValid)
+            {
+                Context.discharge.Add(discharge);
+                Context.SaveChanges();
+                return RedirectToAction("ViewDischargePatient");
+            }
+            return View(discharge);
         }
 
     }

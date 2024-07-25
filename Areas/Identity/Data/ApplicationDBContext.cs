@@ -54,4 +54,5 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<VitalRanges> vitalranges { get; set; }
     public DbSet<Notes> notes { get; set; }
     public DbSet<Booking> bookings { get; set; }
+    public DbSet<DischargePatient> discharge { get; set; }
 }
