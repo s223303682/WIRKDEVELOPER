@@ -1,5 +1,76 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Medication>
+
 @{
+
+    Layout = "~/Views/Shared/Pharmacy.cshtml";
 }
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">List of your orders</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Pharmacist" asp-action="CreateMedication" class="btn btn-primary"><i class="bi bi-plus-circle"></i> ORDER M</a>
+        </div>
+    </div>
+    <br />
+    @if (Model.Count() > 0)
+    {
+        @*<table class="table table-bordered table-striped" style="width:100%">*@
+        <table class="table table-info table-hover">
+
+            <thead>
+                <tr>
+                    <th>
+                       Medication Name
+                    </th>
+                    <th>
+                        Active Ingre
+                    </th>
+                    <th>
+                        Dosage Form
+                    </th>
+                    <th>
+                       Re-order level
+                    </th>
+                    <th>
+                       Schedule
+                    </th>
+                   
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var med in Model)
+                {
+                    <tr>
+                        <td width="20%">@med.MedicationName</td>
+                        <td width="20%">@med.ActiveIngridience</td>
+                        <td width="20%">@med.DosageForm</td>
+                        <td width="20%">@med.RestockLevel</td>
+                        <td width="20%">@med.Schedule</td>
+                      
+
+                        <td>
+                            <a asp-controller="Pharmacist" asp-action="NewUpdateOrder" asp-route-ID="@med.MedicationID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
+
+                           @*  <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-ID="@order.AnOrderID" class="btn btn-danger">
+                                <i class="bi bi-trash3-fill"></i>Delete
+                            </a>
+ *@
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+    else
+    {
+        <p>No Orders taken yet</p>
+    }
+
+</div>
