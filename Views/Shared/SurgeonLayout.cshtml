@@ -107,9 +107,9 @@
 								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Dashboard</span>
 							</a>
 						</li>
-						<li>
+						<li class="sidebar-item">
 							<a class="dropdown-toggle" data-toggle="dropdown">
-								<span class="text-dark">
+								<i class="align-middle" data-feather="menu"></i><span class="text-dark">
 									Patient
 								</span>
 							</a>
@@ -117,14 +117,14 @@
 								<a class="dropdown-item" asp-controller="Surgeon" asp-action="SearchPatient">
 									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Search</span>
 								</a>
-								<a class="dropdown-item" asp-controller="Surgeon" asp-action="SearchPatient">
+								<a class="dropdown-item" asp-controller="Surgeon" asp-action="CreateBookingPatient">
 									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Add</span>
 								</a>
 							</div>
 						</li>
-						<li>
+						<li class="sidebar-item">
 							<a class="dropdown-toggle" data-toggle="dropdown">
-								<span class="text-dark">
+								<i class="align-middle" data-feather="menu"></i><span class="text-dark">
 								        Booking
 								</span>
 							</a>
@@ -138,14 +138,14 @@
 							</div>
 						</li>
 
-						<li>
+						<li class="sidebar-item">
 							<a class="dropdown-toggle" data-toggle="dropdown">
-								<span class="text-dark">
+								<i class="align-middle" data-feather="menu"></i><span class="text-dark">
 									Prescription
 								</span>
 							</a>
 							<div class="dropdown-menu">
-								<a class="dropdown-item" asp-controller="Surgeon" asp-action="CreateBooking">
+								<a class="dropdown-item" asp-controller="Surgeon" asp-action="CreatePrescription">
 									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Create</span>
 								</a>
 								<a class="dropdown-item" asp-controller="Surgeon" asp-action="PrescriptionList">
