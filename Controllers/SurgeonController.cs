@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using NuGet.Protocol.Core.Types;
 using System.Web.WebPages.Html;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
@@ -57,7 +58,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 return NotFound();
             }
-            var list = _Context.bookSurgeries.Find(ID);
+            var list = _Context.prescriptions.Find(ID);
             if (list == null)
             {
                 return NotFound();
@@ -88,9 +89,23 @@ namespace WIRKDEVELOPER.Controllers
             return RedirectToAction("PrescitionList");
 
         }
+        public IActionResult CreateBookingPatient()
+        {
+            return View();
+        }
+        public IActionResult CreateBookingPatient(BookingPatient bookingPatient)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.bookingPatients.Add(bookingPatient);
+                _Context.SaveChanges();
+                return RedirectToAction("");
+            }
+            return View(bookingPatient);
+        }
         public IActionResult BookingList()
         {
-            IEnumerable<BookSurgery> list = _Context.bookSurgeries;
+            IEnumerable<Booking> list = _Context.bookings;
             return View(list);
         }
         public IActionResult CreateBooking()
@@ -99,15 +114,15 @@ namespace WIRKDEVELOPER.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateBooking(BookSurgery bookSurgery)
+        public IActionResult CreateBooking(Booking booking)
         {
             if (ModelState.IsValid)
             {
-                _Context.bookSurgeries.Add(bookSurgery);
+                _Context.bookings.Add(booking);
                 _Context.SaveChanges();
                 return RedirectToAction("");
             }
-            return View(bookSurgery);
+            return View(booking);
         }
         public IActionResult updateBooking(int? ID)
         {
@@ -115,7 +130,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 return NotFound();
             }
-            var list = _Context.bookSurgeries.Find(ID);
+            var list = _Context.bookings.Find(ID);
             if (list == null)
             {
                 return NotFound();
@@ -126,22 +141,22 @@ namespace WIRKDEVELOPER.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult updateBooking(BookSurgery bookSurgery)
+        public IActionResult updateBooking(Booking booking)
         {
             //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //bookSurgery.PatientID = user;
-            _Context.bookSurgeries.Update(bookSurgery);
+            _Context.bookings.Update(booking);
             _Context.SaveChanges();
             return RedirectToAction("BookingList");
         }
         public IActionResult DeleteBooking(int? ID)
         {
-            var list = _Context.bookSurgeries.Find(ID);
+            var list = _Context.bookings.Find(ID);
             if (list == null)
             {
                 return NotFound();
             }
-            _Context.bookSurgeries.Remove(list);
+            _Context.bookings.Remove(list);
             _Context.SaveChanges();
             return RedirectToAction("BookingList");
 

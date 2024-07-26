@@ -40,7 +40,6 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Vitals> vitals { get; set; }
     public DbSet<Prescription> prescriptions { get; set; }
     public DbSet<Medication> medications { get; set; }
-    public DbSet<BookSurgery> bookSurgeries { get; set; }
     public DbSet<Stock> stocks { get; set; }
     public DbSet<Admission> admission { get; set; } 
     public DbSet<Bed> bed { get; set; }
@@ -53,6 +52,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Order> order { get; set; }
     public DbSet<VitalRanges> vitalranges { get; set; }
     public DbSet<Notes> notes { get; set; }
+    public DbSet<BookingPatient> bookingPatients { get; set; }
     public DbSet<Booking> bookings { get; set; }
     public DbSet<DischargePatient> discharge { get; set; }
 }
