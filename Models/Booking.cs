@@ -39,7 +39,7 @@ namespace WIRKDEVELOPER.Models
 
         //public string? AnasthesiologistID { get; set; }
         //[ForeignKey("AnasthesiologistID")]
-        //public virtual Anasthesiologist? Anasthesiologist { get; set; } [Key]
+        //public virtual Anasthesiologist? Anasthesiologist { get; set; } 
         
     }
 }

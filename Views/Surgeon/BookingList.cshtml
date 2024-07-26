@@ -3,6 +3,18 @@
 
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
+@using (Html.BeginForm("SearchPatient", "Surgeon", FormMethod.Get))
+{
+    <b>search by:</b>
+    @Html.RadioButton("searchby", "Date", true)
+
+    <text>date</text>
+    @Html.RadioButton("searchby", "Name", true) <text>name</text>
+
+    <br>
+    @Html.TextBox("search", "", htmlAttributes: new { @class = "form-control" })
+    <input type="submit" value="search" class="btn btn-info " />
+}
 <div class=" col-10 text-right">
     <a asp-controller="Surgeon" asp-action="CreateBooking" style="width:100%"></a>
 </div>
