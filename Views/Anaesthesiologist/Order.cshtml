@@ -90,6 +90,7 @@
                                         <select id="PurposeDropdown" asp-for="Status" class="form-control" id="validationName" required>
                                             <option value="Select" class="bg-opacity-50">Select</option>
                                             <option value="Ordered">Ordered</option>
+                                            <option value="Received">Recieved</option>
                                             @* <option value="mmHg">mmHg</option>
                                             <option value="°C">°C</option> *@
                                         </select>
@@ -121,7 +122,8 @@
                 <div class=" row-2">
                     <div class="col-8  row">
                         <div class="col">
-                            <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Vital History" />
+                           @*  <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Vital History" /> *@
+                            <a asp-action="AnVitals " class="btn btn-info w-75"><i class="bi bi-arrow-left-circle"></i>Vital History</a>
                         </div>
                         <div class="col">
                             <a asp-action="IndexScree" class="btn btn-info w-75"><i class="bi bi-arrow-left-circle"></i>Medical History</a>
