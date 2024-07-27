@@ -138,6 +138,10 @@ namespace WIRKDEVELOPER.Areas.Identity.Pages.Account
 					{
 						return RedirectToAction("_Nurse", "Nurse");
 					}
+					else if (Role.Contains("Admin"))
+					{
+						return RedirectToAction("AdminDashboard", "Admin");
+					}
 				}
                 if (result.RequiresTwoFactor)
                 {
