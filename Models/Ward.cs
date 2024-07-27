@@ -7,10 +7,12 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int WardID { get; set; }
-       
-        public int NurseID { get; set; }
-        [ForeignKey("NurseID")]
-        public string WardName { get; set; }
+        [Required]
+        public string? WardName { get; set; }
+        [Required]
+        public int BedID { get; set; }
+        [ForeignKey("BedID")]
+        public virtual Bed? Bed { get; set; }
 
     }
 }

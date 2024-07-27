@@ -55,4 +55,10 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<BookingPatient> bookingPatients { get; set; }
     public DbSet<Booking> bookings { get; set; }
     public DbSet<DischargePatient> discharge { get; set; }
+    public DbSet<MedicalProfessional> medicalProfessionals { get; set; }
+    public DbSet<DosageForm>dosageForms { get; set; }
+    public DbSet<ConditionDiagnosis>conditionDiagnoses { get; set; }
+    public DbSet<ActiveIngredient>activeIngredients { get; set; }
+    public DbSet<Contra_indication>contra_Indications { get; set; }
+    public DbSet<OperationTheatre>operationTheatres { get; set; }
 }
