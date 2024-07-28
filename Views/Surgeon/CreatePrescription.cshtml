@@ -63,12 +63,22 @@
         </div>
         <div class="col">
             <div class="form-group border-1">
-                <label asp-for="QuantityAndInstructions"></label>
+                <label asp-for="Quantity"></label>
                 <div>
-                    <input asp-for="QuantityAndInstructions" class="form-control" id="Invalid" required />
+                    <input asp-for="Quantity" class="form-control" id="Invalid" required />
                 </div>
                 <div class="invalid-feedback"></div>
-                <span asp-validation-for="QuantityAndInstructions" class=" text-danger"></span>
+                <span asp-validation-for="Quantity" class=" text-danger"></span>
+            </div>
+        </div>
+         <div class="col">
+            <div class="form-group border-1">
+                <label asp-for="Instructions"></label>
+                <div>
+                    <input asp-for="Instructions" class="form-control" id="Invalid" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="Instructions" class=" text-danger"></span>
             </div>
         </div>
         <div class="col">

@@ -23,13 +23,21 @@ namespace WIRKDEVELOPER.Controllers
         {
             if (searchby == "Gender")
             {
-                return View(_Context.bookings.Where(x => x.Gender == search || search == null).ToList());
+                return View(_Context.patients.Where(x => x.PatientName == search || search == null).ToList());
+            }
+            else if (searchby == "Gender")
+            {
+                return View(_Context.patients.Where(x => x.Gender == search || search == null).ToList());
             }
             else
             {
-                return NotFound();
+                return View("AddPatient");
 
             }
+        }
+        public IActionResult AddPatient()
+        {
+            return View();
         }
         public IActionResult PrescriptionList()
         {
