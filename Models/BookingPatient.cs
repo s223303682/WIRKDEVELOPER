@@ -1,4 +1,4 @@
-﻿using Microsoft.Build.ObjectModelRemoting;
+﻿//using Microsoft.Build.ObjectModelRemoting;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;

@@ -178,5 +178,15 @@ namespace WIRKDEVELOPER.Controllers
 			var patient = _Context.notes.FirstOrDefault(p => p.NotesID == patientId);
 			return View(patient);
 		}
-	}
+        public IActionResult IndexVitalHistory()
+        {
+            IEnumerable<AnVitals> objList = _Context.anvitals;
+            return View(objList);
+        }
+        public IActionResult VitalHistory()
+        {
+            return View();
+        }
+
+    }
 }
