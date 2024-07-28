@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿//using Microsoft.Build.ObjectModelRemoting;
+=======
+﻿
+>>>>>>> d95002e21087953d685344c65972dd299fedfb5e
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;

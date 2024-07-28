@@ -4,7 +4,7 @@
 
 </div>
 <hr/>
-@* <div class="container p-3 bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
+<div class="container p-3 bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
     <form method="post" asp-action="updateAppointment" class="bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
         <input asp-for="PrescriptionID" hidden />
       <div>
@@ -18,9 +18,13 @@
             </div>
 
                 <div class="col">
-                    <label asp-for="QuantityAndInstractions"></label>
-                    <input asp-for="QuantityAndInstractions" class="form-control" />
+                    <label asp-for="Quantity"></label>
+                    <input asp-for="Quantity" class="form-control" />
                 </div>
+            <div class="col">
+                <label asp-for="Instructions"></label>
+                <input asp-for="Instructions" class="form-control" />
+            </div>
             <div class="col">
                 <label asp-for="Urgent"></label>
                 <div col-sm>
@@ -48,8 +52,7 @@
                     <div class="col">
                         <label asp-for="status"></label>
                         <div col-sm>
-                            <select id="Dropdown" asp-for="status" class=" form-control" id="validationName" required>
-                                <option value="select">select</option>
+                            <select id="Dropdown" asp-for="status" class=" form-control" id="validationName"  required>
                                 <option value="POSTPONE">DESCLINE</option>
                                 <option value="ACCEPTED">ACCEPTED</option>
 
@@ -85,4 +88,3 @@
 
     </form>
 </div>
- *@

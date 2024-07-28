@@ -22,8 +22,11 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public string? Medication { get; set; }
         [Required]
-        [DisplayName(" Quantity And Instructions")]
-        public string? QuantityAndInstructions { get; set; }
+        [DisplayName("Quantity")]
+        public int Quantity { get; set; }
+        [Required]
+        [DisplayName("Instructions")]
+        public string? Instructions { get; set; }
         [Required]
         public string? Urgent { get; set; }
         [Required]

@@ -1,4 +1,4 @@
-﻿@model WIRKDEVELOPER.Models.Medication;
+﻿@* @model WIRKDEVELOPER.Models.Medication;
 @{
 
     Layout = "~/Views/Shared/Pharmacy.cshtml";
@@ -14,7 +14,7 @@
             </div>
             <form method="post" asp-action="Medicationlist">
                 <div class="border p-3 #FBD603">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="row">
 
@@ -23,38 +23,12 @@
                             <div class="col-12">
 
                                 <div class="row">
-                                    @*   <div class="form-group">
-                                    <label asp-for="PatientID" class="control-label">Choose Patient</label>
-                                    <select asp-for="PatientID" class="form-control">
-                                    @foreach (ApplicationUser item in ViewBag.Patients)
-                                    {
-                                    <option value="@item.Id">@item.FirstName @item.LastName</option>
-                                    }
-                                    </select>
-                                    </div> *@
+                                     
+                                  
                                     <div class="col-md-6">
-                                        <h4><label asp-for="MedicationName"></label></h4>@*These names come from our properties in the model *@
+                                        <h4><label asp-for="MedicationName"></label></h4>
                                         <input asp-for="MedicationName" class="form-control box mb-2" type="text" placeholder="select" />
                                         <span asp-validation-for="MedicationName" class="text-danger"></span>
-                                    </div>
-                                   @*  <div class="col-md-6">
-                                        <h4><label asp-for="Date"></label></h4>
-                                        <input asp-for="Date" class="form-control" />
-                                        <span asp-validation-for="Date" class="text-danger"></span>
-                                    </div> *@
-
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <h4><label asp-for="DosageForm"></label></h4>
-                                        <select id="PurposeDropdown" asp-for="DosageForm" class="form-control" id="validationName" required>
-                                            <option value="Select" class="bg-opacity-50">Select</option>
-                                            <option value="YES">Schedule 1</option>
-                                            <option value="NO">Schedule 2</option>
-                                        </select>
-                                        <span asp-validation-for="DosageForm" class="text-danger"></span>
                                     </div>
                                     <div class="col-md-2">
                                         <h4><label asp-for="RestockLevel"></label></h4>
@@ -73,7 +47,22 @@
                                         </select>
                                         <span asp-validation-for="RestockLevel" class="text-danger"></span>
                                     </div>
-                                  
+
+                                    
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <h4><label asp-for="DosageForm"></label></h4>
+                                        <select id="PurposeDropdown" asp-for="DosageForm" class="form-control" id="validationName" required>
+                                            <option value="Select" class="bg-opacity-50">Select</option>
+                                            <option value="YES">Schedule 1</option>
+                                            <option value="NO">Schedule 2</option>
+                                        </select>
+                                        <span asp-validation-for="DosageForm" class="text-danger"></span>
+                                    </div>
+                                   
                                 </div>
                             </div>
                             <div class="col-12">
@@ -87,16 +76,27 @@
                                         </select>
                                         <span asp-validation-for="Schedule" class="text-danger"></span>
                                     </div>
+<<<<<<< HEAD
                                    @*  <div class="col-md-2">
                                         <h4><label asp-for="ActiveIngridience"></label></h4>
                                         <select id="PurposeDropdown" asp-for="ActiveIngridience" class="form-control" id="validationName" required>
+=======
+                                    <div class="col-md-2">
+                                        <h4><label asp-for="ActiveIngredient"></label></h4>
+                                        <select id="PurposeDropdown" asp-for="ActiveIngredient" class="form-control" id="validationName" required>
+>>>>>>> d95002e21087953d685344c65972dd299fedfb5e
                                             <option value="Select" class="bg-opacity-50">Select</option>
                                             <option value="Ordered">Ordered</option>
                                             <option value="mmHg">mmHg</option>
                                             <option value="°C">°C</option>
                                         </select>
+<<<<<<< HEAD
                                         <span asp-validation-for="ActiveIngridience" class="text-danger"></span>
                                     </div> *@
+=======
+                                        <span asp-validation-for="ActiveIngredient" class="text-danger"></span>
+                                    </div>
+>>>>>>> d95002e21087953d685344c65972dd299fedfb5e
 
                                 </div>
 
@@ -107,9 +107,9 @@
                                         <div class="col">
                                             <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="MedicationList" />
                                         </div>
-                                        @*  <div class="col">
+                                          <div class="col">
                                         <a asp-action="IndexScree" class="btn btn-danger w-75"><i class="bi bi-arrow-left-circle"></i>BACK</a>
-                                        </div> *@
+                                        </div> 
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
                         </div>
                     </div>
                 </div>
-               @*  <div class=" row-2">
+                 <div class=" row-2">
                     <div class="col-8  row">
                         <div class="col">
                             <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Vital History" />
@@ -129,10 +129,10 @@
                             <a asp-action="IndexScree" class="btn btn-info w-75"><i class="bi bi-arrow-left-circle"></i>Medical History</a>
                         </div>
                     </div>
-                </div> *@
+                </div> 
             </form>
         </div>
     </div>
 
-</div>
+</div> *@
 
