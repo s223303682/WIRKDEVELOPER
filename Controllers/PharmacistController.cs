@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Web.Helpers;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
 
@@ -82,6 +85,26 @@ namespace WIRKDEVELOPER.Controllers
             _Context.stocks.Update(stock);
             _Context.SaveChanges();
             return RedirectToAction("StockList");
+        }
+        public async Task<IActionResult> AcceptPrescription(int? ID)
+        {
+            var prescriptions = _Context.prescriptions.Find(ID);
+            if (prescriptions != null)
+            {
+                prescriptions.status = "Accepted";
+                _Context.prescriptions.Update(prescriptions);
+                await _Context.SaveChangesAsync();
+                TempData["Info"] = "Dispsed";
+                //var patient = _Context.Users.Where(a => a.Id == prescriptions.PatientID).FirstOrDefault();
+                
+            }
+            ViewData["PatientID"] = new SelectList(_Context.Users, "Id", "Id", prescriptions.PatientID);
+            return View(prescriptions);
+        }
+        public IActionResult PharmPrescriptionList()
+        {
+            IEnumerable<Prescription> list = _Context.prescriptions;
+            return View(list);
         }
     }
 }
