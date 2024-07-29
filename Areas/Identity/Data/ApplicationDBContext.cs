@@ -28,6 +28,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
         {
             builder.Property(u => u.FirstName).HasMaxLength(255);
             builder.Property(u => u.LastName).HasMaxLength(255);
+
         }
     }
     public DbSet<Admin> admins { get; set; }
