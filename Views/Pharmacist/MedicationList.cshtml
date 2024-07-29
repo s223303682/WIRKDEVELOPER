@@ -48,14 +48,14 @@
                     <tr>
                         <td width="20%">@med.MedicationName</td>
                         @* <td width="20%">@med.ActiveIngridience</td> *@
-                        <td width="20%">@med.DosageForm</td>
+                        @* <td width="20%">@med.DosageForm</td>
                         <td width="20%">@med.RestockLevel</td>
                         <td width="20%">@med.Schedule</td>
                       
 
                         <td>
                             <a asp-controller="Pharmacist" asp-action="NewUpdateOrder" asp-route-ID="@med.MedicationID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
-
+ *@
                            @*  <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-ID="@order.AnOrderID" class="btn btn-danger">
                                 <i class="bi bi-trash3-fill"></i>Delete
                             </a>

@@ -1,0 +1,38 @@
+﻿.add{
+    text-decoration:none;
+    display:inline-block;
+    width:30px;
+    height:33px;
+    background:#4cff00;
+    font-size:2rem;
+    font-weight:bold;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+}
+.flex{
+    display:flex;
+    gap:1.5rem;
+}
+.remove{
+    text-decoration:none;
+    display:inline-block;
+    background:#ff0000;
+    color:#fff;
+    font-size:1.5rem;
+    font-weight:bold;
+    width:30px;
+    height:30px;
+    margin-left:auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.controls{
+    width:294px;
+    margin:15px auto;
+
+
+}
