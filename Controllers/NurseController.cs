@@ -15,6 +15,10 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
         public IActionResult ViewSchedule()
         {
             IEnumerable<Patient> patient = Context.patients;

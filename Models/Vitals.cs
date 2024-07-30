@@ -11,24 +11,24 @@ namespace WIRKDEVELOPER.Models
         [Key]
         public int VitalID { get; set; }
         [Required]
-        [DisplayName("Vital Name")]
+        [DisplayName("Vital Type")]
         public string? VitalName { get; set; }
         [Required]
-        [DisplayName("Low Limit")]
+        [DisplayName("Minimum Range")]
         public int? LowLimit { get; set; }
         [Required]
-        [DisplayName("High Limit")]
+        [DisplayName("Maximum Range")]
         public int? HighLimit { get; set; }
         public string PatientName { get; set; }
         public DateTime VisitDate { get; set; }
         public TimeSpan? VisitTime { get; set; }
-        public int HeartRate { get; set; }
+        //public int HeartRate { get; set; }
         public int Weight { get; set; }
         public int Height { get; set; }
-        public int Temperature { get; set; }
-        public int RespiratoryRate { get; set; }
-        public  int BloodPressure { get; set; }
-        public string BpPosition { get; set; }
+        //public int Temperature { get; set; }
+        //public int RespiratoryRate { get; set; }
+        //public  int BloodPressure { get; set; }
+        //public string BpPosition { get; set; }
 
     }
 }

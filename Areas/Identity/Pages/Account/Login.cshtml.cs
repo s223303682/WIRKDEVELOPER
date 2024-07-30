@@ -136,7 +136,7 @@ namespace WIRKDEVELOPER.Areas.Identity.Pages.Account
 					}
                     else if (Role.Contains("Nurse"))
 					{
-						return RedirectToAction("_Nurse", "Nurse");
+						return RedirectToAction("Dashboard", "Nurse");
 					}
 					else if (Role.Contains("Admin"))
 					{

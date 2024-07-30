@@ -5,9 +5,12 @@ namespace WIRKDEVELOPER.Models
     public class MedicationAdministration
     {
         public int MedicationAdministrationID { get; set; }
-        public int PatientId { get; set; }
-        [ForeignKey("PatientId")]
+        public int PatientID { get; set; }
+        [ForeignKey("PatientID")]
         public DateTime IssuedDate { get; set; }
+        public DateTime TimeIssued { get; set; } 
+        public int Quantity { get; set; } 
+        public string Status { get; set; }
         public int MedicationID { get; set; }
         [ForeignKey("MedicationID")]
        
