@@ -13,9 +13,9 @@ namespace WIRKDEVELOPER.Models
         [DisplayName("Medication Name")]
         public string? MedicationName { get; set; }
         [Required]
-        public int DosageFormID { get; set; }
-        [ForeignKey("DosageFormID")]
-        public virtual DosageForm? DosageForm { get; set; }
+        public int DosageFormID{ get; set; }
+        [ForeignKey("DosageFormName")]
+        public virtual DosageForm? DosageFormN { get; set; }
         [Required]
         [DisplayName("Active Ingridient")]
         public int ActiveIngridientID { get; set; }
