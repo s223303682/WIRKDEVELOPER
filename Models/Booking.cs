@@ -12,10 +12,10 @@ namespace WIRKDEVELOPER.Models
         //[ForeignKey("PatientID")]
         //public virtual Patient? patient { get; set; }
         [Required]
-        [DisplayName("Patient Name")]
-        public string? Name { get; set; }
-        [DisplayName("Patient Surname")]
-        public string? Surname { get; set; }
+        [DisplayName("Patient FullName")]
+        public int PatientID { get; set; }
+        [ForeignKey("PatientID")]
+        public virtual Patient? Patient { get; set; }
         [Required]
         public string? Gender { get; set; }
         [Required]

@@ -38,22 +38,49 @@
 //addbtn.addEventListener("click", addInput);
 
 var option= document.getElementById('option')
-var add= document.getElementById('add')
-var remove = document.getElementById('delete')
+var option2= document.getElementById('option2')
+var option3= document.getElementById('option3')
+var add= document.getElementById('add_more')
+var remove = document.getElementById('remove')
 
-add.onclick = function () {
+add_more.onclick = function () {
     var newfield = document.createElement('input');
-    newfield.setAttribute('type', 'text');
-    newfield.setAttribute('name', 'option');
-    newfield.setAttribute('class', 'option');
-    newfield.setAttribute('six', 50);
-    newfield.setAttribute('placeholder', 'name');
+    //newfield.setAttribute('type', 'text');
+    //newfield.setAttribute('name', 'option');
+    //newfield.setAttribute('class', 'option');
+    //newfield.setAttribute('six', 50);
+    newfield.setAttribute('placeholder', 'add more medication');
     option.appendChild(newfield);
+
+    var newfield2 = document.createElement('input');
+    //newfield2.setAttribute('type', 'text');
+    //newfield2.setAttribute('name', 'option');
+    //newfield2.setAttribute('class', 'option');
+    //newfield.setAttribute('six', 50);
+    newfield2.setAttribute('placeholder', 'add more Quantity');
+    option.appendChild(newfield2);
+
+    var newfield3 = document.createElement('input');
+    //newfield3.setAttribute('type', 'text');
+    //newfield3.setAttribute('name', 'option');
+    //newfield3.setAttribute('class', 'option');
+    //newfield3.setAttribute('six', 50);
+    newfield.setAttribute('placeholder', 'add more Instructions');
+    option.appendChild(newfield3);
 
 }
 remove.onclick = function () {
     var input_tag = option.getElementsByTagName('input');
+    var input_tag2 = option.getElementsByTagName('input');
+    var input_tag3 = option.getElementsByTagName('input');
     if (input_tag.length > 2) {
-        option.removeChild(input_tag(input_tag.length) - 1);
+        option.removeChild(input_tag[(input_tag.length) - 1]);
     }
+    else if (input_tag2.length > 2) {
+        option2.removeChild(input_tag2[(input_tag2.length) - 1]);
+    }
+   else if (input_tag3.length > 2) {
+        option3.removeChild(input_tag3[(input_tag3.length) - 1]);
+    }
+    
 }

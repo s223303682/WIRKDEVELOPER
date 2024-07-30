@@ -57,47 +57,48 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
-            <div class="inp-group">
-                <div class="flex">
-                    <div class="col">
-                        <div class="form-group border-1">
-                            <label asp-for="Medication"></label>
-                            
-                                <input asp-for="Medication" name="option[]" class="option" id="Invalid" required />
-                                <a href="#" id="add">&plus;</a> <a id="delete">&minus;</a>
-                        </div>
-                        <div class="invalid-feedback"></div>
-                        <span asp-validation-for="Medication" class=" text-danger"></span>
+            <div id="option">
+                <div class="col">
+                    <div class="form-group border-1">
+                        <label asp-for="Medication"></label>
+                        <input asp-for="Medication" name="option[]" class="option form-control" placeholder="Add more medication" id="Invalid" required />
                     </div>
-                    <div class="col">
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="Medication" class=" text-danger"></span>
+                </div>
+                <div class="col">
                     <div class="form-group border-1">
                         <label asp-for="Quantity"></label>
                         <div>
-                                <input asp-for="Quantity" name="option[]" class="option" id="Invalid" required />
+                            <input asp-for="Quantity" name="option[]" class="option form-control" placeholder="Add more Quantity" id="Invalid" required />
                         </div>
                         <div class="invalid-feedback"></div>
                         <span asp-validation-for="Quantity" class=" text-danger"></span>
                     </div>
-                   </div>
-                    <div class="col">
+                </div>
+                <div class="col">
                     <div class="form-group border-1">
                         <label asp-for="Instructions"></label>
 
-                            <input asp-for="Instructions" name="option[]" class="option" id="Invalid" required />
+                        <input asp-for="Instructions" name="option[]" class="option form-control" placeholder="Add more Instructions" id="Invalid" required />
                     </div>
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="Instructions" class=" text-danger"></span>
 
+                </div>
+                <div class="row">
+                    <div class="controls">
+                        <a href="#" id="add_more">&plus;Add more</a>
+                        <a href="#" id="remove">&minus;Remove</a>
                     </div>
                 </div>
                 
             </div>
+           
         </div>
-        <div class="controls" >
-            <a href="#" id="add">&plus;</a>
-            <a href="#" id="remove">&minus;</a>
-        </div>
+        
         <div class=" row">
             <div class="col">
                 <div class="form-group border-1">
