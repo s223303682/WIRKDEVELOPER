@@ -1,0 +1,130 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Order>
+@{
+
+    Layout = "~/Views/Shared/Pharmacy.cshtml";
+}
+@if (User.IsInRole("Pharmacist"))
+{
+    <head>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap4.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" />
+    </head>
+    <div id="Header" class="bg-info container">
+        <h2 class="m-1 pt-4 text-center text-white">List of your orders</h2>
+    </div>
+    <div class="container p-3">
+        <div class="row pt-4">
+            <div class="col-6">
+                <h2 class="text-primary">List of your orders</h2>
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Anaesthesiologist" asp-action="Order" class="btn btn-primary"><i class="bi bi-plus-circle"></i> ORDER ANESTHETICS</a>
+            </div>
+        </div>
+        <br />
+        @if (Model.Count() > 0)
+        {
+            @*<table class="table table-bordered table-striped" style="width:100%">*@
+            <table class="table table-sm table-hover">
+
+                <thead class="table-secondary">
+                    <tr>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Patient
+                        </th>
+                        <th>
+                            Medicationordered
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Instruction
+                        </th>
+                        <th>
+                            Urgent
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr scope="row">
+                            <td width="20%">@order.Date</td>
+                            <td width="20%">@order.Patient</td>
+                            <td width="20%">@order.Medicationordered</td>
+                            <td width="10%">@order.Quantity</td>
+                            <td width="10%">@order.Instructions</td>
+                            <td width="10%">@order.Urgent</td>
+                            <td width="10%">@order.Status</td>
+
+                            <td>
+                                <a asp-controller="Anaesthesiologist" asp-action="NewUpdateOrder" asp-route-ID="@order.AnOrderID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
+
+                                <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-ID="@order.AnOrderID" class="btn btn-danger">
+                                    <i class="bi bi-trash3-fill"></i>Delete
+                                </a>
+
+                            </td>
+
+                        </tr>
+                        @if (order.Status == "New")
+                        {
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-@order.AnOrderID">
+                                Accept
+                            </button>|
+                            <a asp-action="Details" asp-route-id="@order.AnOrderID">Decline</a>|
+                            <a asp-action="Delete" asp-route-id="@order.AnOrderID">Postpone</a>
+                        </td>
+                        <div class="modal fade" id="exampleModal-@order.AnOrderID" tabindex="-1" aria-labelledby="exampleModalLabel-@order.AnOrderID" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel-@order.AnOrderID">Confirm acceptance</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Do you want to Accept?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <a asp-action="AcceptPrescription" asp-route-id="@order.AnOrderID" button type="button" class="btn btn-primary">Accept</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    }
+                </tbody>
+            </table>
+
+        }
+        else
+        {
+            <p>No Orders taken yet</p>
+        }
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js"></script>
+}
+

@@ -106,5 +106,26 @@ namespace WIRKDEVELOPER.Controllers
             IEnumerable<Prescription> list = _Context.prescriptions;
             return View(list);
         }
+        public async Task<IActionResult> AcceptOrder(int? ID)
+        {
+            var orders = _Context.prescriptions.Find(ID);
+            if (orders != null)
+            {
+                orders.status = "Accepted";
+                _Context.prescriptions.Update(orders);
+                await _Context.SaveChangesAsync();
+                TempData["Info"] = "Dispsed";
+                //var patient = _Context.Users.Where(a => a.Id == prescriptions.PatientID).FirstOrDefault();
+
+            }
+            ViewData["PatientID"] = new SelectList(_Context.Users, "Id", "Id", orders.PatientID);
+            return View(orders);
+        }
+        public IActionResult PharmIndexOrder()
+        {
+            IEnumerable<Order> objList = _Context.order;
+            return View(objList);
+
+        }
     }
 }
