@@ -25,21 +25,21 @@ namespace WIRKDEVELOPER.Models
         public DateTime? Date { get; set; }
         [Required]
         public DateTime? Time { get; set; }
-        //public int?Theatre { get; set; }
-        //[ForeignKey("TheatreID")]
-        //public virtual Theatre? Theatre { get; set; }
+        public int? OperationTheatreID { get; set; }
+        [ForeignKey("OperationTheatreID")]
+        public virtual OperationTheatre? OperationTheatre { get; set; }
 
-        //[Required]
-        //[DisplayName("Treatment Code")]
+        [Required]
+        [DisplayName("Treatment Code")]
 
-        //public string? TreatmentCodeID { get; set; }
-        //[ForeignKey("TreatmentCodeID")]
-        //public virtual TreatmentCode? TreatmentCode { get; set; }
-        //[Required]
+        public int TreatmentID { get; set; }
+        [ForeignKey("TreatmentID")]
+        public virtual Treatment? Treatment { get; set; }
+        [Required]
 
-        //public string? AnasthesiologistID { get; set; }
-        //[ForeignKey("AnasthesiologistID")]
-        //public virtual Anasthesiologist? Anasthesiologist { get; set; } 
-        
+        public int MedicalProfessionalID { get; set; }
+        [ForeignKey("MedicalProfessionalID")]
+        public virtual MedicalProfessional? MedicalProfessionalS { get; set; }
+
     }
 }

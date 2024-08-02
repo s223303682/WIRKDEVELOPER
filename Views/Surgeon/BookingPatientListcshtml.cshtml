@@ -1,20 +1,9 @@
-﻿@model IEnumerable<WIRKDEVELOPER.Models.Booking>
+﻿@model IEnumerable<WIRKDEVELOPER.Models.BookingPatient>
 @{
 
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
-@using (Html.BeginForm("SearchPatient", "Surgeon", FormMethod.Get))
-{
-    <b>search by:</b>
-    @Html.RadioButton("searchby", "Date", true)
 
-    <text>date</text>
-    @Html.RadioButton("searchby", "Name", true) <text>name</text>
-
-    <br>
-    @Html.TextBox("search", "", htmlAttributes: new { @class = "form-control" })
-    <input type="submit" value="search" class="btn btn-info " />
-}
 <div class=" col-10 text-right">
     <a asp-controller="Surgeon" asp-action="CreateBooking" style="width:100%"></a>
 </div>
@@ -30,11 +19,11 @@
                 <th>date</th>
                 <th>date</th>
                 <th>Theatre</th>
-            <th>treatmentcode</th>
-            <th> Anasthesiologist</th>
+               <th>treatmentcode</th>
+               <th> Anasthesiologist</th>
                 <th>Delete</th>
                 <th> Update</th>
-                <th> select</th>
+                <th>book surgery</th>
 
 
             </tr>
@@ -44,22 +33,24 @@
             {
 
                 <tr>
-                    <td>@booking.PatientID</td>
+                    <td>@booking.BookingPatientName</td>
+                    <td>@booking.BookingPatientSurname</td>
                     <td>@booking.Gender</td>
-                    <td>@booking.EmailAddress</td>
+                    <td>@booking.email</td>
                     <td>@booking.Date</td>
                     <td>@booking.Time</td>
                     <td>@booking.OperationTheatre</td>
-            <td>@booking.Treatment</td>
-            <td>@booking.MedicalProfessionalS</td>
+                    <td>@booking.Treatment</td>
+                 <td>@booking.MedicalProfessional</td>
+                  
 
                     <td>
                         <div class="">
-                            <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Update</a>
+                            <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingPatientID" class=" btn btn-blue-300 mx-1">Update</a>
                         </div>
                     </td>
                     <td>
-                        <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Delete</a>
+                        <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingPatientID" class=" btn btn-blue-300 mx-1">Delete</a>
                     </td>
                     <td>
                         <button class="edit-btn">select</button>

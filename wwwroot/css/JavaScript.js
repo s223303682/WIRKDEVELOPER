@@ -45,26 +45,26 @@ var remove = document.getElementById('remove')
 
 add_more.onclick = function () {
     var newfield = document.createElement('input');
-    //newfield.setAttribute('type', 'text');
-    //newfield.setAttribute('name', 'option');
-    //newfield.setAttribute('class', 'option');
-    //newfield.setAttribute('six', 50);
+    newfield.setAttribute('type', 'text');
+    newfield.setAttribute('name', 'option[]');
+    newfield.setAttribute('class', 'option');
+    newfield.setAttribute('six', 50);
     newfield.setAttribute('placeholder', 'add more medication');
     option.appendChild(newfield);
 
     var newfield2 = document.createElement('input');
-    //newfield2.setAttribute('type', 'text');
-    //newfield2.setAttribute('name', 'option');
-    //newfield2.setAttribute('class', 'option');
-    //newfield.setAttribute('six', 50);
+    newfield2.setAttribute('type', 'text');
+    newfield2.setAttribute('name', 'option2[]');
+    newfield2.setAttribute('class', 'option2');
+    newfield.setAttribute('six', 50);
     newfield2.setAttribute('placeholder', 'add more Quantity');
     option.appendChild(newfield2);
 
     var newfield3 = document.createElement('input');
-    //newfield3.setAttribute('type', 'text');
-    //newfield3.setAttribute('name', 'option');
-    //newfield3.setAttribute('class', 'option');
-    //newfield3.setAttribute('six', 50);
+    newfield3.setAttribute('type', 'text');
+    newfield3.setAttribute('name', 'option3[]');
+    newfield3.setAttribute('class', 'option3');
+    newfield3.setAttribute('six', 50);
     newfield.setAttribute('placeholder', 'add more Instructions');
     option.appendChild(newfield3);
 

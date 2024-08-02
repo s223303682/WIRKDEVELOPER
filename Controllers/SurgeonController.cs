@@ -97,6 +97,11 @@ namespace WIRKDEVELOPER.Controllers
             return RedirectToAction("PrescitionList");
 
         }
+        public IActionResult BookingPatientList()
+        {
+            IEnumerable<BookingPatient> list = _Context.bookingPatients;
+            return View(list);
+        }
         public IActionResult CreateBookingPatient()
         {
             return View();
@@ -110,6 +115,43 @@ namespace WIRKDEVELOPER.Controllers
                 return RedirectToAction("");
             }
             return View(bookingPatient);
+        }
+        public IActionResult updateBookingPatient(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var list = _Context.bookingPatients.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return View(list);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updateBookingPatient(BookingPatient bookingPatient)
+        {
+            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //bookSurgery.PatientID = user;
+            _Context.bookingPatients.Update(bookingPatient);
+            _Context.SaveChanges();
+            return RedirectToAction("BookingPatientList");
+        }
+        public IActionResult DeleteBookingPatient(int? ID)
+        {
+            var list = _Context.bookingPatients.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+            _Context.bookingPatients.Remove(list);
+            _Context.SaveChanges();
+            return RedirectToAction("BookingPatientList");
+
         }
         public IActionResult BookingList()
         {
