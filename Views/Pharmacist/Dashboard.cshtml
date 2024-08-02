@@ -2,4 +2,84 @@
 
     Layout = "~/Views/Shared/Pharmacy.cshtml";
 }
-<h1>Dashboard</h1>
+<!DOCTYPE html>
+<html lang="n">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="~/css/StyleSurgeon2.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <title> Health Care</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
+                    <h2 class="text-info"> Welcome to Health Care services</h2>
+                </div>
+            </div>
+
+        </nav>
+
+    </header>
+
+    <div class=" row card-container">
+        <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/images/Surgeon/card1.jpg" width="60%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Pharmacist" asp-action="PharmPrescriptionList">Prescription</a>
+            </div>
+        </div>
+        <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/images/Surgeon/card1.jpg" width="60%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Pharmacist" asp-action="PharmIndexOrder">Order</a>
+            </div>
+        </div>
+        <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/images/Surgeon/card2.jpg" width="60%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Pharmacist" asp-action="Createmedication">Medication</a>
+            </div>
+        </div>
+        <div class="col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/images/Surgeon/card1.jpg" width="60%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Pharmacist" asp-action="Createstock">Create prescription</a>
+            </div>
+        </div>
+        <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/images/Surgeon/card1.jpg" width="60%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Pharmacist" asp-action="StockList"> View prescriptions</a>
+            </div>
+        </div>
+    </div>
+    <div class="mycontainer ">
+        <div class="text-white text-center">providing the best experience for patients</div>
+        <p class="text-white text-center">
+            welcome to a place where our first priority is our patients.<br />
+            trust us with your wealth and have a great experience
+        </p>
+    </div>
+</body>
+
+</html>

@@ -19,7 +19,7 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-        public IActionResult Createmedication()
+        public IActionResult CreateMedication()
         {
             return View();
         }
@@ -31,9 +31,10 @@ namespace WIRKDEVELOPER.Controllers
             {
                 _Context.medications.Add(medication);
                 _Context.SaveChanges();
-                return RedirectToAction("");
+                return RedirectToAction("MedicationList");
             }
             return View(medication);
+           
         }
         public IActionResult MedicationList()
         {
@@ -108,18 +109,18 @@ namespace WIRKDEVELOPER.Controllers
         }
         public async Task<IActionResult> AcceptOrder(int? ID)
         {
-            var orders = _Context.prescriptions.Find(ID);
-            if (orders != null)
+            var order = _Context.prescriptions.Find(ID);
+            if (order != null)
             {
-                orders.status = "Accepted";
-                _Context.prescriptions.Update(orders);
+                order.status = "Accepted";
+                _Context.prescriptions.Update(order);
                 await _Context.SaveChangesAsync();
                 TempData["Info"] = "Dispsed";
                 //var patient = _Context.Users.Where(a => a.Id == prescriptions.PatientID).FirstOrDefault();
 
             }
-            ViewData["PatientID"] = new SelectList(_Context.Users, "Id", "Id", orders.PatientID);
-            return View(orders);
+           //ViewData["PatientID"] = new SelectList(_Context.Users, "Id", "Id", orders.PatientID);
+            return View(order);
         }
         public IActionResult PharmIndexOrder()
         {
