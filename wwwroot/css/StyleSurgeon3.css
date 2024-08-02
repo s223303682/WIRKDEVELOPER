@@ -1,11 +1,27 @@
 ﻿
+body{
+    background-color:#f0f5ff;
+    font-family:'jost',sans-serif;
+    color:#fff;
+}
 #remove{
     align-self:flex-end;
 }
 #add_more{
     align-self:flex-start;
+    border:2px;
+    align-content:center;
+    justify-content:space-between;
 }
-input{
+.wrapper{
+    width:400px;
+    margin:40px auto;
+    padding:10px;
+    border-radius:5px;
+    background:white;
+    box-shadow: 0px 10px 40px 0px rgba(47,47,47,1);
+}
+input[type="text"]{
     padding:10px;
     margin:10px auto;
     display:block;
@@ -14,6 +30,9 @@ input{
     background:none;
     width:274px;
     color:black;
+}
+input[type="text"]{
+    outline:none;
 }
 .controls a i{
     width:294px;
