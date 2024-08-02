@@ -55,15 +55,15 @@
 				<div class="sidebar-content js-simplebar">
 
 					<div class="sidebar_blog_1">
-						@* <div class="sidebar-header">
+						<div class="sidebar-header">
 					<div class="logo_section">
-					<a href="index.html"><img class="logo_icon img-responsive" src="images/logo/logo_icon.png" alt="#" /></a>
+					<a href="index.html"><img class="logo_icon img-responsive" src="~/_Images/3.png" alt="#" /></a>
 					</div>
-					</div> *@
+					</div>
 						<div>
 							<div class="icon_setting"></div>
 							<div class="user_profle_side">
-								<div class="user_img"><img class="img-responsive" src="~/Anaesthesiologist/3.png" alt="#" /></div>
+								@* <div class="user_img"><img class="img-responsive" src="~/_Images/user icon.jpg" alt="#" /></div> *@
 								<div class="user_info">
 									<h6>
 										<span class="text-light">
@@ -103,7 +103,7 @@
 							</a>
 						</li>
 						<li class="sidebar-item">
-							<a asp-controller="Surgeon" asp-action="DashBoard" class="sidebar-link">
+							<a asp-controller="Nurse" asp-action="DashBoard" class="sidebar-link">
 								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Dashboard</span>
 							</a>
 						</li>
@@ -113,26 +113,26 @@
 							</a>
 						</li>
 						<li class="sidebar-item">
-							<a asp-controller="Nurse" asp-action="ViewSchedule" class="sidebar-link">
+							<a asp-controller="Nurse" asp-action="ViewAdmission" class="sidebar-link">
 								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Admissions</span>
 							</a>
 						</li>
 						<li class="sidebar-item">
-							<a asp-controller="Nurse" asp-action="ViewSchedule" class="sidebar-link">
+							<a asp-controller="Nurse" asp-action="ViewVitals" class="sidebar-link">
 								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Vitals</span>
 							</a>
 						</li>
 						<li class="sidebar-item">
-							<a asp-controller="Nurse" asp-action="ViewSchedule" class="sidebar-link">
+							<a asp-controller="Nurse" asp-action="ViewPrescription" class="sidebar-link">
 								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Prescription</span>
 							</a>
 						</li>
 						<li class="sidebar-item">
-							<a asp-controller="Nurse" asp-action="ViewSchedule" class="sidebar-link">
+							<a asp-controller="Nurse" asp-action="ViewmedAdmin" class="sidebar-link">
 								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Administer Med</span>
 							</a>
 						</li><li class="sidebar-item">
-							<a asp-controller="Nurse" asp-action="ViewSchedule" class="sidebar-link">
+							<a asp-controller="Nurse" asp-action="ViewDischargedPatient" class="sidebar-link">
 								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Checkout</span>
 							</a>
 						</li>
@@ -211,7 +211,8 @@
 									</a>
 									<div class="user_info">
 										<a>
-											<span class="text-dark">@UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName</span><img src="~/Anaesthesiologist/user-solid.svg" class="avatar img-fluid rounded mt-3" />
+											<span class="text-dark">@UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName</span>
+											<img src="~/_Images/user icon.jpg" class="avatar img-fluid rounded mt-3" />
 										</a>
 									</div>
 
@@ -219,7 +220,7 @@
 										<li>
 											<a class="dropdown-toggle" data-toggle="dropdown">
 												<span class="text-dark">
-													SURGEON
+													Nurse
 												</span>
 											</a>
 											<div class="dropdown-menu">

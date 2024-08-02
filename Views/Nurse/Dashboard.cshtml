@@ -4,7 +4,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
-    ViewData["Title"] = "index";
+    ViewData["Title"] = "Nurse";
     Layout = "~/Views/Shared/_NurseLayout.cshtml";
 }
 <!DOCTYPE html>
@@ -28,7 +28,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 
-                    <h2 class="text-info"> Welcome to Health Care services</h2>
+                    @* <h2 class="text-info"> Welcome to Health Care services</h2> *@
                 </div>
             </div>
 
@@ -38,43 +38,43 @@
 
     <div class=" row card-container">
         <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
-            <div class="card-body">
-               @*  <img src="~/images/Surgeon/card1.jpg" width="60%" height="60%" alt="card image"> *@
+            <div class="card-body" width="250" height="400">
+                <img src="~/_Images/stock-vector-time-date-and-location-icons-in-different-shapes-2219032315.jpg" width="60%" height="60%" alt="card image">
             </div>
             <div class="card-footer">
-                <a asp-controller="Surgeon" asp-action="SearchPatient">Schedule</a>
+                <a asp-controller="Nurse" asp-action="ViewSchedule">Schedule</a>
             </div>
         </div>
         <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
-            <div class="card-body">
-               @*  <img src="~/images/Surgeon/card1.jpg" width="60%" height="60%" alt="card image"> *@
+            <div class="card-body" width="250" height="400">
+                <img src="~/_Images/vitals.png" width="60%" height="60%" alt="card image">
             </div>
             <div class="card-footer">
-                <a asp-controller="Surgeon" asp-action="Createbooking">Vitals</a>
+                <a asp-controller="Nurse" asp-action="AddVitals">Vitals</a>
             </div>
         </div>
         <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
-            <div class="card-body">
-               @*  <img src="~/images/Surgeon/card2.jpg" width="60%" height="60%" alt="card image"> *@
+            <div class="card-body" width="250" height="400">
+                <img src="~/_Images/medicine-prescription-icon-free-vector.jpg" width="60%" height="60%" alt="card image">
             </div>
             <div class="card-footer">
-                <a asp-controller="Surgeon" asp-action="BookingList">Prescription</a>
+                <a asp-controller="Pharmacist" asp-action="PharmPrescription">Prescription</a>
             </div>
         </div>
         <div class="col card" style="display:inline-block;width:calc(50%-50px)">
-            <div class="card-body">
-               @*  <img src="~/images/Surgeon/card1.jpg" width="60%" height="60%" alt="card image"> *@
+            <div class="card-body" width="250" height="400">
+                <img src="~/_Images/depositphotos_469758760-stock-illustration-artificial-intelligence-medication-management-icon.jpg" width="60%" height="60%" alt="card image">
             </div>
             <div class="card-footer">
-                <a asp-controller="Surgeon" asp-action="CreatePrescription">Administer Med</a>
+                <a asp-controller="Nurse" asp-action="AddmedAdmin">Administer Med</a>
             </div>
         </div>
         <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
-            <div class="card-body">
-               @*  <img src="~/images/Surgeon/card1.jpg" width="60%" height="60%" alt="card image"> *@
+            <div class="card-body" width="250" height="400">
+                <img src="~/_Images/istockphoto-1673274817-612x612.jpg" width="60%" height="60%" alt="card image">
             </div>
             <div class="card-footer">
-                <a asp-controller="Surgeon" asp-action="PrescriptionList"> Checkout</a>
+                <a asp-controller="Nurse" asp-action="AddDischargedPatient"> Checkout</a>
             </div>
         </div>
     </div>
