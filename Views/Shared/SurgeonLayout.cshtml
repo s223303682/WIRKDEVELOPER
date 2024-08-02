@@ -63,7 +63,7 @@
 						<div>
 							<div class="icon_setting"></div>
 							<div class="user_profle_side">
-								<div class="user_img"><img class="img-responsive" src="~/Anaesthesiologist/3.png" alt="#" /></div>
+								<div class="user_img"><img class="img-responsive" src="" alt="#" /></div>
 								<div class="user_info">
 									<h6>
 										<span class="text-light">
@@ -125,12 +125,20 @@
 								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Booking</span>
 							</a>
 							<div class="dropdown-menu">
-								<a class="dropdown-item" asp-controller="Surgeon"asp-action="CreateBooking">
-									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Create</span>
-									</a>
-								<a class="dropdown-item" asp-controller="Surgeon"asp-action="BookingList">
-									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">View</span>
-								</a>
+								<ul>
+									<li>
+										<a class="dropdown-item" asp-controller="Surgeon" asp-action="CreateBooking">
+											<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Create</span>
+										</a>
+									</li>
+									<li>
+										<a class="dropdown-item" asp-controller="Surgeon" asp-action="BookingList">
+											<i class="align-middle" data-feather="edit"></i> <span class="align-middle">View</span>
+										</a>
+									</li>
+								</ul>
+								
+								
 							</div>
 						</li>
 
@@ -156,7 +164,7 @@
 						</li>
 
 						<li class="sidebar-item">
-							<a asp-controller="Anaesthesiologist" asp-action="Notes" class="sidebar-link">
+							<a asp-controller="Surgeon" asp-action="ToDoList" class="sidebar-link">
 								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Notes </span>
 							</a>
 						</li>

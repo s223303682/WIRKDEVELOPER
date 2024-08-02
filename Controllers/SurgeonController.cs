@@ -15,6 +15,10 @@ namespace WIRKDEVELOPER.Controllers
         {
             _Context = applicationDBContext;
         }
+        public IActionResult ToDoList()
+        {
+            return View();
+        }
         public IActionResult DashBoard()
         {
             return View();
