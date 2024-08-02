@@ -9,11 +9,11 @@ namespace WIRKDEVELOPER.Models
     public class BookingPatient
     {
         [Key]
-        public int PatientID { get; set; }
+        public int BookingPatientID { get; set; }
         [Required]
-        public string? PatientName { get; set; }
+        public string? BookingPatientName { get; set; }
         [Required]
-        public string? PatientSurname { get; set; }
+        public string? BookingPatientSurname { get; set; }
         [Required]
         public string? Gender { get; set; }
         [Required]
@@ -22,13 +22,15 @@ namespace WIRKDEVELOPER.Models
         public DateTime ? Date { get; set; }
         [Required]
         public DateTime? Time { get; set; }
-        //[Required]
-        //public int?Theatre { get; set; }
-        //[ForeignKey("TheatreID")]
-        //public virtual Theatre? Theatre { get; set; }
-
-        //public string? AnasthesiologistID { get; set; }
-        //[ForeignKey("AnasthesiologistID")]
-        //public virtual Anasthesiologist? Anasthesiologist { get; set; } 
+        [Required]
+        public int? OperationTheatreID { get; set; }
+        [ForeignKey("OperationTheatreID")]
+        public virtual OperationTheatre? OperationTheatre { get; set; }
+        public int TreatmentID { get; set; }
+        [ForeignKey("TreatmentID")]
+        public virtual Treatment? Treatment { get; set; }
+        public int MedicalProfessionalID { get; set; }
+        [ForeignKey("MedicalProfessionalID")]
+        public virtual MedicalProfessional? MedicalProfessional { get; set; }
     }
 }
