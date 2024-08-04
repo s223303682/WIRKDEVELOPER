@@ -12,10 +12,11 @@ namespace WIRKDEVELOPER.Models
 		public int VitalRangeID { get; set; }
 
 		[Required]
-		[DisplayName(" Date")]
+		[DisplayName("Visit Date")]
 		public DateTime? Date { get; set; } = DateTime.Now;
 
 		[Required]
+		[DisplayName("Vital Type")]
 		public string? Vital { get; set; }
 
 		[Required]
