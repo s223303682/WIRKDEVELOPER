@@ -8,28 +8,36 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int AdmissionID { get; set; }
-        [DisplayName("Patient Name")]
         public int PatientName { get; set; }
         [ForeignKey("PatientID")] 
-        [DisplayName("Gender")]
+        [DisplayName("Patient Name")]
         public int PatientGender { get; set; }
         [ForeignKey("PatientID")]
-        [DisplayName("Email")]
+        [DisplayName("Gender")] 
+        public int MedicationName { get; set; }
+        [ForeignKey("CurrentMedicationID")]
+        [DisplayName("Current Medication")] 
+        public int TreatmentCode { get; set; }
+        [ForeignKey("TreatmentID")]
+        [DisplayName("Treatment Code")] 
+        public int PatientPhone { get; set; }
+        [ForeignKey("PatientID")]
+        [DisplayName("Phone")]
         public int PatientEmail { get; set; }
         [ForeignKey("PatientID")] 
-        [DisplayName("Province")]
+        [DisplayName("Email")]
         public int PatientProvince { get; set; }
         [ForeignKey("PatientID")]
-        [DisplayName("Address 1")]
+        [DisplayName("Province")]
         public string Address1 { get; set; }
         [ForeignKey("PatientID")]
-        [DisplayName("Address 2")]
+        [DisplayName("Address 1")]
         public string Address2 { get; set; }
         [ForeignKey("PatientID")] 
-        [DisplayName("City")]
+        [DisplayName("Address 2")]
         public string City { get; set; }
         [ForeignKey("PatientID")]
-        [DisplayName("Surbub")]
+        [DisplayName("City")]
         public string Surbub { get; set; }
         [ForeignKey("PatientID")]
         public int BedID { get; set; }
