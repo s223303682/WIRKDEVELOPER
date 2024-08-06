@@ -10,6 +10,7 @@ namespace WIRKDEVELOPER.Models
 {
 	public class Order
 	{
+
 		[Required]
 		[DisplayName(" Date")]
 		public DateTime? Date { get; set; } = DateTime.Now;

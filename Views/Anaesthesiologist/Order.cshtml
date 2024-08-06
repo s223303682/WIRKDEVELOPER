@@ -6,12 +6,13 @@
 
 <!DOCTYPE html>
 <html>
-<head>
+@* <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" href="~/css/StyleSurgeon3.css">
-</head>
+</head> *@
 
+<body>
 <div class="mx-0 mx-sm-auto">
     <div class="card w-75">
 
@@ -64,7 +65,7 @@
                                         <div class="form-group border-1">
                                             <h4><label asp-for="Quantity"></label></h4>
                                             <div>
-                                                <input asp-for="Quantity" name="option[]" class="option form-control" placeholder="0" id="Invalid" required />
+                                                <input asp-for="Quantity" class="option form-control" placeholder="0" id="Invalid" required />
                                             </div>
                                             <div class="invalid-feedback"></div>
                                             <span asp-validation-for="Quantity" class=" text-danger"></span>
@@ -91,12 +92,12 @@
                                         <input asp-for="Instructions" class="form-control box mb-2" type="text" placeholder="select" />
                                         <span asp-validation-for="Instructions" class="text-danger"></span>
                                     </div>
-                                    <div class="col-md-2">
+                                   @*  <div class="col-md-2">
                                         <div class="controls">
                                             <a href="#" id="add_more">&plus;Add more</a>
                                             <a href="#" id="remove">&minus;Remove</a>
                                         </div>
-                                    </div>
+                                    </div> *@
                                 </div>
                             </div>
                             <div class="col-12">
@@ -500,7 +501,7 @@
     </div>
 
 </div>
-
+</body>
 </html>
 
 

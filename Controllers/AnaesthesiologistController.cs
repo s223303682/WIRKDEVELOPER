@@ -151,7 +151,58 @@ namespace WIRKDEVELOPER.Controllers
 		{
 			return View();
 		}
-		public IActionResult IndexNotes(string searchPatient)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult VitalRanges(VitalRanges vitalranges)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.vitalranges.Update(vitalranges);
+                _Context.SaveChanges();
+                return RedirectToAction("IndexVitalRanges");
+            }
+            return View(vitalranges);
+
+        }
+        public IActionResult UpdateVitalRanges(int? VitalRangeID)
+        {
+            if (VitalRangeID == null || VitalRangeID == 0)
+            {
+                return NotFound();
+            }
+            var obj = _Context.vitalranges.Find(VitalRangeID);
+
+            if (VitalRangeID == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateVitalRanges(VitalRanges vitalRanges)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.vitalranges.Update(vitalRanges);
+                _Context.SaveChanges();
+                return RedirectToAction("IndexVitalRanges");
+            }
+            return View(vitalRanges);
+        }
+        public IActionResult DeleteVitalRanges(int? VitalRangeID)
+        {
+            var obj = _Context.vitalranges.Find(VitalRangeID);
+
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _Context.vitalranges.Remove(obj);
+            _Context.SaveChanges();
+            return RedirectToAction("IndexVitalRanges");
+        }
+        public IActionResult IndexNotes(string searchPatient)
 		{
 			//IEnumerable<Notes> objList = _Context.notes;
 			//return View(objList);
