@@ -6,7 +6,7 @@
     align-self:flex-start;
     border:2px;
     align-content:center;
-    justify-content:space-between;
+    justify-content:space-evenly;
 }
 input[type="text"]{
     padding:10px;

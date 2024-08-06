@@ -15,9 +15,17 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public string? BookingPatientSurname { get; set; }
         [Required]
+        public string? Country { get; set; }
+        [Required]
+        [DisplayName("Contact Number")]
+        public string? ContactNumber { get; set; }
+        [Required]
         public string? Gender { get; set; }
         [Required]
        public string? email { get; set; }
+        [Required]
+        [DisplayName("Date of birth")]
+        public DateTime DateOfBirth { get; set; }
         [Required]
         public DateTime ? Date { get; set; }
         [Required]

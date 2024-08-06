@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col">
-        <a asp-action="BookingList" class="btn btn-outline-primary">List</a>
+        <a asp-action="BookingPatientList" class="btn btn-outline-primary">List</a>
     </div>
 </div>
 <div class="row">
@@ -85,6 +85,30 @@
         </div>
     </div>
     <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="Country">select Country</label>
+                <select id="Dropdown" asp-for="Country" class=" form-control" id="validation" required>
+                    <option value="Western Cape">Western Cape</option>
+                    <option value="North west">North west</option>
+                    <option value="North west">North west</option>
+                   
+                </select>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="Gender" class=" text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="ContactNumber"></label>
+                <div>
+                    <input type="time" asp-for="ContactNumber" class="form-control" id="InvalidName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="ContactNumber" class=" text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
          <div class="col">
         <div class="form-group">
         <label asp-for="OperationTheatreID"></label>
@@ -95,7 +119,7 @@
                 <span asp-validation-for="OperationTheatreID" class=" text-danger"></span>
         </div>
         </div>
-        <div class="row">
+        
             <div class="col">
                 <div class="form-group">
                     <label asp-for="TreatmentID"></label>
@@ -108,15 +132,16 @@
             </div>
         
         <div class="col">
-        <div class="form-group">
-        <label asp-for="MedicalProfessionalID"></label>
-        <div>
-        <input  asp-for="MedicalProfessionalID" class="form-control" id="InvalidName" required />
+                <div class="form-group">
+                    <label asp-for="MedicalProfessionalID"></label>
+                    <div>
+                        <input asp-for="MedicalProfessionalID" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="MedicalProfessionalID" class=" text-danger"></span>
+                </div>
         </div>
-        <div class="invalid-feedback"></div>
-        <span asp-validation-for="MedicalProfessionalID" class=" text-danger"></span>
-        </div>
-        </div>
+        
        
     </div><br>
 
