@@ -100,7 +100,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <a asp-action="" asp-route-id="" button type="button" class="btn btn-primary">Accept</a>
+                                                <a asp-controller="PharmacistController" asp-action="AcceptOrder" asp-route-id="@order.AnOrderID" button type="button" class="btn btn-primary">Accept</a>
                                             </div>
                                         </div>
                                     </div>

@@ -109,17 +109,17 @@ namespace WIRKDEVELOPER.Controllers
         }
         public async Task<IActionResult> AcceptOrder(int? ID)
         {
-            var order = _Context.prescriptions.Find(ID);
+            var order = _Context.order.Find(ID);
             if (order != null)
             {
-                order.status = "Accepted";
-                _Context.prescriptions.Update(order);
+                order.Status = "Ordered";
+                _Context.order.Update(order);
                 await _Context.SaveChangesAsync();
-                TempData["Info"] = "Dispsed";
-                //var patient = _Context.Users.Where(a => a.Id == prescriptions.PatientID).FirstOrDefault();
+                TempData["Ordered"] = "Dispensed";
+                var patient = _Context.Users.Where(a => a.Id == order.Patient).FirstOrDefault();
 
             }
-           //ViewData["PatientID"] = new SelectList(_Context.Users, "Id", "Id", orders.PatientID);
+            ViewData["Patient"] = new SelectList(_Context.Users, "Id", "Id", order.Patient);
             return View(order);
         }
         public IActionResult PharmIndexOrder()
