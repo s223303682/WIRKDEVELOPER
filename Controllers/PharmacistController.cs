@@ -128,5 +128,28 @@ namespace WIRKDEVELOPER.Controllers
             return View(objList);
 
         }
+        public IActionResult IndexMedication()
+        {
+            IEnumerable<PharmacyMedication> objList = _Context.pharmacyMedications;
+            return View(objList);
+
+        }
+        public IActionResult AddMedication()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddMedication(PharmacyMedication pharmacyMedications)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.pharmacyMedications.Update(pharmacyMedications);
+                _Context.SaveChanges();
+                return RedirectToAction("IndexMedication");
+            }
+            return View(pharmacyMedications);
+
+        }
     }
 }

@@ -1,0 +1,92 @@
+﻿@model WIRKDEVELOPER.Models.PharmacyMedication
+@{
+
+    Layout = "~/Views/Shared/Pharmacy.cshtml";
+}
+
+<div class="card w-75">
+    <div class="card-body ">
+        <div class="card-header bg-primary">
+
+            <h3 class="card-title text-white mt-2" id="exampleModalLabel">Medication</h3>
+        </div>
+        <form method="post" asp-action="AddMedication">
+            <div class="border p-3 #FBD603">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+
+                <div class="row">
+
+                    <div class="form-group">
+
+                     
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h4><label asp-for="PharmacyMedicationName"></label></h4>@*These names come from our properties in the model *@
+                                    <input asp-for="PharmacyMedicationName" class="form-control box mb-2" type="text" placeholder="select" />
+                                    <span asp-validation-for=" PharmacyMedicationName" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+                                  
+                                    <div class="col-md-2">
+                                        <h4><label asp-for="stockhand"></label></h4>
+                                        <select id="PurposeDropdown" asp-for="stockhand" class="form-control" id="validationName" required>
+                                            <option value="Select" class="bg-opacity-50">Select</option>
+                                            <option value="150">150</option>
+                                            <option value="160">160</option>
+                                            <option value="170">170</option>
+                                        </select>
+                                        <span asp-validation-for="stockhand" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+                                  
+                                    <div class="col-md-2">
+                                        <h4><label asp-for="stocklevel"></label></h4>
+                                        <select id="PurposeDropdown" asp-for="stocklevel" class="form-control" id="validationName" required>
+                                            <option value="Select" class="bg-opacity-50">Select</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                            <option value="°110">110</option>
+                                        </select>
+                                        <span asp-validation-for="stocklevel" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group row">
+                                    <div class="col-4 offset-9 row">
+                                        <div class="col">
+                                            <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="SAVE" />
+                                            @*                                                 <a asp-controller="Anaesthesiologist" asp-action="IndexVitalRanges"  class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>SAVE</a>
+                                            *@
+                                        </div>
+                                        @* <div class="col">
+                                        <a asp-action="IndexScree" class="btn btn-danger w-75"><i class="bi bi-arrow-left-circle"></i>BACK</a>
+                                        </div> *@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*  <div class=" row-2">
+                <div class="col-8  row">
+                <div class="col">
+                <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Vital History" />
+                </div>
+                <div class="col">
+                <a asp-action="IndexScree" class="btn btn-info w-75"><i class="bi bi-arrow-left-circle"></i>Medical History</a>
+                </div>
+                </div>
+                </div> *@
+        </form>
+    </div>
+</div>
+
+</div>

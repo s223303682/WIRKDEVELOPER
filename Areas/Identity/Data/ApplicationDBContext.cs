@@ -62,4 +62,5 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<ActiveIngredient>activeIngredients { get; set; }
     public DbSet<Contra_indication>contra_Indications { get; set; }
     public DbSet<OperationTheatre>operationTheatres { get; set; }
+    public DbSet<PharmacyMedication>pharmacyMedications { get; set; }
 }
