@@ -8,6 +8,9 @@ namespace WIRKDEVELOPER.Models
 		public int ActiveIngredientID { get; set; }
 		[Required]
 		public string? ActiveIngredientName { get; set; }
+		[Required]
+		public string? Strength { get; set; }
+
 	}
 }
 	

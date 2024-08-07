@@ -1,0 +1,47 @@
+﻿@model WIRKDEVELOPER.Models.ActiveIngredient
+@{
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<form method="post" asp-action="AddActiveIngredient" class="bg-white bg-opacity-60 border border-3 border-dark">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="ActiveIngredientName"></label>
+                <div>
+                    <input asp-for="ActiveIngredientName" class="form-control" id="Name" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="ActiveIngredientName" class=" text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="Strength"></label>
+                <div>
+                    <input asp-for="ActiveIngredientName" class="form-control" id="InvalidName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="ActiveIngredientName" class=" text-danger"></span>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class=" form-control bg-white bg-opacity-25">
+                <a asp-controller="Admin" asp-action="ActiveIngredientsList">Back</a>
+
+            </div>
+        </div>
+        <div class="col">
+            <div class=" form-control bg-white bg-opacity-25">
+                <input type="submit" class="btn-outline-primary" value="submit" />
+
+            </div>
+        </div>
+
+    </div>
+</form>
+
