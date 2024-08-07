@@ -1,0 +1,50 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.ActiveIngredient>;
+@{
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<div class=" col-10 text-right">
+    <a asp-controller="Admin" asp-action="AddActiveIngredient" style="width:100%"></a>
+</div>
+@if (Model.Count() > 0)
+{
+    <table class=" table table-bordered table-striped table-success">
+        <thead>
+            <tr>
+                <th>Active Ingredients</th>
+                <th>Strength</th>
+              
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var activeIngredient in Model)
+            {
+
+                <tr>
+                    <td>@activeIngredient.ActiveIngredientName</td>
+                    <td>@activeIngredient.Strength</td>
+                   
+                    <td>
+                       @* <div class="">
+                            <a asp-controller="Admin" asp-action="UpdatePrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Update</a>
+                        </div>*@
+                    </td>
+                   @* <td>
+                        <a asp-controller="Surgeon" asp-action="DeletePrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Delete</a>
+                    </td>*@
+
+                </tr>
+
+
+
+            }
+
+        </tbody>
+    </table>
+}
+else
+{
+    <p>NO prescription has been done</p>
+}
