@@ -1,0 +1,58 @@
+﻿@model WIRKDEVELOPER.Models.DayHospital
+<div class="mt-2 p-2 bg-primary text-center text-white rounded">
+    <h6>UPDATE </h6>
+
+</div>
+<hr />
+<div class="container p-3 bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
+    <form method="post" asp-action="updateAppointment" class="bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
+        <input asp-for="DayHospitalID" hidden />
+        <div>
+            <div class="col">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+            </div>
+            <div class="col">
+                <label asp-for="province"></label>
+                <input asp-for="province" class="form-control" />
+            </div>
+
+            <div class="col">
+                <label asp-for="City"></label>
+                <input asp-for="City" class="form-control" />
+            </div>
+            <div class="col">
+                <label asp-for="Surbub"></label>
+                <input asp-for="Surbub" class="form-control" />
+            </div>
+            <div class="col">
+                <label asp-for="ContactNumber"></label>
+                <input asp-for="ContactNumber" class="form-control" />
+            </div>
+            <div class="col">
+                <label asp-for="emailAddress"></label>
+                <input asp-for="emailAddress" class="form-control" />
+            </div>
+            <div class="col">
+                <label asp-for="PracticeManager"></label>
+                <input asp-for="PracticeManager" class="form-control" />
+            </div>
+            <div class="col">
+                <label asp-for="PhurshaseManagerEmail"></label>
+                <input asp-for="PhurshaseManagerEmail" class="form-control" />
+            </div>
+
+            <div class=" form-group row">
+                <div class="col-6 ">
+                    <input type="submit" class="btn btn-info w-75" value="update" />
+                </div>
+                <div class="col-6">
+                    <a asp-action="BookingPatientList" class="btn btn-danger w-75"> Back</a>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+</div>
+

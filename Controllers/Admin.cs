@@ -77,5 +77,120 @@ namespace WIRKDEVELOPER.Controllers
             _Context.SaveChanges();
             return RedirectToAction("IndexDosageForm");
         }
+        public IActionResult OperatingTheatreList()
+        {
+            IEnumerable<OperationTheatre> list = _Context.operationTheatres;
+            return View(list);
+        }
+        public IActionResult CreateOperatingTheatre()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateOperatingTheatre(OperationTheatre operationTheatre)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.operationTheatres.Add(operationTheatre);
+                _Context.SaveChanges();
+                return RedirectToAction("OperatingTheatreList");
+            }
+            return View(operationTheatre);
+        }
+        public IActionResult updateOperatingTheatre(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var list = _Context.operationTheatres.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return View(list);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updateOperatingTheatre(OperationTheatre operationTheatre)
+        {
+            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //bookSurgery.PatientID = user;
+            _Context.operationTheatres.Update(operationTheatre);
+            _Context.SaveChanges();
+            return RedirectToAction("OperatingTheatreList");
+        }
+        public IActionResult DeleteOperatingTheatre(int? ID)
+        {
+            var list = _Context.operationTheatres.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+            _Context.operationTheatres.Remove(list);
+            _Context.SaveChanges();
+            return RedirectToAction("OperatingTheatreList");
+
+        }
+        public IActionResult DayHospitalList()
+        {
+            IEnumerable<DayHospital> list = _Context.dayHospitals;
+            return View(list);
+        }
+        public IActionResult CreateDayHospital()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateDayHospital(DayHospital dayHospital)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.dayHospitals.Add(dayHospital);
+                _Context.SaveChanges();
+                return RedirectToAction("DayHospitalList");
+            }
+            return View(dayHospital);
+        }
+        public IActionResult updateDayHospital(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var list = _Context.dayHospitals.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return View(list);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updateDayHospital(DayHospital dayHospital)
+        {
+
+            _Context.dayHospitals.Update(dayHospital);
+            _Context.SaveChanges();
+            return RedirectToAction("DayHospitalList");
+        }
+        public IActionResult DeleteDayHospital(int? ID)
+        {
+            var list = _Context.operationTheatres.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+            _Context.operationTheatres.Remove(list);
+            _Context.SaveChanges();
+            return RedirectToAction("DayHospitalList");
+
+        }
     }
 }
