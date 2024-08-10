@@ -15,7 +15,11 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public string? BookingPatientSurname { get; set; }
         [Required]
-        public string? Country { get; set; }
+        public string? province { get; set; }
+        [Required]
+        public string? City { get; set; }
+        [Required]
+        public string? Surbub { get; set; }
         [Required]
         [DisplayName("Contact Number")]
         public string? ContactNumber { get; set; }

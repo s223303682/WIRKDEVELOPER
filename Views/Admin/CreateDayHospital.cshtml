@@ -1,131 +1,135 @@
 ﻿@model WIRKDEVELOPER.Models.DayHospital;
 @{
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
+<!DOCTYPE html>
+<html>
+    <head>
 
-<div class="row">
-    <div class="col">
-        <a asp-action="DayHospitalList" class="btn btn-outline-primary">List</a>
-    </div>
-</div>
-<div class="row">
-
-    <div class="col">
-        <div class="mt-2 bg-info bg-opacity-50 text-center text-white rounded-1">ADD NEW DayHospital</div>
-    </div>
-</div>
-
-<form method="post" asp-action="CreateDayHospital" class="bg-white bg-opacity-60 border border-3 border-dark">
-
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    </head>
+    <body>
     <div class="row">
         <div class="col">
-            <div class="form-group">
-                <label asp-for="Name"></label>
-                <div>
-                    <input asp-for="Name" class="form-control" id="Name" required />
-                </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="Name" class=" text-danger"></span>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="province"></label>
-                <select id="Dropdown" asp-for="province" class=" form-control" id="validation" required>
-                    <option value="Female">Female</option>
-                    <option value="Male">Male</option>
-
-                </select>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="province" class=" text-danger"></span>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="City"></label>
-                <select id="Dropdown" asp-for="City" class=" form-control" id="validation" required>
-                    <option value="Female">Female</option>
-                    <option value="Male">Male</option>
-
-                </select>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="City" class=" text-danger"></span>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Surbub"></label>
-                <select id="Dropdown" asp-for="Surbub" class=" form-control" id="validation" required>
-                    <option value="Female">Female</option>
-                    <option value="Male">Male</option>
-
-                </select>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="Surbub" class=" text-danger"></span>
-            </div>
+            <a asp-action="DayHospitalList" class="btn btn-outline-primary">List</a>
         </div>
     </div>
     <div class="row">
+
         <div class="col">
-            <div class="form-group">
-                <label asp-for="ContactNumber"></label>
-                <div>
-                    <input type="email" asp-for="ContactNumber" class="form-control" id="InvalidName" required />
-                </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="ContactNumber" class=" text-danger"></span>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="emailAddress"></label>
-                <div>
-                    <input type="email" asp-for="emailAddress" class="form-control" id="InvalidName" required />
-                </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="emailAddress" class=" text-danger"></span>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="PracticeManager"></label>
-                <div>
-                    <input type="time" asp-for="PracticeManager" class="form-control" id="InvalidName" required />
-                </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="PracticeManager" class=" text-danger"></span>
-            </div>
+            <div class="mt-2 bg-info bg-opacity-50 text-center text-white rounded-1">ADD NEW DayHospital</div>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="PhurshaseManagerEmail"></label>
-                <div>
-                    <input type="email" asp-for="PhurshaseManagerEmail" class="form-control" id="InvalidName" required />
+
+    <form method="post" asp-action="CreateDayHospital" class="bg-white bg-opacity-60 border border-3 border-dark">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <div>
+                        <input asp-for="Name" class="form-control" id="Name" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="Name" class=" text-danger"></span>
                 </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="PhurshaseManagerEmail" class=" text-danger"></span>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="province"></label>
+                    <select id="province" asp-for="province" class=" form-control" size="1" required>
+                        <option value="" selected="selected">select province</option>
+                    </select>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="province" class=" text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="City"></label>
+                    <select id="city" asp-for="City" class=" form-control" size="1" required>
+                        <option value="" selected="selected">select City</option>
+                    </select>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="City" class=" text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Surbub"></label>
+                    <select id="surbub" asp-for="Surbub" class=" form-control" size="1" required>
+                        <option value="" selected="selected">select Surbub</option>
+                    </select>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="Surbub" class=" text-danger"></span>
+                </div>
             </div>
         </div>
-
-    </div><br>
-
-    <div class="row">
-        <div class="col">
-            <div class=" form-control bg-white bg-opacity-25">
-                <a asp-controller="Admin" asp-action="Dashboard">Back</a>
-
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="ContactNumber"></label>
+                    <div>
+                        <input type="email" asp-for="ContactNumber" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="ContactNumber" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="emailAddress"></label>
+                    <div>
+                        <input type="email" asp-for="emailAddress" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="emailAddress" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="PracticeManager"></label>
+                    <div>
+                        <input type="time" asp-for="PracticeManager" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="PracticeManager" class=" text-danger"></span>
+                </div>
             </div>
         </div>
-        <div class="col">
-            <div class=" form-control bg-white bg-opacity-25">
-                <input type="submit" class="btn-outline-primary" value="submit" />
-
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="PhurshaseManagerEmail"></label>
+                    <div>
+                        <input type="email" asp-for="PhurshaseManagerEmail" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="PhurshaseManagerEmail" class=" text-danger"></span>
+                </div>
             </div>
-        </div>
 
-    </div>
-</form>
+        </div><br>
+
+        <div class="row">
+            <div class="col">
+                <div class=" form-control bg-white bg-opacity-25">
+                    <a asp-controller="Admin" asp-action="Dashboard">Back</a>
+
+                </div>
+            </div>
+            <div class="col">
+                <div class=" form-control bg-white bg-opacity-25">
+                    <input type="submit" class="btn-outline-primary" value="submit" />
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <script src="~/"></script>
+    </body>
+</html>
+
+
+
+
+
+
 

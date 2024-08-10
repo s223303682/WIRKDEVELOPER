@@ -2,124 +2,141 @@
 @{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
-
-<div class="row">
-    <div class="col">
-        <a asp-action="BookingPatientList" class="btn btn-outline-primary">List</a>
-    </div>
-</div>
-<div class="row">
-
-    <div class="col">
-        <div class="mt-2 bg-info bg-opacity-50 text-center text-white rounded-1">ADD NEW patient</div>
-    </div>
-</div>
-
-<form method="post" asp-action="CreateBookingPatient" class="bg-white bg-opacity-60 border border-3 border-dark">
-
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<!DOCTYPE html>
+<html>
+<head>
+   
+    </head>
+    <body>
     <div class="row">
         <div class="col">
-            <div class="form-group">
-                <label asp-for="BookingPatientName"></label>
-                <div>
-                    <input asp-for="BookingPatientName" class="form-control" id="Name" required />
-                </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="BookingPatientName" class=" text-danger"></span>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="BookingPatientSurname"></label>
-                <div>
-                    <input asp-for="BookingPatientSurname" class="form-control" id="InvalidName" required />
-                </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="BookingPatientSurname" class=" text-danger"></span>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Gender"></label>
-                <select id="Dropdown" asp-for="Gender" class=" form-control" id="validation" required>
-                    <option value="Female">Female</option>
-                    <option value="Male">Male</option>
-
-                </select>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="Gender" class=" text-danger"></span>
-            </div>
+            <a asp-action="BookingPatientList" class="btn btn-outline-primary">List</a>
         </div>
     </div>
     <div class="row">
+
         <div class="col">
-            <div class="form-group">
-                <label asp-for="email"></label>
-                <div>
-                    <input type="email" asp-for="email" class="form-control" id="InvalidName" required />
-                </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="email" class=" text-danger"></span>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Date"></label>
-                <div>
-                    <input type="date" asp-for="Date" class="form-control" id="InvalidName" required />
-                </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="Date" class=" text-danger"></span>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Time"></label>
-                <div>
-                    <input type="time" asp-for="Time" class="form-control" id="InvalidName" required />
-                </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="Time" class=" text-danger"></span>
-            </div>
+            <div class="mt-2 bg-info bg-opacity-50 text-center text-white rounded-1">ADD NEW patient</div>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Country">select Country</label>
-                <select id="Dropdown" asp-for="Country" class=" form-control" id="validation" required>
-                    <option value="Western Cape">Western Cape</option>
-                    <option value="North west">North west</option>
-                    <option value="North west">North west</option>
-                   
-                </select>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="Gender" class=" text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="ContactNumber"></label>
-                <div>
-                    <input type="time" asp-for="ContactNumber" class="form-control" id="InvalidName" required />
+
+    <form method="post" asp-action="CreateBookingPatient" class="bg-white bg-opacity-60 border border-3 border-dark">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="BookingPatientName"></label>
+                    <div>
+                        <input asp-for="BookingPatientName" class="form-control" id="Name" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="BookingPatientName" class=" text-danger"></span>
                 </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="ContactNumber" class=" text-danger"></span>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="BookingPatientSurname"></label>
+                    <div>
+                        <input asp-for="BookingPatientSurname" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="BookingPatientSurname" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Gender"></label>
+                    <select id="Dropdown" asp-for="Gender" class=" form-control" id="validation" required>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+
+                    </select>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="Gender" class=" text-danger"></span>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-         <div class="col">
-        <div class="form-group">
-        <label asp-for="OperationTheatreID"></label>
-        <div>
-                    <input asp-for="OperationTheatreID" class="form-control" id="InvalidName" required />
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="email"></label>
+                    <div>
+                        <input type="email" asp-for="email" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="email" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Date"></label>
+                    <div>
+                        <input type="date" asp-for="Date" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="Date" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Time"></label>
+                    <div>
+                        <input type="time" asp-for="Time" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="Time" class=" text-danger"></span>
+                </div>
+            </div>
         </div>
-        <div class="invalid-feedback"></div>
-                <span asp-validation-for="OperationTheatreID" class=" text-danger"></span>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="province"></label>
+                    <select id="province" asp-for="province" class=" form-control" size="1" required>
+                        <option value="" selected="selected">select province</option>
+                    </select>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="province" class=" text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="City"></label>
+                    <select id="city" asp-for="City" class=" form-control" size="1" required>
+                        <option value="" selected="selected">select City</option>
+                    </select>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="City" class=" text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Surbub"></label>
+                    <select id="surbub" asp-for="Surbub" class=" form-control" size="1" required>
+                        <option value="" selected="selected">select Surbub</option>
+                    </select>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="Surbub" class=" text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ContactNumber"></label>
+                    <div>
+                        <input type="time" asp-for="ContactNumber" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="ContactNumber" class=" text-danger"></span>
+                </div>
+            </div>
         </div>
-        </div>
-        
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="OperationTheatreID"></label>
+                    <div>
+                        <input asp-for="OperationTheatreID" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="OperationTheatreID" class=" text-danger"></span>
+                </div>
+            </div>
+
             <div class="col">
                 <div class="form-group">
                     <label asp-for="TreatmentID"></label>
@@ -130,8 +147,8 @@
                     <span asp-validation-for="TreatmentID" class=" text-danger"></span>
                 </div>
             </div>
-        
-        <div class="col">
+
+            <div class="col">
                 <div class="form-group">
                     <label asp-for="MedicalProfessionalID"></label>
                     <div>
@@ -140,26 +157,30 @@
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="MedicalProfessionalID" class=" text-danger"></span>
                 </div>
-        </div>
-        
-       
-    </div><br>
-
-
-    <div class="row">
-        <div class="col">
-            <div class=" form-control bg-white bg-opacity-25">
-                <a asp-controller="Surgeon" asp-action="Dashboard">Back</a>
-
             </div>
-        </div>
-        <div class="col">
-            <div class=" form-control bg-white bg-opacity-25">
-                <input type="submit" class="btn-outline-primary" value="submit" />
 
+
+        </div><br>
+
+
+        <div class="row">
+            <div class="col">
+                <div class=" form-control bg-white bg-opacity-25">
+                    <a asp-controller="Surgeon" asp-action="Dashboard">Back</a>
+
+                </div>
             </div>
-        </div>
+            <div class="col">
+                <div class=" form-control bg-white bg-opacity-25">
+                    <input type="submit" class="btn-outline-primary" value="submit" />
 
-    </div>
-</form>
+                </div>
+            </div>
+
+        </div>
+    </form>
+  <script src="~/css/JavaScriptCountry.js"></script>
+
+    </body>
+</html>
 
