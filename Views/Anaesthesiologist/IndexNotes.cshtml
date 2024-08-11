@@ -7,11 +7,11 @@
 
 @if (User.IsInRole("Anaesthesiologist"))
 {
-    <form method="post" asp-action="Notes">
+    @* <form method="post" asp-action="Notes">
         <div class="border p-3 #FBD603">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></d *@@* iv> *@@*validation*@
 
-            <div class="row">
+            @* <div class="row">
 
                 <div class="form-group">
 
@@ -29,20 +29,7 @@
                                             <option value="@patient.Value">@patient.Text</option>
                                         }
                                     </select>
-
-                                    @*  <div class="col-md-2">
-                                <h4><label asp-for="Patient"></label></h4>
-                                <select id="PurposeDropdown" asp-for="Units" class="form-control" id="validationName" required>
-                                <option value="Select" class="bg-opacity-50">Select</option>
-                                <option value="bpm">bpm</option>
-                                <option value="mmHg">mmHg</option>
-                                <option value="°C">°C</option>
-                                </select>
-                                <span asp-validation-for="Units" class="text-danger"></span>
-                                </div> *@
-
                                 </div>
-
                             </div>
                             <button type="submit" class="btn btn-primary">Search</button>
 
@@ -51,9 +38,9 @@
                                     <div class="col">
                                         <input type="submit" class="btn btn-primary w-75 bi bi-arrow-left-circle" value="VIEW" />
                                     </div>
-                                    @*  <div class="col">
+                                     <div class="col">
                                 <a asp-action="IndexScree" class="btn btn-danger w-75"><i class="bi bi-arrow-left-circle"></i>BACK</a>
-                                </div> *@
+                                </div>
                                 </div>
                             </div>
 
@@ -63,11 +50,22 @@
                 </div>
             </div>
         </div>
-    </form>
+    </form> *@
+    <head>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap4.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" />
+    </head>
+    <div id="Header" class="bg-info container">
+        <h2 class="m-1 pt-4 text-center text-white">List of your orders</h2>
+    </div>
     <div class="container p-3">
         <div class="row pt-4">
             <div class="col-6">
-                <h2 class="text-primary">View Patients</h2>
+                <h2 class="text-primary">List of your orders</h2>
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Anaesthesiologist" asp-action="Notes" class="btn btn-primary"><i class="bi bi-plus-circle"></i> ORDER ANESTHETICS</a>
             </div>
         </div>
         <br />
@@ -85,7 +83,7 @@
                             Patient
                         </th>
                         <th>
-                            Medicationordered
+                            Medication ordered
                         </th>
                         <th>
                             Quantity
@@ -104,8 +102,8 @@
                     {
                         <tr>
                             <td width="20%">@notes.Date</td>
-                            <td width="20%">@notes.Patient </td>
-                            <td width="20%">@notes.Medicationordered</td>
+@*                             <td width="20%">@notes.Patient </td>
+ *@                            <td width="20%">@notes.Medicationordered</td>
                             <td width="20%">@notes.Quantity</td>
                             <td width="20%">@notes.notes</td>
 

@@ -202,33 +202,91 @@ namespace WIRKDEVELOPER.Controllers
             _Context.SaveChanges();
             return RedirectToAction("IndexVitalRanges");
         }
-        public IActionResult IndexNotes(string searchPatient)
-		{
-			//IEnumerable<Notes> objList = _Context.notes;
-			//return View(objList);
-			//var patient = _Context.notes.Where(e => e.Patient == searchPatient.Patient).ToList();
-			//return View(patient);
+        //public PatientController(ApplicationDbContext context)
+        //{
+        //    _context = context;
+        //}
 
-			var patients = _Context.notes.Select(p => new SelectListItem
-			{
-				Value = p.NotesID.ToString(),
-				Text = p.Patient
-			}).ToList();
+        public IActionResult SearchPatient(string patientName)
+        {
+            
 
-			ViewBag.PatientList = patients;
-			return View();
+            //var order= _Context.order
+            //                      .Where(o => o.Patient.Contains(patientName))
+            //                      .ToList();
+            
 
-		}
-		//public IActionResult Notes()
+            //return View(order);
+
+            IEnumerable<Order> objList = _Context.order;
+            return View(objList);
+        }
+		//public IActionResult ListOrder(Order order)
 		//{
-		//    return View();
-		//}
-		//[HttpPost]
-		public IActionResult Notes(int patientId)
-		{
-			var patient = _Context.notes.FirstOrDefault(p => p.NotesID == patientId);
-			return View(patient);
-		}
+  //          if (ModelState.IsValid)
+  //          {
+  //              _Context.order.Add(order);
+  //              _Context.SaveChanges();
+  //              return RedirectToAction("IndexOrder");
+  //          }
+  //          return View(order);
+  //      }
+
+
+        //public IActionResult CreateNoteForOrder(int orderId, string noteText)
+        //{
+        //    var order = _Context.order.Find(orderId);
+        //    if (order == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var note = new Notes
+        //    {
+        //        AnOrderID = orderId,
+        //        notes = noteText,
+        //        Date = DateTime.Now
+        //    };
+
+        //    _Context.notes.Add(note);
+        //    _Context.SaveChanges();
+
+        //    return RedirectToAction("Search", new { patientName = order.Patient });
+        //}
+        public IActionResult CreateNoteForOrder(int orderId)
+        {
+            var order = _Context.order.Find(orderId);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.Patient = order.Patient;
+
+            var note = new Notes
+            {
+                AnOrderID = orderId
+            };
+
+            return View(note);
+        }
+
+        // POST: Handle the form submission
+        [HttpPost]
+        public IActionResult CreateNoteForOrder(Notes note)
+        {
+            if (ModelState.IsValid)
+            {
+                note.Date = DateTime.Now;
+                _Context.notes.Add(note);
+                _Context.SaveChanges();
+
+                var order = _Context.order.Find(note.AnOrderID);
+                return RedirectToAction("Search", new { patientName = order.Patient });
+            }
+
+            return View(note);
+        }
         public IActionResult IndexVitalHistory()
         {
             IEnumerable<AnVitals> objList = _Context.anvitals;
@@ -241,3 +299,10 @@ namespace WIRKDEVELOPER.Controllers
 
     }
 }
+
+
+
+
+
+
+
