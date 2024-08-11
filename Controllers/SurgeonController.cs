@@ -110,16 +110,19 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CreateBookingPatient(BookingPatient bookingPatient)
         {
             if (ModelState.IsValid)
             {
                 _Context.bookingPatients.Add(bookingPatient);
                 _Context.SaveChanges();
-                return RedirectToAction("");
+                return RedirectToAction("BookingPatientList");
             }
             return View(bookingPatient);
         }
+
         public IActionResult updateBookingPatient(int? ID)
         {
             if (ID == null || ID == 0)

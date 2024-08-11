@@ -15,6 +15,8 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public string? BookingPatientSurname { get; set; }
         [Required]
+        public string? country { get; set; }
+        [Required]
         public string? province { get; set; }
         [Required]
         public string? City { get; set; }
