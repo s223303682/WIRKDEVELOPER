@@ -1,0 +1,66 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Order>
+
+<h2>Search Results</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                Date
+            </th>
+            <th>
+                Patient
+            </th>
+            <th>
+                Medication ordered
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Instruction
+            </th>
+            <th>
+                Urgent
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Action
+            </th>
+            @* <th>Order ID</th>
+            <th>Patient Name</th>
+            <th>Medication</th>
+            <th>Order Date</th>
+            <th>Create Note</th> *@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td width="20%">@order.Date</td>
+                <td width="20%">@order.Patient</td>
+                <td width="20%">@order.Medicationordered</td>
+                <td width="10%">@order.Quantity</td>
+                <td width="10%">@order.Instructions</td>
+                <td width="10%">@order.Urgent</td>
+                <td width="10%">@order.Status</td>
+                @* <td>@order.OrderId</td>
+                <td>@order.PatientName</td>
+                <td>@order.Medication</td>
+                <td>@order.OrderDate</td> *@
+                <td>
+                    <form asp-action="CreateNoteForOrder" method="post">
+                        <input type="hidden" name="orderId" value="@order.AnOrderID" />
+                        <input type="text" name="noteText" placeholder="Enter note" />
+                        <button type="submit">Create Note</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

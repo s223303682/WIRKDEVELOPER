@@ -15,18 +15,18 @@ namespace WIRKDEVELOPER.Models
 
 		[Required]
 		[DisplayName("Patient")]
-		public string? Patient { get; set; }
-		[ForeignKey("OrderID")]
+		public int? AnOrderID { get; set; }
+		[ForeignKey("AnOrderID")]
 
 		[Required]
 		[DisplayName("Medication Ordered")]
 		public string? Medicationordered { get; set; }
-		[ForeignKey("OrderID")]
+		[ForeignKey("AnOrderID")]
 
 		[Required]
 		[DisplayName("Qunatity ")]
 		public int? Quantity { get; set; }
-		[ForeignKey("OrderID")]
+		[ForeignKey("AnOrderID")]
 
 		[Required]
 		[DisplayName("Notes")]
