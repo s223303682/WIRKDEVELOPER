@@ -4,12 +4,19 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Versioning;
+using WIRKDEVELOPER.Areas.Identity.Data;
 namespace WIRKDEVELOPER.Models
 {
     public class BookingPatient
     {
         [Key]
         public int BookingPatientID { get; set; }
+        
+        public int Total { get; set; }
+        public string? PatientID { get; set; }
+        [ForeignKey("PatientID")]
+        public virtual ApplicationUser? mainUser { get; set; }
+
         [Required]
         public string? BookingPatientName { get; set; }
         [Required]

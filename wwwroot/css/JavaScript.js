@@ -15,7 +15,7 @@ add_more.onclick = function () {
     option.appendChild(newfield);
 
     var newfield2 = document.createElement('input');
-    newfield2.setAttribute('type', 'text');
+    newfield2.setAttribute('type', 'number');
     newfield2.setAttribute('name', 'option2[]');
     newfield2.setAttribute('class', 'option2');
     newfield.setAttribute('size', 50);

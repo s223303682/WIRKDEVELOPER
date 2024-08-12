@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NuGet.Protocol.Core.Types;
+using System.Security.Claims;
 using System.Web.WebPages.Html;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
@@ -114,8 +115,56 @@ namespace WIRKDEVELOPER.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateBookingPatient(BookingPatient bookingPatient)
         {
+            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //bookingPatient.BookingPatientID = user;
+            //int totalbcountry = 0;
+            //int totalprovince = 0;
+            //int totalcity = 0;
+            //int totalsurbub = 0;
             if (ModelState.IsValid)
             {
+            //    totalbcountry += Convert.ToInt32(bookingPatient.country);
+            //    totalprovince += Convert.ToInt32(bookingPatient.province);
+            //    totalcity += Convert.ToInt32(bookingPatient.City);
+            //    totalsurbub += Convert.ToInt32(bookingPatient.Surbub);
+
+            //    if (totalbcountry <= 1)
+            //    {
+            //        TempData["Results"] = "South Africa";
+            //    }
+            //    else if(totalprovince <= 2)
+            //    {
+            //        TempData["Results"] = "Eastern Cape";
+            //        if (totalprovince <= 2)
+            //        {
+            //            if (totalcity <= 201)
+            //            {
+            //                TempData["Results"] = "Port Elizabeth";
+            //                if (totalsurbub <= 101)
+            //                {
+            //                    TempData["Results"] = "summerstrand";
+            //                }
+            //                else if (totalsurbub <= 102)
+            //                {
+            //                    TempData["Results"] = "North end";
+            //                }
+            //            }
+            //            else if (totalcity <= 202)
+            //            {
+            //                TempData["Results"] = "East London";
+
+            //            }
+            //        }
+            //    }
+
+            //    else if (totalprovince <= 3)
+            //    {
+            //        TempData["Results"] = "Cape Town";
+                   
+
+            //    }
+
+
                 _Context.bookingPatients.Add(bookingPatient);
                 _Context.SaveChanges();
                 return RedirectToAction("BookingPatientList");
@@ -173,11 +222,14 @@ namespace WIRKDEVELOPER.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateBooking(Booking booking)
         {
+            
+
             if (ModelState.IsValid)
             {
+                
                 _Context.bookings.Add(booking);
                 _Context.SaveChanges();
-                return RedirectToAction("");
+                return RedirectToAction("BookingList");
             }
             return View(booking);
         }
