@@ -39,15 +39,15 @@
                     <td>@prescription.Urgent</td>
                     <td>
                         <div class="">
-                            <a asp-controller="Surgeeon" asp-action="UpdatePrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Update</a>
+                            <a asp-controller="Pharmacist" asp-action="updatePharmPrescriptionList" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Update</a>
                         </div>
                     </td>
-                    <td>
+                  @*   <td>
                         <a asp-controller="Surgeon" asp-action="DeletePrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Delete</a>
-                    </td>
+                    </td> *@
 
                 </tr>
-                @if (prescription.status == "New")
+                @* @if (prescription.status == "New")
                 {
                 <td>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-@prescription.PrescriptionID">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 </div>
-                }
+                } *@
 
 
 

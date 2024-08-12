@@ -151,5 +151,56 @@ namespace WIRKDEVELOPER.Controllers
             return View(pharmacyMedications);
 
         }
+        public IActionResult updatePharmIndexOrder(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var objList = _Context.order.Find(ID);
+            if (objList == null)
+            {
+                return NotFound();
+            }
+
+            return View(objList);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updatePharmIndexOrder(Order order)
+        {
+            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //bookSurgery.PatientID = user;
+            _Context.order.Update(order);
+            _Context.SaveChanges();
+            return RedirectToAction("PharmIndexOrder");
+        }
+         public IActionResult updatePharmPrescriptionList(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var objList = _Context.prescriptions.Find(ID);
+            if (objList == null)
+            {
+                return NotFound();
+            }
+
+            return View(objList);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updatePharmPrescriptionList(Prescription prescription)
+        {
+            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //bookSurgery.PatientID = user;
+            _Context.prescriptions.Update(prescription);
+            _Context.SaveChanges();
+            return RedirectToAction("PharmPrescriptionList");
+        }
+
     }
 }
