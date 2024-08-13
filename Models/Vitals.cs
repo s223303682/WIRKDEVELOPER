@@ -1,34 +1,46 @@
-﻿using MessagePack;
-using System.ComponentModel;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Drawing.Drawing2D;
-using KeyAttribute = System.ComponentModel.DataAnnotations.KeyAttribute;
-
+using System.ComponentModel;
+using System.Collections.Generic;
+using WIRKDEVELOPER.Areas.Identity.Data;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace WIRKDEVELOPER.Models
 {
-    public class Vitals
+    public class VitalRanges
     {
         [Key]
         public int VitalID { get; set; }
+
         [Required]
-        [DisplayName("Vital Type")]
-        public string? VitalName { get; set; }
+        [DisplayName("Date")]
+        public DateTime? Date { get; set; } = DateTime.Now;
+        [Required]
+        [DisplayName("Visit Time")]
+        public DateTime? Time { get; set; } = DateTime.Now;
+
+        [Required]
+        [DisplayName("Vital")]
+        public string? Vital { get; set; }
+        [Required]
+        [DisplayName("Patient Name")]
+        public string? PatientName { get; set; }
+
         [Required]
         [DisplayName("Minimum Range")]
-        public int? LowLimit { get; set; }
+        public string? Minimumrange { get; set; }
+
         [Required]
-        [DisplayName("Maximum Range")]
-        public int? HighLimit { get; set; }
-        public string PatientName { get; set; }
-        public DateTime VisitDate { get; set; }
-        public TimeSpan? VisitTime { get; set; }
-        //public int HeartRate { get; set; }
-        public int Weight { get; set; }
-        public int Height { get; set; }
-        //public int Temperature { get; set; }
-        //public int RespiratoryRate { get; set; }
-        //public  int BloodPressure { get; set; }
-        //public string BpPosition { get; set; }
+        [DisplayName("Maximum Range ")]
+        public string? Maximumrange { get; set; }
+        [Required]
+        [DisplayName("Weight")]
+        public string? Weight { get; set; }
+        [Required]
+        [DisplayName("Height")]
+        public string? Height { get; set; }
+
+        [Required]
+        public string? Units { get; set; }
 
     }
 }
