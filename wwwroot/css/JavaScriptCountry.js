@@ -1,40 +1,4 @@
-﻿$(document).ready(function () {
-
-
-    // when the state dropdown changes
-    $("#country").change(function () {
-
-        // check country
-        if ($(this).val() == "USA") {
-            // land of the free
-            $(".usa").show();
-            $(".can").hide();
-            // clear the values in case they picked the wrong country
-            $(".can select").val("");
-        } else if ($(this).val() == "CAN") {
-            // oh canada
-            $(".usa").hide();
-            $(".can").show();
-            // clear the values in case they picked the wrong country
-            $(".usa select").val("");
-        }
-
-
-
-
-
-
-    }); // on country select change END
-
-
-
-
-
-
-    // document ready  
-});
-
-
+﻿
 
 const notesContainer = document.querySelector(".note-container");
 const createBtn = document.querySelector(".btn");

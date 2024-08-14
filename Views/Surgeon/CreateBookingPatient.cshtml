@@ -8,11 +8,97 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         @* <link rel="stylesheet" href="~/css/StyleSurgeon3.css"> *@
-   <style>
-       .muted {
-  color:#ccc;
-}
-   </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Countries
+            var country_arr = new Array("Select Country", "AUSTRALIA", "INDIA", "NEW ZEALAND", "USA", "UAE", "MAURITIUS");
+
+            $.each(country_arr, function (i, item) {
+                $('#country').append($('<option>', {
+                    value: i,
+                    text: item,
+                }, '</option>'));
+            });
+
+            // States
+            var s_a = new Array();
+            s_a[0] = "Select State";
+            s_a[1] = "Select State|QUEENSLAND|VICTORIA";
+            s_a[2] = "Select State|ANDHRAPRADESH|KARNATAKA|TAMILNADU|DELHI|GOA|W-BENGAL|GUJARAT|MADHYAPRADESH|MAHARASHTRA|RAJASTHAN";
+            s_a[3] = "Select State|AUCKLAND";
+            s_a[4] = "Select State|NEWJERSEY|ILLINOIS";
+            s_a[5] = "Select State|DUBAI";
+            s_a[6] = "Select State|MAURITIUS";
+
+            // Cities
+            var c_a = new Array();
+            c_a['QUEENSLAND'] = "BRISBANE";
+            c_a['VICTORIA'] = "MELBOURNE";
+            c_a['ANDHRAPRADESH'] = "HYDERABAD";
+            c_a['KARNATAKA'] = "BANGLORE";
+            c_a['TAMILNADU'] = "CHENNAI";
+            c_a['DELHI'] = "DELHI";
+            c_a['GOA'] = "GOA";
+            c_a['W-BENGAL'] = "KOLKATA";
+            c_a['GUJARAT'] = "AHMEDABAD1|AHMEDABAD2|AHMEDABAD3|BARODA|BHAVNAGAR|MEHSANA|RAJKOT|SURAT|UNA";
+            c_a['MADHYAPRADESH'] = "INDORE";
+            c_a['MAHARASHTRA'] = "MUMBAI|PUNE";
+            c_a['RAJASTHAN'] = "ABU";
+            c_a['AUCKLAND'] = "AUCKLAND";
+            c_a['NEWJERSEY'] = "EDISON";
+            c_a['ILLINOIS'] = "CHICAGO";
+            c_a['MAURITIUS'] = "MAURITIUS";
+            c_a['DUBAI'] = "DUBAI";
+
+
+            $('#country').change(function () {
+                var c = $(this).val();
+                var state_arr = s_a[c].split("|");
+                $('#state').empty();
+                $('#city').empty();
+                if (c == 0) {
+                    $('#state').append($('<option>', {
+                        value: '0',
+                        text: 'Select State',
+                    }, '</option>'));
+                } else {
+                    $.each(state_arr, function (i, item_state) {
+                        $('#state').append($('<option>', {
+                            value: item_state,
+                            text: item_state,
+                        }, '</option>'));
+                    });
+                }
+                $('#city').append($('<option>', {
+                    value: '0',
+                    text: 'Select City',
+                }, '</option>'));
+            });
+
+            $('#state').change(function () {
+                var s = $(this).val();
+                if (s == 'Select State') {
+                    $('#city').empty();
+                    $('#city').append($('<option>', {
+                        value: '0',
+                        text: 'Select City',
+                    }, '</option>'));
+                }
+                var city_arr = c_a[s].split("|");
+                $('#city').empty();
+
+                $.each(city_arr, function (j, item_city) {
+                    $('#city').append($('<option>', {
+                        value: item_city,
+                        text: item_city,
+                    }, '</option>'));
+                });
+
+
+            });
+        });
+    </script>
+
     </head>
     <body>
     <div class="row">
@@ -144,110 +230,9 @@
 
         </div> *@
         <div class="row">
-            <div class="col">
-                <label asp-for="country">Country</label>
-                <select name="country" id="country">
-                    <option disabled selected="selected">Select</option>
-                    <option value="USA">United States</option>
-                    <option value="CAN">Canada</option>
-                </select>
-            </div>
-            <div class="col">
-                <div class="usa" style="display:none;">
-
-                    <label asp-for="province">State</label>
-                    <select name="state" id="state">
-                        <option value="" selected="selected" disabled>Select</option>
-                        <option value="AL">Alabama</option>
-                        <option value="AK">Alaska</option>
-                        <option value="AZ">Arizona</option>
-                        <option value="AR">Arkansas</option>
-                        <option value="CA">California</option>
-                        <option value="CO">Colorado</option>
-                        <option value="CT">Connecticut</option>
-                        <option value="DE">Delaware</option>
-                        <option value="DC">District Of Columbia</option>
-                        <option value="FL">Florida</option>
-                        <option value="GA">Georgia</option>
-                        <option value="HI">Hawaii</option>
-                        <option value="ID">Idaho</option>
-                        <option value="IL">Illinois</option>
-                        <option value="IN">Indiana</option>
-                        <option value="IA">Iowa</option>
-                        <option value="KS">Kansas</option>
-                        <option value="KY">Kentucky</option>
-                        <option value="LA">Louisiana</option>
-                        <option value="ME">Maine</option>
-                        <option value="MD">Maryland</option>
-                        <option value="MA">Massachusetts</option>
-                        <option value="MI">Michigan</option>
-                        <option value="MN">Minnesota</option>
-                        <option value="MS">Mississippi</option>
-                        <option value="MO">Missouri</option>
-                        <option value="MT">Montana</option>
-                        <option value="NE">Nebraska</option>
-                        <option value="NV">Nevada</option>
-                        <option value="NH">New Hampshire</option>
-                        <option value="NJ">New Jersey</option>
-                        <option value="NM">New Mexico</option>
-                        <option value="NY">New York</option>
-                        <option value="NC">North Carolina</option>
-                        <option value="ND">North Dakota</option>
-                        <option value="OH">Ohio</option>
-                        <option value="OK">Oklahoma</option>
-                        <option value="OR">Oregon</option>
-                        <option value="PA">Pennsylvania</option>
-                        <option value="RI">Rhode Island</option>
-                        <option value="SC">South Carolina</option>
-                        <option value="SD">South Dakota</option>
-                        <option value="TN">Tennessee</option>
-                        <option value="TX">Texas</option>
-                        <option value="UT">Utah</option>
-                        <option value="VT">Vermont</option>
-                        <option value="VA">Virginia</option>
-                        <option value="WA">Washington</option>
-                        <option value="WV">West Virginia</option>
-                        <option value="WI">Wisconsin</option>
-                        <option value="WY">Wyoming</option>
-                    </select>
-
-                    <label for="zipCode">Zip Code</label>
-                    <input name="zipCode" type="text" value="" maxlength="5">
-                </div>
-            </div>
-           <div class="col">
-                <div class="can" style="display:none;">
-
-                    <label asp-for="City">city</label>
-                    <select asp-for="City" name="province" id="province">
-                        <option value="" selected="selected" disabled>Select</option>
-                        <option value="AB">Alberta</option>
-                        <option value="BC">British Columbia</option>
-                        <option value="MB">Manitoba</option>
-                        <option value="NB">New Brunswick</option>
-                        <option value="NL">Newfoundland and Labrador</option>
-                        <option value="NS">Nova Scotia</option>
-                        <option value="NT">Northwest Territories</option>
-                        <option value="NU">Nunavut</option>
-                        <option value="ON">Ontario</option>
-                        <option value="PE">Prince Edward Island</option>
-                        <option value="QC">Quebec</option>
-                        <option value="SK">Saskatchewan</option>
-                        <option value="YT">Yukon</option>
-
-                    </select>
-
-                    <label for="postalCode">Postal Code</label>
-                    <input name="postalCode" type="text" value="" maxlength="6">
-
-
-                </div>
-
-            </div>
-            <!--  /.usa  -->
-
-          
-
+            <select asp-for="country"  id="country"></select> <br>
+            <select asp-for="province"  id="state"></select> <br>
+            <select asp-for="City"  id="city"></select>
         </div>
         <div class="row">
             <div class="form-group">
@@ -313,46 +298,7 @@
         </div>
 
     </form>
-    <script>
-        $(document).ready(function() {
-
-  
-  // when the state dropdown changes
-  $( "#country" ).change(function() {
-    
-    // check country
-    if ( $(this).val() == "USA" ) {
-      // land of the free
-      $(".usa").show();
-      $(".can").hide();
-      // clear the values in case they picked the wrong country
-      $(".can select").val("");
-    } else if ( $(this).val() == "CAN" ) {
-      // oh canada
-      $(".usa").hide();
-      $(".can").show();
-      // clear the values in case they picked the wrong country
-      $(".usa select").val("");
-    }
-      
-
-
-    
-    
-  
-  }); // on country select change END
-  
-  
-
-  
-  
-  
-// document ready  
-});
-
-
-    </script>
-
+   
    </body>
 </html>
 

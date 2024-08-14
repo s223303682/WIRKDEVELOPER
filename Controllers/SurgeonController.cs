@@ -61,7 +61,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 _Context.prescriptions.Add(prescription);
                 _Context.SaveChanges();
-                return RedirectToAction("");
+                return RedirectToAction("PrescriptionList");
             }
             return View(prescription);
         }
