@@ -32,7 +32,7 @@ namespace WIRKDEVELOPER.Controllers
         {
             if (ModelState.IsValid)
             {
-                _Context.dosageForms.Update(dosageForm);
+                _Context.dosageForms.Add(dosageForm);
                 _Context.SaveChanges();
                 return RedirectToAction("IndexDosageForm");
             }
@@ -192,5 +192,29 @@ namespace WIRKDEVELOPER.Controllers
             return RedirectToAction("DayHospitalList");
 
         }
+        public IActionResult IndexActive()
+        {
+            IEnumerable<ActiveIngredient> objList = _Context.activeIngredients;
+            return View(objList);
+
+        }
+        public IActionResult ActiveIngredients()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ActiveIngredients(ActiveIngredient activeIngredient)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.activeIngredients.Add(activeIngredient);
+                _Context.SaveChanges();
+                return RedirectToAction("IndexActive");
+            }
+            return View(activeIngredient);
+
+        }
+
     }
 }
