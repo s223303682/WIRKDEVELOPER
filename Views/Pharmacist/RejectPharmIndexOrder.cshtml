@@ -20,7 +20,7 @@
 
                     <h3 class="card-title text-white mt-2" id="exampleModalLabel">ORDER ANESTHETICS</h3>
                 </div>
-                <form method="post" asp-action="updatePharmIndexOrder">
+                <form method="post" asp-action="RejectPharmIndexOrder">
                     <div class="border p-3 #FBD603">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
                         <input asp-for="AnOrderID" hidden />
@@ -111,22 +111,22 @@
                                             <span asp-validation-for="Urgent" class="text-danger"></span>
                                         </div>
                                         @* <div class="col-md-2">
-                                            <h4><label asp-for="Status"></label></h4>
-                                            <select id="PurposeDropdown" asp-for="Status" class="form-control" id="validationName" required>
-                                                <option value="Select" class="bg-opacity-50">Select</option>
-                                                <option value="Ordered">Ordered</option>
-                                                <option value="Received">Recieved</option>
-                                             
-                                            </select>
-                                            <span asp-validation-for="Status" class="text-danger"></span>
+                                        <h4><label asp-for="Status"></label></h4>
+                                        <select id="PurposeDropdown" asp-for="Status" class="form-control" id="validationName" required>
+                                        <option value="Select" class="bg-opacity-50">Select</option>
+                                        <option value="Ordered">Ordered</option>
+                                        <option value="Received">Recieved</option>
+
+                                        </select>
+                                        <span asp-validation-for="Status" class="text-danger"></span>
                                         </div> *@
                                         <div class="col-md-2">
                                             <h4><label asp-for="Status"></label></h4>
                                             <select id="PurposeDropdown" asp-for="Status" class="form-control" id="validationName" required>
                                                 <option value="Select" class="bg-opacity-50">Select</option>
-                                                <option value="Dispensed">Dispense</option>
+                                                <option value="Rejected">Reject</option>
                                                 @* <option value="Received">Recieved</option> *@
-                                               
+
                                             </select>
                                             <span asp-validation-for="Status" class="text-danger"></span>
                                         </div>
@@ -137,9 +137,11 @@
                                     <div class="form-group row">
                                         <div class="col-4 offset-9 row">
                                             <div class="col">
-                                                <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Despense" />
+                                                <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Reject" />
                                             </div>
-                                          
+                                            @*  <div class="col">
+                                            <a asp-action="IndexScree" class="btn btn-danger w-75"><i class="bi bi-arrow-left-circle"></i>BACK</a>
+                                            </div> *@
                                         </div>
                                     </div>
                                 </div>
@@ -508,4 +510,5 @@
     </div>
 </body>
 </html>
+
 

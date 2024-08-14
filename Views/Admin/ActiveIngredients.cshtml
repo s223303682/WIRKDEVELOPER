@@ -1,0 +1,88 @@
+﻿@model WIRKDEVELOPER.Models.ActiveIngredient
+
+@{
+    Layout = "AdminLayout";
+}
+<div class="mx-0 mx-sm-auto">
+    <div class="card w-75">
+        <div class="card-body ">
+            <div class="card-header bg-primary">
+
+                <h3 class="card-title text-white mt-2" id="exampleModalLabel">ActiveIngredient</h3>
+            </div>
+            <form method="post" asp-action="ActiveIngredients">
+                <div class="border p-3 #FBD603">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+
+                    <div class="row">
+
+                        <div class="form-group">
+
+                            <div class="col-12">
+
+                                <div class="row">
+                                    @*   <div class="form-group">
+                                    <label asp-for="PatientID" class="control-label">Choose Patient</label>
+                                    <select asp-for="PatientID" class="form-control">
+                                    @foreach (ApplicationUser item in ViewBag.Patients)
+                                    {
+                                    <option value="@item.Id">@item.FirstName @item.LastName</option>
+                                    }
+                                    </select>
+                                    </div> *@
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h4><label asp-for="ActiveIngredientName"></label></h4>@*These names come from our properties in the model *@
+                                            <input asp-for="ActiveIngredientName" class="form-control box mb-2" type="text" placeholder="select" />
+                                            <span asp-validation-for="ActiveIngredientName" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+
+                                    @* <div class="col-md-6">
+                                    <h4><label asp-for="DosageFormName"></label></h4>
+                                    <input asp-for="DosageFormName" class="form-control" />
+                                    <span asp-validation-for="DosageFormName" class="text-danger"></span>
+                                    </div> *@
+
+
+                                    @* <div class="col-md-6">
+                                    <h4><label asp-for="Vital"></label></h4>
+                                    <input asp-for="Vital" class="form-control" />
+                                    <span asp-validation-for="Vital" class="text-danger"></span>
+                                    </div> *@
+
+
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div>
+                                    <div class="form-group row">
+                                        <div class="col-4 offset-9 row">
+                                            <div class="col">
+                                                <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="SAVE" />
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*  <div class=" row-2">
+                    <div class="col-8  row">
+                    <div class="col">
+                    <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Vital History" />
+                    </div>
+                    <div class="col">
+                    <a asp-action="IndexScree" class="btn btn-info w-75"><i class="bi bi-arrow-left-circle"></i>Medical History</a>
+                    </div>
+                    </div>
+                    </div> *@
+            </form>
+        </div>
+    </div>
+
+</div>
+
