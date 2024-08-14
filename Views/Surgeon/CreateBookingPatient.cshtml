@@ -8,96 +8,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         @* <link rel="stylesheet" href="~/css/StyleSurgeon3.css"> *@
-    <script type="text/javascript">
-        $(document).ready(function () {
-            // Countries
-            var country_arr = new Array("Select Country", "AUSTRALIA", "INDIA", "NEW ZEALAND", "USA", "UAE", "MAURITIUS");
-
-            $.each(country_arr, function (i, item) {
-                $('#country').append($('<option>', {
-                    value: i,
-                    text: item,
-                }, '</option>'));
-            });
-
-            // States
-            var s_a = new Array();
-            s_a[0] = "Select State";
-            s_a[1] = "Select State|QUEENSLAND|VICTORIA";
-            s_a[2] = "Select State|ANDHRAPRADESH|KARNATAKA|TAMILNADU|DELHI|GOA|W-BENGAL|GUJARAT|MADHYAPRADESH|MAHARASHTRA|RAJASTHAN";
-            s_a[3] = "Select State|AUCKLAND";
-            s_a[4] = "Select State|NEWJERSEY|ILLINOIS";
-            s_a[5] = "Select State|DUBAI";
-            s_a[6] = "Select State|MAURITIUS";
-
-            // Cities
-            var c_a = new Array();
-            c_a['QUEENSLAND'] = "BRISBANE";
-            c_a['VICTORIA'] = "MELBOURNE";
-            c_a['ANDHRAPRADESH'] = "HYDERABAD";
-            c_a['KARNATAKA'] = "BANGLORE";
-            c_a['TAMILNADU'] = "CHENNAI";
-            c_a['DELHI'] = "DELHI";
-            c_a['GOA'] = "GOA";
-            c_a['W-BENGAL'] = "KOLKATA";
-            c_a['GUJARAT'] = "AHMEDABAD1|AHMEDABAD2|AHMEDABAD3|BARODA|BHAVNAGAR|MEHSANA|RAJKOT|SURAT|UNA";
-            c_a['MADHYAPRADESH'] = "INDORE";
-            c_a['MAHARASHTRA'] = "MUMBAI|PUNE";
-            c_a['RAJASTHAN'] = "ABU";
-            c_a['AUCKLAND'] = "AUCKLAND";
-            c_a['NEWJERSEY'] = "EDISON";
-            c_a['ILLINOIS'] = "CHICAGO";
-            c_a['MAURITIUS'] = "MAURITIUS";
-            c_a['DUBAI'] = "DUBAI";
-
-
-            $('#country').change(function () {
-                var c = $(this).val();
-                var state_arr = s_a[c].split("|");
-                $('#state').empty();
-                $('#city').empty();
-                if (c == 0) {
-                    $('#state').append($('<option>', {
-                        value: '0',
-                        text: 'Select State',
-                    }, '</option>'));
-                } else {
-                    $.each(state_arr, function (i, item_state) {
-                        $('#state').append($('<option>', {
-                            value: item_state,
-                            text: item_state,
-                        }, '</option>'));
-                    });
-                }
-                $('#city').append($('<option>', {
-                    value: '0',
-                    text: 'Select City',
-                }, '</option>'));
-            });
-
-            $('#state').change(function () {
-                var s = $(this).val();
-                if (s == 'Select State') {
-                    $('#city').empty();
-                    $('#city').append($('<option>', {
-                        value: '0',
-                        text: 'Select City',
-                    }, '</option>'));
-                }
-                var city_arr = c_a[s].split("|");
-                $('#city').empty();
-
-                $.each(city_arr, function (j, item_city) {
-                    $('#city').append($('<option>', {
-                        value: item_city,
-                        text: item_city,
-                    }, '</option>'));
-                });
-
-
-            });
-        });
-    </script>
+   
 
     </head>
     <body>
@@ -179,60 +90,24 @@
                 </div>
             </div>
         </div>
-     @*    <div class="row">
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="country"> select country</label>
-                    <select id="country" name="country" asp-for="country" class=" form-control" required>
-                      
-                    </select>
-                    <div class="invalid-feedback"></div>
-                    <span asp-validation-for="country" class=" text-danger"></span>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="province">select province</label>
-                    
-                    <select  name="state" id="state" asp-for="province" class=" form-control" required>
-                        
-                        
-                    </select>
-                    <div class="invalid-feedback"></div>
-                    <span asp-validation-for="province" class=" text-danger"></span>
-                </div>
-            </div>
-            
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="City">select city</label>
-                    <select id="city" name="city" asp-for="City" class=" form-control" required>
-                       
-                    </select>
-                    <div class="invalid-feedback"></div>
-                    <span asp-validation-for="City" class=" text-danger"></span>
-                </div>
-            </div>
-            
-            
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="Surbub">select surbub</label>
-                    <select id="surbub"name="" id="surbub"asp-for="Surbub" class=" form-control" required>
-                       
-                    </select>
-                    <div class="invalid-feedback"></div>
-                    <span asp-validation-for="Surbub" class=" text-danger"></span>
-                </div>
-            </div>
-
-
-
-        </div> *@
+     
         <div class="row">
-            <select asp-for="country"  id="country"></select> <br>
-            <select asp-for="province"  id="state"></select> <br>
-            <select asp-for="City"  id="city"></select>
+            <label for="country">Country:</label>
+            <select id="country" name="country" onchange="populateStates()">
+                <option value="">Select Country</option>
+                <option value="Eastern Cape">USA</option>
+                <option value="India">India</option>
+            </select>
+
+            <label for="state">State:</label>
+            <select id="state" name="state" onchange="populateCities()">
+                <option value="">Select State</option>
+            </select>
+
+            <label for="city">City:</label>
+            <select id="city" name="city">
+                <option value="">Select City</option>
+            </select>
         </div>
         <div class="row">
             <div class="form-group">
@@ -298,7 +173,60 @@
         </div>
 
     </form>
-   
+   <script>
+        const countryStateInfo = {
+    "Eastern Cape": ["Port Elizabeth", "East London", "Florida"],
+    "Western Cape": ["Cape Town", "Gujarat", "Rajasthan"]
+};
+
+const stateCityInfo = {
+    "Port Elizabeth": ["Los Angeles", "San Francisco", "San Diego"],
+    "East London": ["Houston", "Dallas", "Austin"],
+    Florida: ["Miami", "Orlando", "Tampa"],
+    Maharashtra: ["Mumbai", "Pune", "Nagpur"],
+    Gujarat: ["Ahmedabad", "Surat", "Vadodara"],
+    Rajasthan: ["Jaipur", "Udaipur", "Jodhpur"]
+};
+
+function populateStates() {
+    const countrySelect = document.getElementById("country");
+    const stateSelect = document.getElementById("state");
+    const citySelect = document.getElementById("city");
+    const selectedCountry = countrySelect.value;
+
+    stateSelect.innerHTML = "<option value=''>Select State</option>";
+    citySelect.innerHTML = "<option value=''>Select City</option>";
+
+    if (selectedCountry) {
+        const states = countryStateInfo[selectedCountry];
+        states.forEach(state => {
+            const option = document.createElement("option");
+            option.value = state;
+            option.textContent = state;
+            stateSelect.appendChild(option);
+        });
+    }
+}
+
+function populateCities() {
+    const stateSelect = document.getElementById("state");
+    const citySelect = document.getElementById("city");
+    const selectedState = stateSelect.value;
+
+    citySelect.innerHTML = "<option value=''>Select City</option>";
+
+    if (selectedState) {
+        const cities = stateCityInfo[selectedState];
+        cities.forEach(city => {
+            const option = document.createElement("option");
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+        });
+    }
+}
+
+   </script>
    </body>
 </html>
 
