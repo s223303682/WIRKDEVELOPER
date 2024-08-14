@@ -38,7 +38,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<PatientCondition> patientConditions { get; set; }
     public DbSet<PatientVisit> patientVisits { get; set;}
     public DbSet<PatientVitals> patientVitals { get; set; }
-    public DbSet<Vitals> vitals { get; set; }
+    //public DbSet<Vitals> vitals { get; set; }
     public DbSet<Prescription> prescriptions { get; set; }
     public DbSet<Medication> medications { get; set; }
     public DbSet<Stock> stocks { get; set; }
@@ -64,4 +64,5 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<OperationTheatre>operationTheatres { get; set; }
     public DbSet<PharmacyMedication>pharmacyMedications { get; set; }
     public DbSet<DayHospital>dayHospitals { get; set; }
+    public DbSet<Rejection> rejections { get; set; }
 }

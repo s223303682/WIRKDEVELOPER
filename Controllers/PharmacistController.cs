@@ -87,42 +87,53 @@ namespace WIRKDEVELOPER.Controllers
             _Context.SaveChanges();
             return RedirectToAction("StockList");
         }
-        public async Task<IActionResult> AcceptPrescription(int? ID)
-        {
-            var prescriptions = _Context.prescriptions.Find(ID);
-            if (prescriptions != null)
-            {
-                prescriptions.status = "Accepted";
-                _Context.prescriptions.Update(prescriptions);
-                await _Context.SaveChangesAsync();
-                TempData["Info"] = "Dispsed";
-                //var patient = _Context.Users.Where(a => a.Id == prescriptions.PatientID).FirstOrDefault();
+        //public async Task<IActionResult> AcceptPrescription(int? ID)
+        //{
+        //    var prescriptions = _Context.prescriptions.Find(ID);
+        //    if (prescriptions != null)
+        //    {
+        //        prescriptions.status = "Accepted";
+        //        _Context.prescriptions.Update(prescriptions);
+        //        await _Context.SaveChangesAsync();
+        //        TempData["Info"] = "Dispsed";
+        //        //var patient = _Context.Users.Where(a => a.Id == prescriptions.PatientID).FirstOrDefault();
                 
-            }
-            ViewData["PatientID"] = new SelectList(_Context.Users, "Id", "Id", prescriptions.PatientID);
-            return View(prescriptions);
-        }
+        //    }
+        //    ViewData["PatientID"] = new SelectList(_Context.Users, "Id", "Id", prescriptions.PatientID);
+        //    return View(prescriptions);
+        //}
         public IActionResult PharmPrescriptionList()
         {
             IEnumerable<Prescription> list = _Context.prescriptions;
             return View(list);
         }
-        public async Task<IActionResult> AcceptOrder(int? ID)
+        public IActionResult AllPrescriptionList()
         {
-            var order = _Context.order.Find(ID);
-            if (order != null)
-            {
-                order.Status = "Ordered";
-                _Context.order.Update(order);
-                await _Context.SaveChangesAsync();
-                TempData["Ordered"] = "Dispensed";
-                var patient = _Context.Users.Where(a => a.Id == order.Patient).FirstOrDefault();
-
-            }
-            ViewData["Patient"] = new SelectList(_Context.Users, "Id", "Id", order.Patient);
-            return View(order);
+            IEnumerable<Prescription> list = _Context.prescriptions;
+            return View(list);
         }
+        //public async Task<IActionResult> AcceptOrder(int? ID)
+        //{
+        //    var order = _Context.order.Find(ID);
+        //    if (order != null)
+        //    {
+        //        order.Status = "Ordered";
+        //        _Context.order.Update(order);
+        //        await _Context.SaveChangesAsync();
+        //        TempData["Ordered"] = "Dispensed";
+        //        var patient = _Context.Users.Where(a => a.Id == order.Patient).FirstOrDefault();
+
+        //    }
+        //    ViewData["Patient"] = new SelectList(_Context.Users, "Id", "Id", order.Patient);
+        //    return View(order);
+        //}
         public IActionResult PharmIndexOrder()
+        {
+            IEnumerable<Order> objList = _Context.order;
+            return View(objList);
+
+        }
+        public IActionResult AllIndexOrder()
         {
             IEnumerable<Order> objList = _Context.order;
             return View(objList);
@@ -201,6 +212,30 @@ namespace WIRKDEVELOPER.Controllers
             _Context.SaveChanges();
             return RedirectToAction("PharmPrescriptionList");
         }
+        public IActionResult IndexRejection()
+        {
+            IEnumerable<Rejection> objList = _Context.rejections;
+            return View(objList);
+
+        }
+        public IActionResult AddRejection()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddRejection(Rejection rejection)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.rejections.Update(rejection);
+                _Context.SaveChanges();
+                return RedirectToAction("IndexRejection");
+            }
+            return View(rejection);
+
+        }
+
 
     }
 }

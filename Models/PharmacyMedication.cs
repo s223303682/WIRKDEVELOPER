@@ -12,5 +12,7 @@ namespace WIRKDEVELOPER.Models
         public int stocklevel { get; set; }
         [Required]
         public int stockhand { get; set; }
+        [Required]
+        public string Strength { get; set; }
     }
 }

@@ -33,12 +33,8 @@
                                   
                                     <div class="col-md-2">
                                         <h4><label asp-for="stockhand"></label></h4>
-                                        <select id="PurposeDropdown" asp-for="stockhand" class="form-control" id="validationName" required>
-                                            <option value="Select" class="bg-opacity-50">Select</option>
-                                            <option value="150">150</option>
-                                            <option value="160">160</option>
-                                            <option value="170">170</option>
-                                        </select>
+                                        
+                                        <input asp-for="stockhand" class="form-control box mb-2" type="text" placeholder="select" />
                                         <span asp-validation-for="stockhand" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -48,13 +44,18 @@
                                   
                                     <div class="col-md-2">
                                         <h4><label asp-for="stocklevel"></label></h4>
-                                        <select id="PurposeDropdown" asp-for="stocklevel" class="form-control" id="validationName" required>
-                                            <option value="Select" class="bg-opacity-50">Select</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                            <option value="°110">110</option>
-                                        </select>
+                                        <input asp-for="stocklevel" class="form-control box mb-2" type="text" placeholder="select" />
                                         <span asp-validation-for="stocklevel" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+
+                                    <div class="col-md-2">
+                                        <h4><label asp-for="Strength"></label></h4>
+                                        <input asp-for="Strength" class="form-control box mb-2" type="text" placeholder="select" />
+                                        <span asp-validation-for="Strength" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
@@ -63,28 +64,16 @@
                                     <div class="col-4 offset-9 row">
                                         <div class="col">
                                             <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="SAVE" />
-                                            @*                                                 <a asp-controller="Anaesthesiologist" asp-action="IndexVitalRanges"  class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>SAVE</a>
-                                            *@
+                                           
                                         </div>
-                                        @* <div class="col">
-                                        <a asp-action="IndexScree" class="btn btn-danger w-75"><i class="bi bi-arrow-left-circle"></i>BACK</a>
-                                        </div> *@
+                                       
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                @*  <div class=" row-2">
-                <div class="col-8  row">
-                <div class="col">
-                <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Vital History" />
-                </div>
-                <div class="col">
-                <a asp-action="IndexScree" class="btn btn-info w-75"><i class="bi bi-arrow-left-circle"></i>Medical History</a>
-                </div>
-                </div>
-                </div> *@
+               
         </form>
     </div>
 </div>

@@ -37,6 +37,9 @@
                     <th>
                         stock
                     </th>
+                    <th>
+                       Strength
+                    </th>
                   
 
                 </tr>
@@ -49,7 +52,8 @@
                         <td width="20%">@pharmacyMedication.PharmacyMedicationName</td>
                         <td width="20%">@pharmacyMedication.stocklevel</td>
                         <td width="20%">@pharmacyMedication.stockhand</td>
-                     
+                        <td width="20%">@pharmacyMedication.Strength</td>
+                       
 
                         <td>
                             <a asp-controller="Anaesthesiologist" asp-action="NewUpdateOrder" asp-route-ID="@pharmacyMedication.PharmacyMedicationID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
