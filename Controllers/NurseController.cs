@@ -95,23 +95,23 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddVitals(Vitals vitals)
-        {
-            if (ModelState.IsValid)
-            {
-                Context.vitals.Add(vitals);
-                Context.SaveChanges();
-                return RedirectToAction("ViewVitals");
-            }
-            return View(vitals);
-        }
-        public IActionResult ViewVitals()
-        {
-            IEnumerable<Vitals> vitals = Context.vitals;
-            return View(vitals);
-        } 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult AddVitals(Vitals vitals)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        Context.vitals.Add(vitals);
+        //        Context.SaveChanges();
+        //        return RedirectToAction("ViewVitals");
+        //    }
+        //    return View(vitals);
+        ////}
+        //public IActionResult ViewVitals()
+        //{
+        //    IEnumerable<Vitals> vitals = Context.vitals;
+        //    return View(vitals);
+        //} 
         public IActionResult ViewPrescription()
         {
             IEnumerable<Prescription> prescriptions = Context.prescriptions;
