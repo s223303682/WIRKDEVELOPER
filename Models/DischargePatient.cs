@@ -5,14 +5,16 @@ namespace WIRKDEVELOPER.Models
     public class DischargePatient
     {
         public int DischargePatientId { get; set; }
-        public int PatientId { get; set; }
+        public string PatientName { get; set; }
         [ForeignKey("PatientId")]
        
-        public int MedicationID { get; set; }
+        public string MedicationName { get; set; }
         [ForeignKey("MedicationID")]
+        public int PatientGender { get; set; }
+        [ForeignKey("PatientID")]
         public int staffId { get; set; }
         [ForeignKey("StaffId")]
-        public int AdmissionId { get; set; }
+        public DateTime AdmissionDate { get; set; }
         [ForeignKey("AdmissionId")]
         public DateTime DischargeDate { get; set; }
     }
