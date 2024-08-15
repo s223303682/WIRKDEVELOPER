@@ -1,216 +1,153 @@
 ﻿@{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 };
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <link rel="stylesheet" href="">
-        <style>
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
-
-        #main {
-            width: 100%;
-            min-height: 100vh;
-            padding-bottom: 50px;
-            background-color: #81ecec;
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        #addBtn {
-            position: fixed;
-            left: 18px;
-            top: 10px;
-            background-color: #2d3436;
-            color: white;
-            padding: 10px;
-            border: 0;
-            outline: 0;
-            border-radius: 5px;
-        }
-
-        .btn {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #81ecec;
-            margin-top: 0px;
-        }
-
-        .note {
-            width: 380px;
-            height: 260px;
-            background-color: white;
-            margin: 15px;
-            margin-top: 55px;
-            border-radius: 10px;
-            margin-left: 20px;
-            margin-bottom: 30px;
-        }
-
-        .icons {
-            width: 100%;
-            background-color: #0d7390;
-            color: white;
-            padding: 5px;
-            display: flex;
-            justify-content: start;
-            border-radius: 10px 10px 0px 0px;
-        }
-
-            .icons i {
-                padding: 5px;
-                cursor: pointer;
-            }
-
-        .note textarea {
-            border: none;
-            width: 100%;
-            height: 87%;
-            resize: none;
-            padding: 10px;
-            font-size: 18px;
-            border-radius: 15px;
-            background-color: beige;
-            border-radius: 0px 0px 10px 10px;
-        }
-
-        .title-div textarea {
-            border-radius: 0px 0px 0px 0px;
-            margin-bottom: -4px;
-            background-color: #a4cad4;
-            font-weight: bolder;
-            font-size: x-large;
-        }
-
-        .heading {
-            position: fixed;
-            margin-top: 46px;
-            color: ivory;
-        }
-
-        .note textarea:focus {
-            border: 0;
-            outline: 0;
-        }
-        </style>
-    </head>
-    <body>
-        <div class="btn">
-        <div class="heading">
-            <h1>Note Taking App</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Notes</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" id="searchtext" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
         </div>
-        <button id="addBtn">
-            <i class="fas fa-plus"></i>
-            Add Note
-        </button>
+    </nav>
+    <div class="container my-3">
+        <h1> Hello! Take your notes</h1>
+        <div class="card  my-2 mx-2">
+            <div class="card-body">
+                <h5 class="card-title">Add notes</h5>
+                <div class="form-group">
+                    <textarea class="form-control" placeholder=" write your note here" id="addtxt" rows="4"></textarea>
+                </div>
+                <a class="btn btn-primary  my-3" id="addbtn">Add note</a>
+                <a class="btn btn-primary  my-3" id="clrbtn">Clear</a>
+            </div>
+        </div>
+        <hr>
+        <h1> Your notes</h1>
+        <hr>
+        <div class="row container-fluid" id="notes">
+        </div>
     </div>
-    <div id="main">
-
     </div>
+   @*  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+            crossorigin="anonymous"></script> *@
     <script >
-        const addBtn = document.querySelector("#addBtn");
-        const main = document.querySelector("#main");
+                // if user adds notes
+        shownotes();
 
-        // Click event listener
-        addBtn.addEventListener("click", function () {
-            addNote();
-        });
+        let addbtn = document.getElementById('addbtn');
+        let clrbtn = document.getElementById('clrbtn');
 
-        // Save button function
-        const saveNotes = () => {
-
-            // Select content textareas
-            const notes =
-                document.querySelectorAll(".note .content");
-
-            // Select title textareas
-            const titles =
-                document.querySelectorAll(".note .title");
-
-            const data = [];
-
-            notes.forEach((note, index) => {
-                const content = note.value;
-                const title = titles[index].value;
-                console.log(title);
-                if (content.trim() !== "") {
-                    data.push({ title, content });
-                }
-            });
-
-            const titlesData =
-                data.map((item) => item.title);
-            console.log(titlesData);
-            localStorage.setItem(
-                "titles", JSON.stringify(titlesData));
-
-            const contentData =
-                data.map((item) => item.content);
-            localStorage.setItem(
-                "notes", JSON.stringify(contentData));
-        };
-
-        // Addnote button function
-        const addNote = (text = "", title = "") => {
-            const note = document.createElement("div");
-            note.classList.add("note");
-            note.innerHTML = `
-            <div class="icons">
-                 <i class="save fas fa-save"
-                     style="color:red">
-                 </i>
-                 <i class="trash fas fa-trash"
-                     style="color:yellow">
-                 </i>
-            </div>
-            <div class="title-div">
-                <textarea class="title"
-                    placeholder="Write the title ...">${title}
-                </textarea>
-            </div>
-            <textarea class="content"
-                placeholder="Note down your thoughts ...">${text}
-            </textarea>
-            `;
-            function handleTrashClick() {
-                note.remove();
-                saveNotes();
+        addbtn.addEventListener('click', function (e) {
+            let adddtxt = document.getElementById('addtext')
+            let notes = localStorage.getItem('notes');
+            if (notes == null) {
+                notesobj = [];
+            } else {
+                notesobj = JSON.parse(notes)
             }
-            function handleSaveClick() {
-                saveNotes();
+
+            notesobj.push(addtxt.value)
+            localStorage.setItem('notes', JSON.stringify(notesobj));
+            addtxt.value = "";
+            shownotes();
+        })
+
+        clrbtn.addEventListener('click', function (e){
+            let adddtxt = document.getElementById('addtext');
+            addtxt.value = "";
+        })
+
+        function shownotes() {
+            let notes = localStorage.getItem('notes');
+            if (notes == null) {
+                notesobj = [];
+            } else {
+                notesobj = JSON.parse(notes)
             }
-            const delBtn = note.querySelector(".trash");
-            const saveButton = note.querySelector(".save");
-            const textareas = note.querySelectorAll("textarea");
 
-            delBtn.addEventListener("click", handleTrashClick);
-            saveButton.addEventListener("click", handleSaveClick);
-            main.appendChild(note);
-            saveNotes();
-        };
+            let html = "";
 
-        // Loading all the notes those are saved in
-        // the localstorage
-        function loadNotes() {
+            notesobj.forEach(function (element, index) {
+                html += `
+        <div class=" notecard card my-2 mx-2" style="width: 18rem;">
 
-            const titlesData =
-                JSON.parse(localStorage.getItem("titles")) || [];
-            const contentData =
-                JSON.parse(localStorage.getItem("notes")) || [];
+        <div class="card-body">
+            <h5 class="card-title">Note ${index+1}</h5>
+            <p class="card-text">  ${element}</p>
+            <button id="${index} " class="btn btn-primary" onclick="deletenotes(this.id)">Delete</button>
+        </div>
+        </div>`;
+        })
 
-            for (let i = 0;
-                i < Math.max(
-                    titlesData.length, contentData.length); i++) {
-                addNote(contentData[i], titlesData[i]);
+            let noteselem = document.getElementById('notes');
+            if (notesobj.length != 0) {
+                noteselem.innerHTML = html;
+            }
+            else{
+                noteselem.innerHTML= `<h6> Nothing to show please Add notes </h6>`;
             }
         }
-        loadNotes();
-</script>
-    </body>
+
+        // deleting
+        function deletenotes(index){
+
+            let notes = localStorage.getItem('notes');
+
+            if (notes == null) {
+                notesobj = [];
+            } else {
+                notesobj = JSON.parse(notes)
+            }
+
+        notesobj.splice(index,1);
+        localStorage.setItem('notes', JSON.stringify(notesobj));
+        shownotes();
+        }
+        let search=document.getElementById('searchtext');
+
+        search.addEventListener("input",function(){
+            let inputval=search.value;
+
+            console.log(inputval);
+        let notecards= document.getElementsByClassName('notecard');
+
+        Array.from(notecards).forEach(function(element){
+            let cardtxt= element.getElementsByTagName('p')[0].innerText;
+            if(cardtxt.includes(inputval)){
+                element.style.display="block";
+            }
+            else{
+                element.style.display="none";
+            }
+        })
+        })
+    </script>
+</body>
 </html>

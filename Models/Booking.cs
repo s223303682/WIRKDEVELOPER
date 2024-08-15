@@ -13,9 +13,9 @@ namespace WIRKDEVELOPER.Models
         //public virtual Patient? patient { get; set; }
         [Required]
         [DisplayName("Patient FullName")]
-        public int PatientID { get; set; }
-        [ForeignKey("PatientID")]
-        public virtual Patient? Patient { get; set; }
+        public int PrescriptionID { get; set; }
+        [ForeignKey("Instructions")]
+        public virtual Prescription? Prescription { get; set; }
         [Required]
         public string? Gender { get; set; }
         [Required]
