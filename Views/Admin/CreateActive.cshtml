@@ -1,4 +1,4 @@
-﻿@model WIRKDEVELOPER.Models.ActiveIngredient
+﻿@model WIRKDEVELOPER.Models.PharmActive
 
 @{
     Layout = "AdminLayout";
@@ -8,9 +8,9 @@
         <div class="card-body ">
             <div class="card-header bg-primary">
 
-                <h3 class="card-title text-white mt-2" id="exampleModalLabel">ActiveIngredient</h3>
+                <h3 class="card-title text-white mt-2" id="exampleModalLabel">Active Ingredients</h3>
             </div>
-            <form method="post" asp-action="ActiveIngredients">
+            <form method="post" asp-action="CreateActive">
                 <div class="border p-3 #FBD603">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
 
@@ -33,9 +33,9 @@
 
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <h4><label asp-for="ActiveIngredientName"></label></h4>@*These names come from our properties in the model *@
-                                            <input asp-for="ActiveIngredientName" class="form-control box mb-2" type="text" placeholder="select" />
-                                            <span asp-validation-for="ActiveIngredientName" class="text-danger"></span>
+                                            <h4><label asp-for="ActiveName"></label></h4>@*These names come from our properties in the model *@
+                                            <input asp-for="ActiveName" class="form-control box mb-2" type="text" placeholder="select" />
+                                            <span asp-validation-for=" ActiveName" class="text-danger"></span>
                                         </div>
 
                                     </div>

@@ -4,8 +4,7 @@
     Layout = "AdminLayout";
 }
 
-@if (User.IsInRole("Admin"))
-{
+
 
     <head>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
@@ -21,7 +20,7 @@
                 <h2 class="text-primary">List of Dosage Forms</h2>
             </div>
             <div class="col-6 text-end">
-                <a asp-controller="Admin" asp-action="ActiveIngredients" class="btn btn-primary"><i class="bi bi-plus-circle"></i> ADD DOSAGE FORM</a>
+                <a asp-controller="Admin" asp-action="ActiveIngredients" class="btn btn-primary"><i class="bi bi-plus-circle"></i> add Active</a>
             </div>
         </div>
         <br />
@@ -72,4 +71,3 @@
 
     </div>
 
-}

@@ -192,29 +192,28 @@ namespace WIRKDEVELOPER.Controllers
             return RedirectToAction("DayHospitalList");
 
         }
-        public IActionResult IndexActive()
+        public IActionResult ActiveList()
         {
-            IEnumerable<ActiveIngredient> objList = _Context.activeIngredients;
-            return View(objList);
-
+            IEnumerable<PharmActive> list = _Context.pharmActive;
+            return View(list);
         }
-        public IActionResult ActiveIngredients()
+        public IActionResult CreateActive()
         {
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ActiveIngredients(ActiveIngredient activeIngredient)
+        public IActionResult CreateActive(PharmActive active)
         {
             if (ModelState.IsValid)
             {
-                _Context.activeIngredients.Add(activeIngredient);
+                _Context.pharmActive.Add(active);
                 _Context.SaveChanges();
-                return RedirectToAction("IndexActive");
+                return RedirectToAction("ActiveList");
             }
-            return View(activeIngredient);
-
+            return View(active);
         }
+
 
     }
 }
