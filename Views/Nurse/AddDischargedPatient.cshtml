@@ -1,189 +1,105 @@
-﻿@* @model WIRKDEVELOPER.Models.Admission
+﻿@model WIRKDEVELOPER.Models.DischargePatient
 @{
     Layout = "_Nurse";
 }
-<form method="post" asp-action="AddAdmission">
+<form method="post" asp-action="AddDischargePatient">
     <div class="border p-3">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <br />
         <div class="form-group row">
-            <h2 class="text-black-50 pt-3">Add Admission</h2>
+            <h2 class="text-black-50 pt-3">Discharge Patient</h2>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-3">
+    <div class="row"
+         <div class="col">
             <div class="form-group">
-                <label for="validityPeriod">PatientName</label>
-                <select id="PatientDropdown" asp-for="PatientID" class="form-control" id="validationName" required>
-                    <option value="Select">Mzu</option> 
-                    <option value="Select">Liso</option>
-                    <option value="Select">Lona</option>
-                </select>
-            </div>
-        </div> 
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="validityPeriod">Gender</label>
-                <select id="PatientDropdown" asp-for="PatientID" class="form-control" id="validationName" required>
-                    <option value="Select">Male</option> 
-                    <option value="Select">Female</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="form-group">
-                <div class = "col-4">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                <label asp-for="PatientName"></label>
+                <div>
+                    <input asp-for="PatientName" class="form-control" id="PatientName" required />
                 </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="PatientName" class=" text-danger"></span>
             </div>
         </div>
-        <div class="col-12">
+        <div class="col">
             <div class="form-group">
-                <div class = "col-4">
-                    <label asp-for="Phone"></label>
-                    <input asp-for="Phone" class="form-control" />
-                    <span asp-validation-for="Phone" class="text-danger"></span>
+                <label asp-for="AdmissionDate"></label>
+                <div>
+                    <input asp-for="AdmissionDate" class="form-control" id="PatientName" required />
                 </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="AdmissionDate" class=" text-danger"></span>
             </div>
         </div>
-        <div class="col-12">
+         <div class="col">
             <div class="form-group">
-                <div class = "col-4">
-                    <label asp-for="Address1"></label>
-                    <input asp-for="Address1" class="form-control" />
-                    <span asp-validation-for="Address1" class="text-danger"></span>
+                <label asp-for="PatientGender"></label>
+                <div>
+                    <input asp-for="PatientGender" class="form-control" id="PatientName" required />
                 </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="PatientGender" class=" text-danger"></span>
             </div>
         </div>
-        <div class="col-12">
+        <div class="col">
             <div class="form-group">
-                <div class = "col-4">
-                    <label asp-for="Address2"></label>
-                    <input asp-for="Address2" class="form-control" />
-                    <span asp-validation-for="Address2" class="text-danger"></span>
+                <label asp-for="MedicationName"></label>
+                <div>
+                    <input asp-for="MedicationName" class="form-control" id="PatientName" required />
                 </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="MedicationName" class=" text-danger"></span>
             </div>
         </div>
-        <div class="col-md-3">
+         @*<div class="col">
             <div class="form-group">
-                <label for="validityPeriod">Province</label>
-                <select id="PatientDropdown" asp-for="PatientID" class="form-control" id="validationName" required>
-                    <option value="Select">Eastern Cape</option> 
-                    <option value="Select">Free State</option> 
-                    <option value="Select">Gauteng</option>
-                    <option value="Select">Limpopo</option>
-                    <option value="Select">Kwazulu-Natal</option>
-                    <option value="Select">Mpumalanga</option>
-                    <option value="Select">North West</option>
-                    <option value="Select">Northen Cape</option>
-                    <option value="Select">Western Cape</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="form-group">
-                <div class = "col-4">
-                    <label asp-for="City"></label>
-                    <input asp-for="City" class="form-control" />
-                    <span asp-validation-for="City" class="text-danger"></span>
+                <label asp-for="Quantity"></label>
+                <div>
+                    <input asp-for="Quantity" class="form-control" id="PatientName" required />
                 </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="Quantity" class=" text-danger"></span>
             </div>
         </div>
-        <div class="col-12">
+        <div class="col">
             <div class="form-group">
-                <div class = "col-4">
-                    <label asp-for="Suburb"></label>
-                    <input asp-for="Suburb" class="form-control" />
-                    <span asp-validation-for="Suburb" class="text-danger"></span>
+                <label asp-for="Instructions"></label>
+                <div>
+                    <input asp-for="Instructions" class="form-control" id="PatientName" required />
                 </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="Instructions" class=" text-danger"></span>
             </div>
-        </div> 
-        <div class="col-12">
+        </div>
+        <div class="col">
             <div class="form-group">
-                <div class = "col-4">
-                    <label asp-for="PostalCode"></label>
-                    <input asp-for="PostalCode" class="form-control" />
-                    <span asp-validation-for="PostalCode" class="text-danger"></span>
+                <label asp-for="PrescriberName"></label>
+                <div>
+                    <input asp-for="PrescriberName" class="form-control" id="PatientName" required />
                 </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="PrescriberName" class=" text-danger"></span>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col">
             <div class="form-group">
-                <label for="validityPeriod">Bed No.</label>
-                <select id="PatientDropdown" asp-for="BedID" class="form-control" id="validationName" required>
-                    <option value="Select">W01B1</option>
-                    <option value="Select">W01B2</option>
-                    <option value="Select">W01B3</option> 
-                    <option value="Select">W02B1</option>
-                    <option value="Select">W02B2</option>
-                    <option value="Select">W02B3</option>
-                    <option value="Select">W03B1</option>
-                    <option value="Select">W03B2</option>
-                    <option value="Select">W03B3</option>
-                </select>
+                <label asp-for="PrescriberPhone"></label>
+                <div>
+                    <input asp-for="PrescriberPhone" class="form-control" id="PatientName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="PrescriberPhone" class=" text-danger"></span>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col">
             <div class="form-group">
-                <label for="validityPeriod">Bed No.</label>
-                <select id="PatientDropdown" asp-for="BedID" class="form-control" id="validationName" required>
-                    <option value="Select">W001</option>
-                    <option value="Select">W002</option>
-                    <option value="Select">W003</option>
-
-                </select>
+                <label asp-for="Status"></label>
+                <div>
+                    <input asp-for="Status" class="form-control" id="PatientName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="Status" class=" text-danger"></span>
             </div>
-        </div><div class="col-md-3">
-            <div class="form-group">
-                <label for="validityPeriod">Condition</label>
-                <select id="PatientDropdown" asp-for="ConditionID" class="form-control" id="validationName" required>
-                    <option value="Select">Diabetes</option>
-                    <option value="Select">Blood Pressure</option>
-                    <option value="Select"></option>
-
-                </select>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="validityPeriod">Allergies</label>
-                <select id="PatientDropdown" asp-for="AllergiesID" class="form-control" id="validationName" required>
-                    <option value="Select">Itchiness</option>
-                    <option value="Select"></option>
-                    <option value="Select"></option>
-
-                </select>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="validityPeriod">Current Medication</label>
-                <select id="PatientDropdown" asp-for="CurrentMedicationID" class="form-control" id="validationName" required>
-                    <option value="Select"></option>
-                    <option value="Select"></option>
-                    <option value="Select"></option>
-
-                </select>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label for="validityPeriod">Treatment Code</label>
-                <select id="PatientDropdown" asp-for="TreatmentID" class="form-control" id="validationName" required>
-                    <option value="Select"></option>
-                    <option value="Select"></option>
-                    <option value="Select"></option>
-
-                </select>
-            </div>
-        </div>
+        </div>*@
     </div>
-<<<<<<< HEAD
-</form> 
-
- =======
 </form>
->>>>>>> fa2bd8d9331ac4abbf516b09bdaca3cbc01c4efd
- *@
