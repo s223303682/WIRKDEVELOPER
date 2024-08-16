@@ -13,16 +13,17 @@
     <table class=" table table-bordered table-striped table-success">
         <thead>
             <tr>
-                <th>patient</th>
+               <th>patient</th>
                 <th>date</th>
                 <th>prescriber</th>
                 <th>medication</th>
-                <th>quantityAdnInstractions</th>
-                <th>status</th>
+                <th>quantity</th>
+                <th>Instructions</th>
+               
                 <th>urgent</th>
-                <th>Delete</th>
+                 <th>status</th>
                 <th>Update</th>
-
+                <th>Delete</th
 
             </tr>
         </thead>
@@ -31,20 +32,25 @@
             {
 
                 <tr>
-                    <td>@prescription.PatientID</td>
+                  <td>@prescription.PatientID</td>
                     <td>@prescription.Date</td>
                     <td>@prescription.prescriber</td>
                     <td>@prescription.Medication</td>
-                   @*  <td>@prescription.QuantityAndInstructions</td> *@
+                    <td>@prescription.Quantity</td>
+                    <td>@prescription.Instructions</td>
                     <td>@prescription.Urgent</td>
+                    <td>@prescription.status</td>
                     <td>
                         <div class="">
-                            <a asp-controller="Pharmacist" asp-action="updatePharmPrescriptionList" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Update</a>
+                            <a asp-controller="Pharmacist" asp-action="updatePharmPrescriptionList" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Despense</a>
                         </div>
                     </td>
-                  @*   <td>
-                        <a asp-controller="Surgeon" asp-action="DeletePrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Delete</a>
-                    </td> *@
+                    <td>
+                        <div class="">
+                            <a asp-controller="Pharmacist" asp-action="RejectPharmPrescriptionList" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Reject</a>
+                        </div>
+                    </td>
+                 
 
                 </tr>
                 @* @if (prescription.status == "New")
