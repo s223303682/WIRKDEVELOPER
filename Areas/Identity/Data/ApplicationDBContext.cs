@@ -66,4 +66,5 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<DayHospital>dayHospitals { get; set; }
     public DbSet<Rejection> rejections { get; set; }
     public DbSet<PharmActive> pharmActive { get; set; }
+    public DbSet<ClassAdd> classadd { get; set; }
 }

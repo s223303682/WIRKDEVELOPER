@@ -1,0 +1,209 @@
+﻿@model WIRKDEVELOPER.Models.ClassAdd
+
+@{
+    Layout = "AnaesthesiologistLayout";
+}
+<form method="post" asp-action="ClassAdd">
+    <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <br />
+        <div class="form-group row">
+            <h2 class="text-black-50 pt-3">Add Admission</h2>
+        </div>
+    </div>
+    <div class="row"
+         <div class="col">
+            <div class="form-group">
+               @*  <label asp-for="PatientName"></label>
+                <div>
+                    <input asp-for="PatientName" class="form-control" id="PatientName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="PatientName" class=" text-danger"></span> *@
+                <h4><label asp-for="PatientName"></label></h4>@*These names come from our properties in the model *@
+                                        <input asp-for="PatientName" class="form-control box mb-2" type="text" placeholder="type here...." />
+                                        <span asp-validation-for=" PatientName" class="text-danger"></span>
+                                    </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="validityPeriod">Gender</label>
+                <select id="PatientDropdown" asp-for="PatientGender" class="form-control" id="validationName" required>
+                    <option value="Select">Male</option>
+                    <option value="Select">Female</option>
+                </select>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="PatientEmail"></label>
+                <div>
+                    <input asp-for="PatientEmail" class="form-control" id="PatientName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="PatientEmail" class=" text-danger"></span>
+            </div>
+        </div>
+         <div class="col">
+            <div class="form-group">
+                <label asp-for="PatientPhone"></label>
+                <div>
+                    <input asp-for="PatientPhone" class="form-control" id="PatientName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="PatientPhone" class=" text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="Address1"></label>
+                <div>
+                    <input asp-for="Address1" class="form-control" id="PatientName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="Address1" class=" text-danger"></span>
+            </div>
+        </div>
+         <div class="col">
+            <div class="form-group">
+                <label asp-for="Address2"></label>
+                <div>
+                    <input asp-for="Address2" class="form-control" id="PatientName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="Address2" class=" text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="validityPeriod">Province</label>
+                <select id="PatientDropdown" asp-for="PatientProvince" class="form-control" id="validationName" required>
+                    <option value="Select">Eastern Cape</option>
+                    <option value="Select">Free State</option>
+                    <option value="Select">Gauteng</option>
+                    <option value="Select">Limpopo</option>
+                    <option value="Select">Kwazulu-Natal</option>
+                    <option value="Select">Mpumalanga</option>
+                    <option value="Select">North West</option>
+                    <option value="Select">Northen Cape</option>
+                    <option value="Select">Western Cape</option>
+                </select>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="City"></label>
+                <div>
+                    <input asp-for="City" class="form-control" id="PatientName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="City" class=" text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="Surbub"></label>
+                <div>
+                    <input asp-for="Surbub" class="form-control" id="PatientName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="Surbub" class=" text-danger"></span>
+            </div>
+        </div>
+         <div class="col">
+            <div class="form-group">
+                <label asp-for="PostalCode"></label>
+                <div>
+                    <input asp-for="PostalCode" class="form-control" id="PatientName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="PostalCode" class=" text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="validityPeriod">Bed No.</label>
+                <select id="PatientDropdown" asp-for="BedID" class="form-control" id="validationName" required>
+                    <option value="Select">W01B1</option>
+                    <option value="Select">W01B2</option>
+                    <option value="Select">W01B3</option>
+                    <option value="Select">W02B1</option>
+                    <option value="Select">W02B2</option>
+                    <option value="Select">W02B3</option>
+                    <option value="Select">W03B1</option>
+                    <option value="Select">W03B2</option>
+                    <option value="Select">W03B3</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="validityPeriod">Bed No.</label>
+                <select id="PatientDropdown" asp-for="BedID" class="form-control" id="validationName" required>
+                    <option value="Select">W001</option>
+                    <option value="Select">W002</option>
+                    <option value="Select">W003</option>
+
+                </select>
+            </div>
+        </div><div class="col-md-3">
+            <div class="form-group">
+                <label for="validityPeriod">Condition</label>
+                <select id="PatientDropdown" asp-for="ConditionID" class="form-control" id="validationName" required>
+                    <option value="Select">Diabetes</option>
+                    <option value="Select">Blood Pressure</option>
+                    <option value="Select"></option>
+
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="validityPeriod">Allergies</label>
+                <select id="PatientDropdown" asp-for="AllergiesID" class="form-control" id="validationName" required>
+                    <option value="Select">Itchiness</option>
+                    <option value="Select"></option>
+                    <option value="Select"></option>
+
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="validityPeriod">Current Medication</label>
+                <select id="PatientDropdown" asp-for="MedicationName" class="form-control" id="validationName" required>
+                    <option value="Select">panado</option>
+                    <option value="Select">asprin</option>
+                    <option value="Select"></option>
+
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="validityPeriod">Treatment Code</label>
+                <select id="PatientDropdown" asp-for="TreatmentCode" class="form-control" id="validationName" required>
+                    <option value="Select">46546</option>
+                    <option value="Select">76867</option>
+                    <option value="Select">4567</option>
+
+                </select>
+            </div>
+        </div>
+         <div>
+                                    <div class="form-group row">
+                                        <div class="col-4 offset-9 row">
+                                            <div class="col">
+                                                <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="SAVE" />
+                        @*                                                 <a asp-controller="Anaesthesiologist" asp-action="IndexVitalRanges"  class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>SAVE</a>
+ *@
+                                            </div>
+                    @* <div class="col">
+                                            <a asp-action="IndexScree" class="btn btn-danger w-75"><i class="bi bi-arrow-left-circle"></i>BACK</a>
+                                            </div> *@
+                                        </div>
+                                    </div>
+                                </div>
+    </div>
+</form>

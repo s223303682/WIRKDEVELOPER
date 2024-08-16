@@ -1,0 +1,143 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.ClassAdd>
+
+@{
+    Layout = "AnaesthesiologistLayout";
+}
+
+@if (User.IsInRole("Anaesthesiologist"))
+{
+
+    <head>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap4.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" />
+    </head>
+    <div id="Header" class="bg-info container">
+        <h2 class="m-1 pt-4 text-center text-white">List of your orders</h2>
+    </div>
+    <div class="container p-3">
+        <div class="row pt-4">
+            <div class="col-6">
+                <h2 class="text-primary">List of vital ranges</h2>
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Anaesthesiologist" asp-action="ClassAdd" class="btn btn-primary"><i class="bi bi-plus-circle"></i> ADD VITALS</a>
+            </div>
+        </div>
+        <br />
+        @*  <div class="row pt-4">
+    <div class="col-6">
+    <h2 class="text-primary">View Patients</h2>
+    </div>
+    </div>
+    <br /> *@
+        @if (Model.Count() > 0)
+        {
+
+            <table class="table table-sm table-hover">
+
+                <thead class="table-secondary">
+                    <tr>
+                        <th>
+                            Patient Name
+                        </th>
+                        <th>
+                            Gender
+                        </th>
+                        <th>
+                            Medication Name
+                        </th>
+                        <th>
+                            TreatmentCode
+                        </th>
+                        <th>
+                             Phone
+                        </th>
+                        <th>
+                             Email
+                        </th>
+                        <th>
+                            Province
+                        </th>
+                        <th>
+                            Address1
+                        </th>
+                        <th>
+                            City
+                        </th>
+                        <th>
+                            Bed
+                        </th>
+                        <th>
+                            Condition
+                        </th>
+                        <th>
+                            Ward
+                        </th>
+                        <th>
+                            Allergies
+                        </th>
+                        <th>
+                            Medication
+                        </th>
+                        <th>
+                            Treatment
+                        </th>
+                        <th>
+                            Postal code
+                        </th>
+
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var vital in Model)
+                    {
+                        <tr>
+                            <td width="20%">@vital.PatientName</td>
+                            <td width="20%">@vital.PatientGender</td>
+                            <td width="20%">@vital.MedicationName</td>
+                            <td width="20%">@vital.TreatmentCode</td>
+                            <td width="20%">@vital.PatientPhone</td>
+                            <td width="20%">@vital.PatientEmail</td>
+                            <td width="20%">@vital.PatientProvince</td>
+                            <td width="20%">@vital.Address1</td>
+                            <td width="20%">@vital.City</td>
+                            <td width="20%">@vital.BedID</td>
+                            <td width="20%">@vital.ConditionID</td>
+                            <td width="20%">@vital.WardID</td>
+                            <td width="20%">@vital.AllergiesID</td>
+                            <td width="20%">@vital.MedicationID</td>
+                            <td width="20%">@vital.TreatmentID</td>
+                            <td width="20%">@vital.PostalCode</td>
+
+
+                            <div class="col-6">
+                                <h2 class="text-primary">Email Notification Configuration</h2>
+                            </div>
+
+                            <td>
+                                <a asp-controller="Anaesthesiologist" asp-action="UpdateVitalRanges" asp-route-ID="@vital.AdmissionID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
+
+                                <a asp-controller="Anaesthesiologist" asp-action="DeleteVitalRanges" asp-route-ID="@vital.AdmissionID" class="btn btn-danger">
+                                    <i class="bi bi-trash3-fill"></i>Delete
+                                </a>
+
+                            </td>
+
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        }
+        else
+        {
+            <p>No PATIENTS ADMITTED YET </p>
+        }
+
+    </div>
+
+}

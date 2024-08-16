@@ -296,6 +296,67 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
+        public IActionResult Indexclassadd()
+        {
+            IEnumerable<ClassAdd> objList = _Context.classadd;
+            return View(objList);
+        }
+        public IActionResult ClassAdd()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ClassAdd(ClassAdd classAdd)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.classadd.Add(classAdd);
+                _Context.SaveChanges();
+                return RedirectToAction("Indexclassadd");
+            }
+            return View(classAdd);
+
+        }
+        public IActionResult Updateclassadd(int? AdmissionID)
+        {
+            if (AdmissionID == null || AdmissionID == 0)
+            {
+                return NotFound();
+            }
+            var obj = _Context.classadd.Find(AdmissionID);
+
+            if (AdmissionID == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Updateclassadd(ClassAdd classAdd)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.classadd.Update(classAdd);
+                _Context.SaveChanges();
+                return RedirectToAction("Indexclassadd");
+            }
+            return View(classAdd);
+        }
+        public IActionResult DeleteClassAdd(int? AdmissionID)
+        {
+            var obj = _Context.classadd.Find(AdmissionID);
+
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _Context.classadd.Remove(obj);
+            _Context.SaveChanges();
+            return RedirectToAction("Indexclassadd");
+        }
+
 
     }
 }
