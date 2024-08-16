@@ -237,8 +237,35 @@ namespace WIRKDEVELOPER.Controllers
             _Context.SaveChanges();
             return RedirectToAction("PharmPrescriptionList");
         }
-      
+		public IActionResult RejectPharmPrescriptionList(int? ID)
+		{
+			if (ID == null || ID == 0)
+			{
+				return NotFound();
+			}
+			var objList = _Context.prescriptions.Find(ID);
+			if (objList == null)
+			{
+				return NotFound();
+			}
+
+			return View(objList);
+
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult RejectPharmPrescriptionList(Prescription prescription)
+		{
+			//var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			//bookSurgery.PatientID = user;
+			_Context.prescriptions.Update(prescription);
+			_Context.SaveChanges();
+			return RedirectToAction("PharmPrescriptionList");
+		}
 
 
-    }
+
+
+
+	}
 }

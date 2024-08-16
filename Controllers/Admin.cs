@@ -213,6 +213,27 @@ namespace WIRKDEVELOPER.Controllers
             }
             return View(active);
         }
+        public IActionResult ScheduleList()
+        {
+            IEnumerable<PharmSchedule> list = _Context.schedules;
+            return View(list);
+        }
+        public IActionResult CreateSchedule()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateSchedule(PharmSchedule schedule)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.schedules.Add(schedule);
+                _Context.SaveChanges();
+                return RedirectToAction("ScheduleList");
+            }
+            return View(schedule);
+        }
 
 
     }
