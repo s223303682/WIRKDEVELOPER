@@ -1,6 +1,7 @@
 ﻿@model WIRKDEVELOPER.Models.Prescription
 @{
-    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
+
+    Layout = "~/Views/Shared/Pharmacy.cshtml";
 }
 <!DOCTYPE html>
 <html>
@@ -20,8 +21,7 @@
             <div class=" mt-2 bg-info bg-opacity-50 text-center text-white rounded-1"> ADD NEW PRESCRIPTION</div>
         </div>
     </div>
-        public IActionResult updatePrescription(int? ID)
-    <form method="post" asp-action="updatePrescription" class="bg-white bg-opacity-60 border border-3 border-dark">
+    <form method="post" asp-action="updatePharmPrescription" class="bg-white bg-opacity-60 border border-3 border-dark">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input asp-for="PrescriptionID" hidden />
@@ -92,7 +92,7 @@
                     <label asp-for="status"></label>
                     <div>
                         <select id="NurseDropdown" asp-for="status" class=" form-control" id="validationName" required>
-                            <option value="Pending">Pending</option>
+                            <option value="Dispensed">Dispense</option>
                         </select>
                     </div>
                     <div class="invalid-feedback"></div>
@@ -468,4 +468,5 @@
     <script src="~/css/JavaScript.js"></script>
 </body>
 </html>
+
 
