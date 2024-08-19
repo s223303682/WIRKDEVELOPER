@@ -8,14 +8,11 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int BookingID { get; set; }
-        //public int?Patient { get; set; }
+        //public int? PatientID { get; set; }
         //[ForeignKey("PatientID")]
         //public virtual Patient? patient { get; set; }
-        [Required]
-        [DisplayName("Patient FullName")]
-        public int PrescriptionID { get; set; }
-        [ForeignKey("Instructions")]
-        public virtual Prescription? Prescription { get; set; }
+        
+       
         [Required]
         public string? Gender { get; set; }
         [Required]

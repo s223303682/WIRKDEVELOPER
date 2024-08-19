@@ -61,18 +61,29 @@
         <div class="row" id="users">
             <div class="user">
                 <div class="col">
-                    <input asp-for="Medication" type="text" placeholder="Medication" required><br>
-                </div>
-                <div class="col">
-                    <input asp-for="Quantity" type="number" placeholder="Quantity" required><br>
-                </div>
-                <div class="col">
-                    <input asp-for='Instructions' type="text" placeholder="Instructions" required><br><br>
+
+                    <input class="form-control" asp-for="Medication" type="text" placeholder="Medication" required><br>
+
                 </div>
 
+                <div class="col ">
+
+
+                    <input class="form-control" asp-for="Quantity" type="number" placeholder="Quantity" required><br>
+
+                </div>
+                <div class="col ">
+
+                    <input class="form-control" asp-for='Instructions' type="text" placeholder="Instructions" required><br><br>
+
+
+                </div>
             </div>
+
             <button id='add-user'>Add more medication</button><br><br>
         </div>
+
+
         <div class=" row">
 
             <div class="col">

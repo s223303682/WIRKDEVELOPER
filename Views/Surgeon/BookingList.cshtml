@@ -3,78 +3,103 @@
 
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
-@using (Html.BeginForm("SearchPatient", "Surgeon", FormMethod.Get))
-{
-    <b>search by:</b>
-    @Html.RadioButton("searchby", "Date", true)
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+    @using (Html.BeginForm("SearchPatient", "Surgeon", FormMethod.Get))
+    {
+        <b>search by:</b>
+        @Html.RadioButton("searchby", "Date", true)
 
-    <text>date</text>
-    @Html.RadioButton("searchby", "Name", true) <text>name</text>
+        <text>date</text>
+        @Html.RadioButton("searchby", "Name", true)
+        <text>name</text>
 
-    <br>
-    @Html.TextBox("search", "", htmlAttributes: new { @class = "form-control" })
-    <input type="submit" value="search" class="btn btn-info " />
-}
-<div class=" col-10 text-right">
-    <a asp-controller="Surgeon" asp-action="CreateBooking" style="width:100%"></a>
-</div>
-@if (Model.Count() > 0)
-{
-    <table id="BookingsTable" class=" table table-bordered table-striped table-white">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Gender</th>
-                <th>email</th>
-                <th>date</th>
-                <th>date</th>
-                <th>Theatre</th>
-            <th>treatmentcode</th>
-            <th> Anasthesiologist</th>
-                <th>Delete</th>
-                <th> Update</th>
-                <th> select</th>
-
-
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var booking in Model)
-            {
-
+        <br>
+        @Html.TextBox("search", "", htmlAttributes: new { @class = "form-control" })
+        <input type="submit" value="search" class="btn btn-info " />
+    }
+    <div class=" col-10 text-right">
+        <a asp-controller="Surgeon" asp-action="CreateBooking" style="width:100%">Creating Booking</a>
+    </div>
+    @if (Model.Count() > 0)
+    {
+        <table id="myTable" class=" table table-bordered table-striped table-white">
+            <thead>
                 <tr>
-                    <td>@booking.PrescriptionID</td>
-                    <td>@booking.Gender</td>
-                    <td>@booking.EmailAddress</td>
-                    <td>@booking.Date</td>
-                    <td>@booking.Time</td>
-                    <td>@booking.OperationTheatre</td>
-            <td>@booking.Treatment</td>
-            <td>@booking.MedicalProfessionalS</td>
+                   
+                   
+                    @* <th>Name</th>
+                    <th>Surname</th> *@
+                    <th>Gender</th>
+                    <th>email</th>
+                    <th>date</th>
+                    <th>time</th>
+                    <th>Theatre</th>
+                    <th>treatmentcode</th>
+                    <th> Anasthesiologist</th>
+                    <th>Delete</th>
+                    <th> Update</th>
+                    <th> select</th>
 
-                    <td>
-                        <div class="">
-                            <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Update</a>
-                        </div>
-                    </td>
-                    <td>
-                        <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Delete</a>
-                    </td>
-                    <td>
-                        <button class="edit-btn">select</button>
-                    </td>
+                  
 
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+
+                    <tr>
+                       @*  <td>@booking.PatientID</td> *@
+                        <td>@booking.Gender</td>
+                        <td>@booking.EmailAddress</td>
+                        <td>@booking.Date</td>
+                        <td>@booking.Time</td>
+                        <td>@booking.OperationTheatre</td>
+                        <td>@booking.Treatment</td>
+                        <td>@booking.MedicalProfessionalS</td>
+
+                        <td>
+                            <div class="">
+                                <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Update</a>
+                            </div>
+                        </td>
+                        <td>
+                            <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Delete</a>
+                        </td>
+                        <td>
+                        <td><button onclick="selectRow(this)">Select</button></td>
+                        
+
+                    </tr>
 
 
 
-            }
+                }
 
-        </tbody>
-    </table>
-}
-else
-{
-    <p>NO bookings  has been done</p>
-}
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>NO bookings  has been done</p>
+    }
+
+    </body>
+    <script>
+    function selectRow(button) {
+        // Get the selected row
+        var row = button.parentNode.parentNode;
+
+        // Get the column values
+        var column1Value = row.cells[0].innerHTML;
+        var column2Value = row.cells[1].innerHTML;
+
+        // Populate the form fields
+        document.getElementById("column1").value = column1Value;
+        document.getElementById("column2").value = column2Value;
+    }
+    </script>
+</html>

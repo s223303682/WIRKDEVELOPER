@@ -5,7 +5,7 @@
 }
 
 <div class=" col-10 text-right">
-    <a asp-controller="Surgeon" asp-action="CreateBooking" style="width:100%"></a>
+    <a asp-controller="Surgeon" asp-action="CreateBooking" style="width:100%"> Create Booking Patient</a>
 </div>
 @if (Model.Count() > 0)
 {
@@ -15,7 +15,10 @@
                 <th>Name</th>
                 <th>Surname</th>
                 <th>Gender</th>
-                <th>address</th>
+                <th>province</th>
+                <th>city</th>
+                <th>surbub</th>
+                <th>zip</th>
                 <th>ContactNo</th>
                 <th>email</th>
                 <th>Time</th>
@@ -38,10 +41,10 @@
                     <td>@booking.BookingPatientName</td>
                     <td>@booking.BookingPatientSurname</td>
                     <td>@booking.Gender</td>
-                    <td>@booking.country</td>
                     <td>@booking.province</td>
                     <td>@booking.City</td>
                     <td>@booking.Surbub</td>
+                    <td>@booking.Zip</td>
                     <td>@booking.ContactNumber</td>
                     <td>@booking.email</td>
                     <td>@booking.Date</td>

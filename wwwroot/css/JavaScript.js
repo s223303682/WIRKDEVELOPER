@@ -55,3 +55,17 @@
         return false;
     });
 })();
+
+
+    function selectRow(button) {
+        // Get the selected row
+        var row = button.parentNode.parentNode;
+
+    // Get the column values
+    var column1Value = row.cells[0].innerHTML;
+    var column2Value = row.cells[1].innerHTML;
+
+    // Populate the form fields
+    document.getElementById("column1").value = column1Value;
+    document.getElementById("column2").value = column2Value;
+    }

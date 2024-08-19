@@ -8,27 +8,23 @@
         <a asp-action="BookingList" class="btn btn-outline-primary">List</a>
     </div>
 </div>
-<div class="row">
+<div class="mt-2 bg-info bg-opacity-50 text-center text-white rounded-1">ADD NEW BOOKING</div>
 
-    <div class="col">
-        <div class="mt-2 bg-info bg-opacity-50 text-center text-white rounded-1">ADD NEW BOOKING</div>
-    </div>
-</div>
-
-<form method="post" asp-action="CreateBooking" class="bg-white bg-opacity-60 border border-3 border-dark">
+<form method="post" asp-action="CreateBooking" class="bg-white bg-opacity-60 border border-3 border-dark" id="newForm">
 
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
-        <div class="col">
+       
+       @*  <div class="col">
             <div class="form-group">
-                <label asp-for="PrescriptionID"></label>
+                <label asp-for="PatientID"></label>
                 <div>
-                    <input asp-for="PrescriptionID" class="form-control" id="Name" required />
+                    <input asp-for="PatientID" class="form-control" id="Name" required />
                 </div>
                 <div class="invalid-feedback"></div>
-                <span asp-validation-for="PrescriptionID" class=" text-danger"></span>
+                <span asp-validation-for="PatientID" class=" text-danger"></span>
             </div>
-        </div>
+        </div> *@
         <div class="col">
             <div class="form-group">
                 <label asp-for="Gender"></label>
@@ -111,13 +107,13 @@
 
     <div class="row">
         <div class="col">
-            <div class=" form-control bg-white bg-opacity-25">
+            <div class=" bg-white bg-opacity-25">
                 <a asp-controller="Surgeon" asp-action="DashBoard">Back</a>
 
             </div>
         </div>
         <div class="col">
-            <div class=" form-control bg-white bg-opacity-25">
+            <div class="bg-white bg-opacity-25">
                 <input type="submit" class="btn-outline-primary" value="submit" />
 
             </div>

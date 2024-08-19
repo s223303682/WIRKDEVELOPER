@@ -92,22 +92,42 @@
         </div>
      
         <div class="row">
-            <label for="country">Country:</label>
-            <select id="country" name="country" onchange="populateStates()">
-                <option value="">Select Country</option>
-                <option value="Eastern Cape">USA</option>
-                <option value="India">India</option>
-            </select>
+            <div class="col">
+                <label asp-for="province" for="country">Country:</label>
+                <select asp-for="province" id="country" name="country" onchange="populateStates()" class="form-control">
+                    <option value="">Select Country</option>
+                    <option value="Eastern Cape">Eastern Cape</option>
+                    <option value="Western Cape">Western Cape</option>
+                    <option value="Gauteng">Gauteng</option>
+                    <option value="North West">North West</option>
+                    <option value="Kwazulu-Natal">Kwazulu-Natal</option>
+                    <option value="Limpopo">Limpopo</option>
+                    <option value="Mpumalanga">Mpumalanga</option>
+                    <option value="Free State">Free State</option>
+                    <option value="Northen Cape">Northen Cape</option>
+                    
+                </select>
+            </div>
+           <div class="col">
+                <label asp-for="City" for="state">State:</label>
+                <select asp-for="City" id="state" name="state" onchange="populateCities()" class="form-control">
+                    <option value="">Select State</option>
+                </select>
+           </div>
+           <div class="col">
+                <label asp-for="Surbub" for="city">City:</label>
+                <select asp-for="Surbub" id="city" name="city" class="form-control">
+                    <option value="">Select City</option>
+                </select>
+           </div>
+           <div class="col">
+                <label asp-for="Zip" for="zip">Zip:</label>
+                <select asp-for="Zip" id="zip" name="zip" class="form-control">
+                    <option value="">Select zip</option>
+                </select>
+           </div>
 
-            <label for="state">State:</label>
-            <select id="state" name="state" onchange="populateCities()">
-                <option value="">Select State</option>
-            </select>
-
-            <label for="city">City:</label>
-            <select id="city" name="city">
-                <option value="">Select City</option>
-            </select>
+            
         </div>
         <div class="row">
             <div class="form-group">
@@ -158,13 +178,13 @@
         <br>
         <div class="row">
             <div class="col">
-                <div class=" form-control bg-white bg-opacity-25">
+                <div class=" bg-white bg-opacity-25">
                     <a asp-controller="Surgeon" asp-action="Dashboard">Back</a>
 
                 </div>
             </div>
             <div class="col">
-                <div class=" form-control bg-white bg-opacity-25">
+                <div class=" bg-white bg-opacity-25">
                     <input type="submit" class="btn-outline-primary" value="submit" />
 
                 </div>
@@ -175,18 +195,48 @@
     </form>
    <script>
         const countryStateInfo = {
-    "Eastern Cape": ["Port Elizabeth", "East London", "Florida"],
-    "Western Cape": ["Cape Town", "Gujarat", "Rajasthan"]
+            "North West": ["Mahikeng", "Stella"],
+            "Gauteng": ["Johannesburg", "Pretoria"],
+            "Free State": ["Bloemfontein"],
+            "Limpopo": ["Polokwana"],
+            "Mpumalanga": ["Mbombela"],
+            "Northen Cape": ["Kimberly"],
+            "Kwazulu-Natal": ["Durban"," Richards Bay", "Port Shepstone", "Newcastle", "Estcourt", "Ladysmith and Richmond." ],
+    "Eastern Cape": ["Gqeberha", "Bisho", "Florida"],
+    "Western Cape": ["Cape Town"]
 };
 
 const stateCityInfo = {
-    "Port Elizabeth": ["Los Angeles", "San Francisco", "San Diego"],
-    "East London": ["Houston", "Dallas", "Austin"],
-    Florida: ["Miami", "Orlando", "Tampa"],
-    Maharashtra: ["Mumbai", "Pune", "Nagpur"],
-    Gujarat: ["Ahmedabad", "Surat", "Vadodara"],
-    Rajasthan: ["Jaipur", "Udaipur", "Jodhpur"]
+    "Gqeberha": ["Bridgemead", "Homewood", "Algoa park", "cotswold", "Lorraine", "Struandale", "Malabar", "Summerstrand"],
+    "Johannesburg": ["Houston", "Dallas", "Austin"],
+     "Mbombela": ["Kamagugu", "Barberton", "San Diego", "Riverside", "valencia park"],
+     "Durban": ["Essenwood", "kenville", "Cato manor", "Masgrave", "Bluff", "Glenmore", "kwamashu", "inanda", "Tongaat", "Greyville"]
+    
 };
+        const stateZipInfo = {
+            "Makagagu": [1200],
+            "Essenwood": [4001],
+            "Bridgemead": [6025],
+            "kenville": [4051],
+            "Homewood": [6001],
+            "Cato manor": [4091],
+            "Algoa park": [6001],
+            "Masgrave": [4001],
+            "Barberton": [1300],
+            "Bluff": [4052],
+            "cotswold": [6045],
+            "Glenmore": [4001],
+            "Riverside": [1226],
+            "Lorraine": [6070],
+            "Kwamashu": [4359],
+            "inanda": [4309],
+            "Struandale": [6001],
+            "valencia park": [1201],
+            "Tongaat": [4399],
+            "Greyville": [4001],
+            "Malabar": [6020],
+            "Summerstrand": ["6001"]
+        };
 
 function populateStates() {
     const countrySelect = document.getElementById("country");
@@ -225,6 +275,23 @@ function populateCities() {
         });
     }
 }
+        function populateZip() {
+            const citySelect = document.getElementById("city");
+            const zipSelect = document.getElementById("zip");
+            const selectedCity = citySelect.value;
+
+            zipSelect.innerHTML = "<option value=''>Select Zip</option>";
+
+            if (selectedCity) {
+                const zips = stateZipInfo[selectedCity];
+                zips.forEach(zip => {
+                    const option = document.createElement("option");
+                    option.value = zip;
+                    option.textContent = zip;
+                    zipSelect.appendChild(option);
+                });
+            }
+        }
 
    </script>
    </body>

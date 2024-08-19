@@ -99,7 +99,7 @@ namespace WIRKDEVELOPER.Controllers
             }
             _Context.prescriptions.Remove(list);
             _Context.SaveChanges();
-            return RedirectToAction("PrescitionList");
+            return RedirectToAction("PrescriptionList");
 
         }
         public IActionResult BookingPatientList()

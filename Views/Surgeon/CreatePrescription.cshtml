@@ -25,16 +25,19 @@
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
-            <div class="col border-2">
-              @*   <div class="form-group border-2">
+            <label for="column1">Column 1 Value:</label>
+            <input type="text" id="column1" name="column1"><br><br>
+            
+            @* <div class="col border-2">
+                <div class="form-group border-2">
                     <label asp-for="PatientID"></label>
                     <div>
                         <input asp-for="PatientID" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="PatientID" class=" text-danger"></span>
-                </div> *@
-            </div>
+                </div>
+            </div> *@
             <div class="col">
                 <div class="form-group border-1">
                     <label asp-for="Date"></label>
@@ -59,19 +62,31 @@
 
         <div class="row" id="users">
             <div class="user">
-                <div class="col">
-                    <input asp-for="Medication"  type="text" placeholder="Medication" required><br>
+                <div class="col ">
+
+                    <input class="form-control" asp-for="Medication" type="text" placeholder="Medication" required><br>
+
                 </div>
-                <div class="col">
-                    <input asp-for="Quantity"  type="number" placeholder="Quantity" required><br>
+
+                <div class="col ">
+
+
+                    <input class="form-control" asp-for="Quantity" type="number" placeholder="Quantity" required><br>
+
                 </div>
-               <div class="col">
-                    <input asp-for='Instructions'  type="text" placeholder="Instructions" required><br><br>
-               </div>
-                
+                <div class="col ">
+
+                    <input class="form-control" asp-for='Instructions' type="text" placeholder="Instructions" required><br><br>
+
+
+                </div>
             </div>
+           
             <button id='add-user'>Add more medication</button><br><br>
-   </div>
+        </div>    
+            
+            
+   
         <div class=" row">
            
             <div class="col">
@@ -104,13 +119,13 @@
 
         <div class="row">
             <div class="col">
-                <div class=" form-control bg-white bg-opacity-25">
+                <div class=" bg-white bg-opacity-25">
                     <a asp-controller="Surgeon" asp-action="Dashboard">Back</a>
 
                 </div>
             </div>
             <div class="col">
-                <div class=" form-control bg-white bg-opacity-25">
+                <div class="  bg-white bg-opacity-25">
                     <input type="submit" class="btn-outline-primary" value="submit" />
 
                 </div>

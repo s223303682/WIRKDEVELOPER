@@ -30,6 +30,8 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public string? Surbub { get; set; }
         [Required]
+        public int? Zip { get; set; }
+        [Required]
         [DisplayName("Contact Number")]
         public string? ContactNumber { get; set; }
         [Required]

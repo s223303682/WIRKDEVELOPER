@@ -15,7 +15,9 @@ namespace WIRKDEVELOPER.Models
 		public string? City { get; set; }
 		[Required]
 		public string? Surbub { get; set; }
-		[Required]
+        [Required]
+        public int? Zip { get; set; }
+        [Required]
 		[DisplayName("Contact Number")]
 		public string? ContactNumber { get; set; }
 		[Required]
