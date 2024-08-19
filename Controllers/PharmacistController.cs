@@ -41,52 +41,7 @@ namespace WIRKDEVELOPER.Controllers
             IEnumerable<Medication> list = _Context.medications;
             return View(list);
         }
-        public IActionResult Createstock()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Createstock(Stock stock)
-        {
-            if (ModelState.IsValid)
-            {
-                _Context.stocks.Add(stock);
-                _Context.SaveChanges();
-                return RedirectToAction("");
-            }
-            return View(stock);
-        }
-        public IActionResult StockList()
-        {
-            IEnumerable<Stock> list = _Context.stocks;
-            return View(list);
-        }
-        public IActionResult updateStock(int? ID)
-        {
-            if (ID == null || ID == 0)
-            {
-                return NotFound();
-            }
-            var list = _Context.stocks.Find(ID);
-            if (list == null)
-            {
-                return NotFound();
-            }
-
-            return View(list);
-
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult updateStock( Stock stock)
-        {
-            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //bookSurgery.PatientID = user;
-            _Context.stocks.Update(stock);
-            _Context.SaveChanges();
-            return RedirectToAction("StockList");
-        }
+   
         //public async Task<IActionResult> AcceptPrescription(int? ID)
         //{
         //    var prescriptions = _Context.prescriptions.Find(ID);
@@ -262,6 +217,54 @@ namespace WIRKDEVELOPER.Controllers
             _Context.SaveChanges();
             return RedirectToAction("PharmPrescriptionList");
         }
+        public IActionResult IndexStock()
+        {
+            IEnumerable<PharmStock> objList = _Context.pharmStock;
+            return View(objList);
+
+        }
+        public IActionResult AddStock()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddStock(PharmStock pharmStocks)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.pharmStock.Add(pharmStocks);
+                _Context.SaveChanges();
+                return RedirectToAction("IndexStock");
+            }
+            return View(pharmStocks);
+
+        }
+		public IActionResult UpdateStock(int? ID)
+		{
+			if (ID == null || ID == 0)
+			{
+				return NotFound();
+			}
+			var objList = _Context.pharmStock.Find(ID);
+			if (objList == null)
+			{
+				return NotFound();
+			}
+
+			return View(objList);
+
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult UpdateStock(PharmStock pharmStocks)
+		{
+			//var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			//bookSurgery.PatientID = user;
+			_Context.pharmStock.Update(pharmStocks);
+			_Context.SaveChanges();
+			return RedirectToAction("IndexStock");
+		}
 
 
 
@@ -269,5 +272,6 @@ namespace WIRKDEVELOPER.Controllers
 
 
 
-    }
+
+	}
 }

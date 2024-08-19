@@ -1,4 +1,6 @@
-﻿namespace WIRKDEVELOPER.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+namespace WIRKDEVELOPER.Models
 {
     public class CurrentMedication
     {

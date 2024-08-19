@@ -41,7 +41,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     //public DbSet<Vitals> vitals { get; set; }
     public DbSet<Prescription> prescriptions { get; set; }
     public DbSet<Medication> medications { get; set; }
-    public DbSet<Stock> stocks { get; set; }
+    
     public DbSet<Admission> admission { get; set; } 
     public DbSet<Bed> bed { get; set; }
     public DbSet<MedicationAdministration> medAdmin { get; set; }
@@ -67,4 +67,5 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Rejection> rejections { get; set; }
     public DbSet<PharmActive> pharmActive { get; set; }
     public DbSet<PharmSchedule> schedules { get; set; }
+    public DbSet<PharmStock> pharmStock { get; set; }
 }
