@@ -102,19 +102,25 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult AddMedication()
         {
+            ViewBag.getDosage = new SelectList(_Context.dosageForms, "DosageFormID", "DosageFormName");
+           ViewBag.getActive = new SelectList(_Context.pharmActive, "ActiveID", "ActiveName");
+            ViewBag.getSchedule = new SelectList(_Context.schedules, "ScheduleId", "ScheduleName");
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddMedication(PharmacyMedication pharmacyMedications)
         {
-            if (ModelState.IsValid)
-            {
-                _Context.pharmacyMedications.Update(pharmacyMedications);
-                _Context.SaveChanges();
-                return RedirectToAction("IndexMedication");
-            }
-            return View(pharmacyMedications);
+            _Context.pharmacyMedications.Add(pharmacyMedications);
+            _Context.SaveChanges();
+            ViewBag.getDosage = new SelectList(_Context.dosageForms, "DosageFormID", "DosageFormName");
+            ViewBag.getActive = new SelectList(_Context.pharmActive, "ActiveID", "ActiveName");
+            ViewBag.getSchedule = new SelectList(_Context.schedules, "ScheduleId", "ScheduleName");
+
+            return RedirectToAction("IndexMedication");
+
+
+            //return View(pharmacyMedications);
 
         }
         public IActionResult updatePharmIndexOrder(int? ID)
