@@ -12,10 +12,10 @@ namespace WIRKDEVELOPER.Models
         [Key]
         public int BookingPatientID { get; set; }
        
-        [Required(ErrorMessage = "Required")]
-        public int? Patientid { get; set; }
-        [ForeignKey("PatientID")]
-        public virtual Patient? patient { get; set; }
+        //[Required(ErrorMessage = "Required")]
+        //public int? Patientid { get; set; }
+        //[ForeignKey("PatientID")]
+        //public virtual Patient? patient { get; set; }
         [Required]
         public string? BookingPatientName { get; set; }
         [Required]

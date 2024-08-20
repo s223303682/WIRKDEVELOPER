@@ -19,16 +19,16 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-        public IActionResult ViewSchedule()
-        {
-            IEnumerable<Patient> patient = Context.patients;
-            return View(patient);
-        }
-        public IActionResult ViewAdmission()
-        {
-            IEnumerable<Patient> patient = Context.patients;
-            return View(patient);
-        }
+        //public IActionResult ViewSchedule()
+        //{
+        //    IEnumerable<Patient> patient = Context.patients;
+        //    return View(patient);
+        //}
+        //public IActionResult ViewAdmission()
+        //{
+        //    IEnumerable<Patient> patient = Context.patients;
+        //    return View(patient);
+        //}
         public IActionResult AddAddmission()
         {
             return View();

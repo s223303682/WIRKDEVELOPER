@@ -103,27 +103,27 @@ namespace WIRKDEVELOPER.Controllers
             return RedirectToAction("PrescriptionList");
 
         }
-        public IActionResult BookingPatientList()
-        {
-            IEnumerable<BookingPatient> list = _Context.bookingPatients;
-            return View(list);
-        }
-        public IActionResult CreateBookingPatient()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CreateBookingPatient(BookingPatient bookingPatient)
-        {
+        //public IActionResult BookingPatientList()
+        //{
+        //    IEnumerable<BookingPatient> list = _Context.bookingPatients;
+        //    return View(list);
+        //}
+        //public IActionResult CreateBookingPatient()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult CreateBookingPatient(BookingPatient bookingPatient)
+        //{
             //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //bookingPatient.BookingPatientID = user;
             //int totalbcountry = 0;
             //int totalprovince = 0;
             //int totalcity = 0;
             //int totalsurbub = 0;
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
             //    totalbcountry += Convert.ToInt32(bookingPatient.country);
             //    totalprovince += Convert.ToInt32(bookingPatient.province);
             //    totalcity += Convert.ToInt32(bookingPatient.City);
@@ -166,50 +166,50 @@ namespace WIRKDEVELOPER.Controllers
             //    }
 
 
-                _Context.bookingPatients.Add(bookingPatient);
-                _Context.SaveChanges();
-                return RedirectToAction("BookingPatientList");
-            }
-            return View(bookingPatient);
-        }
+        //        _Context.bookingPatients.Add(bookingPatient);
+        //        _Context.SaveChanges();
+        //        return RedirectToAction("BookingPatientList");
+        //    }
+        //    return View(bookingPatient);
+        //}
 
-        public IActionResult updateBookingPatient(int? ID)
-        {
-            if (ID == null || ID == 0)
-            {
-                return NotFound();
-            }
-            var list = _Context.bookingPatients.Find(ID);
-            if (list == null)
-            {
-                return NotFound();
-            }
+        //public IActionResult updateBookingPatient(int? ID)
+        //{
+        //    if (ID == null || ID == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var list = _Context.bookingPatients.Find(ID);
+        //    if (list == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(list);
+        //    return View(list);
 
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult updateBookingPatient(BookingPatient bookingPatient)
-        {
-            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //bookSurgery.PatientID = user;
-            _Context.bookingPatients.Update(bookingPatient);
-            _Context.SaveChanges();
-            return RedirectToAction("BookingPatientList");
-        }
-        public IActionResult DeleteBookingPatient(int? ID)
-        {
-            var list = _Context.bookingPatients.Find(ID);
-            if (list == null)
-            {
-                return NotFound();
-            }
-            _Context.bookingPatients.Remove(list);
-            _Context.SaveChanges();
-            return RedirectToAction("BookingPatientList");
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult updateBookingPatient(BookingPatient bookingPatient)
+        //{
+        //    //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    //bookSurgery.PatientID = user;
+        //    _Context.bookingPatients.Update(bookingPatient);
+        //    _Context.SaveChanges();
+        //    return RedirectToAction("BookingPatientList");
+        //}
+        //public IActionResult DeleteBookingPatient(int? ID)
+        //{
+        //    var list = _Context.bookingPatients.Find(ID);
+        //    if (list == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _Context.bookingPatients.Remove(list);
+        //    _Context.SaveChanges();
+        //    return RedirectToAction("BookingPatientList");
 
-        }
+        //}
         public IActionResult BookingList()
         {
             IEnumerable<Booking> list = _Context.bookings;

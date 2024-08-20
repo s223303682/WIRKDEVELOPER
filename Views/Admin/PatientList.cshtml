@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WIRKDEVELOPER.Models.Patient>
+﻿@* @model IEnumerable<WIRKDEVELOPER.Models.Patient>
 @{
 
     Layout = "~/Views/Shared/AdminLayout.cshtml";
@@ -48,7 +48,7 @@
             {
 
                 <tr>
-                    @*  <td>@booking.PatientID</td> *@
+                     <td>@booking.PatientID</td>
                     <td>@booking.PatientName</td>
                     <td>@booking.PatientSurname</td>
                     <td>@booking.PatientIDNO</td>
@@ -81,4 +81,4 @@
 else
 {
     <p>NO PATIENT PROFILE  has been done</p>
-}
+} *@
