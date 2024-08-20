@@ -1,0 +1,152 @@
+﻿@model WIRKDEVELOPER.Models.Patient;
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col">
+        <a asp-action="BookingList" class="btn btn-outline-primary">List</a>
+    </div>
+</div>
+<h1><div class=" bg-info bg-opacity-50 text-center text-white rounded-1">PATIENT PROFILE</div></h1>
+
+<form method="post" asp-action="CreatePatient" class="bg-white bg-opacity-60 border border-3 border-dark" id="newForm">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="PatientName"></label>
+                <div>
+                    <input type="email" asp-for="PatientName" class="form-control" id="InvalidName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="PatientName" class=" text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="PatientSurname"></label>
+                <div>
+                    <input type="email" asp-for="PatientSurname" class="form-control" id="InvalidName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="PatientSurname" class=" text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="PatientIDNO"></label>
+                <div>
+                    <input type="email" asp-for="PatientIDNO" class="form-control" id="InvalidName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="PatientIDNO" class=" text-danger"></span>
+            </div>
+        </div>
+       
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="province" for="country">Country:</label>
+            <select asp-for="province" id="country" name="country" onchange="populateStates()" class="form-control">
+                <option value="">Select Country</option>
+                <option value="Eastern Cape">Eastern Cape</option>
+                <option value="Western Cape">Western Cape</option>
+                <option value="Gauteng">Gauteng</option>
+                <option value="North West">North West</option>
+                <option value="Kwazulu-Natal">Kwazulu-Natal</option>
+                <option value="Limpopo">Limpopo</option>
+                <option value="Mpumalanga">Mpumalanga</option>
+                <option value="Free State">Free State</option>
+                <option value="Northen Cape">Northen Cape</option>
+
+            </select>
+        </div>
+        <div class="col">
+            <label asp-for="City" for="state">State:</label>
+            <select asp-for="City" id="state" name="state" onchange="populateCities()" class="form-control">
+                <option value="">Select State</option>
+            </select>
+        </div>
+        <div class="col">
+                <label asp-for="surbub" for="city">City:</label>
+                <select asp-for="surbub" id="city" name="city" class="form-control">
+                    <option value="">Select City</option>
+                </select>
+         </div>
+           <div class="col">
+                <label asp-for="zip" for="zip">Zip:</label>
+                <select asp-for="zip" id="zip" name="zip" class="form-control">
+                    <option value="">Select zip</option>
+            </select>
+                </div>
+
+
+    </div>
+    <div class="row">
+        
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="contactNumber"></label>
+                <div>
+                    <input type="text" asp-for="contactNumber" class="form-control" id="InvalidName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="contactNumber" class=" text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="EmailAddress"></label>
+                <div>
+                    <input type="email" asp-for="EmailAddress" class="form-control" id="InvalidName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="EmailAddress" class=" text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="DateOfBirth"></label>
+                <div>
+                    <input type="date" asp-for="DateOfBirth" class="form-control" id="InvalidName" required />
+                </div>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="DateOfBirth" class=" text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="Gender"></label>
+                <select id="Dropdown" asp-for="Gender" class=" form-control" id="validation" required>
+                    <option value="" disabled>--select gender</option>
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+
+                </select>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="Gender" class=" text-danger"></span>
+            </div>
+        </div>
+    </div>
+   
+
+
+    <div class="row">
+        <div class="col">
+            <div class=" bg-white bg-opacity-25">
+                <a asp-controller="Surgeon" asp-action="DashBoard">Back</a>
+
+            </div>
+        </div>
+        <div class="col">
+            <div class="bg-white bg-opacity-25">
+                <input type="submit" class="btn-outline-primary" value="submit" />
+
+            </div>
+        </div>
+
+    </div>
+</form>

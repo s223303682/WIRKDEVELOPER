@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NuGet.Protocol.Core.Types;
 using System.Security.Claims;
@@ -216,6 +217,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult CreateBooking()
         {
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", "PatientSurname");
             return View();
         }
         [HttpPost]
@@ -229,6 +231,7 @@ namespace WIRKDEVELOPER.Controllers
                 
                 _Context.bookings.Add(booking);
                 _Context.SaveChanges();
+                ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", "PatientSurname");
                 return RedirectToAction("BookingList");
             }
             return View(booking);

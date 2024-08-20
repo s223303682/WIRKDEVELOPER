@@ -1,0 +1,84 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Patient>
+@{
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+@using (Html.BeginForm("SearchPatient", "Surgeon", FormMethod.Get))
+{
+    <b>search by:</b>
+    @Html.RadioButton("searchby", "Date", true)
+
+    <text>date</text>
+    @Html.RadioButton("searchby", "Name", true)
+    <text>name</text>
+
+    <br>
+    @Html.TextBox("search", "", htmlAttributes: new { @class = "form-control" })
+    <input type="submit" value="search" class="btn btn-info " />
+}
+<div class=" col-10 text-right">
+    <h1> <a asp-controller="Surgeon" asp-action="CreatePatient" style="width:100%">Creating Patient File</a></h1>
+</div>
+<h1><div class=" bg-info bg-opacity-50 text-center text-white rounded-1"> Patients</div></h1>
+@if (Model.Count() > 0)
+{
+    <table id="myTable" class=" table table-bordered table-striped table-white">
+        <thead>
+            <tr>
+
+
+                <th>Name</th>
+            <th>Surname</th>
+                <th>ID NUMBER</th>
+                <th>PROVINCE</th>
+                <th>CITY</th>
+                <th>SURBUB</th>
+                <th>EMAIL-ADDRESS</th>
+                <th> DATE OF BIRTH</th>
+                <th>GENDER</th>
+                <th> UPDATE</th>
+               
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model)
+            {
+
+                <tr>
+                    @*  <td>@booking.PatientID</td> *@
+                    <td>@booking.PatientName</td>
+                    <td>@booking.PatientSurname</td>
+                    <td>@booking.PatientIDNO</td>
+                    <td>@booking.province</td>
+                    <td>@booking.City</td>
+                    <td>@booking.surbub</td>
+                    <td>@booking.EmailAddress</td>
+                    <td>@booking.DateOfBirth</td>
+                    <td>@booking.Gender</td>
+
+                    <td>
+                        <div class="">
+                            <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.PatientID" class=" btn btn-blue-300 mx-1">Update</a>
+                        </div>
+                    </td>
+                    
+                    <td>
+                  
+
+
+                </tr>
+
+
+
+            }
+
+        </tbody>
+    </table>
+}
+else
+{
+    <p>NO PATIENT PROFILE  has been done</p>
+}

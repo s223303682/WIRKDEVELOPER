@@ -11,13 +11,22 @@ namespace WIRKDEVELOPER.Models
         [Key]
         public int PatientID { get; set; }
         [Required]
+        [DisplayName("Patient ID Number")]
+        public string? PatientIDNO { get; set; }
+        [Required]
         [DisplayName("Patient name")]
         public string? PatientName { get; set; }
         [Required]
         [DisplayName("Patient Surname")]
-        public string? PatientPatient { get; set; }
+        public string? PatientSurname { get; set; }
         [Required]
-        public string? address { get; set; }
+        public string? province { get; set; }
+        [Required]
+        public string? City { get; set; }
+        [Required]
+        public string? surbub { get; set; }
+        [Required]
+        public int? zip { get; set; }
         [Required]
         [DisplayName("Contact Number")]
         public int? contactNumber {  get; set; }
@@ -30,9 +39,7 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public string? Gender { get; set; }
 
-        public int? AdminID { get; set; }
-        [ForeignKey("AdminID")]
-        public virtual Admin? admin { get; set; }
+       
 
 
     }
