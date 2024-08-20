@@ -47,6 +47,7 @@
                     <th>
                         Schedule
                     </th>
+                  
                     <th>
                         Active
                     </th>
@@ -63,14 +64,15 @@
                         <td width="20%">@pharmacyMedication.stocklevel</td>
                         <td width="20%">@pharmacyMedication.stockhand</td>
                         <td width="20%">@pharmacyMedication.Strength</td>
-                        <td width="20%">@pharmacyMedication.DosageFormID</td>
-                        
-                        <td width="20%">@pharmacyMedication.ScheduleId</td>
-                        <td width="20%">@pharmacyMedication.ActiveID</td>
+                        <td width="20%">@pharmacyMedication.DosageForm.DosageFormName</td>
+                        <td width="20%">@pharmacyMedication.Schedule.ScheduleName</td>
+                        <td width="20%">@pharmacyMedication.Active.ActiveName</td>
                        
-
                         <td>
                             <a asp-controller="Anaesthesiologist" asp-action="NewUpdateOrder" asp-route-ID="@pharmacyMedication.PharmacyMedicationID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
+                        </td>
+                        <td>
+                           
 
                             <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-ID="@pharmacyMedication.PharmacyMedicationID" class="btn btn-danger">
                                 <i class="bi bi-trash3-fill"></i>Delete

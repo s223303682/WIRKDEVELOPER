@@ -2,12 +2,11 @@
 
 namespace WIRKDEVELOPER.Models
 {
-    public class PharmSchedule
+    public class Active
     {
         [Key]
-        public int ScheduleId { get; set; }
+        public int ActiveID { get; set; }
         [Required]
-        public string ScheduleName { get; set; }
-
+        public string ActiveName { get; set; }
     }
 }

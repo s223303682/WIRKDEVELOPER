@@ -65,7 +65,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<PharmacyMedication>pharmacyMedications { get; set; }
     public DbSet<DayHospital>dayHospitals { get; set; }
     public DbSet<Rejection> rejections { get; set; }
-    public DbSet<PharmActive> pharmActive { get; set; }
-    public DbSet<PharmSchedule> schedules { get; set; }
+    public DbSet<Active> active { get; set; }
+    public DbSet<Schedule> schedules { get; set; }
     public DbSet<PharmStock> pharmStock { get; set; }
 }

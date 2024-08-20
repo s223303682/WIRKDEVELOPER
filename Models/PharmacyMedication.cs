@@ -24,12 +24,12 @@ namespace WIRKDEVELOPER.Models
         [Required(ErrorMessage = "Required")]
         [ForeignKey("Schedule")]
         public int ScheduleId { get; set; }
-        public virtual PharmSchedule PharmSchedule { get; set; }
+        public virtual Schedule Schedule { get; set; }
 
         [Required(ErrorMessage = "Required")]
         [ForeignKey("Active")]
         public int ActiveID { get; set; }
-        public virtual PharmActive PharmActive { get; set; }
+        public virtual Active Active { get; set; }
 
       
 

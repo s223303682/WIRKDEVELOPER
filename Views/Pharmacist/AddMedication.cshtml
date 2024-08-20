@@ -36,48 +36,39 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h4><label asp-for="PharmSchedule"></label></h4>
+                                    <h4><label asp-for="Schedule"></label></h4>
                                     <select id="PurposeDropdown" asp-for="ScheduleId" class="form-control" asp-items="@ViewBag.getSchedule" id="validationName" required>
                                         <option selected disabled>--Select schedule--</option>
                                     </select>
                                     <span asp-validation-for="ScheduleId" class="text-danger"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <h4><label asp-for="PharmActive"></label></h4>
+                                    <h4><label asp-for="Active"></label></h4>
                                     <select id="PurposeDropdown" asp-for="ActiveID" class="form-control" asp-items="@ViewBag.getActive" id="validationName" required>
                                         <option selected disabled>--Select Active--</option>
                                     </select>
                                     <span asp-validation-for="ActiveID" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4><label asp-for="stockhand"></label></h4>
 
-
-
-                            <div class="col-12">
-                                <div class="row">
-                                  
-                                    <div class="col-md-2">
-                                        <h4><label asp-for="stockhand"></label></h4>
-                                        
-                                        <input asp-for="stockhand" class="form-control box mb-2" type="text" placeholder="select" />
-                                        <span asp-validation-for="stockhand" class="text-danger"></span>
-                                    </div>
+                                    <input asp-for="stockhand" class="form-control box mb-2" type="text" placeholder="select" />
+                                    <span asp-validation-for="stockhand" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4><label asp-for="stocklevel"></label></h4>
+                                    <input asp-for="stocklevel" class="form-control box mb-2" type="text" placeholder="select" />
+                                    <span asp-validation-for="stocklevel" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <div class="row">
-                                  
-                                    <div class="col-md-2">
-                                        <h4><label asp-for="stocklevel"></label></h4>
-                                        <input asp-for="stocklevel" class="form-control box mb-2" type="text" placeholder="select" />
-                                        <span asp-validation-for="stocklevel" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
+                           
+                                                                                  
                             <div class="col-12">
                                 <div class="row">
 
-                                    <div class="col-md-2">
+                                    <div class="col-md-6">
                                         <h4><label asp-for="Strength"></label></h4>
                                         <input asp-for="Strength" class="form-control box mb-2" type="text" placeholder="select" />
                                         <span asp-validation-for="Strength" class="text-danger"></span>

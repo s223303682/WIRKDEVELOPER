@@ -194,7 +194,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult ActiveList()
         {
-            IEnumerable<PharmActive> list = _Context.pharmActive;
+            IEnumerable<Active> list = _Context.active;
             return View(list);
         }
         public IActionResult CreateActive()
@@ -203,11 +203,11 @@ namespace WIRKDEVELOPER.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateActive(PharmActive active)
+        public IActionResult CreateActive(Active active)
         {
             if (ModelState.IsValid)
             {
-                _Context.pharmActive.Add(active);
+                _Context.active.Add(active);
                 _Context.SaveChanges();
                 return RedirectToAction("ActiveList");
             }
@@ -215,7 +215,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult ScheduleList()
         {
-            IEnumerable<PharmSchedule> list = _Context.schedules;
+            IEnumerable<Schedule> list = _Context.schedules;
             return View(list);
         }
         public IActionResult CreateSchedule()
@@ -224,7 +224,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateSchedule(PharmSchedule schedule)
+        public IActionResult CreateSchedule(Schedule schedule)
         {
             if (ModelState.IsValid)
             {

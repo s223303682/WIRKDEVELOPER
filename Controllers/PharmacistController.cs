@@ -96,14 +96,17 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult IndexMedication()
         {
-            IEnumerable<PharmacyMedication> objList = _Context.pharmacyMedications;
+            IEnumerable<PharmacyMedication> objList = _Context.pharmacyMedications
+                .Include(a => a.DosageForm)
+                .Include(s => s.Schedule)
+                .Include(a => a.Active);
             return View(objList);
 
         }
         public IActionResult AddMedication()
         {
             ViewBag.getDosage = new SelectList(_Context.dosageForms, "DosageFormID", "DosageFormName");
-           ViewBag.getActive = new SelectList(_Context.pharmActive, "ActiveID", "ActiveName");
+            ViewBag.getActive = new SelectList(_Context.active, "ActiveID", "ActiveName");
             ViewBag.getSchedule = new SelectList(_Context.schedules, "ScheduleId", "ScheduleName");
             return View();
         }
@@ -112,10 +115,11 @@ namespace WIRKDEVELOPER.Controllers
         public IActionResult AddMedication(PharmacyMedication pharmacyMedications)
         {
             _Context.pharmacyMedications.Add(pharmacyMedications);
-            _Context.SaveChanges();
             ViewBag.getDosage = new SelectList(_Context.dosageForms, "DosageFormID", "DosageFormName");
-            ViewBag.getActive = new SelectList(_Context.pharmActive, "ActiveID", "ActiveName");
+            ViewBag.getActive = new SelectList(_Context.active, "ActiveID", "ActiveName");
             ViewBag.getSchedule = new SelectList(_Context.schedules, "ScheduleId", "ScheduleName");
+            _Context.SaveChanges();
+           
 
             return RedirectToAction("IndexMedication");
 
