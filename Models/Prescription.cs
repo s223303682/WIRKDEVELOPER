@@ -11,6 +11,7 @@ namespace WIRKDEVELOPER.Models
         [Key]
         public int PrescriptionID { get; set; }
         public int? PatientID { get; set; }
+        [Required(ErrorMessage = "Required")]
         [ForeignKey("PatientID")]
         public virtual Patient? Patient { get; set; }
         [Required]
