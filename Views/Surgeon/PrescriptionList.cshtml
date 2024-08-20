@@ -4,9 +4,9 @@
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
 <div class=" col-10 text-right">
-    <a asp-controller="Surgeon" asp-action="CreatePrescription" style="width:100%"></a>
+    <a asp-controller="Surgeon" asp-action="CreatePrescription" style="width:100%">CREATE NEW PRESCRIPTION</a>
 </div>
-
+<h1><div class=" bg-info bg-opacity-50 text-center text-white rounded-1">PRESCRIPTIONS</div></h1>
 
 @if (Model.Count() > 0)
 {

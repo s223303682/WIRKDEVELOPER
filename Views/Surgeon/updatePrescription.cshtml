@@ -15,12 +15,8 @@
             <a asp-action="PrescriptionList" class=" btn btn-primary  ">List</a>
         </div>
     </div>
-    <div class="row">
-        <div class=col>
-            <div class=" mt-2 bg-info bg-opacity-50 text-center text-white rounded-1"> ADD NEW PRESCRIPTION</div>
-        </div>
-    </div>
-        public IActionResult updatePrescription(int? ID)
+    <h1><div class=" bg-info bg-opacity-50 text-center text-white rounded-1">UPDATE PRESCRIPTIONS</div></h1>
+        
     <form method="post" asp-action="updatePrescription" class="bg-white bg-opacity-60 border border-3 border-dark">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
