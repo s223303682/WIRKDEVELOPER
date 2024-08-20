@@ -1,0 +1,66 @@
+﻿@model WIRKDEVELOPER.Models.TreatmentCode;
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <div class="row">
+        <div class="col">
+            <a asp-action="TreatmentCodeList" class="btn btn-outline-primary">List</a>
+        </div>
+    </div>
+    <div class=" bg-info bg-opacity-50 text-center text-white rounded-1"><h1>Treament codes</h1></div>
+
+    <form method="post" asp-action="CreateTreatmentCode" class="bg-white bg-opacity-60 border border-3 border-dark" id="newForm">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="ICDCODE"></label>
+                    <div>
+                        <input type="email" asp-for="ICDCODE" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="ICDCODE" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Description"></label>
+                    <div>
+                        <input type="email" asp-for="Description" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="Description" class=" text-danger"></span>
+                </div>
+            </div>
+            
+        </div>
+        
+        
+
+        <div class="row">
+            <div class="col">
+                <div class=" bg-white bg-opacity-25">
+                    <a asp-controller="Admin" asp-action="DashBoard">Back</a>
+
+                </div>
+            </div>
+            <div class="col">
+                <div class="bg-white bg-opacity-25">
+                    <input type="submit" class="btn-outline-primary" value="submit" />
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+    
+</body>
+</html>
+

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WIRKDEVELOPER.Models.BookingPatient>
+﻿@model IEnumerable<WIRKDEVELOPER.Models.BookingNew>
 @{
 
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
@@ -39,7 +39,7 @@
             {
 
                 <tr>
-                    <td>@booking.BookingPatientName</td>
+                    @* <td>@booking.BookingPatientName</td>
                     <td>@booking.BookingPatientSurname</td>
                     <td>@booking.Gender</td>
                     <td>@booking.province</td>
@@ -49,19 +49,20 @@
                     <td>@booking.ContactNumber</td>
                     <td>@booking.email</td>
                     <td>@booking.Date</td>
-                    <td>@booking.Time</td>
+                    <td>@booking.Time</td> *@
                     <td>@booking.OperationTheatre</td>
-                    <td>@booking.Treatment</td>
-                 <td>@booking.MedicalProfessional</td>
+                    <td>@booking.TreatmentCodeID</td>
+                    
+                 
                   
 
                     <td>
                         <div class="">
-                            <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingPatientID" class=" btn btn-blue-300 mx-1">Update</a>
+                            <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingNewID" class=" btn btn-blue-300 mx-1">Update</a>
                         </div>
                     </td>
                     <td>
-                        <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingPatientID" class=" btn btn-blue-300 mx-1">Delete</a>
+                        <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingNewID" class=" btn btn-blue-300 mx-1">Delete</a>
                     </td>
                     <td>
                         <button class="edit-btn">select</button>

@@ -234,53 +234,98 @@ namespace WIRKDEVELOPER.Controllers
             }
             return View(schedule);
         }
-        //public IActionResult PatientList()
-        //{
-        //    IEnumerable<Patient> list = _Context.patients;
-        //    return View(list);
-        //}
-        //public IActionResult CreatePatient()
-        //{
-        //    return View();
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult CreatePatient(Patient patient)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _Context.patients.Add(patient);
-        //        _Context.SaveChanges();
-        //        return RedirectToAction("PatientList");
-        //    }
-        //    return View(patient);
-        //}
-        //public IActionResult updatePatient(int? ID)
-        //{
-        //    if (ID == null || ID == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var list = _Context.patients.Find(ID);
-        //    if (list == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public IActionResult PatientList()
+        {
+            IEnumerable<Patient> list = _Context.patients;
+            return View(list);
+        }
+        public IActionResult CreatePatient()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreatePatient(Patient patient)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.patients.Add(patient);
+                _Context.SaveChanges();
+                return RedirectToAction("PatientList");
+            }
+            return View(patient);
+        }
+        public IActionResult updatePatient(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var list = _Context.patients.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(list);
+            return View(list);
 
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult updatePatient(Patient patient)
-        //{
-        //    //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    //bookSurgery.PatientID = user;
-        //    _Context.patients.Update(patient);
-        //    _Context.SaveChanges();
-        //    return RedirectToAction("PatientList");
-        //}
-       
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updatePatient(Patient patient)
+        {
+            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //bookSurgery.PatientID = user;
+            _Context.patients.Update(patient);
+            _Context.SaveChanges();
+            return RedirectToAction("PatientList");
+        }
+        public IActionResult TreatmentCodeList()
+        {
+            IEnumerable<TreatmentCode> list = _Context.treatmentCodes;
+            return View(list);
+        }
+        public IActionResult CreateTreatmentCode()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateTreatmentCode(TreatmentCode treatmentCode)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.treatmentCodes.Add(treatmentCode);
+                _Context.SaveChanges();
+                return RedirectToAction("TreatmentCodeList");
+            }
+            return View(treatmentCode);
+        }
+        public IActionResult updateTreatmentCode(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var list = _Context.treatmentCodes.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return View(list);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updateTreatmentCode(TreatmentCode treatmentCode)
+        {
+            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //bookSurgery.PatientID = user;
+            _Context.treatmentCodes.Update(treatmentCode);
+            _Context.SaveChanges();
+            return RedirectToAction("TreatmentCodeList");
+        }
 
     }
 }

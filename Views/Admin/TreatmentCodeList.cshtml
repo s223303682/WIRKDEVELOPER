@@ -1,0 +1,57 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.TreatmentCode>
+@{
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<div class=" col-10 text-right">
+    <h1> <a asp-controller="Admin" asp-action="CreateTreatmentCode" style="width:100%">Add treatment</a>
+</div>
+<div class=" bg-info bg-opacity-50 text-center text-white rounded-1"> <h1>TREATMENT CODE</h1></div>
+@if (Model.Count() > 0)
+{
+    <table id="myTable" class=" table table-bordered table-striped table-white">
+        <thead>
+            <tr>
+
+
+                <th>ICD-10 CODE</th>
+                <th>Description</th>
+               
+
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var treatment in Model)
+            {
+
+                <tr>
+                    <td>@treatment.ICDCODE</td>
+                    <td>@treatment.Description</td>
+                    
+
+                    <td>
+                        <div class="">
+                            <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@treatment.TreatmentCodeID" class=" btn btn-blue-300 mx-1">Update</a>
+                        </div>
+                    </td>
+
+                    <td>
+
+
+
+                </tr>
+
+
+
+            }
+
+        </tbody>
+    </table>
+}
+else
+{
+    <p>NO PATIENT PROFILE  has been done</p>
+}

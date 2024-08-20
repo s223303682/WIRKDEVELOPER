@@ -103,114 +103,114 @@ namespace WIRKDEVELOPER.Controllers
             return RedirectToAction("PrescriptionList");
 
         }
-        //public IActionResult BookingPatientList()
-        //{
-        //    IEnumerable<BookingPatient> list = _Context.bookingPatients;
-        //    return View(list);
-        //}
-        //public IActionResult CreateBookingPatient()
-        //{
-        //    return View();
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult CreateBookingPatient(BookingPatient bookingPatient)
-        //{
+        public IActionResult BookingPatientList()
+        {
+            IEnumerable<BookingNew> list = _Context.bookingnew;
+            return View(list);
+        }
+        public IActionResult CreateBookingPatient()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateBookingPatient(BookingNew bookingNew)
+        {
             //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //bookingPatient.BookingPatientID = user;
             //int totalbcountry = 0;
             //int totalprovince = 0;
             //int totalcity = 0;
             //int totalsurbub = 0;
-            //if (ModelState.IsValid)
-            //{
-            //    totalbcountry += Convert.ToInt32(bookingPatient.country);
-            //    totalprovince += Convert.ToInt32(bookingPatient.province);
-            //    totalcity += Convert.ToInt32(bookingPatient.City);
-            //    totalsurbub += Convert.ToInt32(bookingPatient.Surbub);
+            if (ModelState.IsValid)
+            {
+                //    totalbcountry += Convert.ToInt32(bookingPatient.country);
+                //    totalprovince += Convert.ToInt32(bookingPatient.province);
+                //    totalcity += Convert.ToInt32(bookingPatient.City);
+                //    totalsurbub += Convert.ToInt32(bookingPatient.Surbub);
 
-            //    if (totalbcountry <= 1)
-            //    {
-            //        TempData["Results"] = "South Africa";
-            //    }
-            //    else if(totalprovince <= 2)
-            //    {
-            //        TempData["Results"] = "Eastern Cape";
-            //        if (totalprovince <= 2)
-            //        {
-            //            if (totalcity <= 201)
-            //            {
-            //                TempData["Results"] = "Port Elizabeth";
-            //                if (totalsurbub <= 101)
-            //                {
-            //                    TempData["Results"] = "summerstrand";
-            //                }
-            //                else if (totalsurbub <= 102)
-            //                {
-            //                    TempData["Results"] = "North end";
-            //                }
-            //            }
-            //            else if (totalcity <= 202)
-            //            {
-            //                TempData["Results"] = "East London";
+                //    if (totalbcountry <= 1)
+                //    {
+                //        TempData["Results"] = "South Africa";
+                //    }
+                //    else if(totalprovince <= 2)
+                //    {
+                //        TempData["Results"] = "Eastern Cape";
+                //        if (totalprovince <= 2)
+                //        {
+                //            if (totalcity <= 201)
+                //            {
+                //                TempData["Results"] = "Port Elizabeth";
+                //                if (totalsurbub <= 101)
+                //                {
+                //                    TempData["Results"] = "summerstrand";
+                //                }
+                //                else if (totalsurbub <= 102)
+                //                {
+                //                    TempData["Results"] = "North end";
+                //                }
+                //            }
+                //            else if (totalcity <= 202)
+                //            {
+                //                TempData["Results"] = "East London";
 
-            //            }
-            //        }
-            //    }
+                //            }
+                //        }
+                //    }
 
-            //    else if (totalprovince <= 3)
-            //    {
-            //        TempData["Results"] = "Cape Town";
-                   
-
-            //    }
+                //    else if (totalprovince <= 3)
+                //    {
+                //        TempData["Results"] = "Cape Town";
 
 
-        //        _Context.bookingPatients.Add(bookingPatient);
-        //        _Context.SaveChanges();
-        //        return RedirectToAction("BookingPatientList");
-        //    }
-        //    return View(bookingPatient);
-        //}
+                //    }
 
-        //public IActionResult updateBookingPatient(int? ID)
-        //{
-        //    if (ID == null || ID == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var list = _Context.bookingPatients.Find(ID);
-        //    if (list == null)
-        //    {
-        //        return NotFound();
-        //    }
 
-        //    return View(list);
+                _Context.bookingnew.Add(bookingNew);
+            _Context.SaveChanges();
+            return RedirectToAction("BookingPatientList");
+        }
+                return View(bookingNew);
+    }
 
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult updateBookingPatient(BookingPatient bookingPatient)
-        //{
-        //    //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    //bookSurgery.PatientID = user;
-        //    _Context.bookingPatients.Update(bookingPatient);
-        //    _Context.SaveChanges();
-        //    return RedirectToAction("BookingPatientList");
-        //}
-        //public IActionResult DeleteBookingPatient(int? ID)
-        //{
-        //    var list = _Context.bookingPatients.Find(ID);
-        //    if (list == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    _Context.bookingPatients.Remove(list);
-        //    _Context.SaveChanges();
-        //    return RedirectToAction("BookingPatientList");
+    public IActionResult updateBookingPatient(int? ID)
+    {
+        if (ID == null || ID == 0)
+        {
+            return NotFound();
+        }
+        var list = _Context.bookingnew.Find(ID);
+        if (list == null)
+        {
+            return NotFound();
+        }
 
-        //}
-        public IActionResult BookingList()
+        return View(list);
+
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult updateBookingPatient(BookingNew bookingNew)
+    {
+        //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //bookSurgery.PatientID = user;
+        _Context.bookingnew.Update(bookingNew);
+        _Context.SaveChanges();
+        return RedirectToAction("BookingPatientList");
+    }
+    public IActionResult DeleteBookingPatient(int? ID)
+    {
+        var list = _Context.bookingnew.Find(ID);
+        if (list == null)
+        {
+            return NotFound();
+        }
+        _Context.bookingnew.Remove(list);
+        _Context.SaveChanges();
+        return RedirectToAction("BookingPatientList");
+
+    }
+    public IActionResult BookingList()
         {
             IEnumerable<Booking> list = _Context.bookings;
             return View(list);

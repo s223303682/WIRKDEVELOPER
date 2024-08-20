@@ -1,4 +1,4 @@
-﻿@model WIRKDEVELOPER.Models.BookingPatient;
+﻿@model WIRKDEVELOPER.Models.BookingNew;
 @{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
@@ -153,25 +153,16 @@
 
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="TreatmentID"></label>
+                    <label asp-for="TreatmentCodeID"></label>
                     <div>
-                        <input asp-for="TreatmentID" class="form-control" id="InvalidName" required />
+                        <input asp-for="TreatmentCodeID" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
-                    <span asp-validation-for="TreatmentID" class=" text-danger"></span>
+                    <span asp-validation-for="TreatmentCodeID" class=" text-danger"></span>
                 </div>
             </div>
 
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="MedicalProfessionalID"></label>
-                    <div>
-                        <input asp-for="MedicalProfessionalID" class="form-control" id="InvalidName" required />
-                    </div>
-                    <div class="invalid-feedback"></div>
-                    <span asp-validation-for="MedicalProfessionalID" class=" text-danger"></span>
-                </div>
-            </div>
+            
 
        
         </div>

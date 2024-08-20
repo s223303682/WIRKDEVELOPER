@@ -7,13 +7,13 @@ using System.Runtime.Versioning;
 using WIRKDEVELOPER.Areas.Identity.Data;
 namespace WIRKDEVELOPER.Models
 {
-    public class BookingPatient
+    public class BookingNew
     {
         [Key]
-        public int BookingPatientID { get; set; }
-       
+        public int BookingNewID { get; set; }
+
         //[Required(ErrorMessage = "Required")]
-        //public int? Patientid { get; set; }
+        //public int? PatientID { get; set; }
         //[ForeignKey("PatientID")]
         //public virtual Patient? patient { get; set; }
         [Required]
@@ -36,12 +36,12 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public string? Gender { get; set; }
         [Required]
-       public string? email { get; set; }
+        public string? email { get; set; }
         [Required]
         [DisplayName("Date of birth")]
         public DateTime DateOfBirth { get; set; }
         [Required]
-        public DateTime ? Date { get; set; }
+        public DateTime? Date { get; set; }
         [Required]
         public DateTime? Time { get; set; }
         [Required(ErrorMessage = "Required")]
@@ -49,12 +49,12 @@ namespace WIRKDEVELOPER.Models
         [ForeignKey("OperationTheatreID")]
         public virtual OperationTheatre? OperationTheatre { get; set; }
         [Required(ErrorMessage = "Required")]
-        public int TreatmentID { get; set; }
-        [ForeignKey("TreatmentID")]
-        public virtual Treatment? Treatment { get; set; }
-        [Required(ErrorMessage = "Required")]
-        public int MedicalProfessionalID { get; set; }
-        [ForeignKey("MedicalProfessionalID")]
-        public virtual MedicalProfessional? MedicalProfessional { get; set; }
+        public int TreatmentCodeID { get; set; }
+        [ForeignKey("TreatmentCodeID")]
+        public virtual TreatmentCode? treatmentCode { get; set; }
+        //[Required(ErrorMessage = "Required")]
+        //public int AnaestesiologistID { get; set; }
+        //[ForeignKey("AnaestesiologistID")]
+        //public virtual Anaestesiologist? Anaestesiologist { get; set; }
     }
 }
