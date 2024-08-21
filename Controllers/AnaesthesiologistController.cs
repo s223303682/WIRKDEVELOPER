@@ -77,32 +77,41 @@ namespace WIRKDEVELOPER.Controllers
 		}
 		public IActionResult IndexOrder()
 		{
-			IEnumerable<Order> objList = _Context.order;
+			IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication);
 			return View(objList);
 
 		}
 		public IActionResult Order()
 		{
-			return View();
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            return View();
 		}
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult Order(Order order)
 		{
-			var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			order.Patient = user;
 
-			if (ModelState.IsValid)
-			{
+            _Context.order.Add(order);
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            _Context.SaveChanges();
 
-				_Context.order.Add(order);
-				_Context.SaveChanges();
-				return RedirectToAction("IndexOrder");
-			}
-			ViewData["AdmissionID"] = new SelectList(_Context.Users, "Id", "Id", order.Patient);
-			return View(order);
 
-		}
+            return RedirectToAction("IndexOrder");
+
+            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //order.Patient = user;
+
+            //if (ModelState.IsValid)
+            //{
+
+            //	_Context.order.Add(order);
+            //	_Context.SaveChanges();
+            //	return RedirectToAction("IndexOrder");
+            //}
+            //ViewData["AdmissionID"] = new SelectList(_Context.Users, "Id", "Id", order.Patient);
+            //return View(order);
+
+        }
 		public IActionResult NewUpdateOrder(int? ID)
 		{
 			if (ID == null || ID == 0)

@@ -24,10 +24,12 @@ namespace WIRKDEVELOPER.Models
 
 		[Required]
 		[DisplayName("Medication Ordered")]
-		public string? Medicationordered { get; set; }
+		public int PharmacyMedicationID { get; set; }
+        [ForeignKey("PharmacyMedicationID")]
+        public virtual PharmacyMedication PharmacyMedication { get; set; }
 
 
-		[Required]
+        [Required]
 		[DisplayName("Qunatity ")]
 		public int? Quantity { get; set; }
 
@@ -45,8 +47,13 @@ namespace WIRKDEVELOPER.Models
 		[DisplayName("Status")]
 		public string? Status { get; set; }
 
+        [DisplayName("Status")]
+        public string? Notes { get; set; }
 
-		[Key]
+        [DisplayName("Status")]
+        public string? rejectorder { get; set; }
+
+        [Key]
 		public int AnOrderID { get; set; }
 	}
 }
