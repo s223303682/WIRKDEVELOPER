@@ -30,7 +30,7 @@ namespace WIRKDEVELOPER.Models
 
         public int? AdminID { get; set; }
         [ForeignKey("AdminID")]
-        public virtual Admin? admin { get; set; }
+        public virtual Administrator? admin { get; set; }
 
     }
 }

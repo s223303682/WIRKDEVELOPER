@@ -1,0 +1,183 @@
+﻿@model WIRKDEVELOPER.Models.Account.UesrViewModel
+
+@{
+   // Layout = "AdminLayout";
+}
+<head>
+    <style>
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px; /* Add margin to create space between header and dashboard */
+        }
+
+        .tile {
+            width: 280px;
+            height: 170px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+            .tile h4 {
+                margin: 0;
+            }
+
+            .tile .stats {
+                text-align: center;
+            }
+
+            .tile .btn-container {
+                width: 270px;
+                display: flex;
+                justify-content: space-between;
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+            }
+
+            .tile a,
+            .tile button {
+                width: calc(50% - 5px); /* Ensures buttons are of equal size and fit within the tile */
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                color: white;
+                text-align: center;
+                text-decoration: none;
+            }
+
+            .tile .btn-view {
+                background-color: #17a2b8;
+            }
+
+            .tile .btn-register {
+                background-color: #28a745;
+            }
+
+        .tile-users {
+            background-color: grey;
+        }
+
+            .tile-users:hover {
+                background-color: #00A36C;
+            }
+
+        .tile-roles {
+            background-color: grey;
+        }
+
+            .tile-roles:hover {
+                background-color: #1e7e34;
+            }
+
+        .tile-reports {
+            background-color: grey;
+        }
+
+            .tile-reports:hover {
+                background-color: #2AAA8A;
+            }
+
+        .tile-settings {
+            background-color: grey;
+        }
+
+            .tile-settings:hover {
+                background-color: #AFE1AF;
+            }
+
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            margin: auto;
+        }
+    </style>
+</head>
+<div class="col-md-12 mx-auto pt-0 p-0">
+    <div class="card" id="card-content">
+        <div class="card-header bg-success text-uppercase text-white" style="height: 45px;">
+            <h4 class="text-center">System Users</h4>
+        </div>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+        <div class="dashboard" id="dashboard-content">
+            <div class="tile tile-roles">
+                <div class="stats">
+                    <h4>Nurses</h4>
+                    <p>Active: <span id="active-nurses">@Model.NurseUser</span></p>
+                </div>
+                <div class="btn-container">
+                    <a class="btn-view" href="@Url.Action("GetNurses", "Admin")">View</a>
+                    <button class="btn-register" onclick="window.location.href='@Url.Action("Register", "Account", new { role = "Nurse" })'">Register</button>
+                </div>
+            </div>
+
+            <div class="tile tile-users">
+                <div class="stats">
+                    <h4>Surgeons</h4>
+                    <p>Active: <span id="active-doctors">@Model.SurgUser</span></p>
+                </div>
+                <div class="btn-container">
+                    <a class="btn-view" href="@Url.Action("GetSurgeons", "Admin")">View</a>
+                    <button class="btn-register" onclick="window.location.href='@Url.Action("Register", "Account", new { role = "Surgeon" })'">Register</button>
+                </div>
+            </div>
+
+            <div class="tile tile-reports">
+                <div class="stats">
+                    <h4>Pharmacists</h4>
+                    <p>Active: <span id="active-pharmacists">@Model.PharmUser</span></p>
+                </div>
+                <div class="btn-container">
+                    <a class="btn-view" href="@Url.Action("GetPharmacists", "Admin")">View</a>
+                    <button class="btn-register" onclick="window.location.href='@Url.Action("Register", "Account", new { role = "Pharmacist" })'">Register</button>
+                </div>
+            </div>
+
+            <div class="tile tile-settings">
+                <div class="stats">
+                    <h4>Admins</h4>
+                    <p>Active: <span id="active-admins">@Model.AdminUser</span></p>
+                    
+                </div>
+                <div class="btn-container">
+                    <a class="btn-view" href="@Url.Action("GetAdmins", "Admin")">View</a>
+                    <button class="btn-register" onclick="window.location.href='@Url.Action("Register", "Account", new { role = "Admin" })'">Register</button>
+                </div>
+            </div>
+
+            <div class="tile tile-settings">
+                <div class="stats">
+                    <h4>Anaesthesiologist</h4>
+                    <p>Active: <span id="active-admins">@Model.AnaUser</span></p>
+
+                </div>
+                <div class="btn-container">
+                    <a class="btn-view" href="@Url.Action("GetAnaesthesiologist", "Admin")">View</a>
+                    <button class="btn-register" onclick="window.location.href='@Url.Action("Register", "Account", new { role = "Anaesthesiologist" })'">Register</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="userRoleChart"></canvas>
+        </div>
+    </div>
+</div>                                                                                                                                                                                                                             

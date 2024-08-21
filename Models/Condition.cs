@@ -13,7 +13,7 @@ namespace WIRKDEVELOPER.Models
         public string? ConditionName { get; set; }
         public int? AdminID { get; set; }
         [ForeignKey("AdminID")]
-        public virtual Admin? Admin { get; set; }
+        public virtual Administrator? Admin { get; set; }
 
     }
 }

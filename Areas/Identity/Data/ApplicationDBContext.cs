@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
+using WIRKDEVELOPER.Models.Account;
 
 namespace WIRKDEVELOPER.Areas.Identity.Data;
 
@@ -31,7 +32,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
 
         }
     }
-    public DbSet<Admin> admins { get; set; }
+    public DbSet<Models.Administrator> admins { get; set; }
     public DbSet<Bed> beds { get; set; }
     public DbSet<Condition> conditions { get; set; }
     public DbSet<Patient> patients { get; set; }
@@ -69,4 +70,14 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Active> active { get; set; }
     public DbSet<Schedule> schedules { get; set; }
     public DbSet<PharmStock> pharmStock { get; set; }
+
+    public DbSet<Models.Account.Admin> Administrators { get; set; }
+
+    public DbSet<Surgeon> Surgeons { get; set; }
+
+    public DbSet<Anaesthesiologist> Anaesthesiologists { get; set; }
+
+    public DbSet<Nurse> Nurses { get; set; }
+
+    public DbSet<Pharmacist> Pharmacists { get; set; }
 }

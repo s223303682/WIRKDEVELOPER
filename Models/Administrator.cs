@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WIRKDEVELOPER.Models
 {
-    public class Admin
+    public class Administrator
     {
         [Key]
         public int AdminID { get; set; }

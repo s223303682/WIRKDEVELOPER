@@ -1,0 +1,195 @@
+﻿@model WIRKDEVELOPER.Models.Account.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+   // Layout = "AdminLayout";
+}
+<div class="col-md-8 mx-auto pt-0 p-0">
+
+    <form asp-action="Register" style="width: 100%;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center text-capitalize">
+                    <h4>Register @Model.Role</h4>
+                </div>
+
+                <div asp-validation-summary="ModelOnly"></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="FirstName">First Name</label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="LastName">Last Name</label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ContactNumber">Contact Number</label>
+                            <input asp-for="ContactNumber" class="form-control" />
+                            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.Role == "Surgeon")
+                {
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="HPCSANumber">HPCSA Number</label>
+                                <input asp-for="HPCSANumber" class="form-control" />
+                                <span asp-validation-for="HPCSANumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                      
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Specialization">Specialization</label>
+                                <select asp-for="Specialization" class="form-control">
+                                    <option selected disabled>--Select specialization--</option>
+                                    <option>Cardiologist</option>
+                                    <option>Dermatologist </option>
+                                    <option>Endocrinologist</option>
+                                    <option>Gastroenterologist </option>
+                                    <option>Neurologist</option>
+                                    <option>Oncologist </option>
+                                    <option>Orthopedic Surgeon</option>
+                                    <option>Pediatrician</option>
+                                    <option>Psychiatrist </option>
+                                    <option>Radiologist</option>
+                                    <option>Rheumatologist </option>
+                                    <option>Urologist</option>
+                                </select>
+                                <span asp-validation-for="Specialization" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (Model.Role == "Pharmacist")
+                {
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PharmacyLicenseNumber">HPCSA Number</label>
+                                <input asp-for="PharmacyLicenseNumber" class="form-control" />
+                                <span asp-validation-for="PharmacyLicenseNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                       
+                    </div>
+                }
+
+                @if (Model.Role == "Nurse")
+                {
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="NurseLicenseNumber">HPCSA Number</label>
+                                <input asp-for="NurseLicenseNumber" class="form-control" />
+                                <span asp-validation-for="NurseLicenseNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                      
+                    </div>
+
+                }
+                  @if (Model.Role == "Anaesthesiologist")
+                {
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="AnaesthesiologistLicenseNumber">HPCSA Number</label>
+                                <input asp-for="AnaesthesiologistLicenseNumber" class="form-control" />
+                                <span asp-validation-for="AnaesthesiologistLicenseNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                      
+                    </div>
+
+                }
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Password"></label>
+                            <div class="input-group">
+                                <input asp-for="Password" class="form-control" id="myInput" type="password" />
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" onclick="myFunction()"> Show
+                                    </div>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ConfirmPassword"></label>
+                            <div class="input-group">
+                                <input asp-for="ConfirmPassword" class="form-control" id="myInput1" type="password" />
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" onclick="myFunction1()"> Show
+                                    </div>
+                                </div>
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" asp-for="Role" />
+                <div class="centered-container">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info" onclick="window.location.href='@Url.Action("Users", "Admin")'">Back</button>
+                        <input type="submit" value="Submit" class="btn btn-success" />
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myInput");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+
+        function myFunction1() {
+            var x = document.getElementById("myInput1");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
+}
+
+
