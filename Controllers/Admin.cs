@@ -325,6 +325,138 @@ namespace WIRKDEVELOPER.Controllers
             _Context.treatmentCodes.Update(treatmentCode);
             _Context.SaveChanges();
             return RedirectToAction("TreatmentCodeList");
+        } 
+        public IActionResult ViewCondition()
+        {
+            IEnumerable<Condition> conditions = _Context.conditions;
+            return View(conditions);
+        }
+        public IActionResult AddCondiion()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddCondition(Condition conditions)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.conditions.Add(conditions);
+                _Context.SaveChanges();
+                return RedirectToAction("AddCondition");
+            }
+            return View(conditions);
+        }
+        public IActionResult updateCondition(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var list = _Context.treatmentCodes.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return View(list);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updateCondition(Condition conditions)
+        {
+            _Context.conditions.Update(conditions);
+            _Context.SaveChanges();
+            return RedirectToAction("ViewCondition");
+        }
+        public IActionResult ViewVitals()
+        {
+            IEnumerable<PatientVitals> patientVitals = _Context.patientVitals;
+            return View(patientVitals);
+        }
+        public IActionResult AddVitals()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddVitals(PatientVitals patientVitals)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.patientVitals.Add(patientVitals);
+                _Context.SaveChanges();
+                return RedirectToAction("AddVitals");
+            }
+            return View(patientVitals);
+        }
+        public IActionResult updateVitals(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var list = _Context.treatmentCodes.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return View(list);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updateVitals(PatientVitals patientVitals)
+        {
+            _Context.patientVitals.Update(patientVitals);
+            _Context.SaveChanges();
+            return RedirectToAction("ViewVitals");
+        }
+        public IActionResult ViewBeds()
+        {
+            IEnumerable<Bed> beds = _Context.beds;
+            return View(beds);
+        }
+        public IActionResult AddBeds()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddBeds(Bed beds)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.beds.Add(beds);
+                _Context.SaveChanges();
+                return RedirectToAction("AddBed");
+            }
+            return View(beds);
+        }
+        public IActionResult updateBeds(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var list = _Context.treatmentCodes.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return View(list);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updateBed(Bed beds)
+        {
+            _Context.beds.Update(beds);
+            _Context.SaveChanges();
+            return RedirectToAction("ViewBed");
         }
 
     }
