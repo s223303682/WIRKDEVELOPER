@@ -5,21 +5,9 @@
 }
 <!DOCTYPE html>
 <html>
-    <head></head>
-    <body>
-    @using (Html.BeginForm("SearchPatient", "Surgeon", FormMethod.Get))
-    {
-        <b>search by:</b>
-        @Html.RadioButton("searchby", "Date", true)
-
-        <text>date</text>
-        @Html.RadioButton("searchby", "Name", true)
-        <text>name</text>
-
-        <br>
-        @Html.TextBox("search", "", htmlAttributes: new { @class = "form-control" })
-        <input type="submit" value="search" class="btn btn-info " />
-    }
+<head>
+</head>
+<body>
     <div class=" col-10 text-right">
         <h1> <a asp-controller="Surgeon" asp-action="CreateBooking" style="width:100%">Creating Booking</a></h1>
     </div>
@@ -29,10 +17,10 @@
         <table id="myTable" class=" table table-bordered table-striped table-white">
             <thead>
                 <tr>
-                   
-                   
+
+
                     @* <th>Name</th>
-                    <th>Surname</th> *@
+                <th>Surname</th> *@
                     <th>Gender</th>
                     <th>email</th>
                     <th>date</th>
@@ -44,7 +32,7 @@
                     <th> Update</th>
                     <th> select</th>
 
-                  
+
 
                 </tr>
             </thead>
@@ -53,14 +41,14 @@
                 {
 
                     <tr>
-                       @*  <td>@booking.PatientID</td> *@
+                        @*  <td>@booking.PatientID</td> *@
                         <td>@booking.Gender</td>
                         <td>@booking.EmailAddress</td>
                         <td>@booking.Date</td>
                         <td>@booking.Time</td>
-                        <td>@booking.OperationTheatre</td>
-                        <td>@booking.Treatment</td>
-                        <td>@booking.MedicalProfessionalS</td>
+                        <td>@booking.OperationTheatreID</td>
+                        <td>@booking.OperationTheatreID</td>
+                        <td>@booking.Anaestesiologist</td>
 
                         <td>
                             <div class="">
@@ -72,7 +60,7 @@
                         </td>
                         <td>
                         <td><button onclick="selectRow(this)">Select</button></td>
-                        
+
 
                     </tr>
 
@@ -88,8 +76,8 @@
         <p>NO bookings  has been done</p>
     }
 
-    </body>
-    <script>
+</body>
+<script>
     function selectRow(button) {
         // Get the selected row
         var row = button.parentNode.parentNode;
@@ -102,5 +90,5 @@
         document.getElementById("column1").value = column1Value;
         document.getElementById("column2").value = column2Value;
     }
-    </script>
+</script>
 </html>

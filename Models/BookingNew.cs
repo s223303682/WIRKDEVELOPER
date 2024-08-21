@@ -1,14 +1,12 @@
-
-using Newtonsoft.Json;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Versioning;
-using WIRKDEVELOPER.Areas.Identity.Data;
+using WIRKDEVELOPER.Models.Account;
 namespace WIRKDEVELOPER.Models
 {
     public class BookingNew
     {
+
         [Key]
         public int BookingNewID { get; set; }
 
@@ -17,9 +15,15 @@ namespace WIRKDEVELOPER.Models
         //[ForeignKey("PatientID")]
         //public virtual Patient? patient { get; set; }
         [Required]
+        [DisplayName("Name")]
         public string? BookingPatientName { get; set; }
         [Required]
+        [DisplayName("Surname")]
         public string? BookingPatientSurname { get; set; }
+        [Required]
+        [DisplayName("ID Number")]
+        [MaxLength(13)]
+        public string? BookingPatientIDNUmber { get; set; }
         [Required]
         public string? country { get; set; }
         [Required]
@@ -32,6 +36,7 @@ namespace WIRKDEVELOPER.Models
         public int? Zip { get; set; }
         [Required]
         [DisplayName("Contact Number")]
+        [MaxLength(10)]
         public string? ContactNumber { get; set; }
         [Required]
         public string? Gender { get; set; }
@@ -52,9 +57,9 @@ namespace WIRKDEVELOPER.Models
         public int TreatmentCodeID { get; set; }
         [ForeignKey("TreatmentCodeID")]
         public virtual TreatmentCode? treatmentCode { get; set; }
-        //[Required(ErrorMessage = "Required")]
-        //public int AnaestesiologistID { get; set; }
-        //[ForeignKey("AnaestesiologistID")]
-        //public virtual Anaestesiologist? Anaestesiologist { get; set; }
+        [Required(ErrorMessage = "Required")]
+        public int UserId { get; set; }
+        [ForeignKey("AnaestesiologistID")]
+        public virtual Anaesthesiologist? Anaestesiologist { get; set; }
     }
 }

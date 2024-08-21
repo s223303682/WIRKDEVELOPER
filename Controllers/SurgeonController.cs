@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NuGet.Protocol.Core.Types;
 using System.Security.Claims;
@@ -47,24 +48,26 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult PrescriptionList()
         {
-            IEnumerable<Prescription> list = _Context.prescriptions;
+            IEnumerable<Prescription> list = _Context.prescriptions
+                 .Include(a => a.PharmacyMedication);
+            //.Include(a => a.admission);
             return View(list);
         }
         public IActionResult CreatePrescription()
         {
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            // ViewBag.getPatient = new SelectList(_Context.admission, "PatientID", "PatientName");
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreatePrescription(Prescription prescription)
         {
-            if (ModelState.IsValid)
-            {
-                _Context.prescriptions.Add(prescription);
-                _Context.SaveChanges();
-                return RedirectToAction("PrescriptionList");
-            }
-            return View(prescription);
+            _Context.prescriptions.Add(prescription);
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            // ViewBag.getPatient = new SelectList(_Context.admission, "PatientID", "PatientName");
+            _Context.SaveChanges();
+            return RedirectToAction("PrescriptionList");
         }
         public IActionResult updatePrescription(int? ID)
         {
@@ -105,75 +108,38 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult BookingPatientList()
         {
-            IEnumerable<BookingNew> list = _Context.bookingnew;
+            IEnumerable<BookingNew> list = _Context.bookingnew
+                .Include(a => a.OperationTheatre)
+                .Include(s => s.Anaestesiologist)
+                .Include(s => s.treatmentCode);
+
+
             return View(list);
         }
         public IActionResult CreateBookingPatient()
         {
+            ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
+            ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "FirstName", "LastName");
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateBookingPatient(BookingNew bookingNew)
         {
-            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //bookingPatient.BookingPatientID = user;
-            //int totalbcountry = 0;
-            //int totalprovince = 0;
-            //int totalcity = 0;
-            //int totalsurbub = 0;
-            if (ModelState.IsValid)
-            {
-                //    totalbcountry += Convert.ToInt32(bookingPatient.country);
-                //    totalprovince += Convert.ToInt32(bookingPatient.province);
-                //    totalcity += Convert.ToInt32(bookingPatient.City);
-                //    totalsurbub += Convert.ToInt32(bookingPatient.Surbub);
 
-                //    if (totalbcountry <= 1)
-                //    {
-                //        TempData["Results"] = "South Africa";
-                //    }
-                //    else if(totalprovince <= 2)
-                //    {
-                //        TempData["Results"] = "Eastern Cape";
-                //        if (totalprovince <= 2)
-                //        {
-                //            if (totalcity <= 201)
-                //            {
-                //                TempData["Results"] = "Port Elizabeth";
-                //                if (totalsurbub <= 101)
-                //                {
-                //                    TempData["Results"] = "summerstrand";
-                //                }
-                //                else if (totalsurbub <= 102)
-                //                {
-                //                    TempData["Results"] = "North end";
-                //                }
-                //            }
-                //            else if (totalcity <= 202)
-                //            {
-                //                TempData["Results"] = "East London";
-
-                //            }
-                //        }
-                //    }
-
-                //    else if (totalprovince <= 3)
-                //    {
-                //        TempData["Results"] = "Cape Town";
-
-
-                //    }
-
-
-                _Context.bookingnew.Add(bookingNew);
+            _Context.bookingnew.Add(bookingNew);
+            ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "operationTheatresID", "OperationTheatreName");
+            ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "FirstName", "LastName");
             _Context.SaveChanges();
             return RedirectToAction("BookingPatientList");
         }
-                return View(bookingNew);
-    }
+        //return View(bookingNew);
 
-    public IActionResult updateBookingPatient(int? ID)
+
+
+        public IActionResult updateBookingPatient(int? ID)
     {
         if (ID == null || ID == 0)
         {
@@ -210,13 +176,20 @@ namespace WIRKDEVELOPER.Controllers
         return RedirectToAction("BookingPatientList");
 
     }
-    public IActionResult BookingList()
+        public IActionResult BookingList()
         {
-            IEnumerable<Booking> list = _Context.bookings;
+
+            IEnumerable<Booking> list = _Context.bookings
+                 .Include(a => a.OperationTheatre)
+                .Include(s => s.Anaestesiologist)
+                .Include(s => s.treatmentCode);
             return View(list);
         }
         public IActionResult CreateBooking()
         {
+            ViewBag.getgetOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
+            ViewBag.getTreatmentCodeID = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "FirstName", "LastName");
             ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", "PatientSurname");
             return View();
         }
@@ -224,17 +197,17 @@ namespace WIRKDEVELOPER.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateBooking(Booking booking)
         {
-            
 
-            if (ModelState.IsValid)
-            {
-                
-                _Context.bookings.Add(booking);
-                _Context.SaveChanges();
-                ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", "PatientSurname");
-                return RedirectToAction("BookingList");
-            }
-            return View(booking);
+
+            _Context.bookings.Add(booking);
+            ViewBag.getgetOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
+            ViewBag.getTreatmentCodeID = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "FirstName", "LastName");
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", "PatientSurname");
+            _Context.SaveChanges();
+
+            return RedirectToAction("BookingList");
+
         }
         public IActionResult updateBooking(int? ID)
         {

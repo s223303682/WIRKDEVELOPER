@@ -107,68 +107,41 @@
 								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Dashboard</span>
 							</a>
 						</li>
-						<li class="sidebar-item align-right">
-							<a class="dropdown-toggle" data-toggle="dropdown">
-								<i class="fa-align-right" data-feather="menu"></i> <span class="align-middle">Patient</span>
-							</a>
-							<div class="dropdown-menu ">
-								<a class="dropdown-item" asp-controller="Surgeon" asp-action="SearchPatient">
-									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Search</span>
-								</a>
-								<a class="dropdown-item" asp-controller="Surgeon" asp-action="CreateBookingPatient">
-									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Add</span>
-								</a>
-							</div>
-						</li>
-						<li class="sidebar-item align-middle">
-							<a class="dropdown-toggle align-middle" data-toggle="dropdown">
-								<i class="ali" data-feather="menu"></i> <span class="align-middle">Booking</span>
-							</a>
-							<div class="dropdown-menu">
-								<ul>
-									<li>
-										<a class="dropdown-item" asp-controller="Surgeon" asp-action="CreateBooking">
-											<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Create</span>
-										</a>
-									</li>
-									<li>
-										<a class="dropdown-item" asp-controller="Surgeon" asp-action="BookingList">
-											<i class="align-middle" data-feather="edit"></i> <span class="align-middle">View</span>
-										</a>
-									</li>
-								</ul>
-								
-								
-							</div>
-						</li>
-
 						<li class="sidebar-item">
-							<a class="dropdown-toggle" data-toggle="dropdown">
-								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Prescription</span>
+							<a asp-controller="Surgeon" asp-action="SearchPatient" class="sidebar-link">
+								<i class="align-middle" data-feather="home"></i> <span class="align-middle">Patient</span>
 							</a>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" asp-controller="Surgeon" asp-action="CreatePrescription">
-									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Create</span>
-								</a>
-								<a class="dropdown-item" asp-controller="Surgeon" asp-action="PrescriptionList">
-									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">View</span>
-								</a>
-							</div>
 						</li>
-
-
 						<li class="sidebar-item">
-							<a asp-controller="Anaesthesiologist" asp-action="Alerts" class="sidebar-link">
-								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Alerts</span>
+							<a asp-controller="Surgeon" asp-action="CreateBooking" class="sidebar-link">
+								<i class="align-middle" data-feather="home"></i> <span class="align-middle">Booking</span>
 							</a>
 						</li>
-
+						<li class="sidebar-item">
+							<a asp-controller="Surgeon" asp-action="CreatePrescription" class="sidebar-link">
+								<i class="align-middle" data-feather="home"></i> <span class="align-middle">Prescription</span>
+							</a>
+						</li>
 						<li class="sidebar-item">
 							<a asp-controller="Surgeon" asp-action="ToDoList" class="sidebar-link">
 								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">To-to list</span>
 							</a>
 						</li>
-
+						<li class="sidebar-item">
+							<a asp-controller="Surgeon" asp-action="Alerts" class="sidebar-link">
+								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Alerts</span>
+							</a>
+						</li>
+						<li class="sidebar-item">
+							<a asp-controller="Admin" asp-action="CreateTreatmentCode" class="sidebar-link">
+								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Treatement</span>
+							</a>
+						</li>
+						<li class="sidebar-item">
+							<a asp-controller="Admin" asp-action="CreateOperatingTheatre" class="sidebar-link">
+								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Theatr</span>
+							</a>
+						</li>
 					</ul>
 
 				</div>

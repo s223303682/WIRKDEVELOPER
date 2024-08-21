@@ -1,8 +1,13 @@
 ﻿@model IEnumerable<WIRKDEVELOPER.Models.Prescription>;
 @{
-  
+
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
+@using Microsoft.AspNetCore.Identity
+@using WIRKDEVELOPER.Areas.Identity.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 <div class=" col-10 text-right">
     <a asp-controller="Surgeon" asp-action="CreatePrescription" style="width:100%">CREATE NEW PRESCRIPTION</a>
 </div>
@@ -19,12 +24,12 @@
                 <th>medication</th>
                 <th>quantity</th>
                 <th>Instructions</th>
-               
+
                 <th>urgent</th>
                 <th>status</th>
                 <th>Update</th>
                 <th>Delete</th>
-               
+
 
             </tr>
         </thead>
@@ -35,8 +40,8 @@
                 <tr>
                     @* <td>@prescription.PatientID</td> *@
                     <td>@prescription.Date</td>
-                    <td>@prescription.prescriber</td>
-                    <td>@prescription.Medication</td>
+                    @*  <td>@UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName</td> *@
+                    <td>@prescription.PharmacyMedication.PharmacyMedicationName</td>
                     <td>@prescription.Quantity</td>
                     <td>@prescription.Instructions</td>
                     <td>@prescription.Urgent</td>

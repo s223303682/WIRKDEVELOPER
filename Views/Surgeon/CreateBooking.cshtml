@@ -15,7 +15,7 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
        
-       @*  <div class="col">
+        <div class="col">
             <div class="form-group">
                 <label asp-for="PatientID"></label>
                 <div>
@@ -24,7 +24,7 @@
                 <div class="invalid-feedback"></div>
                 <span asp-validation-for="PatientID" class=" text-danger"></span>
             </div>
-        </div> *@
+        </div>
         <div class="col">
             <div class="form-group">
                 <label asp-for="Gender"></label>
@@ -71,39 +71,44 @@
         </div>
     </div>
     <div class="row">
-          <div class="col">
-        <div class="form-group">
-        <label asp-for="OperationTheatreID"></label>
-        <div>
-                    <input asp-for="OperationTheatreID" class="form-control" id="InvalidName" required />
-        </div>
-        <div class="invalid-feedback"></div>
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="OperationTheatreID"></label>
+                <select id="PurposeDropdown" asp-for="OperationTheatreID" class="form-control" asp-items="@ViewBag.getOperationTheatre" required>
+                    <option selected disabled>--select Theatre</option>
+                </select>
+                <div class="invalid-feedback"></div>
                 <span asp-validation-for="OperationTheatreID" class=" text-danger"></span>
-        </div>
-        </div>
-        <div class="col">
-        <div class="form-group">
-        <label asp-for="TreatmentID"></label>
-        <div>
-        <input  asp-for="TreatmentID" class="form-control" id="InvalidName" required />
-        </div>
-        <div class="invalid-feedback"></div>
-        <span asp-validation-for="TreatmentID" class=" text-danger"></span>
-        </div>
+            </div>
         </div>
         <div class="col">
-        <div class="form-group">
-        <label asp-for="MedicalProfessionalS"></label>
-        <div>
-        <input  asp-for="MedicalProfessionalID" class="form-control" id="InvalidName" required />
+            <div class="form-group">
+                <label asp-for="UserId"></label>
+                <select id="PurposeDropdown" asp-for="UserId" class="form-control" asp-items="@ViewBag.getAnaesthesiologist" id="validationName" required>
+                    <option selected disabled>--select Anaesthesiologists</option>
+                </select>
+                <div class="invalid-feedback"></div>
+                <span asp-validation-for="UserId" class=" text-danger"></span>
+            </div>
         </div>
-        <div class="invalid-feedback"></div>
-        <span asp-validation-for="MedicalProfessionalID" class=" text-danger"></span>
-        </div>
-        </div>
-        
-    </div><br>
+        <div class="col" id="users">
+            <div class="user">
 
+
+                <select class="form-control" asp-for='TreatmentCodeID' placeholder="treatmentCode" asp-items="@ViewBag.getTreatmentCode" required>
+                    <option selected disabled>--Select TreatmentCode</option>
+
+                </select>
+                <span asp-validation-for="TreatmentCodeID" class=" text-danger"></span>
+            </div>
+
+            <button style="width:10%" id='add-user'>&plus; more treamentCode</button><br>
+        </div>
+
+
+
+
+    </div>
 
     <div class="row">
         <div class="col">
