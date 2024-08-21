@@ -229,25 +229,27 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult IndexStock()
         {
-            IEnumerable<PharmStock> objList = _Context.pharmStock;
+            IEnumerable<PharmStock> objList = _Context.pharmStock
+              .Include(a => a.PharmacyMedication);
             return View(objList);
 
         }
         public IActionResult AddStock()
         {
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddStock(PharmStock pharmStocks)
         {
-            if (ModelState.IsValid)
-            {
-                _Context.pharmStock.Add(pharmStocks);
-                _Context.SaveChanges();
+           
+            _Context.pharmStock.Add(pharmStocks);
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            _Context.SaveChanges();
                 return RedirectToAction("IndexStock");
-            }
-            return View(pharmStocks);
+          
+            //return View(pharmStocks);
 
         }
 		public IActionResult UpdateStock(int? ID)

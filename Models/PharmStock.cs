@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WIRKDEVELOPER.Models
 {
@@ -16,7 +17,12 @@ namespace WIRKDEVELOPER.Models
 		[Required]
 		[DisplayName(" Date")]
 		public DateTime? Date { get; set; } = DateTime.Now;
+        [DisplayName("Medication")]
+        [Required(ErrorMessage = "Required")]
+        [ForeignKey("Medication")]
+        public int PharmacyMedicationID { get; set; }
+        public virtual PharmacyMedication PharmacyMedication { get; set; }
 
 
-	}
+    }
 }

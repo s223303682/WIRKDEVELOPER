@@ -29,17 +29,18 @@
             <thead class="table-secondary">
                 <tr>
                     <th>
-                        Quantity Ordered
+                        Medication
                     </th>
                     <th>
-                        Quantity Recived
+                        Quantity Ordered
                     </th>
+                   @*  <th>
+                        Quantity Recived
+                    </th> *@
                     <th>
                        Date
                     </th>
-                  @*   <th>
-                        Strength
-                    </th> *@
+                  
 
 
                 </tr>
@@ -49,10 +50,11 @@
                 @foreach (var pharmstock in Model)
                 {
                     <tr scope="row">
+                        <td width="20%">@pharmstock.PharmacyMedication.PharmacyMedicationName</td>
                         <td width="20%">@pharmstock.QuantityOrdered</td>
-                        <td width="20%">@pharmstock.QuantityRecieved</td>
+                      @*   <td width="20%">@pharmstock.QuantityRecieved</td> *@
                         <td width="20%">@pharmstock.Date</td>
-                        @* <td width="20%">@pharmstock.Strength</td> *@
+                      
 
 
                         <td>
