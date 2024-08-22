@@ -9,11 +9,14 @@ namespace WIRKDEVELOPER.Models
         [Key]
         public int PharmStockId { get; set; }
         [Required]
-        
-        public int QuantityOrdered { get; set; }
+		[DisplayName("Quantity")]
+		public int QuantityOrdered { get; set; }
+        [DisplayName("Status")]
+        public string? Status { get; set; } = "Oredred";
 
-        [Required]
-        public int QuantityRecieved { get; set; }
+		[Required]
+		[DisplayName("Quantity")]
+		public int QuantityRecieved { get; set; }
 		[Required]
 		[DisplayName(" Date")]
 		public DateTime? Date { get; set; } = DateTime.Now;
