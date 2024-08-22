@@ -21,20 +21,23 @@ namespace WIRKDEVELOPER.Controllers
 		}
 		public IActionResult IndexViewPatient(DateTime searchDate)
 		{
-			//IEnumerable<ViewPatient> objList = _Context.ViewRecords;
-			//return View(objList);
-			var patient = _Context.viewrecords.Where(e => e.Date == searchDate.Date).ToList();
-			return View(patient);
-		}
-		public IActionResult ViewPatient()
-		{
-			return View();
+            
+            var patient = _Context.admission.Where(e => e.Date == searchDate.Date).ToList();
+            return View(patient);
+   //         var patient = _Context.viewrecords.Where(e => e.Date == searchDate.Date).ToList();
+			//return View(patient);
 		}
 		public IActionResult ViewPatientRec()
 		{
 			return View();
 		}
-		public IActionResult IndexAnVitals()
+        public IActionResult IndexViewBookedPatients()
+        {
+            
+            return View();
+           
+        }
+        public IActionResult IndexAnVitals()
 		{
 			IEnumerable<AnVitals> objList = _Context.anvitals;
 			return View(objList);
@@ -190,35 +193,55 @@ namespace WIRKDEVELOPER.Controllers
             return View(vitalranges);
 
         }
-        public IActionResult UpdateVitalRanges(int? VitalRangeID)
+        public IActionResult UpdateVitalRanges(int? ID)
         {
-            if (VitalRangeID == null || VitalRangeID == 0)
-            {
-                return NotFound();
-            }
-            var obj = _Context.vitalranges.Find(VitalRangeID);
 
-            if (VitalRangeID == null)
+            if (ID == null || ID == 0)
             {
                 return NotFound();
             }
-            return View(obj);
+            var objList = _Context.vitalranges.Find(ID);
+            if (objList == null)
+            {
+                return NotFound();
+            }
+            //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            return View(objList);
+
+            //if (VitalRangeID == null || VitalRangeID == 0)
+            //{
+            //    return NotFound();
+            //}
+            //var obj = _Context.vitalranges.Find(VitalRangeID);
+
+            //if (VitalRangeID == null)
+            //{
+            //    return NotFound();
+            //}
+            //return View(obj);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UpdateVitalRanges(VitalRanges vitalRanges)
+        public IActionResult UpdateVitalRanges(int ID, VitalRanges vitalRanges)
         {
-            if (ModelState.IsValid)
-            {
-                _Context.vitalranges.Update(vitalRanges);
-                _Context.SaveChanges();
-                return RedirectToAction("IndexVitalRanges");
-            }
-            return View(vitalRanges);
+
+
+            _Context.vitalranges.Update(vitalRanges);
+            _Context.SaveChanges();
+            return RedirectToAction("IndexVitalRanges");
+
+            //if (ModelState.IsValid)
+            //{
+            //    _Context.vitalranges.Update(vitalRanges);
+            //    _Context.SaveChanges();
+            //    return RedirectToAction("IndexVitalRanges");
+            //}
+            //return View(vitalRanges);
         }
-        public IActionResult DeleteVitalRanges(int? VitalRangeID)
+        public IActionResult DeleteVitalRanges(int? ID)
         {
-            var obj = _Context.vitalranges.Find(VitalRangeID);
+
+            var obj = _Context.vitalranges.Find(ID);
 
             if (obj == null)
             {
@@ -227,6 +250,16 @@ namespace WIRKDEVELOPER.Controllers
             _Context.vitalranges.Remove(obj);
             _Context.SaveChanges();
             return RedirectToAction("IndexVitalRanges");
+
+            //var obj = _Context.vitalranges.Find(VitalRangeID);
+
+            //if (obj == null)
+            //{
+            //    return NotFound();
+            //}
+            //_Context.vitalranges.Remove(obj);
+            //_Context.SaveChanges();
+            //return RedirectToAction("IndexVitalRanges");
         }
         //public PatientController(ApplicationDbContext context)
         //{

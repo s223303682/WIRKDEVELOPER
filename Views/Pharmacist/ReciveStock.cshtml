@@ -32,18 +32,18 @@
                         Medication
                     </th>
                     <th>
-                        Quantity Ordered
+                        Quantity Recieved
                     </th>
-                   @*  <th>
-                        Quantity Recived
-                    </th> *@
+                    @*  <th>
+                Quantity Recived
+                </th> *@
                     <th>
-                       Date
+                        Date
                     </th>
                     <th>
                         Status
                     </th>
-                  
+
 
 
                 </tr>
@@ -55,19 +55,20 @@
                     <tr scope="row">
                         <td width="20%">@pharmstock.PharmacyMedication.PharmacyMedicationName</td>
                         <td width="20%">@pharmstock.QuantityOrdered</td>
-                      @*   <td width="20%">@pharmstock.QuantityRecieved</td> *@
+                        @*   <td width="20%">@pharmstock.QuantityRecieved</td> *@
                         <td width="20%">@pharmstock.Date</td>
-                      
+                        <td width="20%">@pharmstock.Status</td>
 
 
-                        <td>
+
+                       @*  <td>
                             <a asp-controller="Pharmacist" asp-action="UpdateStock" asp-route-ID="@pharmstock.PharmStockId" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
 
                             <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-ID="@pharmstock.PharmStockId" class="btn btn-danger">
                                 <i class="bi bi-trash3-fill"></i>Delete
                             </a>
 
-                        </td>
+                        </td> *@
 
                     </tr>
                 }
@@ -89,4 +90,5 @@
 <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js"></script>
+
 
