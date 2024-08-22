@@ -13,6 +13,7 @@
         <form method="post" asp-action="UpdateStock">
             <div class="border p-3 #FBD603">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+                <input asp-for="PharmStockId" hidden />
                 <div class="row" id="users">
 
 
@@ -23,7 +24,7 @@
 
                             <div class="col-md-4">
                                 <h4><label asp-for="PharmacyMedicationID"></label></h4>
-                                <select id="PurposeDropdown" asp-for="PharmacyMedicationID" class="form-control" asp-items="@ViewBag.getMedication" id="validationName" readonly>
+                                <select hidden id="PurposeDropdown" asp-for="PharmacyMedicationID" class="form-control" asp-items="@ViewBag.getMedication" id="validationName" readonly>
                                     <option selected disabled>--Select Medication--</option>
                                 </select>
                                 <span asp-validation-for="PharmacyMedicationID" class="text-danger"></span>
