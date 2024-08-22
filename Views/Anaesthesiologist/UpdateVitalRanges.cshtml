@@ -10,7 +10,7 @@
 
                 <h3 class="card-title text-white mt-2" id="exampleModalLabel">VITAL RANGES</h3>
             </div>
-            <form method="post" asp-action="VitalRanges">
+            <form method="post" asp-action="UpdateVitalRanges">
                 <div class="border p-3 #FBD603">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
 
@@ -66,10 +66,10 @@
                                             <span asp-validation-for="Units" class="text-danger"></span>
                                             @* <h4><label asp-for="Units"></label></h4>
                                             <select id="PurposeDropdown" asp-for="Units" class="form-control" id="validationName" required>
-                                                <option value="Select" class="bg-opacity-50">Select</option>
-                                                <option value="bpm">bpm</option>
-                                                <option value="mmHg">mmHg</option>
-                                                <option value="°C">°C</option>
+                                            <option value="Select" class="bg-opacity-50">Select</option>
+                                            <option value="bpm">bpm</option>
+                                            <option value="mmHg">mmHg</option>
+                                            <option value="°C">°C</option>
                                             </select>
                                             <span asp-validation-for="Units" class="text-danger"></span> *@
                                         </div>
@@ -86,12 +86,12 @@
                                             <h4><label asp-for="Units"></label></h4>@*These names come from our properties in the model *@
                                             <input asp-for="Units" class="form-control box mb-2" type="text" placeholder="type.." />
                                             <span asp-validation-for="Units" class="text-danger"></span>
-                                           @*  <h4><label asp-for="Units"></label></h4>
+                                            @*  <h4><label asp-for="Units"></label></h4>
                                             <select id="PurposeDropdown" asp-for="Units" class="form-control" id="validationName" required>
-                                                <option value="Select" class="bg-opacity-50">Select</option>
-                                                <option value="bpm">bpm</option>
-                                                <option value="mmHg">mmHg</option>
-                                                <option value="°C">°C</option>
+                                            <option value="Select" class="bg-opacity-50">Select</option>
+                                            <option value="bpm">bpm</option>
+                                            <option value="mmHg">mmHg</option>
+                                            <option value="°C">°C</option>
                                             </select>
                                             <span asp-validation-for="Units" class="text-danger"></span> *@
                                         </div>
@@ -101,32 +101,33 @@
                                     <div class="form-group row">
                                         <div class="col-4 offset-9 row">
                                             <div class="col">
-                                                <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="SAVE" />
-@*                                                 <a asp-controller="Anaesthesiologist" asp-action="IndexVitalRanges"  class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>SAVE</a>
- *@
+                                                <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Update" />
+                                                @*                                                 <a asp-controller="Anaesthesiologist" asp-action="IndexVitalRanges"  class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>SAVE</a>
+                                                *@
                                             </div>
-                                             @* <div class="col">
+                                            @* <div class="col">
                                             <a asp-action="IndexScree" class="btn btn-danger w-75"><i class="bi bi-arrow-left-circle"></i>BACK</a>
                                             </div> *@
                                         </div>
                                     </div>
-                                </div>                       
+                                </div>
                             </div>
                         </div>
                     </div>
-                   @*  <div class=" row-2">
-                        <div class="col-8  row">
-                            <div class="col">
-                                <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Vital History" />
-                            </div>
-                            <div class="col">
-                                <a asp-action="IndexScree" class="btn btn-info w-75"><i class="bi bi-arrow-left-circle"></i>Medical History</a>
-                            </div>
-                        </div>
+                    @*  <div class=" row-2">
+                    <div class="col-8  row">
+                    <div class="col">
+                    <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Vital History" />
+                    </div>
+                    <div class="col">
+                    <a asp-action="IndexScree" class="btn btn-info w-75"><i class="bi bi-arrow-left-circle"></i>Medical History</a>
+                    </div>
+                    </div>
                     </div> *@
             </form>
         </div>
     </div>
 
 </div>
+
 

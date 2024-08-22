@@ -53,5 +53,8 @@ namespace WIRKDEVELOPER.Models
         public int TreatmentID { get; set; }
         [ForeignKey("TreatmentID")]
         public string PostalCode { get; set; }
+        [Required]
+        [DisplayName(" Date")]
+        public DateTime? Date { get; set; } = DateTime.Now;
     }
 }

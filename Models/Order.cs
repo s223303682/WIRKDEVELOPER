@@ -45,9 +45,9 @@ namespace WIRKDEVELOPER.Models
 
 
 		[DisplayName("Status")]
-		public string? Status { get; set; }
+		public string? Status { get; set; } = "Odered";
 
-        [DisplayName("Status")]
+        [DisplayName("Notes")]
         public string? Notes { get; set; }
 
         [DisplayName("Status")]
