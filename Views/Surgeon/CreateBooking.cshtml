@@ -18,9 +18,9 @@
         <div class="col">
             <div class="form-group">
                 <label asp-for="PatientID"></label>
-                <div>
-                    <input asp-for="PatientID" class="form-control" id="Name" required />
-                </div>
+        <select id="PurposeDropdown" asp-for="PatientID" class="form-control" asp-items="@ViewBag.getPatient" required>
+        <option selected disabled>--select Patient</option>
+        </select>
                 <div class="invalid-feedback"></div>
                 <span asp-validation-for="PatientID" class=" text-danger"></span>
             </div>

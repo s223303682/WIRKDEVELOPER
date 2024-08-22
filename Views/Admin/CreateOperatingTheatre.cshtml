@@ -1,6 +1,6 @@
 ﻿@model WIRKDEVELOPER.Models.OperationTheatre;
 @{
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
 <div class="row">
     <div class="col">
@@ -20,12 +20,12 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <label asp-for="TheatreName"></label>
+                <label asp-for="OperationTheatreName"></label>
                 <div>
-                    <input asp-for="TheatreName" class="form-control" id="Name" required />
+                    <input asp-for="OperationTheatreName" class="form-control" id="Name" required />
                 </div>
                 <div class="invalid-feedback"></div>
-                <span asp-validation-for="TheatreName" class=" text-danger"></span>
+                <span asp-validation-for="OperationTheatreName" class=" text-danger"></span>
             </div>
         </div>
     </div>
