@@ -84,14 +84,18 @@ namespace WIRKDEVELOPER.Controllers
         //}
         public IActionResult PharmIndexOrder()
         {
-            IEnumerable<Order> objList = _Context.order;
+            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication);
             return View(objList);
+            //IEnumerable<Order> objList = _Context.order;
+            //return View(objList);
 
         }
         public IActionResult AllIndexOrder()
         {
-            IEnumerable<Order> objList = _Context.order;
+            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication);
             return View(objList);
+            //IEnumerable<Order> objList = _Context.order;
+            //return View(objList);
 
         }
         public IActionResult IndexMedication()
@@ -138,7 +142,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             return View(objList);
 
         }
@@ -149,6 +153,7 @@ namespace WIRKDEVELOPER.Controllers
             //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //bookSurgery.PatientID = user;
             _Context.order.Update(order);
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             _Context.SaveChanges();
             return RedirectToAction("PharmIndexOrder");
         }
@@ -163,7 +168,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             return View(objList);
 
         }
@@ -174,6 +179,7 @@ namespace WIRKDEVELOPER.Controllers
             //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //bookSurgery.PatientID = user;
             _Context.order.Update(order);
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             _Context.SaveChanges();
             return RedirectToAction("PharmIndexOrder");
         }
@@ -213,7 +219,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 return NotFound();
             }
-
+            //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             return View(objList);
 
         }
@@ -224,6 +230,7 @@ namespace WIRKDEVELOPER.Controllers
             //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //bookSurgery.PatientID = user;
             _Context.prescriptions.Update(prescription);
+            //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             _Context.SaveChanges();
             return RedirectToAction("PharmPrescriptionList");
         }
@@ -263,8 +270,8 @@ namespace WIRKDEVELOPER.Controllers
 			{
 				return NotFound();
 			}
-
-			return View(objList);
+            //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            return View(objList);
 
 		}
 		[HttpPost]
@@ -274,7 +281,8 @@ namespace WIRKDEVELOPER.Controllers
 			//var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			//bookSurgery.PatientID = user;
 			_Context.pharmStock.Update(pharmStocks);
-			_Context.SaveChanges();
+            //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            _Context.SaveChanges();
 			return RedirectToAction("IndexStock");
 		}
 

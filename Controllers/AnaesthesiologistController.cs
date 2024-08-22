@@ -114,30 +114,47 @@ namespace WIRKDEVELOPER.Controllers
         }
 		public IActionResult NewUpdateOrder(int? ID)
 		{
-			if (ID == null || ID == 0)
-			{
-				return NotFound();
-			}
-			var obj = _Context.order.Find(ID);
 
-			if (ID == null)
-			{
-				return NotFound();
-			}
-			return View(obj);
-		}
+
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var objList = _Context.order.Find(ID);
+            if (objList == null)
+            {
+                return NotFound();
+            }
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            return View(objList);
+            //if (ID == null || ID == 0)
+            //{
+            //	return NotFound();
+            //}
+            //var obj = _Context.order.Find(ID);
+
+            //if (ID == null)
+            //{
+            //	return NotFound();
+            //}
+            //return View(obj);
+        }
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult NewUpdateOrder(Order order)
 		{
-			if (ModelState.IsValid)
-			{
-				_Context.order.Update(order);
-				_Context.SaveChanges();
-				return RedirectToAction("IndexOrder");
-			}
-			return View(order);
-		}
+            _Context.order.Update(order);
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            _Context.SaveChanges();
+            return RedirectToAction("IndexOrder");
+            //if (ModelState.IsValid)
+            //{
+            //	_Context.order.Update(order);
+            //	_Context.SaveChanges();
+            //	return RedirectToAction("IndexOrder");
+            //}
+            //return View(order);
+        }
 		public IActionResult DeleteOrder(int? ID)
 		{
 			var obj = _Context.order.Find(ID);
@@ -218,17 +235,18 @@ namespace WIRKDEVELOPER.Controllers
 
         public IActionResult SearchPatient(string patientName)
         {
-            
+
 
             //var order= _Context.order
             //                      .Where(o => o.Patient.Contains(patientName))
             //                      .ToList();
-            
+
 
             //return View(order);
-
-            IEnumerable<Order> objList = _Context.order;
+            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication);
             return View(objList);
+            //IEnumerable<Order> objList = _Context.order;
+            //return View(objList);
         }
 		//public IActionResult ListOrder(Order order)
 		//{

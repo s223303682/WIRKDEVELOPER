@@ -1,7 +1,7 @@
 ﻿@model WIRKDEVELOPER.Models.Order
 @{
 
-    Layout = "~/Views/Shared/Pharmacy.cshtml";
+    Layout = "~/Views/Shared/AnaesthesiologistLayout.cshtml";
 }
 <!DOCTYPE html>
 <html>
@@ -20,7 +20,7 @@
 
                     <h3 class="card-title text-white mt-2" id="exampleModalLabel">ORDER ANESTHETICS</h3>
                 </div>
-                <form method="post" asp-action="updatePharmIndexOrder">
+                <form method="post" asp-action="NewUpdateOrder">
                     <div class="border p-3 #FBD603">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
                         <input asp-for="AnOrderID" hidden />
@@ -61,8 +61,8 @@
                                                 <option selected disabled>--Select dosage--</option>
                                             </select>
                                             <span asp-validation-for="PharmacyMedicationID" class="text-danger"></span>
-                                           @*  <h4><label asp-for="Medicationordered"></label></h4> *@@*These names come from our properties in the model *@
-                                           @*  <input asp-for="Medicationordered" class="form-control box mb-2" type="text" placeholder="select" readonly />
+                                            @*  <h4><label asp-for="Medicationordered"></label></h4> *@@*These names come from our properties in the model *@
+                                            @*  <input asp-for="Medicationordered" class="form-control box mb-2" type="text" placeholder="select" readonly />
                                             <span asp-validation-for="Medicationordered" class="text-danger"></span> *@
                                         </div>
                                         <div class="col-md-2">
@@ -116,22 +116,22 @@
                                             <span asp-validation-for="Urgent" class="text-danger"></span>
                                         </div>
                                         @* <div class="col-md-2">
-                                            <h4><label asp-for="Status"></label></h4>
-                                            <select id="PurposeDropdown" asp-for="Status" class="form-control" id="validationName" required>
-                                                <option value="Select" class="bg-opacity-50">Select</option>
-                                                <option value="Ordered">Ordered</option>
-                                                <option value="Received">Recieved</option>
-                                             
-                                            </select>
-                                            <span asp-validation-for="Status" class="text-danger"></span>
+                                        <h4><label asp-for="Status"></label></h4>
+                                        <select id="PurposeDropdown" asp-for="Status" class="form-control" id="validationName" required>
+                                        <option value="Select" class="bg-opacity-50">Select</option>
+                                        <option value="Ordered">Ordered</option>
+                                        <option value="Received">Recieved</option>
+
+                                        </select>
+                                        <span asp-validation-for="Status" class="text-danger"></span>
                                         </div> *@
                                         <div class="col-md-2">
                                             <h4><label asp-for="Status"></label></h4>
                                             <select id="PurposeDropdown" asp-for="Status" class="form-control" id="validationName" required>
                                                 <option value="Select" class="bg-opacity-50">Select</option>
-                                                <option value="Dispensed">Dispense</option>
+                                                <option value="Received">Received</option>
                                                 @* <option value="Received">Recieved</option> *@
-                                               
+
                                             </select>
                                             <span asp-validation-for="Status" class="text-danger"></span>
                                         </div>
@@ -142,9 +142,9 @@
                                     <div class="form-group row">
                                         <div class="col-4 offset-9 row">
                                             <div class="col">
-                                                <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Despense" />
+                                                <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Update" />
                                             </div>
-                                          
+
                                         </div>
                                     </div>
                                 </div>
@@ -513,4 +513,6 @@
     </div>
 </body>
 </html>
+
+
 
