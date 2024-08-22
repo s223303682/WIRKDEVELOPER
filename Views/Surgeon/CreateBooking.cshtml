@@ -15,7 +15,7 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
        
-        <div class="col">
+         <div class="col">
             <div class="form-group">
                 <label asp-for="PatientID"></label>
         <select id="PurposeDropdown" asp-for="PatientID" class="form-control" asp-items="@ViewBag.getPatient" required>
@@ -23,7 +23,7 @@
         </select>
                 <div class="invalid-feedback"></div>
                 <span asp-validation-for="PatientID" class=" text-danger"></span>
-            </div>
+            </div> 
         </div>
         <div class="col">
             <div class="form-group">

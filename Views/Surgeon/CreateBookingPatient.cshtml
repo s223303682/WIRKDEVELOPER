@@ -104,9 +104,9 @@
 
         <div class="row">
             <div class="col">
-                <label asp-for="province" for="country">Country:</label>
-                <select asp-for="province" id="country" name="country" onchange="populateStates()" class="form-control">
-                    <option value="">Select Country</option>
+                <label asp-for="province" for="country">province:</label>
+                <select asp-for="province" id="province" name="country" onchange="populateStates()" class="form-control">
+                    <option value="">Select province</option>
                     <option value="Eastern Cape">Eastern Cape</option>
                     <option value="Western Cape">Western Cape</option>
                     <option value="Gauteng">Gauteng</option>
@@ -120,15 +120,15 @@
                 </select>
             </div>
             <div class="col">
-                <label asp-for="City" for="state">State:</label>
-                <select asp-for="City" id="state" name="state" onchange="populateCities()" class="form-control">
-                    <option value="">Select State</option>
+                <label asp-for="City" for="city">city:</label>
+                <select asp-for="City" id="city" name="city" onchange="populateCities()" class="form-control">
+                    <option value="">Select city</option>
                 </select>
             </div>
             <div class="col">
-                <label asp-for="Surbub" for="city">City:</label>
-                <select asp-for="Surbub" id="city" name="city" onchange="populateZip()" class="form-control">
-                    <option value="">Select City</option>
+                <label asp-for="Surbub" for="surbub">surbub:</label>
+                <select asp-for="Surbub" id="surbub" name="surbub" onchange="populateZip()" class="form-control">
+                    <option value="">Select surbub</option>
                 </select>
             </div>
             <div class="col">
@@ -208,16 +208,6 @@
 
     </form>
     <script>
-        (function () {
-            var button = document.getElementById("add-user");
-            button.addEventListener('click', function (event) {
-                event.preventDefault();
-                var cln = document.getElementsByClassName("user")[0].cloneNode(true);
-                document.getElementById("users").insertBefore(cln, this);
-                return false;
-            });
-        })();
-
         const countryStateInfo = {
             "North West": ["Mahikeng", "Stella"],
             "Gauteng": ["Johannesburg", "Pretoria"],
@@ -263,14 +253,14 @@
         };
 
         function populateStates() {
-            const countrySelect = document.getElementById("country");
-            const stateSelect = document.getElementById("state");
-            const citySelect = document.getElementById("city");
+            const countrySelect = document.getElementById("province");
+            const stateSelect = document.getElementById("city");
+            const citySelect = document.getElementById("surbub");
             const zipSelect = document.getElementById("zip");
             const selectedCountry = countrySelect.value;
 
-            stateSelect.innerHTML = "<option value=''>Select State</option>";
-            citySelect.innerHTML = "<option value=''>Select City</option>";
+            stateSelect.innerHTML = "<option value=''>Select city</option>";
+            citySelect.innerHTML = "<option value=''>Select surbub</option>";
             zipSelect.innerHTML = "<option value=''>Select zip</option>";
 
             if (selectedCountry) {
@@ -285,12 +275,14 @@
         }
 
         function populateCities() {
-            const stateSelect = document.getElementById("state");
-            const citySelect = document.getElementById("city");
+            const stateSelect = document.getElementById("city");
+            const citySelect = document.getElementById("surbub");
             const zipSelect = document.getElementById("zip");
             const selectedState = stateSelect.value;
 
-            citySelect.innerHTML = "<option value=''>Select City</option>";
+            // citySelect.innerHTML = "<option value=''>Select City</option>";
+            citySelect.innerHTML = "<option value=''>Select surbub</option>";
+            zipSelect.innerHTML = "<option value=''>Select Zip</option>";
 
             if (selectedState) {
                 const cities = stateCityInfo[selectedState];
@@ -303,7 +295,7 @@
             }
         }
         function populateZip() {
-            const citySelect = document.getElementById("city");
+            const citySelect = document.getElementById("surbub");
             const zipSelect = document.getElementById("zip");
             const selectedCity = citySelect.value;
 
@@ -321,6 +313,7 @@
         }
 
     </script>
+   
 </body>
 </html>
 

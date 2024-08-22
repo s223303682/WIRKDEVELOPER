@@ -8,6 +8,6 @@ namespace WIRKDEVELOPER.Models
 		[Key]
 		public int OperationTheatreID { get; set; }
 		[Required]
-		public string? OperationTheatreName { get; set; }
+		public string? OperationTheatreName { get; set; } 
 	}
 }

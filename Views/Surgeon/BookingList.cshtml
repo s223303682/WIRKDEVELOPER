@@ -19,8 +19,7 @@
                 <tr>
 
 
-                    @* <th>Name</th>
-                <th>Surname</th> *@
+                     <th>Name</th>
                     <th>Gender</th>
                     <th>email</th>
                     <th>date</th>
@@ -59,7 +58,7 @@
                             <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Delete</a>
                         </td>
                         <td>
-                        <td><button onclick="selectRow(this)">Select</button></td>
+                        <td><button id="myButton">Take me to a new page</button></td>
 
 
                     </tr>
@@ -77,18 +76,5 @@
     }
 
 </body>
-<script>
-    function selectRow(button) {
-        // Get the selected row
-        var row = button.parentNode.parentNode;
-
-        // Get the column values
-        var column1Value = row.cells[0].innerHTML;
-        var column2Value = row.cells[1].innerHTML;
-
-        // Populate the form fields
-        document.getElementById("column1").value = column1Value;
-        document.getElementById("column2").value = column2Value;
-    }
-</script>
+<script src="~/css/JavaScript.js"></script>
 </html>

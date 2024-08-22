@@ -31,7 +31,7 @@ namespace WIRKDEVELOPER.Models
         [Required(ErrorMessage = "Required")]
         public string? City { get; set; }
         [Required(ErrorMessage = "Required")]
-        public string? Surbub { get; set; }
+        public string? Surbub { get; set; } 
         [Required(ErrorMessage = "Required")]
         public int? Zip { get; set; }
         [Required(ErrorMessage = "Required")]
