@@ -127,13 +127,13 @@
             </div>
             <div class="col">
                 <label asp-for="Surbub" for="city">City:</label>
-                <select asp-for="Surbub" id="city" name="city" class="form-control">
+                <select asp-for="Surbub" id="city" name="city" onchange="populateZip()" class="form-control">
                     <option value="">Select City</option>
                 </select>
             </div>
             <div class="col">
                 <label asp-for="Zip" for="zip">Zip:</label>
-                <select asp-for="Zip" id="zip" name="zip" class="form-control">
+                <select asp-for="Zip" id="zip" name="zip"   class="form-control">
                     <option value="">Select zip</option>
                 </select>
             </div>
@@ -161,7 +161,7 @@
                     <span asp-validation-for="OperationTheatreID" class=" text-danger"></span>
                 </div>
             </div>
-            <div class="col">
+            @* <div class="col">
                 <div class="form-group">
                     <label asp-for="UserId"></label>
                     <select id="PurposeDropdown" asp-for="UserId" class="form-control" asp-items="@ViewBag.getAnaesthesiologist" id="validationName" required>
@@ -170,7 +170,7 @@
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="UserId" class=" text-danger"></span>
                 </div>
-            </div>
+            </div> *@
             <div class="col" id="users">
                 <div class="user">
 
@@ -259,17 +259,19 @@
             "Tongaat": [4399],
             "Greyville": [4001],
             "Malabar": [6020],
-            "Summerstrand": ["6001"]
+            "Summerstrand": [6001]
         };
 
         function populateStates() {
             const countrySelect = document.getElementById("country");
             const stateSelect = document.getElementById("state");
             const citySelect = document.getElementById("city");
+            const zipSelect = document.getElementById("zip");
             const selectedCountry = countrySelect.value;
 
             stateSelect.innerHTML = "<option value=''>Select State</option>";
             citySelect.innerHTML = "<option value=''>Select City</option>";
+            zipSelect.innerHTML = "<option value=''>Select zip</option>";
 
             if (selectedCountry) {
                 const states = countryStateInfo[selectedCountry];
@@ -285,6 +287,7 @@
         function populateCities() {
             const stateSelect = document.getElementById("state");
             const citySelect = document.getElementById("city");
+            const zipSelect = document.getElementById("zip");
             const selectedState = stateSelect.value;
 
             citySelect.innerHTML = "<option value=''>Select City</option>";

@@ -14,38 +14,38 @@ namespace WIRKDEVELOPER.Models
         //public int? PatientID { get; set; }
         //[ForeignKey("PatientID")]
         //public virtual Patient? patient { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         [DisplayName("Name")]
         public string? BookingPatientName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         [DisplayName("Surname")]
         public string? BookingPatientSurname { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         [DisplayName("ID Number")]
         [MaxLength(13)]
         public string? BookingPatientIDNUmber { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         public string? country { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         public string? province { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         public string? City { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         public string? Surbub { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         public int? Zip { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         [DisplayName("Contact Number")]
         [MaxLength(10)]
         public string? ContactNumber { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         public string? Gender { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         public string? email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         [DisplayName("Date of birth")]
         public DateTime DateOfBirth { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         public DateTime? Date { get; set; }
         [Required]
         public DateTime? Time { get; set; }

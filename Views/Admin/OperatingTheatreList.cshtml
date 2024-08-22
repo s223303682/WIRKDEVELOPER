@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<WIRKDEVELOPER.Models.OperationTheatre>
 @{
 
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
 <div class=" col-10 text-right">
     <a asp-controller="Admin" asp-action="CreateOperatingTheatre" style="width:100%"></a>
@@ -23,14 +23,14 @@
             {
 
                 <tr>
-                    <td>@Theatre.TheatreName</td>
+                    <td>@Theatre.OperationTheatreName</td>
                     <td>
                         <div class="">
-                            <a asp-controller="Admin" asp-action="updateOperatingTheatre" asp-route-ID="@Theatre.TheatreID" class=" btn btn-blue-300 mx-1">Update</a>
+                            <a asp-controller="Admin" asp-action="updateOperatingTheatre" asp-route-ID="@Theatre.OperationTheatreID" class=" btn btn-blue-300 mx-1">Update</a>
                         </div>
                     </td>
                     <td>
-                        <a asp-controller="Admin" asp-action="DeleteOperatingTheatre" asp-route-ID="@Theatre.TheatreID" class=" btn btn-blue-300 mx-1">Delete</a>
+                        <a asp-controller="Admin" asp-action="DeleteOperatingTheatre" asp-route-ID="@Theatre.OperationTheatreID" class=" btn btn-blue-300 mx-1">Delete</a>
                     </td>
 
                 </tr>

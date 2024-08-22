@@ -270,7 +270,7 @@ namespace WIRKDEVELOPER.Controllers
 			{
 				return NotFound();
 			}
-            //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             return View(objList);
 
 		}
@@ -281,8 +281,7 @@ namespace WIRKDEVELOPER.Controllers
 			//var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			//bookSurgery.PatientID = user;
 			_Context.pharmStock.Update(pharmStocks);
-            //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            _Context.SaveChanges();
+			_Context.SaveChanges();
 			return RedirectToAction("IndexStock");
 		}
 

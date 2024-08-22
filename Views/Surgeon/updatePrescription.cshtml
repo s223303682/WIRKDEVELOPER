@@ -58,7 +58,12 @@
             <div class="user">
                 <div class="col">
 
-                    <input class="form-control" asp-for="PharmacyMedicationID" type="text" placeholder="Medication" required><br>
+                    <label asp-for="PharmacyMedicationID"></label>
+                    <select id="PurposeDropdown" asp-for="PharmacyMedicationID" class="form-control" asp-items="@ViewBag.getMedication" required>
+                        <option selected disabled>--select Medication</option>
+                    </select>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="PharmacyMedicationID" class=" text-danger"></span>
 
                 </div>
 

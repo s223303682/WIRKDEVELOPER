@@ -1,6 +1,6 @@
 ﻿@model WIRKDEVELOPER.Models.TreatmentCode;
 @{
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
 <!DOCTYPE html>
 <html>
@@ -23,7 +23,7 @@
                 <div class="form-group">
                     <label asp-for="ICDCODE"></label>
                     <div>
-                        <input type="email" asp-for="ICDCODE" class="form-control" id="InvalidName" required />
+                        <input  asp-for="ICDCODE" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="ICDCODE" class=" text-danger"></span>
@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <label asp-for="Description"></label>
                     <div>
-                        <input type="email" asp-for="Description" class="form-control" id="InvalidName" required />
+                        <input  asp-for="Description" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="Description" class=" text-danger"></span>
