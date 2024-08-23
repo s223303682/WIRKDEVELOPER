@@ -21,13 +21,13 @@ namespace WIRKDEVELOPER.Controllers
 		}
 		public IActionResult IndexViewPatient(DateTime searchDate)
 		{
-            
-            var patient = _Context.admission.Where(e => e.Date == searchDate.Date).ToList();
+
+            //var patient = _Context.admission.Where(e => e.Date == searchDate.Date).ToList();
+            //return View(patient);
+            var patient = _Context.viewrecords.Where(e => e.Date == searchDate.Date).ToList();
             return View(patient);
-   //         var patient = _Context.viewrecords.Where(e => e.Date == searchDate.Date).ToList();
-			//return View(patient);
-		}
-		public IActionResult ViewPatientRec()
+        }
+        public IActionResult ViewPatientRec()
 		{
 			return View();
 		}
@@ -148,6 +148,7 @@ namespace WIRKDEVELOPER.Controllers
 		{
             _Context.order.Update(order);
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            ViewBag.getAdmission = new SelectList(_Context.admission, "AdmissionID", "PatientName");
             _Context.SaveChanges();
             return RedirectToAction("IndexOrder");
             //if (ModelState.IsValid)
@@ -276,7 +277,7 @@ namespace WIRKDEVELOPER.Controllers
 
 
             //return View(order);
-            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication);
+            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Admission);
             return View(objList);
             //IEnumerable<Order> objList = _Context.order;
             //return View(objList);
@@ -321,7 +322,7 @@ namespace WIRKDEVELOPER.Controllers
                 return NotFound();
             }
 
-            ViewBag.Patient = order.Patient;
+            ViewBag.Patient = order.AdmissionID;
 
             var note = new Notes
             {
@@ -342,7 +343,7 @@ namespace WIRKDEVELOPER.Controllers
                 _Context.SaveChanges();
 
                 var order = _Context.order.Find(note.AnOrderID);
-                return RedirectToAction("Search", new { patientName = order.Patient });
+                return RedirectToAction("Search", new { patientName = order.AdmissionID });
             }
 
             return View(note);
