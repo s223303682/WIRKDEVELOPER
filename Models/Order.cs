@@ -17,12 +17,13 @@ namespace WIRKDEVELOPER.Models
 
 		[Required]
 		[DisplayName("Patient")]
-		public string? Patient { get; set; }
+		public string? AdmissionID { get; set; }
 		[ForeignKey("AdmissionID")]
+        public virtual Admission Admission { get; set; }
 
 
 
-		[Required]
+        [Required]
 		[DisplayName("Medication Ordered")]
 		public int PharmacyMedicationID { get; set; }
         [ForeignKey("PharmacyMedicationID")]

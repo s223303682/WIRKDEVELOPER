@@ -107,11 +107,30 @@
 								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Dashboard</span>
 							</a>
 						</li>
-						<li class="sidebar-item">
+						@* <li class="sidebar-item">
 							<a asp-controller="Anaesthesiologist" asp-action="IndexViewPatient" class="sidebar-link">
 								<i class="align-middle" data-feather="list"></i> <span class="align-middle">ViewPatient</span>
 							</a>
+						</li> *@
+						<li class="sidebar-item dropdown">
+							<a class="sidebar-link dropdown-toggle" href="#" id="navbarDarkdropdownMenulink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="align-middle" data-feather="list"></i> <span class="align-middle">View</span>
+							</a>
+							<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkdropdownMenulink">
+								<li>
+									<a asp-controller="Anaesthesiologist" asp-action="IndexViewPatient" class="dropdown-item text-black">
+										Booked Patients
+									</a>
+								</li>
+
+								<li>
+									<a asp-controller="Anaesthesiologist" asp-action="IndexViewPatient" class="dropdown-item text-black">
+										Amitted Patients
+									</a>
+								</li>
+							</ul>
 						</li>
+
 						<li class="sidebar-item">
 							<a asp-controller="Anaesthesiologist" asp-action="IndexOrder" class="sidebar-link">
 								<i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Order</span>
