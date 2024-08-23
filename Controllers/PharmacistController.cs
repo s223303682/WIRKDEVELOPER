@@ -101,9 +101,11 @@ namespace WIRKDEVELOPER.Controllers
         public IActionResult IndexMedication()
         {
             IEnumerable<PharmacyMedication> objList = _Context.pharmacyMedications
+                .Include(a => a.Ingredients)
+                .ThenInclude(a => a.Active)
                 .Include(a => a.DosageForm)
-                .Include(s => s.Schedule)
-                .Include(a => a.Active);
+                .Include(s => s.Schedule);
+               // .Include(a => a.Active);
             return View(objList);
 
         }
@@ -115,20 +117,34 @@ namespace WIRKDEVELOPER.Controllers
             return View();
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddMedication(PharmacyMedication pharmacyMedications)
+        public async Task<IActionResult> AddMedication(PharmacyMedication medication, List<int> selectedIngredients, List<string> ingredientStrengths)
         {
-            _Context.pharmacyMedications.Add(pharmacyMedications);
+
+            // Add the medication first
+            _Context.pharmacyMedications.Add(medication);
+            await _Context.SaveChangesAsync();
+
+            // Now add the ingredients with the saved PharmacyMedicationId
+            if (selectedIngredients != null && ingredientStrengths != null)
+            {
+                for (int i = 0; i < selectedIngredients.Count; i++)
+                {
+                    var ingredient = new PharmacyMedicationIngredient
+                    {
+                        PharmacyMedicationID = medication.PharmacyMedicationID,
+                        ActiveID = selectedIngredients[i],
+                        Strength = ingredientStrengths[i]
+                    };
+                    _Context.PharmacyMedicationIngredients.Add(ingredient);
+                }
+                await _Context.SaveChangesAsync();
+            }
+
             ViewBag.getDosage = new SelectList(_Context.dosageForms, "DosageFormID", "DosageFormName");
             ViewBag.getActive = new SelectList(_Context.active, "ActiveID", "ActiveName");
             ViewBag.getSchedule = new SelectList(_Context.schedules, "ScheduleId", "ScheduleName");
-            _Context.SaveChanges();
-           
 
             return RedirectToAction("IndexMedication");
-
-
-            //return View(pharmacyMedications);
 
         }
         public IActionResult updatePharmIndexOrder(int? ID)
@@ -243,8 +259,13 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult AddStock()
         {
+            // Initialize the view model with an empty list of entries
+            var model = new PharmStock
+            {
+                MedicationEntries = new List<PharmacyMedication> { new PharmacyMedication() }
+            };
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            return View();
+            return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

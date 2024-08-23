@@ -14,10 +14,10 @@ namespace WIRKDEVELOPER.Models
         [DisplayName("Status")]
         public string? Status { get; set; } = "Oredred";
 
-		[Required]
-		[DisplayName("Quantity")]
-		public int QuantityRecieved { get; set; }
-		[Required]
+		//[Required]
+		//[DisplayName("Quantity")]
+		//public int QuantityRecieved { get; set; }
+		//[Required]
 		[DisplayName(" Date")]
 		public DateTime? Date { get; set; } = DateTime.Now;
         [DisplayName("Medication")]
@@ -25,6 +25,8 @@ namespace WIRKDEVELOPER.Models
         [ForeignKey("Medication")]
         public int PharmacyMedicationID { get; set; }
         public virtual PharmacyMedication PharmacyMedication { get; set; }
+
+        public List<PharmacyMedication> MedicationEntries { get; set; } = new List<PharmacyMedication>();
 
 
     }

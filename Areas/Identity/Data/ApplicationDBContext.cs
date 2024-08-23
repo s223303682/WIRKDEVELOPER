@@ -80,4 +80,5 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Nurse> Nurses { get; set; }
 
     public DbSet<Pharmacist> Pharmacists { get; set; }
+    public DbSet<PharmacyMedicationIngredient> PharmacyMedicationIngredients {  get; set; }
 }

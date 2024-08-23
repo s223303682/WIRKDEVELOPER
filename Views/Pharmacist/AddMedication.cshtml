@@ -10,92 +10,93 @@
 
             <h3 class="card-title text-white mt-2" id="exampleModalLabel">Medication</h3>
         </div>
-        <form method="post" asp-action="AddMedication">
-            <div class="border p-3 #FBD603">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
-
+        <form asp-action="AddMedication" method="post">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="PharmacyMedicationName" class="control-label"></label>
+                    <input asp-for="PharmacyMedicationName" class="form-control" />
+                    <span asp-validation-for="PharmacyMedicationName" class="text-danger"></span>
+                </div>
                 <div class="row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="ScheduleId" class="control-label">Dosage Form</label>
+                        <select asp-for="ScheduleId" class="form-control" asp-items="ViewBag.getSchedule">
+                            <option selected disabled>--Select schedule--</option>
+                        </select>
+                        <span asp-validation-for="ScheduleId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
 
-                    <div class="form-group">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="stockhand" class="control-label"></label>
+                    <input asp-for="stockhand" class="form-control" />
+                    <span asp-validation-for="stockhand" class="text-danger"></span>
+                </div>
 
-                     
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h4><label asp-for="PharmacyMedicationName"></label></h4>@*These names come from our properties in the model *@
-                                    <input asp-for="PharmacyMedicationName" class="form-control box mb-2" type="text" placeholder="select" />
-                                    <span asp-validation-for=" PharmacyMedicationName" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <h4><label asp-for="DosageForm"></label></h4>
-                                    <select id="PurposeDropdown" asp-for="DosageFormID" class="form-control" asp-items="@ViewBag.getDosage" id="validationName" required>
-                                        <option selected disabled>--Select dosage--</option>
-                                    </select>
-                                    <span asp-validation-for="DosageFormID" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row">
-                              
-                                <div class="col-md-6">
-                                    <h4><label asp-for="Active"></label></h4>
-                                    <select id="PurposeDropdown" asp-for="ActiveID" class="form-control" asp-items="@ViewBag.getActive" id="validationName" required>
-                                        <option selected disabled>--Select Active--</option>
-                                    </select>
-                                    <span asp-validation-for="ActiveID" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <h4><label asp-for="Strength"></label></h4>
-                                    <input asp-for="Strength" class="form-control box mb-2" type="text" placeholder="select" />
-                                    <span asp-validation-for="Strength" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                
-                                <div class="col-md-6">
-                                    <h4><label asp-for="Schedule"></label></h4>
-                                    <select id="PurposeDropdown" asp-for="ScheduleId" class="form-control" asp-items="@ViewBag.getSchedule" id="validationName" required>
-                                        <option selected disabled>--Select schedule--</option>
-                                    </select>
-                                    <span asp-validation-for="ScheduleId" class="text-danger"></span>
-                                </div>
-                                
-                                <div class="col-md-6">
-                                    <h4><label asp-for="stocklevel"></label></h4>
-                                    <input asp-for="stocklevel" class="form-control box mb-2" type="text" placeholder="select" />
-                                    <span asp-validation-for="stocklevel" class="text-danger"></span>
-                                </div>
-                            </div>
-                           
-                                                                                  
-                            <div class="col-12">
-                                <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="stocklevel" class="control-label"></label>
+                    <input asp-for="stocklevel" class="form-control" />
+                    <span asp-validation-for="stocklevel" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="DosageFormID" class="control-label">Dosage Form</label>
+                    <select asp-for="DosageFormID" class="form-control" asp-items="ViewBag.getDosage">
+                        <option selected disabled>--Select dosage form--</option>
+                    </select>
+                    <span asp-validation-for="DosageFormID" class="text-danger"></span>
+                </div>
+            </div>
 
-                                    
-                                    <div class="col-md-6">
-                                        <h4><label asp-for="stockhand"></label></h4>
-
-                                        <input asp-for="stockhand" class="form-control box mb-2" type="text" placeholder="select" />
-                                        <span asp-validation-for="stockhand" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="form-group row">
-                                    <div class="col-4 offset-9 row">
-                                        <div class="col">
-                                            <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="SAVE" />
-                                           
-                                        </div>
-                                       
-                                    </div>
-                                </div>
-                            </div>
+            <div class="form-group">
+                <label>Active Ingredients</label>
+                <div id="ingredients">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <select class="form-control" name="selectedIngredients">
+                                @if (ViewBag.getActive != null)
+                                {
+                                    foreach (var item in ViewBag.getActive)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="">No active ingredients available</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="ingredientStrengths" placeholder="Enter Strength" />
                         </div>
                     </div>
                 </div>
-               
+                <button type="button" class="btn btn-primary mt-2" onclick="addIngredient()">Add Another Ingredient</button>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Add Medication" class="btn btn-primary" />
+            </div>
         </form>
     </div>
 </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function addIngredient() {
+            // Clone the first ingredient row and append it
+            var firstIngredientRow = $('#ingredients .row:first').clone();
+            // Clear the input fields in the cloned row
+            firstIngredientRow.find('input').val('');
+            $('#ingredients').append(firstIngredientRow);
+        }
+    </script>
+}
 
-</div>
+

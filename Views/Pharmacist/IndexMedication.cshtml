@@ -32,54 +32,58 @@
                         PharmacyMedication
                     </th>
                     <th>
-                        stocklevel
-                    </th>
-                    <th>
-                        stock
-                    </th>
-                    <th>
-                       Strength
+                        Schedule
                     </th>
                     <th>
                         DosageForm
                     </th>
-                    
+
+
                     <th>
-                        Schedule
+                        Stockhand
                     </th>
-                  
+                    <th>
+                        Stocklevel
+                    </th>
+                   @*  
+                    <th>
+                       Strength
+                    </th> *@
                     <th>
                         ActiveIngridients
                     </th>
+                  
+                    
                   
 
                 </tr>
             </thead>
 
             <tbody>
-                @foreach (var pharmacyMedication in Model)
+                @foreach (var medication in Model)
                 {
-                    <tr scope="row">
-                        <td width="20%">@pharmacyMedication.PharmacyMedicationName</td>
-                        <td width="20%">@pharmacyMedication.stocklevel</td>
-                        <td width="20%">@pharmacyMedication.stockhand</td>
-                        <td width="20%">@pharmacyMedication.Strength</td>
-                        <td width="20%">@pharmacyMedication.DosageForm.DosageFormName</td>
-                        <td width="10%">@pharmacyMedication.Schedule.ScheduleName</td>
-                        <td width="10%">@pharmacyMedication.Active.ActiveName</td>
-                       
+                    <tr>
+                        <td>@medication.PharmacyMedicationName</td>
+                        <td>@medication.Schedule.ScheduleName</td>
+                        <td>@medication.DosageForm.DosageFormName</td>
+                        <td>@medication.stockhand</td>
+                        <td>@medication.stocklevel</td>
                         <td>
-                            <a asp-controller="Anaesthesiologist" asp-action="NewUpdateOrder" asp-route-ID="@pharmacyMedication.PharmacyMedicationID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
+                            <ul>
+                                @foreach (var ingredient in medication. Ingredients)
+                                {
+                                    <li>@ingredient.Active.ActiveName - @ingredient.Strength</li>
+                                }
+                            </ul>
                         </td>
-                        <td>
-                           
-
-                            <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-ID="@pharmacyMedication.PharmacyMedicationID" class="btn btn-danger">
-                                <i class="bi bi-trash3-fill"></i>Delete
-                            </a>
-
-                        </td>
-
+                        @* <td>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#orderModal"
+                                    data-medicationid="@medication.PharmacyMedicationID"
+                                    data-medicationname="@medication.PharmacyMedicationName"
+                                    data-quantityonhand="@medication.stockhand">
+                                Order
+                            </button>
+                        </td> *@
                     </tr>
                 }
             </tbody>

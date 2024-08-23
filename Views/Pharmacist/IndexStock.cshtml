@@ -34,9 +34,12 @@
                     <th>
                         Quantity Ordered
                     </th>
-                   @*  <th>
-                        Quantity Recived
-                    </th> *@
+                   <th>
+                       Stock in hand
+                   </th>
+                    <th>
+                        Stock level
+                    </th>
                     <th>
                        Date
                     </th>
@@ -55,11 +58,11 @@
                     <tr scope="row">
                         <td width="20%">@pharmstock.PharmacyMedication.PharmacyMedicationName</td>
                         <td width="20%">@pharmstock.QuantityOrdered</td>
-                      @*   <td width="20%">@pharmstock.QuantityRecieved</td> *@
+                        <td width="20%">@pharmstock.PharmacyMedication.stockhand </td>
+                        <td width="20%">@pharmstock.PharmacyMedication.stocklevel </td>
                         <td width="20%">@pharmstock.Date</td>
+                        <td width="20%">@pharmstock.Status </td>
                       
-
-
                         <td>
                             <a asp-controller="Pharmacist" asp-action="UpdateStock" asp-route-ID="@pharmstock.PharmStockId" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
 

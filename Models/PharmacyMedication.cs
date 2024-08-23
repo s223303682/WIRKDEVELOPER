@@ -7,14 +7,13 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int PharmacyMedicationID { get; set; }
-        [Required]
-        public string? PharmacyMedicationName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
+        public string PharmacyMedicationName { get; set; }
+        [Required(ErrorMessage = "Required")]
         public int stocklevel { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Required")]
         public int stockhand { get; set; }
-        [Required]
-        public string Strength { get; set; }
+        
 
         [Required (ErrorMessage ="Required")]
         [ForeignKey("DosageForm")]
@@ -26,10 +25,11 @@ namespace WIRKDEVELOPER.Models
         public int ScheduleId { get; set; }
         public virtual Schedule Schedule { get; set; }
 
-        [Required(ErrorMessage = "Required")]
-        [ForeignKey("Active")]
-        public int ActiveID { get; set; }
-        public virtual Active Active { get; set; }
+        //[Required(ErrorMessage = "Required")]
+        //[ForeignKey("Active")]
+        //public int ActiveID { get; set; }
+        //public virtual Active Active { get; set; }
+        public virtual ICollection<PharmacyMedicationIngredient> Ingredients { get; set; }
 
       
 
