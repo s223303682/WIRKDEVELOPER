@@ -15,11 +15,11 @@ namespace WIRKDEVELOPER.Models
 		[DisplayName(" Date")]
 		public DateTime? Date { get; set; } = DateTime.Now;
 
-		[Required]
-		[DisplayName("Patient")]
-		public string? AdmissionID { get; set; }
-		[ForeignKey("AdmissionID")]
-        public virtual Admission Admission { get; set; }
+		//[Required]
+		//[DisplayName("Patient")]
+		//public string? AdmissionID { get; set; }
+		//[ForeignKey("AdmissionID")]
+  //      public virtual Admission Admission { get; set; }
 
 
 

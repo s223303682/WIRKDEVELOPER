@@ -26,27 +26,27 @@
                         </div>
                         <div class="row">
                             <div id="medicationFieldsContainer">
-                                @for (int i = 0; i < Model.MedicationEntries.Count; i++)
-                                {
+                               
                                     <div class="form-row">
                                         <div class="col-md-4">
-                                            <h4><label asp-for="MedicationEntries[@i].PharmacyMedicationID"></label></h4>
-                                            <select asp-for="MedicationEntries[@i].PharmacyMedicationID" class="form-control" asp-items="@ViewBag.getMedication" required>
+                                            <h4><label asp-for="PharmacyMedicationID"></label></h4>
+                                            <select asp-for="PharmacyMedicationID" class="form-control" asp-items="@ViewBag.getMedication" required>
                                                 <option selected disabled>--Select Medication--</option>
                                             </select>
-                                            <span asp-validation-for="MedicationEntries[@i].PharmacyMedicationID" class="text-danger"></span>
+                                            <span asp-validation-for="PharmacyMedicationID" class="text-danger"></span>
                                         </div>
 
                                         <div class="col-md-4">
-                                            <h4><label asp-for="MedicationEntries[@i].QuantityOrdered"></label></h4>
-                                            <input asp-for="MedicationEntries[@i].QuantityOrdered" class="form-control box mb-2" type="text" placeholder="Enter Quantity" />
-                                            <span asp-validation-for="MedicationEntries[@i].QuantityOrdered" class="text-danger"></span>
+                                            <h4><label asp-for="QuantityOrdered"></label></h4>
+                                            <input asp-for="QuantityOrdered" class="form-control box mb-2" type="text" placeholder="Enter Quantity" />
+                                            <span asp-validation-for="QuantityOrdered" class="text-danger"></span>
                                         </div>
+                                      <button type="button" class="btn btn-primary mt-2" onclick="addFields()">Add Another Set</button>
                                     </div>
-                                }
+                            
                             </div>
 
-                            <button type="button" class="btn btn-primary mt-2" onclick="addFields()">Add Another Set</button>
+                            
 
 
                            
