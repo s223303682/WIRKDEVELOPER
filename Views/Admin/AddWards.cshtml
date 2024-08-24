@@ -1,0 +1,62 @@
+﻿@model WIRKDEVELOPER.Models.Ward;
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <div class="row">
+        <div class="col">
+            <a asp-action="BookingList" class="btn btn-outline-primary">List</a>
+        </div>
+    </div>
+    <h1><div class=" bg-info bg-opacity-50 text-center text-white rounded-1">PATIENT PROFILE</div></h1>
+
+    <form method="post" asp-action="CreatePatient" class="bg-white bg-opacity-60 border border-3 border-dark" id="newForm">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="WardName"></label>
+                    <div>
+                        <input type="email" asp-for="WardName" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="WardName" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="NoOfBeds"></label>
+                    <div>
+                        <input type="email" asp-for="NoOfBeds" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="NoOfBeds" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="NurseResponsible"></label>
+                    <div>
+                        <input type="email" asp-for="NurseResponsible" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="NurseResponsible" class=" text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+
+        </div>
+    <</form>
+   
+</body>
+</html>
+
+
+

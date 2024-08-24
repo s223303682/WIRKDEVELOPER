@@ -457,6 +457,50 @@ namespace WIRKDEVELOPER.Controllers
             _Context.beds.Update(beds);
             _Context.SaveChanges();
             return RedirectToAction("ViewBed");
+        } 
+        public IActionResult ViewWards()
+        {
+            IEnumerable<Ward> ward = _Context.ward;
+            return View(ward);
+        }
+        public IActionResult AddWard()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddWards(Ward ward)
+        {
+            if (ModelState.IsValid)
+            {
+                _Context.ward.Add(ward);
+                _Context.SaveChanges();
+                return RedirectToAction("AddWards");
+            }
+            return View(ward);
+        }
+        public IActionResult updateWards(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var list = _Context.ward.Find(ID);
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            return View(list);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updateWard(Ward ward)
+        {
+            _Context.ward.Update(ward);
+            _Context.SaveChanges();
+            return RedirectToAction("ViewWard");
         }
 
     }

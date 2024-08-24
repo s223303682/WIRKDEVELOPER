@@ -11,7 +11,7 @@ namespace WIRKDEVELOPER.Models
         [Key]
         public int BedID { get; set; }
         [Required]
-        [DisplayName("Bed Number")]
+        [DisplayName(" Name")]
         public int BedNumber { get; set; }
           
     }

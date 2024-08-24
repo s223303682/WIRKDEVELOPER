@@ -10,9 +10,9 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public string? WardName { get; set; }
         [Required]
-        public int BedID { get; set; }
-        [ForeignKey("BedID")]
-        public virtual Bed? Bed { get; set; }
+        public int NoOfBeds { get; set; } 
+        public int NurseResponsible { get; set; }
+        }
 
     }
 }
