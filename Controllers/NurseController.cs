@@ -31,18 +31,30 @@ namespace WIRKDEVELOPER.Controllers
         //}
         public IActionResult AddAddmission()
         {
+            ViewBag.Patients = (from U in Context.Users
+                                join UR in Context.UserRoles on U.Id equals UR.UserId
+                                join R in Context.Roles on UR.RoleId equals R.Id
+                                where R.Name == "Patient"
+                                select U).ToList();
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddAdmission(Admission admission) 
+        public IActionResult AddAdmission([Bind("AdmissionID,PatientID,PatientGender,PatientEmail,PatientPhone,Address1,Address2,Province,City,Suburb,PostalCode,Ward,Condition,Allergies,MedicationName,TreatmentCode")]Admission admission) 
         { 
             if (ModelState.IsValid) 
             {
+                ViewBag.Date = DateTime.Now.ToString("dd/mm/yyyy");
+                ViewBag.Time = DateTime.Now.ToString("HH:MM");
                 Context.admission.Add(admission);
                 Context.SaveChanges();
                 return RedirectToAction("ViewAddmission");
             }
+            ViewBag.Patients = (from U in Context.Users
+                                join UR in Context.UserRoles on U.Id equals UR.UserId
+                                join R in Context.Roles on UR.RoleId equals R.Id
+                                where R.Name == "Patient"
+                                select U).ToList();
             return View(admission);
         } 
         public IActionResult AddBed()
@@ -72,6 +84,11 @@ namespace WIRKDEVELOPER.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Patients = (from U in Context.Users
+                                join UR in Context.UserRoles on U.Id equals UR.UserId
+                                join R in Context.Roles on UR.RoleId equals R.Id
+                                where R.Name == "Patient"
+                                select U).ToList();
             return View(patient);
 
         }

@@ -12,21 +12,18 @@ namespace WIRKDEVELOPER.Models
 		[DisplayName("Quantity")]
 		public int QuantityOrdered { get; set; }
         [DisplayName("Status")]
-        public string? Status { get; set; } = "Oredred";
+        public string? Status { get; set; } = "Ordered";
 
-		//[Required]
-		//[DisplayName("Quantity")]
-		//public int QuantityRecieved { get; set; }
-		//[Required]
 		[DisplayName(" Date")]
 		public DateTime? Date { get; set; } = DateTime.Now;
+
         [DisplayName("Medication")]
         [Required(ErrorMessage = "Required")]
-        [ForeignKey("Medication")]
+        [ForeignKey("PharmacyMedicationID")]
         public int PharmacyMedicationID { get; set; }
         public virtual PharmacyMedication PharmacyMedication { get; set; }
 
-        public List<PharmacyMedication> MedicationEntries { get; set; } = new List<PharmacyMedication>();
+        //public List<PharmacyMedication> MedicationEntries { get; set; } = new List<PharmacyMedication>();
 
 
     }

@@ -63,7 +63,7 @@
 						<div>
 							<div class="icon_setting"></div>
 							<div class="user_profle_side">
-								<div class="user_img"><img class="img-responsive" src="~/Anaesthesiologist/3.png" alt="#" /></div>
+								<div class="user_img"><img class="img-responsive" src="~/_Images/logo/3.png" alt="#" /></div>
 								<div class="user_info">
 									<h6>
 										<span class="text-light">
@@ -136,7 +136,7 @@
 
 
 						<li class="sidebar-item">
-							<a asp-controller="Pharmacist" asp-action="AddStock" class="sidebar-link">
+							<a asp-controller="Pharmacist" asp-action="OrderMedications" class="sidebar-link">
 								<i class="align-middle" data-feather="truck"></i> <span class="align-middle">Stock taking</span>
 							</a>
 						</li>
@@ -147,12 +147,12 @@
 							</a>
 						</li>
 						<li class="sidebar-item">
-							<a asp-controller="Pharmacist" asp-action="UpdateStock" class="sidebar-link">
-								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Manage stock</span>
+							<a asp-controller="Pharmacist" asp-action="ReceivedMedication" class="sidebar-link">
+								<i class="align-middle" data-feather="trending-up"></i> <span class="align-middle">StockRecived</span>
 							</a>
 						</li>
 						<li class="sidebar-item">
-							<a asp-controller="Pharmacist" asp-action="ReciveStock" class="sidebar-link">
+							<a asp-controller="Pharmacist" asp-action="IndexRecieved" class="sidebar-link">
 								<i class="align-middle" data-feather="list"></i> <span class="align-middle">Updated Stock</span>
 							</a>
 						</li>
@@ -178,7 +178,9 @@
 									</a>
 									<div class="user_info">
 										<a>
-											<span class="text-dark">@UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName</span><img src="~/Anaesthesiologist/user-solid.svg" class="avatar img-fluid rounded mt-3" />
+											<span class="text-dark">@UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName</span>
+
+											<img src="~/_Images/logo/user-solid.svg" class="avatar img-fluid rounded mt-3" />
 										</a>
 									</div>
 
