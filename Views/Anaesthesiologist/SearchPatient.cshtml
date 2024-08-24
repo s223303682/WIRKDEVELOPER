@@ -50,6 +50,9 @@
             <th>
                 Notes
             </th>
+            <th>
+                Action
+            </th>
             @* <th>Order ID</th>
             <th>Patient Name</th>
             <th>Medication</th>
@@ -71,6 +74,15 @@
                     <td width="10%">@order.Urgent</td>
                     <td width="10%">@order.Status</td>
                     <td width="10%">@order.Notes</td>
+
+                    <td>
+                        <a asp-controller="Anaesthesiologist" asp-action="CreateNoteForOrder" asp-route-ID="@order.AnOrderID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Note</a>
+
+                        @* <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-ID="@order.AnOrderID" class="btn btn-danger">
+                            <i class="bi bi-trash3-fill"></i>Delete
+                        </a> *@
+
+                    </td>
 
                 </tr>
             }

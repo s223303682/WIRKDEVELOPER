@@ -66,14 +66,14 @@
                                             <span asp-validation-for="Medicationordered" class="text-danger"></span> *@
                                         </div>
                                         <div class="col-md-2">
-                                            <div class="form-group border-1">
+                                            @* <div class="form-group border-1">
                                                 <h4><label asp-for="Quantity"></label></h4>
                                                 <div>
                                                     <input asp-for="Quantity" class="option form-control" placeholder="0" id="Invalid" readonly />
                                                 </div>
                                                 <div class="invalid-feedback"></div>
                                                 <span asp-validation-for="Quantity" class=" text-danger"></span>
-                                            </div>
+                                            </div> *@
 
                                             @* <h4><label asp-for="Quantity"></label></h4>
                                             <select id="PurposeDropdown" asp-for="Quantity" class="form-control" id="validationName" required>
@@ -92,9 +92,9 @@
                                             @* <span asp-validation-for="Quantity" class="text-danger"></span> *@
                                         </div>
                                         <div class="col-md-4">
-                                            <h4><label asp-for="Instructions"></label></h4>@*These names come from our properties in the model *@
+                                            @* <h4><label asp-for="Instructions"></label></h4>
                                             <input asp-for="Instructions" class="form-control box mb-2" type="text" placeholder="select" readonly />
-                                            <span asp-validation-for="Instructions" class="text-danger"></span>
+                                            <span asp-validation-for="Instructions" class="text-danger"></span> *@
                                         </div>
                                         @*  <div class="col-md-2">
                                         <div class="controls">

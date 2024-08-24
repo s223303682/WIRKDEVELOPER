@@ -87,4 +87,5 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Ranges> ranges {  get; set; }
     public DbSet<Addm> addm {  get; set; }
     public DbSet<StockReceived> StockReceiveds { get; set; }
+    public DbSet<AddOrder> addorder { get; set; }
 }
