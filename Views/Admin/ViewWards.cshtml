@@ -1,5 +1,60 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "ViewWards";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" />
+</head>
+<div id="Header" class="bg-info">
+    <h2 class="m-1 pt-4 text-center text-white">View Vitals</h2>
+</div>
+<div class="container-fluid bg-white border p-4">
+    <table id="myTable" table class="table table-hover  table-sm" style="width:100%">
+        <thead class="table-secondary">
+            <tr>
+                <th>
+                   Ward Name
+                </th>
+                <th>
+                    Number of Beds
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var war in Model)
+            {
+                <tr>
+
+                    <td width="20%">@war.WardName</td>
+                    <td width="20%">@war.NoOfBeds</td>
+                   
+                    <td>
+                        <div class="w-50 btn-group" role="group">
+                            <a asp-controller="Admin" asp-action="ViewWards" asp-route-ID="@war.WardID" class="btn btn-info mx-1">View</a>
+                        </div>
+                    </td>
+                </tr>
+
+
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js"></script>
+
+
+
+
