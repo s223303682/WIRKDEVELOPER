@@ -35,7 +35,7 @@ namespace WIRKDEVELOPER.Models
 		public string? Urgent { get; set; }
 		[Required]
 		public string? status { get; set; }
-		[Required]
+		
 		public string? Description { get; set; }
 
 

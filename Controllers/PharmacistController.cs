@@ -260,12 +260,12 @@ namespace WIRKDEVELOPER.Controllers
         public IActionResult AddStock()
         {
             // Initialize the view model with an empty list of entries
-            var model = new PharmStock
-            {
-                MedicationEntries = new List<PharmacyMedication> { new PharmacyMedication() }
-            };
+            //var model = new PharmStock
+            //{
+            //    MedicationEntries = new List<PharmacyMedication> { new PharmacyMedication() }
+            //};
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            return View(model);
+            return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

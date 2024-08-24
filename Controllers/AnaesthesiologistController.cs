@@ -267,8 +267,8 @@ namespace WIRKDEVELOPER.Controllers
         //    _context = context;
         //}
 
-        public IActionResult SearchPatient(string patientName)
-        {
+        //public IActionResult SearchPatient(string patientName)
+        //{
 
 
             //var order= _Context.order
@@ -277,11 +277,11 @@ namespace WIRKDEVELOPER.Controllers
 
 
             //return View(order);
-            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Admission);
-            return View(objList);
+            //IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Admission);
+            //return View(objList);
             //IEnumerable<Order> objList = _Context.order;
             //return View(objList);
-        }
+       // }
 		//public IActionResult ListOrder(Order order)
 		//{
   //          if (ModelState.IsValid)
@@ -322,7 +322,7 @@ namespace WIRKDEVELOPER.Controllers
                 return NotFound();
             }
 
-            ViewBag.Patient = order.AdmissionID;
+           // ViewBag.Patient = order.AdmissionID;
 
             var note = new Notes
             {
@@ -343,7 +343,7 @@ namespace WIRKDEVELOPER.Controllers
                 _Context.SaveChanges();
 
                 var order = _Context.order.Find(note.AnOrderID);
-                return RedirectToAction("Search", new { patientName = order.AdmissionID });
+               // return RedirectToAction("Search", new { patientName = order.AdmissionID });
             }
 
             return View(note);

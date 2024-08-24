@@ -14,15 +14,12 @@ namespace WIRKDEVELOPER.Models
         [DisplayName("Status")]
         public string? Status { get; set; } = "Oredred";
 
-		//[Required]
-		//[DisplayName("Quantity")]
-		//public int QuantityRecieved { get; set; }
-		//[Required]
 		[DisplayName(" Date")]
 		public DateTime? Date { get; set; } = DateTime.Now;
+
         [DisplayName("Medication")]
         [Required(ErrorMessage = "Required")]
-        [ForeignKey("Medication")]
+        [ForeignKey("PharmacyMedicationID")]
         public int PharmacyMedicationID { get; set; }
         public virtual PharmacyMedication PharmacyMedication { get; set; }
 

@@ -49,14 +49,14 @@ namespace WIRKDEVELOPER.Controllers
         public IActionResult PrescriptionList()
         {
             IEnumerable<Prescription> list = _Context.prescriptions
-                 .Include(a => a.PharmacyMedication)
-            .Include(a => a.Patient);
+                 .Include(a => a.PharmacyMedication);
+            //.Include(a => a.Patient);
             return View(list);
         }
         public IActionResult CreatePrescription()
         {
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            ViewBag.getPatient = new SelectList(_Context.admission, "PatientID", "PatientName");
+            //ViewBag.getPatient = new SelectList(_Context.admission, "PatientID", "PatientName");
             return View();
         }
         [HttpPost]
@@ -65,7 +65,7 @@ namespace WIRKDEVELOPER.Controllers
         {
             _Context.prescriptions.Add(prescription);
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            ViewBag.getPatient = new SelectList(_Context.admission, "PatientID", "PatientName");
+            //ViewBag.getPatient = new SelectList(_Context.admission, "PatientID", "PatientName");
             _Context.SaveChanges();
             return RedirectToAction("PrescriptionList");
         }
