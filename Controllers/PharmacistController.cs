@@ -5,6 +5,7 @@ using System.Web.Helpers;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
 
+
 namespace WIRKDEVELOPER.Controllers
 {
     public class PharmacistController : Controller
@@ -259,69 +260,153 @@ namespace WIRKDEVELOPER.Controllers
             return View(objList);
 
         }
-        public IActionResult AddStock()
+        //Stock management
+        // Action to display the order form
+        public IActionResult OrderMedications()
         {
-            // Initialize the view model with an empty list of entries
-            var model = new PharmStock
+            var viewModel = new MedicationOrderView
             {
-                MedicationEntries = new List<PharmacyMedication> { new PharmacyMedication() }
-            };
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            return View(model);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddStock(PharmStock pharmStocks)
-        {
-           
-            _Context.pharmStock.Add(pharmStocks);
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            _Context.SaveChanges();
-                return RedirectToAction("IndexStock");
-          
-            //return View(pharmStocks);
+                Medications = _Context.pharmacyMedications
+                    .Select(m => new PharmacyMedicationViewModel
+                    {
+                        PharmacyMedicationId = m.PharmacyMedicationID,
+                        MedicationName = m.PharmacyMedicationName,
+                        QuantityOnHand = m.stockhand,
+                        ReorderLevel = m.stocklevel
+                    }).ToList(),
 
+                StockOrders = _Context.pharmStock
+                    .Include(o => o.PharmacyMedication)
+                    .Select(o => new StockOrderView
+                    {
+                        StockOrderId = o.PharmStockId,
+                        MedicationName = o.PharmacyMedication.PharmacyMedicationName,
+                        OrderQuantity = o.QuantityOrdered,
+                        Date = o.Date,
+                        Status = o.Status
+                    }).ToList()
+            };
+
+            return View(viewModel);
         }
-		public IActionResult UpdateStock(int? ID)
-		{
-			if (ID == null || ID == 0)
-			{
-				return NotFound();
-			}
-			var objList = _Context.pharmStock.Find(ID);
-			if (objList == null)
-			{
-				return NotFound();
-			}
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+
+        // Action to process the order
+        [HttpPost]
+        public IActionResult OrderMedications(MedicationOrderView model)
+        {
+            foreach (var item in model.Medications.Where(m => m.IsSelected && m.OrderQuantity > 0))
+            {
+                var stockOrder = new PharmStock
+                {
+                    PharmacyMedicationID= item.PharmacyMedicationId,
+                    Date = DateTime.Now,
+                    QuantityOrdered = item.OrderQuantity,
+                    Status = "Ordered"
+                };
+
+                _Context.pharmStock.Add(stockOrder);
+            }
+
+            _Context.SaveChanges();
+
+            return RedirectToAction("IndexStock");
+        }
+
+        public IActionResult IndexRecieved()
+        {
+            IEnumerable<StockReceived> objList = _Context.StockReceiveds
+              .Include(a => a.PharmStock)
+              .ThenInclude(o => o.PharmacyMedication);
             return View(objList);
 
-		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult UpdateStock(PharmStock pharmStocks)
-		{
-			//var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			//bookSurgery.PatientID = user;
-			_Context.pharmStock.Update(pharmStocks);
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            _Context.SaveChanges();
-			return RedirectToAction("IndexStock");
-		}
-		public IActionResult ReciveStock()
-		{
-			IEnumerable<PharmStock> objList = _Context.pharmStock
-			  .Include(a => a.PharmacyMedication);
-			return View(objList);
+        }
+        // GET: ReceivedMedication
+        [HttpGet]
+        public IActionResult ReceivedMedication()
+        {
+            var viewModel = new RecivedOrderViewModel
+            {
+                Medications = _Context.pharmStock
+                    .Include(o => o.PharmacyMedication)
+                    .Select(o => new SelectListItem
+                    {
+                        Value = o.PharmacyMedicationID.ToString(),
+                        Text = o.PharmacyMedication.PharmacyMedicationName
+                    })
+                    .Distinct()
+                    .ToList()
+            };
 
-		}
+            return View(viewModel);
+        }
+
+        // POST: ReceivedMedication
+        // POST: ReceivedMedication
+        [HttpPost]
+        public async Task<IActionResult> ReceivedMedication(RecivedOrderViewModel model)
+        {
+            var medication = _Context.pharmacyMedications
+                .SingleOrDefault(m => m.PharmacyMedicationID == model.SelectedMedicationId);
+
+            if (medication != null)
+            {
+                // Find the related StockOrder
+                var stockOrder = _Context.pharmStock
+                    .FirstOrDefault(o => o.PharmacyMedicationID == model.SelectedMedicationId);
+
+                if (stockOrder != null)
+                {
+                    // Create a new StockReceived for the received medication
+                    var stockReceived = new StockReceived
+                    {
+                        PharmStockId = stockOrder.PharmStockId,
+                        Date = DateTime.Now,
+                        QuantityRecived = model.QuantityReceived
+                    };
+
+                    // Set the status of the related StockOrder
+                    stockOrder.Status = "Received";
+                    _Context.pharmStock.Update(stockOrder);
+
+                    // Add the new StockReceived entry to the database
+                    _Context.StockReceiveds.Add(stockReceived);
+
+                    // Update the medication quantity
+                    medication.stockhand += model.QuantityReceived;
+                    _Context.pharmacyMedications.Update(medication);
+
+                    await _Context.SaveChangesAsync();
+
+                    // Redirect to a success page or back to the form
+                    return RedirectToAction("IndexRecieved");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Stock order not found.");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Selected medication is not found.");
+            }
+
+            // If model state is invalid or medication/stock order not found, redisplay the form
+            model.Medications = _Context.pharmStock
+                .Include(o => o.PharmacyMedication)
+                .Select(o => new SelectListItem
+                {
+                    Value = o.PharmacyMedicationID.ToString(),
+                    Text = o.PharmacyMedication.PharmacyMedicationName
+                })
+                .Distinct()
+                .ToList();
+
+            return View(model);
+        }
 
 
 
 
 
-
-
-
-	}
+    }
 }

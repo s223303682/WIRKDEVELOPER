@@ -49,14 +49,14 @@ namespace WIRKDEVELOPER.Controllers
         public IActionResult PrescriptionList()
         {
             IEnumerable<Prescription> list = _Context.prescriptions
-                 .Include(a => a.PharmacyMedication)
-            .Include(a => a.Patient);
+                 .Include(a => a.PharmacyMedication);
+            //.Include(a => a.Patient);
             return View(list);
         }
         public IActionResult CreatePrescription()
         {
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            ViewBag.getPatient = new SelectList(_Context.admission, "PatientID", "PatientName");
+            //ViewBag.getPatient = new SelectList(_Context.admission, "PatientID", "PatientName");
             return View();
         }
         [HttpPost]
@@ -65,7 +65,7 @@ namespace WIRKDEVELOPER.Controllers
         {
             _Context.prescriptions.Add(prescription);
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            ViewBag.getPatient = new SelectList(_Context.admission, "PatientID", "PatientName");
+            //ViewBag.getPatient = new SelectList(_Context.admission, "PatientID", "PatientName");
             _Context.SaveChanges();
             return RedirectToAction("PrescriptionList");
         }
@@ -108,7 +108,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult BookingPatientList()
         {
-            IEnumerable<BookingNew> list = _Context.bookingnew
+            IEnumerable<BookingNewPatient> list = _Context.bookingNewPatients
                 .Include(a => a.OperationTheatre)
                 .Include(s => s.Anaestesiologist)
                 .Include(s => s.treatmentCode);
@@ -120,18 +120,18 @@ namespace WIRKDEVELOPER.Controllers
         {
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "FirstName", "LastName");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateBookingPatient(BookingNew bookingNew)
+        public IActionResult CreateBookingPatient(BookingNewPatient bookingNewPatient)
         {
 
-            _Context.bookingnew.Add(bookingNew);
+           _Context.bookingNewPatients.Add(bookingNewPatient);
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "FirstName", "LastName");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
             _Context.SaveChanges();
             return RedirectToAction("BookingPatientList");
         }
@@ -143,12 +143,12 @@ namespace WIRKDEVELOPER.Controllers
     {
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "FirstName", "LastName");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
             if (ID == null || ID == 0)
         {
             return NotFound();
         }
-        var list = _Context.bookingnew.Find(ID);
+        var list = _Context.bookingNewPatients.Find(ID);
         if (list == null)
         {
             return NotFound();
@@ -159,25 +159,25 @@ namespace WIRKDEVELOPER.Controllers
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult updateBookingPatient(BookingNew bookingNew)
+    public IActionResult updateBookingPatient(BookingNewPatient bookingNewPatient)
     {
         //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
         //bookSurgery.PatientID = user;
-        _Context.bookingnew.Update(bookingNew);
+        _Context.bookingNewPatients.Update(bookingNewPatient);
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "FirstName", "LastName");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
             _Context.SaveChanges();
         return RedirectToAction("BookingPatientList");
     }
     public IActionResult DeleteBookingPatient(int? ID)
     {
-        var list = _Context.bookingnew.Find(ID);
+        var list = _Context.bookingNewPatients.Find(ID);
         if (list == null)
         {
             return NotFound();
         }
-        _Context.bookingnew.Remove(list);
+        _Context.bookingNewPatients.Remove(list);
         _Context.SaveChanges();
         return RedirectToAction("BookingPatientList");
 
@@ -195,8 +195,8 @@ namespace WIRKDEVELOPER.Controllers
         {
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "FirstName", "LastName");
-            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", "PatientSurname");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
+            ViewBag.getPatient = new SelectList(_Context.admission, "AdmissionID");
             return View();
         }
         [HttpPost]
@@ -208,8 +208,8 @@ namespace WIRKDEVELOPER.Controllers
             _Context.bookings.Add(booking);
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "FirstName", "LastName");
-            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", "PatientSurname");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
+            ViewBag.getPatient = new SelectList(_Context.patients, "AdmissionID");
             _Context.SaveChanges();
 
             return RedirectToAction("BookingList");

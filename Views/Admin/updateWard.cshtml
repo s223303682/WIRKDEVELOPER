@@ -1,5 +1,57 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model WIRKDEVELOPER.Models.Ward
+<div class="mt-2 p-2 bg-primary text-center text-white rounded">
+    <h6>Update Wards </h6>
+
+</div>
+<hr />
+<div class="container p-3 bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
+    <form method="post" asp-action="updateOperatingTheatre" class="bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
+        <input asp-for="WardID" hidden />
+        <div class="row">
+
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="WardName"></label>
+                    <div>
+                        <input type="email" asp-for="WardName" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="WardName" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="NoOfBeds"></label>
+                    <div>
+                        <input type="email" asp-for="NoOfBeds" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="NoOfBeds" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="NurseResponsible"></label>
+                    <div>
+                        <input type="email" asp-for="NurseResponsible" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="NurseResponsible" class=" text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class=" form-group row">
+            <div class="col-6 ">
+                <input type="submit" class="btn btn-info w-75" value="update" />
+            </div>
+            <div class="col-6">
+                <a asp-action="ViewWards" class="btn btn-danger w-75"> Back</a>
+            </div>
+        </div>
+
+    </form>
+</div>
+

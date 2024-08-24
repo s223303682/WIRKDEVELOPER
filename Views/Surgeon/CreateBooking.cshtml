@@ -2,127 +2,128 @@
 @{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    @* <link rel="stylesheet" href="~/css/StyleSurgeon3.css"> *@
 
-<div class="row">
-    <div class="col">
-        <a asp-action="BookingList" class="btn btn-outline-primary">List</a>
-    </div>
-</div>
-<h1><div class=" bg-info bg-opacity-50 text-center text-white rounded-1">ADD NEW BOOKING</div></h1>
 
-<form method="post" asp-action="CreateBooking" class="bg-white bg-opacity-60 border border-3 border-dark" id="newForm">
-
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+</head>
+<body>
     <div class="row">
+        <div class=" col-1">
+            <a asp-action="BookingList" class=" btn btn-primary  ">List</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class=col>
+            <h1><div class=" mt-2 bg-info bg-opacity-50 text-center text-white rounded-1"> BOOKING FOR NEW Patient</div></h1>
+        </div>
+    </div>
+    <form method="post" asp-action="CreateBookingPatient" class="bg-white bg-opacity-60 border border-3 border-dark">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            
+            <div class="col">
+                <div class="form-group border-1">
+                    <label asp-for="Gender"></label>
+                    <select asp-for="Gender" class="form-control">
+                        <option selected disabled>--select gender</option>
+                        <option>Female</option>
+                        <option>Male</option>
+                    </select>
+                    <span asp-validation-for="Gender" class=" text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div id="option">
+                    <div class="form-group border-1">
+                        <label asp-for="EmailAddress"></label>
+                        <input asp-for="EmailAddress" type="email" class="form-control" id="Invalid" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="EmailAddress" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Date"></label>
+                    <div>
+                        <input type="date" asp-for="Date" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="Date" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Time"></label>
+                    <div>
+                        <input type="time" asp-for="Time" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="Time" class=" text-danger"></span>
+                </div>
+            </div>
+        </div>
+
        
-         <div class="col">
-            <div class="form-group">
-                <label asp-for="PatientID"></label>
-        <select id="PurposeDropdown" asp-for="PatientID" class="form-control" asp-items="@ViewBag.getPatient" required>
-        <option selected disabled>--select Patient</option>
-        </select>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="PatientID" class=" text-danger"></span>
-            </div> 
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Gender"></label>
-                <select id="Dropdown" asp-for="Gender" class=" form-control" id="validation" required>
-                    <option value="Female">Female</option>
-                    <option value="Male">Male</option>
-
-                </select>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="Gender" class=" text-danger"></span>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="EmailAddress"></label>
-                <div>
-                    <input type="email" asp-for="EmailAddress" class="form-control" id="InvalidName" required />
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="OperationTheatreID"></label>
+                    <select id="PurposeDropdown" asp-for="OperationTheatreID" class="form-control" asp-items="@ViewBag.getOperationTheatre" required>
+                        <option selected disabled>--select Theatre</option>
+                    </select>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="OperationTheatreID" class=" text-danger"></span>
                 </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="EmailAddress" class=" text-danger"></span>
             </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Date"></label>
-                <div>
-                    <input type="date" asp-for="Date" class="form-control" id="InvalidName" required />
+           
+            <div class="col" id="users">
+                <div class="user">
+
+
+                    <select class="form-control" asp-for='TreatmentCodeID' placeholder="treatmentCode" asp-items="@ViewBag.getTreatmentCode" required>
+                        <option selected disabled>--Select TreatmentCode</option>
+
+                    </select>
+                    <span asp-validation-for="TreatmentCodeID" class=" text-danger"></span>
                 </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="Date" class=" text-danger"></span>
+
+                <button style="width:10%" id='add-user'>&plus; more treamentCode</button><br>
             </div>
+
+
+
+
         </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Time"></label>
-                <div>
-                    <input type="time" asp-for="Time" class="form-control" id="InvalidName" required />
+        <br>
+        <div class="row">
+            <div class="col">
+                <div class=" bg-white bg-opacity-25">
+                    <a asp-controller="Surgeon" asp-action="Dashboard">Back</a>
+
                 </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="Time" class=" text-danger"></span>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="OperationTheatreID"></label>
-                <select id="PurposeDropdown" asp-for="OperationTheatreID" class="form-control" asp-items="@ViewBag.getOperationTheatre" required>
-                    <option selected disabled>--select Theatre</option>
-                </select>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="OperationTheatreID" class=" text-danger"></span>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="UserId"></label>
-                <select id="PurposeDropdown" asp-for="UserId" class="form-control" asp-items="@ViewBag.getAnaesthesiologist" id="validationName" required>
-                    <option selected disabled>--select Anaesthesiologists</option>
-                </select>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="UserId" class=" text-danger"></span>
-            </div>
-        </div>
-        <div class="col" id="users">
-            <div class="user">
-
-
-                <select class="form-control" asp-for='TreatmentCodeID' placeholder="treatmentCode" asp-items="@ViewBag.getTreatmentCode" required>
-                    <option selected disabled>--Select TreatmentCode</option>
-
-                </select>
-                <span asp-validation-for="TreatmentCodeID" class=" text-danger"></span>
+            <div class="col">
+                <input type="submit" value="Add " class="btn btn-primary" />
             </div>
 
-            <button style="width:10%" id='add-user'>&plus; more treamentCode</button><br>
         </div>
 
+    </form>
+
+
+</body>
+</html>
 
 
 
-    </div>
 
-    <div class="row">
-        <div class="col">
-            <div class=" bg-white bg-opacity-25">
-                <a asp-controller="Surgeon" asp-action="DashBoard">Back</a>
-
-            </div>
-        </div>
-        <div class="col">
-            <div class="bg-white bg-opacity-25">
-                <input type="submit" class="btn-outline-primary" value="submit" />
-
-            </div>
-        </div>
-
-    </div>
-</form>

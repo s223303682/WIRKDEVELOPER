@@ -57,26 +57,23 @@
 })();
 
 
-    function selectRow(button) {
-        // Get the selected row
-        var row = button.parentNode.parentNode;
+document.addEventListener('DOMContentLoaded', function () {
+    // Function to parse URL parameters
+    function getQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+            id: params.get('id'),
+            name: params.get('name'),
+            description: params.get('description')
+        };
+    }
 
-    // Get the column values
-    var column1Value = row.cells[0].innerHTML;
-    var column2Value = row.cells[1].innerHTML;
+    // Populate the form with data from URL parameters
+    const params = getQueryParams();
+    document.getElementById('name').value = params.name;
+    document.getElementById('description').value = params.description;
+});
 
-    // Populate the form fields
-    document.getElementById("column1").value = column1Value;
-    document.getElementById("column2").value = column2Value;
-        // Select the table and button
-        const table = document.getElementById('myTable');
-        const button = document.getElementById('myButton');
-
-        // Add an event listener to the button
-        button.addEventListener('click', () => {
-            // Select the row (assuming the first row is selected)
-            const row = table.rows[1]; // Change the index to select a different row
-
-            // Extract data from the row
-            const email = row.cells[1].textContent;
-            const age = row.cells[2].textContent;
+function goBack() {
+    window.history.back();
+}

@@ -8,9 +8,8 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int AdmissionID { get; set; }
-        public int PatientName { get; set; }
+        public int PatientID { get; set; }
         [ForeignKey("PatientID")] 
-        [DisplayName("Patient Name")]
         public int PatientGender { get; set; }
         [ForeignKey("PatientID")]
         [DisplayName("Gender")] 

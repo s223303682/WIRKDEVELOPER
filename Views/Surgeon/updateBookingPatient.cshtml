@@ -1,17 +1,17 @@
-﻿@model WIRKDEVELOPER.Models.BookingNew
+﻿@model WIRKDEVELOPER.Models.BookingNewPatient
 <h1><div class=" bg-info bg-opacity-50 text-center text-white rounded-1">UPDATE BOOKINGS FOR NEW PATIENTS</div></h1>
 <hr />
 <div class="container p-3 bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
     <form method="post" asp-action="updateAppointment" class="bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
-        <input asp-for="BookingNewID" hidden />
+        <input asp-for="BookingNewPatientID" hidden />
         <div>
             <div class="col">
-                <label asp-for="BookingPatientName"></label>
-                <input asp-for="BookingPatientName" class="form-control" />
+                <label asp-for="BookingNewPatientName"></label>
+                <input asp-for="BookingNewPatientSurname" class="form-control" />
             </div>
             div class="col">
-            <label asp-for="BookingPatientSurname"></label>
-            <input asp-for="BookingPatientSurname" class="form-control" />
+            <label asp-for="BookingNewPatientSurname"></label>
+            <input asp-for="BookingNewPatientSurname" class="form-control" />
         </div>
             <div class="col">
                 <label asp-for="Gender"></label>
@@ -19,8 +19,8 @@
             </div>
 
             <div class="col">
-                <label asp-for="email"></label>
-            <input asp-for="email" class="form-control" />
+                <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
             </div>
             <div class="col">
                 <label asp-for="Date"></label>

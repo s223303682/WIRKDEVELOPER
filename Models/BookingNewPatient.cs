@@ -2,28 +2,26 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WIRKDEVELOPER.Models.Account;
-
 namespace WIRKDEVELOPER.Models
 {
-    public class Booking
+    public class BookingNewPatient
     {
 
         [Key]
-        public int BookingID { get; set; }
-        [Required(ErrorMessage = "Required")]
-        public int? AdmissionID { get; set; }
-        [ForeignKey("AdmissionID")]
-        public virtual Admission? Admission { get; set; }
-        [Required]
-        public string? Gender { get; set; }
-        [Required]
-        [DisplayName("Email address")]
-        public string? EmailAddress { get; set; }
-        [Required]
-        public DateTime? Date { get; set; }
-        [Required]
-        public DateTime? Time { get; set; }
-        [Required(ErrorMessage = "Required")]
+        public int BookingNewPatientID { get; set; }
+		public string BookingNewPatientName { get; set; }
+		public string BookingNewPatientSurname { get; set; }
+		public string BookingNewPatientIDNUmber { get; set; }
+		public string Gender { get; set; }
+		public string Email { get; set; }
+		public DateTime Date { get; set; }
+		public TimeSpan Time { get; set; }
+		public string Province { get; set; }
+		public string City { get; set; }
+		public string Suburb { get; set; }
+		public string Zip { get; set; }
+		public string ContactNumber { get; set; }
+		[Required(ErrorMessage = "Required")]
         public int? OperationTheatreID { get; set; }
         [ForeignKey("OperationTheatreID")]
         public virtual OperationTheatre? OperationTheatre { get; set; }
@@ -35,6 +33,6 @@ namespace WIRKDEVELOPER.Models
         public int UserId { get; set; }
         [ForeignKey("AnaestesiologistID")]
         public virtual Anaesthesiologist? Anaestesiologist { get; set; }
-
     }
+   
 }

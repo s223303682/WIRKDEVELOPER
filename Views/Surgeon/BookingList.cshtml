@@ -12,69 +12,72 @@
         <h1> <a asp-controller="Surgeon" asp-action="CreateBooking" style="width:100%">Creating Booking</a></h1>
     </div>
     <h1><div class=" bg-info bg-opacity-50 text-center text-white rounded-1"> BOOKINGS</div></h1>
-    @if (Model.Count() > 0)
-    {
-        <table id="myTable" class=" table table-bordered table-striped table-white">
-            <thead>
-                <tr>
-
-
-                     <th>Name</th>
-                    <th>Gender</th>
-                    <th>email</th>
-                    <th>date</th>
-                    <th>time</th>
-                    <th>Theatre</th>
-                    <th>treatmentcode</th>
-                    <th> Anasthesiologist</th>
-                    <th>Delete</th>
-                    <th> Update</th>
-                    <th> select</th>
-
-
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var booking in Model)
-                {
-
+    <from action="CreatePrescription.html" method="GET" id="dataForm">
+        @if (Model.Count() > 0)
+        {
+            <table id="dataTable" class=" table table-bordered table-striped table-white">
+                <thead>
                     <tr>
-                        @*  <td>@booking.PatientID</td> *@
-                        <td>@booking.Gender</td>
-                        <td>@booking.EmailAddress</td>
-                        <td>@booking.Date</td>
-                        <td>@booking.Time</td>
-                        <td>@booking.OperationTheatreID</td>
-                        <td>@booking.OperationTheatreID</td>
-                        <td>@booking.Anaestesiologist</td>
 
-                        <td>
-                            <div class="">
-                                <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Update</a>
-                            </div>
-                        </td>
-                        <td>
-                            <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Delete</a>
-                        </td>
-                        <td>
-                        <td><button id="myButton">Take me to a new page</button></td>
+
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>email</th>
+                        <th>date</th>
+                        <th>time</th>
+                        <th>Theatre</th>
+                        <th>treatmentcode</th>
+                        <th> Anasthesiologist</th>
+                        <th>Delete</th>
+                        <th> Update</th>
+                        <th> select</th>
+
 
 
                     </tr>
+                </thead>
+                <tbody>
+                    @foreach (var booking in Model)
+                    {
+
+                        <tr>
+                            @*  <td>@booking.PatientID</td> *@
+                            <td>@booking.Gender</td>
+                            <td>@booking.EmailAddress</td>
+                            <td>@booking.Date</td>
+                            <td>@booking.Time</td>
+                            <td>@booking.OperationTheatreID</td>
+                            <td>@booking.OperationTheatreID</td>
+                            <td>@booking.Anaestesiologist</td>
+
+                            <td>
+                                <div class="">
+                                    <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Update</a>
+                                </div>
+                            </td>
+                            <td>
+                                <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Delete</a>
+                            </td>
+                            
+                            
+
+
+                        </tr>
 
 
 
-                }
+                    }
 
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>NO bookings  has been done</p>
-    }
-
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>NO bookings  has been done</p>
+        }
+       
+  </from>
+   
 </body>
-<script src="~/css/JavaScript.js"></script>
+
 </html>

@@ -11,8 +11,7 @@ namespace WIRKDEVELOPER.Models
         [Required]
         [DisplayName("Condition Name")]
         public string? ConditionName { get; set; }
-        public int? AdminID { get; set; }
-        [ForeignKey("AdminID")]
+       
         public virtual Administrator? Admin { get; set; }
 
     }

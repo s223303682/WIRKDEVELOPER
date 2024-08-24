@@ -1,0 +1,74 @@
+﻿@model WIRKDEVELOPER.Models.StockReceived
+@{
+
+    Layout = "~/Views/Shared/Pharmacy.cshtml";
+}
+
+<div class="card w-75">
+    <div class="card-body ">
+        <div class="card-header bg-primary">
+
+            <h3 class="card-title text-white mt-2" id="exampleModalLabel">Medication</h3>
+        </div>
+        <form method="post" asp-action="AddStock">
+            <div class="border p-3 #FBD603">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+
+                <div class="row" id="users">
+                    <div class="form-group">
+
+                       @*  <div class="col-md-4">
+
+                            <h4><label asp-for="Date"></label></h4>
+                            <input asp-for="Date" class="form-control" />
+                            <span asp-validation-for="Date" class="text-danger"></span>
+
+                        </div> *@
+                        <div class="row">
+                            <div id="medicationFieldsContainer">
+
+                                <div class="form-row">
+                                    <div class="col-md-4">
+                                        <h4><label asp-for="PharmStockId"></label></h4>
+                                        <select asp-for="PharmStockId" class="form-control" asp-items="@ViewBag.getStock" required>
+                                            <option selected disabled>--Select Medication--</option>
+                                        </select>
+                                        <span asp-validation-for="PharmStockId" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <h4><label asp-for="QuantityRecived"></label></h4>
+                                        <input asp-for="QuantityRecived" class="form-control box mb-2" type="text" placeholder="Enter Quantity" />
+                                        <span asp-validation-for="QuantityRecived" class="text-danger"></span>
+                                    </div>
+                                   @*  <button type="button" class="btn btn-primary mt-2" onclick="addFields()">Add Another Set</button> *@
+                                </div>
+
+                            </div>
+
+
+
+
+
+                            <div>
+                                <div class="form-group row">
+                                    <div class="col-4 offset-9 row">
+                                        <div class="col">
+                                            <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="SAVE" />
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <script src="~/css/JavaScript.js"></script>
+        </form>
+    </div>
+</div>
