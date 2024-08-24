@@ -12,7 +12,7 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public int NoOfBeds { get; set; } 
         public int NurseResponsible { get; set; }
-        }
+        
 
     }
 }

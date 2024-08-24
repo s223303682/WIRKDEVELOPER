@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WIRKDEVELOPER.Areas.Identity.Data;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WIRKDEVELOPER.Models
 {
@@ -11,11 +12,9 @@ namespace WIRKDEVELOPER.Models
 
 		[Key]
 		public int PrescriptionID { get; set; }
-		public int? PatientID { get; set; }
-		[Required(ErrorMessage = "Required")]
-		[ForeignKey("PatientID")]
-		public virtual Patient? Patient { get; set; }
-		[Required]
+        public string BookingID { get; set; }
+        public string Name { get; set; }
+        [Required]
 		[DisplayName("Prescription Date")]
 		public DateTime? Date { get; set; }
 		public string? prescriber { get; set; }

@@ -32,7 +32,9 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
 
         }
     }
+
     public DbSet<Models.Administrator> admins { get; set; }
+    public DbSet<BookingNewPatient> bookingNewPatients { get; set; }
     public DbSet<Bed> beds { get; set; }
     public DbSet<Ward> ward { get; set; }
     public DbSet<Condition> conditions { get; set; }
@@ -56,7 +58,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Order> order { get; set; }
     public DbSet<VitalRanges> vitalranges { get; set; }
     public DbSet<Notes> notes { get; set; }
-    public DbSet<BookingNew> bookingnew { get; set; }
+   
     public DbSet<Booking> bookings { get; set; }
     public DbSet<DischargePatient> discharge { get; set; }
     public DbSet<MedicalProfessional> medicalProfessionals { get; set; }

@@ -31,43 +31,43 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <label asp-for="province" for="country">Country:</label>
-                    <select asp-for="province" id="country" name="country" onchange="populateStates()" class="form-control">
-                        <option value="">Select Country</option>
-                        <option value="Eastern Cape">Eastern Cape</option>
-                        <option value="Western Cape">Western Cape</option>
-                        <option value="Gauteng">Gauteng</option>
-                        <option value="North West">North West</option>
-                        <option value="Kwazulu-Natal">Kwazulu-Natal</option>
-                        <option value="Limpopo">Limpopo</option>
-                        <option value="Mpumalanga">Mpumalanga</option>
-                        <option value="Free State">Free State</option>
-                        <option value="Northen Cape">Northen Cape</option>
-
-                    </select>
+                    <div class="form-group border-1">
+                        <label asp-for="Province"></label>
+                        <select asp-for="Province" id="province" name="Province" class="form-control" required>
+                            <option value="">Select Province</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                        <span asp-validation-for="Province" class="text-danger"></span>
+                    </div>
                 </div>
                 <div class="col">
-                    <label asp-for="City" for="state">State:</label>
-                    <select asp-for="City" id="state" name="state" onchange="populateCities()" class="form-control">
-                        <option value="">Select State</option>
-                    </select>
+                    <div class="form-group border-1">
+                        <label asp-for="City"></label>
+                        <select asp-for="City" id="city" name="City" class="form-control" required>
+                            <option value="">Select City</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
                 </div>
                 <div class="col">
-                    <label asp-for="Surbub" for="city">City:</label>
-                    <select asp-for="Surbub" id="city" name="city" class="form-control">
-                        <option value="">Select City</option>
-                    </select>
+                    <div class="form-group border-1">
+                        <label asp-for="Suburb"></label>
+                        <select asp-for="Suburb" id="suburb" name="Suburb" class="form-control" required>
+                            <option value="">Select Suburb</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                        <span asp-validation-for="Suburb" class="text-danger"></span>
+                    </div>
                 </div>
                 <div class="col">
-                    <label asp-for="Zip" for="zip">Zip:</label>
-                    <select asp-for="Zip" id="zip" name="zip" class="form-control">
-                        <option value="">Select zip</option>
-                    </select>
+                    <div class="form-group border-1">
+                        <label asp-for="Zip"></label>
+                        <input asp-for="Zip" type="text" class="form-control" required />
+                        <span asp-validation-for="Zip" class="text-danger"></span>
+                    </div>
                 </div>
-
-
             </div>
-        </div>
         <div class="row">
             <div class="col">
                 <div class="form-group">
@@ -130,107 +130,71 @@
 
         </div>
     </form>
-    <script>
-        const countryStateInfo = {
-            "North West": ["Mahikeng", "Stella"],
-            "Gauteng": ["Johannesburg", "Pretoria"],
-            "Free State": ["Bloemfontein"],
-            "Limpopo": ["Polokwana"],
-            "Mpumalanga": ["Mbombela"],
-            "Northen Cape": ["Kimberly"],
-            "Kwazulu-Natal": ["Durban", " Richards Bay", "Port Shepstone", "Newcastle", "Estcourt", "Ladysmith and Richmond."],
-            "Eastern Cape": ["Gqeberha", "Bisho", "Florida"],
-            "Western Cape": ["Cape Town"]
+     <script>
+    document.addEventListener('DOMContentLoaded', function () {
+            const provinces = ['Eastern Cape', 'Western Cape', 'North West','Gauteng','Free State','Limpopo','Northen Cape','Kwazulu-Natal'];
+        const cities = {
+            'Eastern Cape': ['Gqeberha', 'Bisho'],
+            'Western Cape': ['Cape Town'],
+            'Northen Cape': ['Kimberly']
+            'North West': ['Mahikeng','Stella']
+            'Gauteng': ['Johannesburg', 'Pretoria'],
+            'Free State': ['Bloemfontein'],
+            'Limpopo': ['Polokwana'],
+            'Mpumalanga': ['Mbombela'],
+            'Kwazulu-Natal': ['Durban', 'Richards Bay', 'Port Shepstone', 'Newcastle', 'Estcourt','Ladysmith and Richmond.']
+        };
+        const suburbs = {
+            'Gqeberha': ['Bridgemead', 'Homewood', 'Algoa park', 'cotswold', 'Lorraine', 'Struandale', 'Malabar', 'Summerstrand'],
+            'Johannesburg': ['Houston', 'Dallas', 'Austin'],
+            'Mbombela': ["Kamagugu", 'Barberton', 'San Diego', 'Riverside', 'valencia park'],
+            'Durban': ['Essenwood', 'kenville', 'Cato manor', 'Masgrave', 'Bluff', 'Glenmore', 'kwamashu', 'inanda', 'Tongaat', 'Greyville']
         };
 
-        const stateCityInfo = {
-            "Gqeberha": ["Bridgemead", "Homewood", "Algoa park", "cotswold", "Lorraine", "Struandale", "Malabar", "Summerstrand"],
-            "Johannesburg": ["Houston", "Dallas", "Austin"],
-            "Mbombela": ["Kamagugu", "Barberton", "San Diego", "Riverside", "valencia park"],
-            "Durban": ["Essenwood", "kenville", "Cato manor", "Masgrave", "Bluff", "Glenmore", "kwamashu", "inanda", "Tongaat", "Greyville"]
+        const provinceSelect = document.getElementById('province');
+        const citySelect = document.getElementById('city');
+        const suburbSelect = document.getElementById('suburb');
 
-        };
-        const stateZipInfo = {
-            "Makagagu": [1200],
-            "Essenwood": [4001],
-            "Bridgemead": [6025],
-            "kenville": [4051],
-            "Homewood": [6001],
-            "Cato manor": [4091],
-            "Algoa park": [6001],
-            "Masgrave": [4001],
-            "Barberton": [1300],
-            "Bluff": [4052],
-            "cotswold": [6045],
-            "Glenmore": [4001],
-            "Riverside": [1226],
-            "Lorraine": [6070],
-            "Kwamashu": [4359],
-            "inanda": [4309],
-            "Struandale": [6001],
-            "valencia park": [1201],
-            "Tongaat": [4399],
-            "Greyville": [4001],
-            "Malabar": [6020],
-            "Summerstrand": ["6001"]
-        };
+        // Populate provinces
+        provinces.forEach(province => {
+            const option = document.createElement('option');
+            option.value = province;
+            option.textContent = province;
+            provinceSelect.appendChild(option);
+        });
 
-        function populateStates() {
-            const countrySelect = document.getElementById("country");
-            const stateSelect = document.getElementById("state");
-            const citySelect = document.getElementById("city");
-            const selectedCountry = countrySelect.value;
+        // Update cities based on selected province
+        provinceSelect.addEventListener('change', function () {
+            const selectedProvince = this.value;
+            citySelect.innerHTML = '<option value="">Select City</option>'; // Reset cities
+            suburbSelect.innerHTML = '<option value="">Select Suburb</option>'; // Reset suburbs
 
-            stateSelect.innerHTML = "<option value=''>Select State</option>";
-            citySelect.innerHTML = "<option value=''>Select City</option>";
-
-            if (selectedCountry) {
-                const states = countryStateInfo[selectedCountry];
-                states.forEach(state => {
-                    const option = document.createElement("option");
-                    option.value = state;
-                    option.textContent = state;
-                    stateSelect.appendChild(option);
-                });
-            }
-        }
-
-        function populateCities() {
-            const stateSelect = document.getElementById("state");
-            const citySelect = document.getElementById("city");
-            const selectedState = stateSelect.value;
-
-            citySelect.innerHTML = "<option value=''>Select City</option>";
-
-            if (selectedState) {
-                const cities = stateCityInfo[selectedState];
-                cities.forEach(city => {
-                    const option = document.createElement("option");
+            if (selectedProvince) {
+                cities[selectedProvince].forEach(city => {
+                    const option = document.createElement('option');
                     option.value = city;
                     option.textContent = city;
                     citySelect.appendChild(option);
                 });
             }
-        }
-        function populateZip() {
-            const citySelect = document.getElementById("city");
-            const zipSelect = document.getElementById("zip");
-            const selectedCity = citySelect.value;
+        });
 
-            zipSelect.innerHTML = "<option value=''>Select Zip</option>";
+        // Update suburbs based on selected city
+        citySelect.addEventListener('change', function () {
+            const selectedCity = this.value;
+            suburbSelect.innerHTML = '<option value="">Select Suburb</option>'; // Reset suburbs
 
             if (selectedCity) {
-                const zips = stateZipInfo[selectedCity];
-                zips.forEach(zip => {
-                    const option = document.createElement("option");
-                    option.value = zip;
-                    option.textContent = zip;
-                    zipSelect.appendChild(option);
+                suburbs[selectedCity].forEach(suburb => {
+                    const option = document.createElement('option');
+                    option.value = suburb;
+                    option.textContent = suburb;
+                    suburbSelect.appendChild(option);
                 });
             }
-        }
-
-    </script>
+        });
+    });
+</script>
     </body>
 </html>
 

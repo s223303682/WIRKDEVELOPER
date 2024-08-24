@@ -9,14 +9,10 @@ namespace WIRKDEVELOPER.Models
 		public int DayHospitalID { get; set; }
         [Required]
         public string? Name { get; set; }
-        [Required]
-		public string? province { get; set; }
-		[Required]
-		public string? City { get; set; }
-		[Required]
-		public string? Surbub { get; set; }
-        [Required]
-        public int? Zip { get; set; }
+        public string Province { get; set; }
+        public string City { get; set; }
+        public string Suburb { get; set; }
+        public string Zip { get; set; }
         [Required]
 		[DisplayName("Contact Number")]
 		public string? ContactNumber { get; set; }
