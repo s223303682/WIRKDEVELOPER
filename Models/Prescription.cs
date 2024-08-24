@@ -14,6 +14,8 @@ namespace WIRKDEVELOPER.Models
 		public int PrescriptionID { get; set; }
         public string BookingID { get; set; }
         public string Name { get; set; }
+        public string gender { get; set; }
+        public string email { get; set; }
         [Required]
 		[DisplayName("Prescription Date")]
 		public DateTime? Date { get; set; }

@@ -29,10 +29,7 @@ namespace WIRKDEVELOPER.Models
         public int TreatmentCodeID { get; set; }
         [ForeignKey("TreatmentCodeID")]
         public virtual TreatmentCode? treatmentCode { get; set; }
-        [Required(ErrorMessage = "Required")]
-        public int UserId { get; set; }
-        [ForeignKey("AnaestesiologistID")]
-        public virtual Anaesthesiologist? Anaestesiologist { get; set; }
+        public string Anaesthesiologist { get; set; }
     }
    
 }

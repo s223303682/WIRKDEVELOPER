@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
 using WIRKDEVELOPER.Models.Account;
@@ -17,6 +18,27 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.Entity<Booking>()
+            .HasOne(b => b.TreatmentCode)
+            .WithMany()  // Assuming TreatmentCode does not have a collection of Bookings
+            .HasForeignKey(b => b.TreatmentCodeID)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
+
+        // Configuring Booking-OperationTheatre relationship
+        builder.Entity<Booking>()
+            .HasOne(b => b.OperationTheatre)
+            .WithMany()  // Assuming OperationTheatre does not have a collection of Bookings
+            .HasForeignKey(b => b.OperationTheatreID)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
+
+        // Configuring Booking-Patient relationship (if applicable)
+        builder.Entity<Booking>()
+            .HasOne(b => b.Addm)
+            .WithMany()  // Assuming Patient does not have a collection of Bookings
+            .HasForeignKey(b => b.AddmID)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
+
+        
         base.OnModelCreating(builder);
         // Customize the ASP.NET Identity model and override the defaults if needed.
         // For example, you can rename the ASP.NET Identity table names and more.
@@ -87,4 +109,5 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Ranges> ranges {  get; set; }
     public DbSet<Addm> addm {  get; set; }
     public DbSet<StockReceived> StockReceiveds { get; set; }
+
 }

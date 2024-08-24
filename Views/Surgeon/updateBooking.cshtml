@@ -5,12 +5,7 @@
     <form method="post" asp-action="updateAppointment" class="bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
         <input asp-for="BookingID" hidden />
         <div>
-            <@* div class="col">
-                <label asp-for="PatientID"></label>
-                <select id="PurposeDropdown" asp-for="PatientID" class="form-control" asp-items="@ViewBag.getPatient" required>
-                <option selected disabled>--select Patient</option>
-                </select>
-            </div> *@
+           
             <div class="col">
                 <label asp-for="Gender"></label>
                 <input asp-for="Gender" class="form-control" />
@@ -28,25 +23,7 @@
                 <label asp-for="Time"></label>
                 <input asp-for="Time" class="form-control" />
             </div>
-            <div class="col">
-                <label asp-for="OperationTheatreID"></label>
-                <select id="PurposeDropdown" asp-for="OperationTheatreID" class="form-control" asp-items="@ViewBag.getOperationTheatre" required>
-                    <option selected disabled>--select Theatre</option>
-                </select>
-            </div>
-            <div class="col">
-                <label asp-for="UserId"></label>
-               <select id="PurposeDropdown" asp-for="UserId" class="form-control" asp-items="@ViewBag.getAnaesthesiologist" id="validationName" required>
-                    <option selected disabled>--select Anaesthesiologists</option>
-                </select>
-            </div>
-            <div class="col">
-                <label asp-for="Anaestesiologist"></label>
-                <select class="form-control" asp-for='TreatmentCodeID' placeholder="treatmentCode" asp-items="@ViewBag.getTreatmentCode" required>
-                    <option selected disabled>--Select TreatmentCode</option>
-
-                </select>
-            </div>
+            
 
             <div class=" form-group row">
                 <div class="col-6 ">

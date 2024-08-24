@@ -110,7 +110,7 @@ namespace WIRKDEVELOPER.Controllers
         {
             IEnumerable<BookingNewPatient> list = _Context.bookingNewPatients
                 .Include(a => a.OperationTheatre)
-                .Include(s => s.Anaestesiologist)
+               
                 .Include(s => s.treatmentCode);
 
 
@@ -120,7 +120,7 @@ namespace WIRKDEVELOPER.Controllers
         {
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
+           
             return View();
         }
         [HttpPost]
@@ -131,7 +131,7 @@ namespace WIRKDEVELOPER.Controllers
            _Context.bookingNewPatients.Add(bookingNewPatient);
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
+            
             _Context.SaveChanges();
             return RedirectToAction("BookingPatientList");
         }
@@ -184,36 +184,49 @@ namespace WIRKDEVELOPER.Controllers
     }
         public IActionResult BookingList()
         {
-
-            IEnumerable<Booking> list = _Context.bookings
-                 .Include(a => a.OperationTheatre)
-                .Include(s => s.Anaestesiologist)
-                .Include(s => s.treatmentCode);
-            return View(list);
+            var bookings = _Context.bookings
+                .Include(b => b.OperationTheatre)
+                .Include(b => b.TreatmentCode)
+                .Include(b => b.Addm) // Assuming you have a Patient entity
+                .ToList();
+            return View(bookings);
         }
+
         public IActionResult CreateBooking()
         {
+            // Populate dropdowns for the view
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
-            ViewBag.getPatient = new SelectList(_Context.admission, "AdmissionID");
+            ViewBag.getPatient = new SelectList(_Context.addm, "AddmID", "PatientName"); 
+
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateBooking(Booking booking)
         {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _Context.bookings.Add(booking);
+                    _Context.SaveChanges();
+                    return RedirectToAction("BookingList");
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (ex) and handle accordingly
+                    ModelState.AddModelError("", "An error occurred while creating the booking. Please try again.");
+                }
+            }
 
+            // Re-populate dropdowns in case of validation errors
+            ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName", booking.OperationTheatreID);
+            ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE", booking.TreatmentCodeID);
+            ViewBag.getPatient = new SelectList(_Context.addm, "AddmID", "PatientName", booking.Addm);
 
-            _Context.bookings.Add(booking);
-            ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
-            ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
-            ViewBag.getPatient = new SelectList(_Context.patients, "AdmissionID");
-            _Context.SaveChanges();
-
-            return RedirectToAction("BookingList");
-
+            return View(booking);
         }
         public IActionResult updateBooking(int? ID)
         {
@@ -234,8 +247,7 @@ namespace WIRKDEVELOPER.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult updateBooking(Booking booking)
         {
-            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //bookSurgery.PatientID = user;
+            
             _Context.bookings.Update(booking);
             _Context.SaveChanges();
             return RedirectToAction("BookingList");
