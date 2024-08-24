@@ -3,83 +3,53 @@
 
     Layout = "~/Views/Shared/Pharmacy.cshtml";
 }
-<div class=" col-10 text-right">
-    <a asp-controller="Surgeon" asp-action="CreatePrescription" style="width:100%"></a>
-</div>
 
+<div class=" col-10 text-right">
+    <a asp-controller="Surgeon" asp-action="CreatePrescription" style="width:100%">CREATE NEW PRESCRIPTION</a>
+</div>
+<h1><div class=" bg-info bg-opacity-50 text-center text-white rounded-1">PRESCRIPTIONS</div></h1>
 
 @if (Model.Count() > 0)
 {
     <table class=" table table-bordered table-striped table-success">
         <thead>
             <tr>
-               <th>patient</th>
-                <th>date</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Date</th>
                 <th>prescriber</th>
-                <th>medication</th>
-              @*   <th>quantity</th>
-                <th>Instructions</th> *@
-               
                 <th>urgent</th>
-                 <th>status</th>
+                <th>status</th>
                 <th>Update</th>
-                <th>Delete</th
+                <th>Delete</th>
+
 
             </tr>
         </thead>
         <tbody>
             @foreach (var prescription in Model)
             {
-
+                
                 <tr>
-                 @*  <td>@prescription.PatientID</td> *@
+                    <td>@prescription.Name</td>
+                    <td>@prescription.Gender</td>
+                    <td>@prescription.Email</td>
                     <td>@prescription.Date</td>
-                    <td>@prescription.prescriber</td>
-                    <td>@prescription.PharmacyMedicationID</td>
-                  @*   <td>@prescription.Quantity</td>
-                    <td>@prescription.Instructions</td> *@
+                    <td>@prescription.Prescriber</td>
                     <td>@prescription.Urgent</td>
-                    <td>@prescription.status</td>
-                   @*  <td>
+                    <td>@prescription.Status</td>
+                   
+                    <td>
                         <div class="">
-                                    <a asp-controller="Pharmacist" asp-action="updatePharmPrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Despense</a>
+                            <a asp-controller="Surgeon" asp-action="updatePrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Update</a>
                         </div>
                     </td>
                     <td>
-                        <div class="">
-                                    <a asp-controller="Pharmacist" asp-action="RejectPharmPrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Reject</a>
-                        </div>
-                    </td> *@
-                 
+                        <a asp-controller="Surgeon" asp-action="DeletePrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Delete</a>
+                    </td>
 
                 </tr>
-                @* @if (prescription.status == "New")
-                {
-                <td>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-@prescription.PrescriptionID">
-                        Accept
-                    </button>|
-                    <a asp-action="Details" asp-route-id="@prescription.PrescriptionID">Decline</a>|
-                    <a asp-action="Delete" asp-route-id="@prescription.PrescriptionID">Postpone</a>
-                </td>
-                <div class="modal fade" id="exampleModal-@prescription.PrescriptionID" tabindex="-1" aria-labelledby="exampleModalLabel-@prescription.PrescriptionID" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel-@prescription.PrescriptionID">Confirm acceptance</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Do you want to Accept?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <a asp-action="AcceptPrescription" asp-route-id="@prescription.PrescriptionID" button type="button" class="btn btn-primary">Accept</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                } *@
 
 
 

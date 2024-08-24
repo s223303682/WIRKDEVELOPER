@@ -11,9 +11,9 @@ namespace WIRKDEVELOPER.Models
         [Key]
         public int BookingID { get; set; }
         [Required(ErrorMessage = "Required")]
-        public int? AdmissionID { get; set; }
-        [ForeignKey("AdmissionID")]
-        public virtual Admission? Admission { get; set; }
+        public int? AddmID { get; set; }
+        [ForeignKey("AddmID")]
+        public virtual Addm? Addm { get; set; }
         [Required]
         public string? Gender { get; set; }
         [Required]
@@ -27,14 +27,13 @@ namespace WIRKDEVELOPER.Models
         public int? OperationTheatreID { get; set; }
         [ForeignKey("OperationTheatreID")]
         public virtual OperationTheatre? OperationTheatre { get; set; }
+       
         [Required(ErrorMessage = "Required")]
         public int TreatmentCodeID { get; set; }
         [ForeignKey("TreatmentCodeID")]
-        public virtual TreatmentCode? treatmentCode { get; set; }
+        public virtual TreatmentCode? TreatmentCode { get; set; }
         [Required(ErrorMessage = "Required")]
-        public int UserId { get; set; }
-        [ForeignKey("AnaestesiologistID")]
-        public virtual Anaesthesiologist? Anaestesiologist { get; set; }
-
+        public string Anaestesiologist { get; set; }
+        
     }
 }

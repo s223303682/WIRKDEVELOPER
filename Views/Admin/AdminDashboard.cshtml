@@ -1,5 +1,125 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using WIRKDEVELOPER.Areas.Identity.Data
 
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "index";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
-<h1>Dashboard</h1>
+<!DOCTYPE html>
+<html lang="n">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="~/css/StyleSurgeon2.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <title> Health Care</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
+                    <h2 class="text-info"> Welcome to Health Care services</h2>
+                </div>
+            </div>
+
+        </nav>
+
+    </header>
+
+    <div class=" row card-container">
+        <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/Images/Surgeon/SearchPatient.jpeg" width="80%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+               <a asp-controller="Account" asp-action="Users" class="sidebar-link"></a>
+            </div>
+        </div>
+        <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/Images/Surgeon/SearchPatient.jpeg" width="80%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Admin" asp-action="AddPatient"> Patient</a>
+            </div>
+        </div>
+        <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/images/Surgeon/card1.jpg" width="80%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Admin" asp-action="CreateActive">Active Ingredients</a>
+            </div>
+        </div>
+        <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/Images/Surgeon/ViewBooking.jpeg" width="80%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Admin" asp-action="AddWards">Wards</a>
+            </div>
+        </div>
+        <div class="col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/images/Surgeon/card1.jpg" width="80%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Admin" asp-action="CreateOperatingTheatre">Theate</a>
+            </div>
+        </div>
+        <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/images/Surgeon/card1.jpg" width="80%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Admin" asp-action="CreateDayHospital">Day hoptital</a>
+            </div>
+        </div>
+    </div>
+    <div class=" row card-container">
+        <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/Images/Surgeon/SearchPatient.jpeg" width="80%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Admin" asp-action="CreateSchedule"> Schedule</a>
+            </div>
+        </div>
+        <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/images/Surgeon/card1.jpg" width="80%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Admin" asp-action="CreateTreatmentCode">Treatment Code</a>
+            </div>
+        </div>
+        <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
+            <div class="card-body">
+                <img src="~/Images/Surgeon/ViewBooking.jpeg" width="80%" height="60%" alt="card image">
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Admin" asp-action="DosageForm">Dosage Form</a>
+            </div>
+        </div>
+        
+    </div>
+    <div class="mycontainer ">
+        <div class="text-info text-center">providing the best experience for patients</div>
+        <p class="text-info text-center">
+            welcome to a place where our first priority is our patients.<br />
+            trust us with your wealth and have a great experience
+        </p>
+    </div>
+</body>
+
+</html>>

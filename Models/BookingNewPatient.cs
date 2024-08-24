@@ -15,8 +15,8 @@ namespace WIRKDEVELOPER.Models
 		public string Gender { get; set; }
 		public string Email { get; set; }
 		public DateTime Date { get; set; }
-		public TimeSpan Time { get; set; }
-		public string Province { get; set; }
+        public TimeSpan Time { get; set; }
+        public string Province { get; set; }
 		public string City { get; set; }
 		public string Suburb { get; set; }
 		public string Zip { get; set; }
@@ -29,10 +29,7 @@ namespace WIRKDEVELOPER.Models
         public int TreatmentCodeID { get; set; }
         [ForeignKey("TreatmentCodeID")]
         public virtual TreatmentCode? treatmentCode { get; set; }
-        [Required(ErrorMessage = "Required")]
-        public int UserId { get; set; }
-        [ForeignKey("AnaestesiologistID")]
-        public virtual Anaesthesiologist? Anaestesiologist { get; set; }
+        public string Anaesthesiologist { get; set; }
     }
    
 }
