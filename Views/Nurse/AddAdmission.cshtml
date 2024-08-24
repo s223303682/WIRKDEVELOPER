@@ -13,12 +13,18 @@
     <div class="row"
          <div class="col">
             <div class="form-group">
-                <label asp-for="PatientName"></label>
-                <div>
+                <label asp-for="PatientID" class="label-control">Patient Name</label>
+                <select asp-for="PatientID" class="form-control">
+                    @* @foreach (ApplicationUser item in ViewBag.Patients)
+                    {
+                        <option value="@item.id">@item.FirstName @item.LastName</option>
+                    } *@
+                </select>
+               @*  <div>
                     <input asp-for="PatientName" class="form-control" id="PatientName" required />
                 </div>
                 <div class="invalid-feedback"></div>
-                <span asp-validation-for="PatientName" class=" text-danger"></span>
+                <span asp-validation-for="PatientName" class=" text-danger"></span> *@
             </div>
         </div>
         <div class="col-md-3">
