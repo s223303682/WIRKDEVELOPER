@@ -28,14 +28,14 @@ namespace WIRKDEVELOPER.Controllers
             return View(patient);
         }
         public IActionResult ViewPatientRec()
-		{
+        {
             ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
             ViewBag.getWard = new SelectList(_Context.ward, "WardID", "WardName");
             ViewBag.getBed = new SelectList(_Context.bed, "BedID", "BedNumber");
-    
+
             return View();
-           
-		}
+
+        }
         public IActionResult IndexViewBookedPatients()
         {
 
@@ -78,11 +78,11 @@ namespace WIRKDEVELOPER.Controllers
             IEnumerable<AnConditions> objList = _Context.anconditions;
             return View(objList);
 
-		}
-		public IActionResult AnConditions()
-		{
-			return View();
-		}
+        }
+        public IActionResult AnConditions()
+        {
+            return View();
+        }
         public IActionResult IndexOrder()
         {
             IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Addm);
@@ -90,8 +90,8 @@ namespace WIRKDEVELOPER.Controllers
 
         }
         public IActionResult Order()
-		{
-           
+        {
+
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
 
@@ -273,19 +273,19 @@ namespace WIRKDEVELOPER.Controllers
             //_Context.SaveChanges();
             //return RedirectToAction("IndexVitalRanges");
         }
-    }
+
         //public PatientController(ApplicationDbContext context)
         //{
         //    _context = context;
         //}
 
-        //public IActionResult SearchPatient(string patientName)
-        //{
+        public IActionResult SearchPatient(string patientName)
+        {
 
 
-        //    //var order= _Context.order
-        //    //                      .Where(o => o.Patient.Contains(patientName))
-        //    //                      .ToList();
+            //    //var order= _Context.order
+            //    //                      .Where(o => o.Patient.Contains(patientName))
+            //    //                      .ToList();
 
 
             //return View(order);
@@ -294,57 +294,57 @@ namespace WIRKDEVELOPER.Controllers
             //IEnumerable<Order> objList = _Context.order;
             //return View(objList);
         }
-		//public IActionResult ListOrder(Order order)
-		//{
-  //          if (ModelState.IsValid)
-  //          {
-  //              _Context.order.Add(order);
-  //              _Context.SaveChanges();
-  //              return RedirectToAction("IndexOrder");
-  //          }
-  //          return View(order);
-  //      }
+        //public IActionResult ListOrder(Order order)
+        //{
+        //          if (ModelState.IsValid)
+        //          {
+        //              _Context.order.Add(order);
+        //              _Context.SaveChanges();
+        //              return RedirectToAction("IndexOrder");
+        //          }
+        //          return View(order);
+        //      }
 
 
-    //public IActionResult CreateNoteForOrder(int orderId, string noteText)
-    //{
-    //    var order = _Context.order.Find(orderId);
-    //    if (order == null)
-    //    {
-    //        return NotFound();
-    //    }
+        //public IActionResult CreateNoteForOrder(int orderId, string noteText)
+        //{
+        //    var order = _Context.order.Find(orderId);
+        //    if (order == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-    //    var note = new Notes
-    //    {
-    //        AnOrderID = orderId,
-    //        notes = noteText,
-    //        Date = DateTime.Now
-    //    };
+        //    var note = new Notes
+        //    {
+        //        AnOrderID = orderId,
+        //        notes = noteText,
+        //        Date = DateTime.Now
+        //    };
 
-    //    _Context.notes.Add(note);
-    //    _Context.SaveChanges();
+        //    _Context.notes.Add(note);
+        //    _Context.SaveChanges();
 
-    //    return RedirectToAction("Search", new { patientName = order.Patient });
-    //}
-    //public IActionResult CreateNoteForOrder(int orderId)
-    //{
-    //    var order = _Context.order.Find(orderId);
-    //    if (order == null)
-    //    {
-    //        return NotFound();
-    //    }
+        //    return RedirectToAction("Search", new { patientName = order.Patient });
+        //}
+        public IActionResult CreateNoteForOrder(int orderId)
+        {
+            var order = _Context.order.Find(orderId);
+            if (order == null)
+            {
+                return NotFound();
+            }
 
             ViewBag.Patient = order.AddmID;
 
-    //    var note = new Notes
-    //    {
-    //        AnOrderID = orderId
-    //    };
+            var note = new Notes
+            {
+                AnOrderID = orderId
+            };
 
-    //    return View(note);
-    //}
+                return View(note);
+        }
 
-        // POST: Handle the form submission
+
         [HttpPost]
         public IActionResult CreateNoteForOrder(Order note)
         {
@@ -357,78 +357,80 @@ namespace WIRKDEVELOPER.Controllers
                 var order = _Context.order.Find(note.AnOrderID);
                 return RedirectToAction("SearchPatient", new { patientName = order.AddmID });
             }
+            return View(note);
+        }
 
-    //    return View(note);
-    //}
-    //public IActionResult IndexVitalHistory()
-    //{
-    //    IEnumerable<AnVitals> objList = _Context.anvitals;
-    //    return View(objList);
-    //}
-    //public IActionResult VitalHistory()
-    //{
-    //    return View();
-    //}
-    //public IActionResult Indexclassadd()
-    //{
-    //    IEnumerable<ClassAdd> objList = _Context.classadd;
-    //    return View(objList);
-    //}
-    //public IActionResult ClassAdd()
-    //{
-    //    return View();
-    //}
-    //[HttpPost]
-    //[ValidateAntiForgeryToken]
-    //public IActionResult ClassAdd(ClassAdd classAdd)
-    //{
-    //    if (ModelState.IsValid)
-    //    {
-    //        _Context.classadd.Add(classAdd);
-    //        _Context.SaveChanges();
-    //        return RedirectToAction("Indexclassadd");
-    //    }
-    //    return View(classAdd);
 
-    //}
-    //public IActionResult Updateclassadd(int? AdmissionID)
-    //{
-    //    if (AdmissionID == null || AdmissionID == 0)
-    //    {
-    //        return NotFound();
-    //    }
-    //    var obj = _Context.classadd.Find(AdmissionID);
+        public IActionResult IndexVitalHistory()
+        {
+            IEnumerable<AnVitals> objList = _Context.anvitals;
+            return View(objList);
+        }
+        public IActionResult VitalHistory()
+        {
+            return View();
+        }
+        //public IActionResult Indexclassadd()
+        //{
+        //    IEnumerable<ClassAdd> objList = _Context.classadd;
+        //    return View(objList);
+        //}
+        //public IActionResult ClassAdd()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult ClassAdd(ClassAdd classAdd)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _Context.classadd.Add(classAdd);
+        //        _Context.SaveChanges();
+        //        return RedirectToAction("Indexclassadd");
+        //    }
+        //    return View(classAdd);
 
-    //    if (AdmissionID == null)
-    //    {
-    //        return NotFound();
-    //    }
-    //    return View(obj);
-    //}
-    //[HttpPost]
-    //[ValidateAntiForgeryToken]
-    //public IActionResult Updateclassadd(ClassAdd classAdd)
-    //{
-    //    if (ModelState.IsValid)
-    //    {
-    //        _Context.classadd.Update(classAdd);
-    //        _Context.SaveChanges();
-    //        return RedirectToAction("Indexclassadd");
-    //    }
-    //    return View(classAdd);
-    //}
-    //public IActionResult DeleteClassAdd(int? AdmissionID)
-    //{
-    //    var obj = _Context.classadd.Find(AdmissionID);
+        //}
+        //public IActionResult Updateclassadd(int? AdmissionID)
+        //{
+        //    if (AdmissionID == null || AdmissionID == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var obj = _Context.classadd.Find(AdmissionID);
 
-    //    if (obj == null)
-    //    {
-    //        return NotFound();
-    //    }
-    //    _Context.classadd.Remove(obj);
-    //    _Context.SaveChanges();
-    //    return RedirectToAction("Indexclassadd");
-    //}
+        //    if (AdmissionID == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(obj);
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Updateclassadd(ClassAdd classAdd)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _Context.classadd.Update(classAdd);
+        //        _Context.SaveChanges();
+        //        return RedirectToAction("Indexclassadd");
+        //    }
+        //    return View(classAdd);
+        //}
+        //public IActionResult DeleteClassAdd(int? AdmissionID)
+        //{
+        //    var obj = _Context.classadd.Find(AdmissionID);
+
+        //    if (obj == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _Context.classadd.Remove(obj);
+        //    _Context.SaveChanges();
+        //    return RedirectToAction("Indexclassadd");
+    }
+}               //}
 
 
 

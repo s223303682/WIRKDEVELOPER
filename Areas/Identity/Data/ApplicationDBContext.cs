@@ -86,4 +86,5 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<PharmacyMedicationIngredient> PharmacyMedicationIngredients {  get; set; }
     public DbSet<Ranges> ranges {  get; set; }
     public DbSet<Addm> addm {  get; set; }
+    public DbSet<StockReceived> StockReceiveds { get; set; }
 }
