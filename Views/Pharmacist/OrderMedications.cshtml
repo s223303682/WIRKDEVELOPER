@@ -1,0 +1,66 @@
+﻿@model WIRKDEVELOPER.Models.MedicationOrderView
+@{
+
+    Layout = "~/Views/Shared/Pharmacy.cshtml";
+}
+<h1>Order Medications</h1>
+
+<!-- Form to place new orders -->
+<form asp-action="OrderMedications" asp-controller="Pharmacist" method="post">
+    <table class="table table-sm table-hover">
+        <thead class="table-secondary">
+            <tr>
+                <th>Select</th>
+                <th>Medication Name</th>
+                <th>Quantity On Hand</th>
+                <th>Reorder Level</th>
+                <th>Order Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Medications.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" name="Medications[@i].IsSelected" value="true" />
+                        <input type="hidden" name="Medications[@i].IsSelected" value="false" />
+                    </td>
+                    <td>@Model.Medications[i].MedicationName</td>
+                    <td>@Model.Medications[i].QuantityOnHand</td>
+                    <td>@Model.Medications[i].ReorderLevel</td>
+                    <td>
+                        <input type="number" name="Medications[@i].OrderQuantity" value="@Model.Medications[i].OrderQuantity" />
+                    </td>
+                    <input type="hidden" name="Medications[@i].PharmacyMedicationId" value="@Model.Medications[i].PharmacyMedicationId" />
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="submit">Place Order</button>
+</form>
+
+@* !-- Table to display existing orders -->
+<h2>Existing Orders</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Medication Name</th>
+            <th>Order Quantity</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model.StockOrders)
+        {
+            <tr>
+                <td>@order.MedicationName</td>
+                <td>@order.OrderQuantity</td>
+                <td width="20%">@order.</td>
+                <td width="20%">@pharmstock.PharmacyMedication.stocklevel </td>
+                <td>@order.Date</td>
+                <td>@order.Status</td>
+            </tr>
+        }
+    </tbody>
+</table> *@

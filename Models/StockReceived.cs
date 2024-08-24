@@ -13,6 +13,9 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public string Status = "Recieved";
 
+        [DisplayName(" Date")]
+        public DateTime? Date { get; set; } = DateTime.Now;
+
         [DisplayName("Stock Ordered")]
         [Required(ErrorMessage = "Required")]
         [ForeignKey("PharmStockId")]

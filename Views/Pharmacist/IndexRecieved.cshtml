@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WIRKDEVELOPER.Models.PharmStock>
+﻿@model IEnumerable<WIRKDEVELOPER.Models.StockReceived>
 @{
 
     Layout = "~/Views/Shared/Pharmacy.cshtml";
@@ -17,7 +17,7 @@
             <h2 class="text-primary">List of your orders</h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="Pharmacist" asp-action="AddStock" class="btn btn-primary"><i class="bi bi-plus-circle"></i>add stock</a>
+            <a asp-controller="Pharmacist" asp-action="ReceivedMedication" class="btn btn-primary"><i class="bi bi-plus-circle"></i>add stock</a>
         </div>
     </div>
     <br />
@@ -34,12 +34,15 @@
                     <th>
                         Quantity Recieved
                     </th>
-                    @*  <th>
-                Quantity Recived
-                </th> *@
-                    <th>
-                        Date
+                    @* <th>
+                        Stock in hand
                     </th>
+                    <th>
+                        Stock level
+                    </th> *@
+                   @*  <th>
+                        Date
+                    </th> *@
                     <th>
                         Status
                     </th>
@@ -53,22 +56,21 @@
                 @foreach (var pharmstock in Model)
                 {
                     <tr scope="row">
-                        <td width="20%">@pharmstock.PharmacyMedication.PharmacyMedicationName</td>
-                        <td width="20%">@pharmstock.QuantityOrdered</td>
-                        @*   <td width="20%">@pharmstock.QuantityRecieved</td> *@
-                        <td width="20%">@pharmstock.Date</td>
-                        <td width="20%">@pharmstock.Status</td>
+                        <td width="20%">@pharmstock.PharmStock.PharmacyMedication.PharmacyMedicationName</td>
+                        <td width="20%">@pharmstock.QuantityRecived</td>
+                       @*  <td width="20%">@pharmstock.PharmStock.</td>
+                        <td width="20%">@pharmstock.PharmacyMedication.stocklevel </td> *@
+                      @*   <td width="20%">@pharmstock.Date</td> *@
+                        <td width="20%">@pharmstock.Status </td>
 
+                        @* <td>
+                <a asp-controller="Pharmacist" asp-action="UpdateStock" asp-route-ID="@pharmstock.PharmStockId" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
 
+                <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-ID="@pharmstock.PharmStockId" class="btn btn-danger">
+                <i class="bi bi-trash3-fill"></i>Delete
+                </a>
 
-                       @*  <td>
-                            <a asp-controller="Pharmacist" asp-action="UpdateStock" asp-route-ID="@pharmstock.PharmStockId" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
-
-                            <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-ID="@pharmstock.PharmStockId" class="btn btn-danger">
-                                <i class="bi bi-trash3-fill"></i>Delete
-                            </a>
-
-                        </td> *@
+                </td> *@
 
                     </tr>
                 }
@@ -90,5 +92,4 @@
 <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js"></script>
-
 

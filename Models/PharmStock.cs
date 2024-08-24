@@ -12,7 +12,7 @@ namespace WIRKDEVELOPER.Models
 		[DisplayName("Quantity")]
 		public int QuantityOrdered { get; set; }
         [DisplayName("Status")]
-        public string? Status { get; set; } = "Oredred";
+        public string? Status { get; set; } = "Ordered";
 
 		[DisplayName(" Date")]
 		public DateTime? Date { get; set; } = DateTime.Now;
@@ -23,7 +23,7 @@ namespace WIRKDEVELOPER.Models
         public int PharmacyMedicationID { get; set; }
         public virtual PharmacyMedication PharmacyMedication { get; set; }
 
-        public List<PharmacyMedication> MedicationEntries { get; set; } = new List<PharmacyMedication>();
+        //public List<PharmacyMedication> MedicationEntries { get; set; } = new List<PharmacyMedication>();
 
 
     }
