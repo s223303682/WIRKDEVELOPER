@@ -1,4 +1,6 @@
-﻿@*  @model WIRKDEVELOPER.Models.Admission
+﻿ @model WIRKDEVELOPER.Models.Admission
+ @using Microsoft.AspNetCore.Identity
+ @using WIRKDEVELOPER.Areas.Identity.Data
 @{
     Layout = "_Nurse";
 }
@@ -13,12 +15,14 @@
     <div class="row"
          <div class="col">
             <div class="form-group">
-                <label asp-for="PatientName"></label>
-                <div>
-                    <input asp-for="PatientName" class="form-control" id="PatientName" required />
-                </div>
-                <div class="invalid-feedback"></div>
-                <span asp-validation-for="PatientName" class=" text-danger"></span>
+                <label asp-for="PatientID" class="label-control">Patient Name</label>
+                <select asp-for="PatientID" class="form-control">
+                    @foreach (ApplicationUser item in ViewBag.Patients)
+                    {
+                        <option value="@item.Id">@item.FirstName @item.LastName</option>
+                    }
+                </select>
+              
             </div>
         </div>
         <div class="col-md-3">
@@ -188,4 +192,4 @@
         </div>
     </div>
 </form> 
-  *@
+ 
