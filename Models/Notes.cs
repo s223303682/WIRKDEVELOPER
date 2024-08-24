@@ -19,16 +19,6 @@ namespace WIRKDEVELOPER.Models
 		[ForeignKey("AnOrderID")]
         public virtual Order Order { get; set; }
 
-  //      [Required]
-		//[DisplayName("Medication Ordered")]
-		//public string? Medicationordered { get; set; }
-		//[ForeignKey("AnOrderID")]
-
-		//[Required]
-		//[DisplayName("Qunatity ")]
-		//public int? Quantity { get; set; }
-		//[ForeignKey("AnOrderID")]
-
 		[Required]
 		[DisplayName("Notes")]
 		public string? notes { get; set; }

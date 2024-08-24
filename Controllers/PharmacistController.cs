@@ -84,15 +84,17 @@ namespace WIRKDEVELOPER.Controllers
         //}
         public IActionResult PharmIndexOrder()
         {
-            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication);
+            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Addm);
             return View(objList);
+            //IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication);
+            //return View(objList);
             //IEnumerable<Order> objList = _Context.order;
             //return View(objList);
 
         }
         public IActionResult AllIndexOrder()
         {
-            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication);
+            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Addm);
             return View(objList);
             //IEnumerable<Order> objList = _Context.order;
             //return View(objList);

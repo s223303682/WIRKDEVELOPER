@@ -24,12 +24,17 @@ namespace WIRKDEVELOPER.Controllers
 
             //var patient = _Context.admission.Where(e => e.Date == searchDate.Date).ToList();
             //return View(patient);
-            var patient = _Context.viewrecords.Where(e => e.Date == searchDate.Date).ToList();
+            var patient = _Context.addm.Include(a => a.Ward).Include(a => a.Bed).Include(a => a.Patient).Where(e => e.Date == searchDate.Date).ToList();
             return View(patient);
         }
         public IActionResult ViewPatientRec()
 		{
-			return View();
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+            ViewBag.getWard = new SelectList(_Context.ward, "WardID", "WardName");
+            ViewBag.getBed = new SelectList(_Context.bed, "BedID", "BedNumber");
+    
+            return View();
+           
 		}
         public IActionResult IndexViewBookedPatients()
         {
@@ -78,15 +83,18 @@ namespace WIRKDEVELOPER.Controllers
 		{
 			return View();
 		}
-		public IActionResult IndexOrder()
-		{
-			IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication);
-			return View(objList);
+        public IActionResult IndexOrder()
+        {
+            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Addm);
+            return View(objList);
 
-		}
-		public IActionResult Order()
+        }
+        public IActionResult Order()
 		{
+           
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+
             return View();
 		}
 		[HttpPost]
@@ -96,6 +104,8 @@ namespace WIRKDEVELOPER.Controllers
 
             _Context.order.Add(order);
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+            //ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
             _Context.SaveChanges();
 
 
@@ -129,6 +139,7 @@ namespace WIRKDEVELOPER.Controllers
                 return NotFound();
             }
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
             return View(objList);
             //if (ID == null || ID == 0)
             //{
@@ -148,7 +159,7 @@ namespace WIRKDEVELOPER.Controllers
 		{
             _Context.order.Update(order);
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            ViewBag.getAdmission = new SelectList(_Context.admission, "AdmissionID", "PatientName");
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
             _Context.SaveChanges();
             return RedirectToAction("IndexOrder");
             //if (ModelState.IsValid)
@@ -277,7 +288,7 @@ namespace WIRKDEVELOPER.Controllers
 
 
             //return View(order);
-            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Admission);
+            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Addm);
             return View(objList);
             //IEnumerable<Order> objList = _Context.order;
             //return View(objList);
@@ -322,7 +333,7 @@ namespace WIRKDEVELOPER.Controllers
                 return NotFound();
             }
 
-            ViewBag.Patient = order.AdmissionID;
+            ViewBag.Patient = order.AddmID;
 
             var note = new Notes
             {
@@ -334,16 +345,16 @@ namespace WIRKDEVELOPER.Controllers
 
         // POST: Handle the form submission
         [HttpPost]
-        public IActionResult CreateNoteForOrder(Notes note)
+        public IActionResult CreateNoteForOrder(Order note)
         {
             if (ModelState.IsValid)
             {
                 note.Date = DateTime.Now;
-                _Context.notes.Add(note);
+                _Context.order.Add(note);
                 _Context.SaveChanges();
 
                 var order = _Context.order.Find(note.AnOrderID);
-                return RedirectToAction("Search", new { patientName = order.AdmissionID });
+                return RedirectToAction("SearchPatient", new { patientName = order.AddmID });
             }
 
             return View(note);

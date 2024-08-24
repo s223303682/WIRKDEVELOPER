@@ -4,6 +4,15 @@
     Layout = "AnaesthesiologistLayout";
 }
 
+
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" />
+</head>
+<div id="Header" class="bg-info container">
+    <h2 class="m-1 pt-4 text-center text-white">Post-Surgery Notes</h2>
+</div>
 <h2>Search Results</h2>
 <br />
 <form asp-action="CreateNoteForOrder" method="post">
@@ -12,6 +21,7 @@
     <button type="submit">Create Note</button>
 </form>
 <br />
+
 <table class="table table-sm table-hover">
     <thead class="table-secondary">
         <tr>
@@ -50,27 +60,26 @@
     <tbody>
         @foreach (var order in Model)
         {
-            <tr scope="row">
-                <td width="20%">@order.Date</td>
-                <td width="20%">@order.Admission.PatientName</td>
-                <td width="20%">@order.PharmacyMedication.PharmacyMedicationName</td>
-                <td width="10%">@order.Quantity</td>
-                <td width="10%">@order.Instructions</td>
-                <td width="10%">@order.Urgent</td>
-                <td width="10%">@order.Status</td>
-                <td width="10%">@order.Notes</td>
-                @* <td>@order.OrderId</td>
-            <td>@order.PatientName</td>
-            <td>@order.Medication</td>
-            <td>@order.OrderDate</td> *@
-                @* <td>
-                    <form asp-action="CreateNoteForOrder" method="post">
-                        <input type="hidden" name="orderId" value="@order.AnOrderID" />
-                        <input type="text" name="noteText" placeholder="Enter note" />
-                        <button type="submit">Create Note</button>
-                    </form>
-                </td> *@
-            </tr>
+            @if (order.Status == "Received")
+            {
+                <tr scope="row">
+                    <td width="20%">@order.Date</td>
+                    <td width="20%">@order.Addm.PatientName</td>
+                    <td width="20%">@order.PharmacyMedication.PharmacyMedicationName</td>
+                    <td width="10%">@order.Quantity</td>
+                    <td width="10%">@order.Instructions</td>
+                    <td width="10%">@order.Urgent</td>
+                    <td width="10%">@order.Status</td>
+                    <td width="10%">@order.Notes</td>
+
+                </tr>
+            }
+            else
+            {
+                <p>No Orders received yet</p>
+
+            }
+           
         }
     </tbody>
 </table>

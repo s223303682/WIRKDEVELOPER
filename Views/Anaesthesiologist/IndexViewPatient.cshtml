@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WIRKDEVELOPER.Models.ViewPatient>
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Addm>
 
 @{
     Layout = "AnaesthesiologistLayout";
@@ -109,16 +109,16 @@
                     {
                         <tr>
                             <td width="20%">@patient.Date</td>
-                            <td width="20%">@patient.Patient </td>
-                            <td width="20%">@patient.Ward</td>
-                            <td width="20%">@patient.Bed</td>
+                            <td width="20%">@patient.Patient.PatientName</td>
+                            <td width="20%">@patient.Ward.WardName</td>
+                            <td width="20%">@patient.Bed.BedNumber</td>
                             <td width="20%">@patient.Status</td>
 
 
                             <td>
-                                <a asp-controller="Anaesthesiologist" asp-action="ViewPatientRec" asp-route-ID="@patient.ViewPatientID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>View Records</a>
+                                <a asp-controller="Anaesthesiologist" asp-action="ViewPatientRec" asp-route-ID="@patient.AddmID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>View Records</a>
 
-                                <a asp-controller="Anaesthesiologist" asp-action="Order" asp-route-ID="@patient.ViewPatientID" class="btn btn-danger">
+                                <a asp-controller="Anaesthesiologist" asp-action="Order" asp-route-ID="@patient.AddmID" class="btn btn-danger">
                                     <i class="bi bi-trash3-fill"></i>Order
                                 </a>
 

@@ -1,4 +1,4 @@
-﻿@model WIRKDEVELOPER.Models.Notes
+﻿@model WIRKDEVELOPER.Models.Order
 
 @{
     Layout = "AnaesthesiologistLayout";
@@ -16,9 +16,21 @@
         <span asp-validation-for="Date" class="text-danger"></span>
     </div> *@
 
+    <div class="col-md-6">
+        <h4><label asp-for="AddmID"></label></h4>
+        <select id="PurposeDropdown" asp-for="AddmID" class="form-control" asp-items="@ViewBag.getPatient" id="validationName" required>
+            <option selected disabled>--Select dosage--</option>
+        </select>
+        <span asp-validation-for="AddmID" class="text-danger"></span>
+        @*  <h4><label asp-for="AddmID"></label></h4> *@@*These names come from our properties in the model *@
+        @*  <input asp-for="AddmID" class="form-control box mb-2" type="text" placeholder="select" />
+        <span asp-validation-for="AddmID" class="text-danger"></span> *@
+    </div>
+
+
     <div class="form-group">
-        <label asp-for="notes"></label>
-        <textarea asp-for="notes" class="form-control" rows="4"></textarea>
+        <label asp-for="Notes"></label>
+        <textarea asp-for="Notes" class="form-control" rows="4"></textarea>
     </div>
 
     <button type="submit" class="btn btn-primary">Save Note</button>
