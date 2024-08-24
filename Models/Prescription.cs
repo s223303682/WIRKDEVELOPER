@@ -9,37 +9,42 @@ namespace WIRKDEVELOPER.Models
     public class Prescription
     {
 
+        [Key]
+        public int PrescriptionID { get; set; } // Unique identifier for the prescription
 
-		[Key]
-		public int PrescriptionID { get; set; }
-        public string BookingID { get; set; }
-        public string Name { get; set; }
-        public string gender { get; set; }
-        public string email { get; set; }
         [Required]
-		[DisplayName("Prescription Date")]
-		public DateTime? Date { get; set; }
-		public string? prescriber { get; set; }
-		[ForeignKey("ID")]
-		public virtual ApplicationUser? ApplicationUser { get; set; }
-		[Required(ErrorMessage = "Required")]
-		public int PharmacyMedicationID { get; set; }
-		[ForeignKey("PharmacyMedicationID")]
-		public virtual PharmacyMedication? PharmacyMedication { get; set; }
-		[Required]
-		[DisplayName("Quantity")]
-		public int Quantity { get; set; }
-		[Required]
-		[DisplayName("Instructions")]
-		public string? Instructions { get; set; }
-		[Required]
-		public string? Urgent { get; set; }
-		[Required]
-		public string? status { get; set; }
-		
-		public string? Description { get; set; }
+        public string BookingID { get; set; } // ID of the related booking
+
+        [Required]
+        [Display(Name = "Patient Name")]
+        public string Name { get; set; } // Name of the patient
+
+        [Required]
+        [Display(Name = "Gender")]
+        public string Gender { get; set; } // Gender of the patient
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; } // Email of the patient
+
+        [Required]
+        [DisplayName("Prescription Date")]
+        public DateTime? Date { get; set; } // Date when the prescription was created
+
+        [Display(Name = "Prescriber")]
+        public string? Prescriber { get; set; } // Name of the person or system who created the prescription
+
+        [Required]
+        [Display(Name = "Urgent")]
+        public string? Urgent { get; set; } // Indicates if the prescription is urgent (e.g., "Yes", "No")
+
+        [Required]
+        [Display(Name = "Status")]
+        public string? Status { get; set; }
 
 
 
-	}
+
+    }
 }
