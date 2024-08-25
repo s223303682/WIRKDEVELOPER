@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<WIRKDEVELOPER.Models.AnAllergies>
-
+@{
+    Layout = "AnaesthesiologistLayout";
+}
 
 @if (User.IsInRole("Anaesthesiologist"))
 {
@@ -9,7 +11,7 @@
                 <h2 class="text-primary">List of your screenings</h2>
             </div>
             <div class="col-6 text-end">
-                <a asp-controller="Anaesthesiologist" asp-action="AnAllergies" class="btn btn-primary"><i class="bi bi-plus-circle"></i> SCREEN YOURSELF</a>
+                <a asp-controller="Anaesthesiologist" asp-action="Order" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Back</a>
             </div>
         </div>
         <br />
@@ -26,12 +28,11 @@
                         <th>
                             Reaction
                         </th>
-                        <th>
+                        @* <th>
                             Status
-                        </th>
-                        @*  <th>
-                Date
-                </th> *@
+                        </th> *@
+                      
+               
                     </tr>
                 </thead>
 
@@ -39,19 +40,12 @@
                     @foreach (var allergy in Model)
                     {
                         <tr>
-                            <td width="20%">@allergy.ActiveIngridient</td>
-                            <td width="20%">@allergy.Reaction</td>
-                            <td width="20%">@allergy.Status</td>
-                            @*                         <td width="20%">@Scree.Date</td>
-                *@
-                            <td>
-                                <a asp-controller="Vaccs" asp-action="NewUpdateScreening" asp-route-ID="@allergy.AllergiesID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
-
-                                <a asp-controller="Vaccs" asp-action="DeleteScreen" asp-route-ID="@allergy.AllergiesID" class="btn btn-danger">
-                                    <i class="bi bi-trash3-fill"></i>Delete
-                                </a>
-
-                            </td>
+                            <td width="20%">@allergy.AllergiesID</td>
+                            <td width="20%">@allergy.Active.ActiveName</td>
+                           
+                           @*  <td width="20%">@allergy.Status</td> *@
+                      
+              
 
                         </tr>
                     }

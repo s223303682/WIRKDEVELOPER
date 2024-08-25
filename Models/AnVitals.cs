@@ -9,17 +9,23 @@ namespace WIRKDEVELOPER.Models
 {
 	public class AnVitals
 	{
-		[DisplayName("Vital Name")]
+        //[Required]
+        //[DisplayName("Patient")]
+        //public int? AddmID { get; set; }
+        //[ForeignKey("AddmID")]
+        //public virtual Patient Addm { get; set; }
+
+        [DisplayName("Vital Name")]
 		public string? Vital { get; set; }
-		[ForeignKey("VitalID")]
+		//[ForeignKey("VitalID")]
 
 		[DisplayName("Reading")]
 		public string? Reading { get; set; }
-		[ForeignKey("VitalID")]
+		//[ForeignKey("VitalID")]
 
 		[DisplayName("Time")]
 		public string? Time { get; set; }
-		[ForeignKey("VitalID")]
+		//[ForeignKey("VitalID")]
 
 		[Key]
 		public int AnVitalID { get; set; }

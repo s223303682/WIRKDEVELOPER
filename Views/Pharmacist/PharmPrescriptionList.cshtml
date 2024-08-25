@@ -40,12 +40,12 @@
                     <td>@prescription.Status</td>
 
                     <td>
-                        <div class="">
-                            <a asp-controller="Surgeon" asp-action="updatePrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Update</a>
-                        </div>
+
+                       <a asp-controller="Pharmacist" asp-action="UpdatePharmPrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Update</a>
+                        
                     </td>
                     <td>
-                        <a asp-controller="Surgeon" asp-action="DeletePrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Delete</a>
+                         <a asp-controller="Pharmacist" asp-action="RejectPharmPrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Reject</a>
                     </td>
 
                     </tr>
@@ -62,8 +62,11 @@
                         <td>@prescription.Status</td>
 
                         <td>
-                            <a asp-controller="Pharmacist" asp-action="RejectPharmPrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Delete</a>
+                           
                             <a asp-controller="Pharmacist" asp-action="UpdatePharmPrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Update</a>
+                        </td>
+                        <td>
+                            <a asp-controller="Pharmacist" asp-action="RejectPharmPrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Reject</a>
                         </td>
                         
 

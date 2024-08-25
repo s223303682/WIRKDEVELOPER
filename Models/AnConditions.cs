@@ -9,9 +9,14 @@ namespace WIRKDEVELOPER.Models
 {
 	public class AnConditions
 	{
-		[DisplayName("Condition Name")]
+        //[Required]
+        //[DisplayName("Patient")]
+        //public int? AddmID { get; set; }
+        //[ForeignKey("AddmID")]
+        //public virtual Patient Addm { get; set; }
+        [DisplayName("Condition Name")]
 		public string? Condition { get; set; }
-		[ForeignKey("AdmissionID")]
+		//[ForeignKey("AdmissionID")]
 
 		[Key]
 		public int AnConditionID { get; set; }

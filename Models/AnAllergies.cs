@@ -9,19 +9,27 @@ namespace WIRKDEVELOPER.Models
 {
 	public class AnAllergies
 	{
-		[DisplayName("Active-Ingridient")]
-		public string? ActiveIngridient { get; set; }
-		[ForeignKey("AdmissionID")]
+        [Required]
+        [DisplayName("ActiveIngridients")]
+        public int? ActiveID { get; set; }
+        [ForeignKey("ActiveID")]
+        public virtual Active Active { get; set; }
 
-		[DisplayName("Reaction")]
-		public string? Reaction { get; set; }
-		[ForeignKey("AdmissionID")]
+        //[Required]
+        //[DisplayName("Patient")]
+        //public int? AddmID { get; set; }
+        //[ForeignKey("AddmID")]
+        //public virtual Patient Addm { get; set; }
+        //[DisplayName("Reaction")]
+        //public string? Reaction { get; set; }
+        //[ForeignKey("AdmissionID")]
 
-		[DisplayName("Status")]
-		public string? Status { get; set; }
-		[ForeignKey("AdmissionID")]
+        //[DisplayName("Status")]
+        //public string? Status { get; set; }
+        //[ForeignKey("AddmID")]
+        //      public virtual Addm Addm1 { get; set; }
 
-		[Key]
+        [Key]
 		public int AllergiesID { get; set; }
 	}
 }
