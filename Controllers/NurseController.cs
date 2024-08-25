@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
 
@@ -19,42 +20,42 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-        //public IActionResult ViewSchedule()
-        //{
-        //    IEnumerable<Patient> patient = Context.patients;
-        //    return View(patient);
-        //}
-        //public IActionResult ViewAdmission()
-        //{
-        //    IEnumerable<Patient> patient = Context.patients;
-        //    return View(patient);
-        //}
-        public IActionResult AddAddmission()
+        public IActionResult ViewSchedule()
         {
-            ViewBag.Patients = (from U in Context.Users
-                                join UR in Context.UserRoles on U.Id equals UR.UserId
-                                join R in Context.Roles on UR.RoleId equals R.Id
-                                where R.Name == "Patient"
-                                select U).ToList();
+            IEnumerable<Patient> patient = Context.patients;
+            return View(patient);
+        }
+        public IActionResult ViewAdmission()
+        {
+            IEnumerable<Patient> patient = Context.patients;
+            return View(patient);
+        }
+        public IActionResult AddAdmissions()
+        {
+            //ViewBag.Patients = (from U in Context.Users
+            //                    join UR in Context.UserRoles on U.Id equals UR.UserId
+            //                    join R in Context.Roles on UR.RoleId equals R.Id
+            //                    where R.Name == "Patient"
+            //                    select U).ToList();
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddAdmission([Bind("AdmissionID,PatientID,PatientGender,PatientEmail,PatientPhone,Address1,Address2,Province,City,Suburb,PostalCode,Ward,Condition,Allergies,MedicationName,TreatmentCode")]Admission admission) 
+        public IActionResult AddAdmission(/*[Bind("AdmissionID,PatientID,PatientGender,PatientEmail,PatientPhone,Address1,Address2,Province,City,Suburb,PostalCode,Ward,Condition,Allergies,MedicationName,TreatmentCode")]*/Admission admission) 
         { 
             if (ModelState.IsValid) 
             {
-                ViewBag.Date = DateTime.Now.ToString("dd/mm/yyyy");
-                ViewBag.Time = DateTime.Now.ToString("HH:MM");
+                //ViewBag.Date = DateTime.Now.ToString("dd/mm/yyyy");
+                //ViewBag.Time = DateTime.Now.ToString("HH:MM");
                 Context.admission.Add(admission);
                 Context.SaveChanges();
                 return RedirectToAction("ViewAddmission");
             }
-            ViewBag.Patients = (from U in Context.Users
-                                join UR in Context.UserRoles on U.Id equals UR.UserId
-                                join R in Context.Roles on UR.RoleId equals R.Id
-                                where R.Name == "Patient"
-                                select U).ToList();
+            //ViewBag.Patients = (from U in Context.Users
+            //                    join UR in Context.UserRoles on U.Id equals UR.UserId
+            //                    join R in Context.Roles on UR.RoleId equals R.Id
+            //                    where R.Name == "Patient"
+            //                    select U).ToList();
             return View(admission);
         } 
         public IActionResult AddBed()
@@ -72,8 +73,24 @@ namespace WIRKDEVELOPER.Controllers
                 return RedirectToAction("AddBed");
             }
             return View(bed);
+        } 
+        public IActionResult AddPatient()
+        {
+            return View();
         }
-        public IActionResult updateAddmission(int?ID)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddPatient(Patient patients) 
+        { 
+            if (ModelState.IsValid) 
+            {
+                Context.patients.Add(patients);
+                Context.SaveChanges();
+                return RedirectToAction("AddPatient");
+            }
+            return View(patients);
+        }
+        public IActionResult updateAdmission(int?ID)
         {
             if (ID == null || ID == 0)
             {
@@ -84,13 +101,25 @@ namespace WIRKDEVELOPER.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Patients = (from U in Context.Users
-                                join UR in Context.UserRoles on U.Id equals UR.UserId
-                                join R in Context.Roles on UR.RoleId equals R.Id
-                                where R.Name == "Patient"
-                                select U).ToList();
+            //ViewBag.Patients = (from U in Context.Users
+            //                    join UR in Context.UserRoles on U.Id equals UR.UserId
+            //                    join R in Context.Roles on UR.RoleId equals R.Id
+            //                    where R.Name == "Patient"
+            //                    select U).ToList();
             return View(patient);
 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateAdmission(Admission admission)
+        {
+            if (ModelState.IsValid)
+            {
+                Context.admission.Update(admission);
+                Context.SaveChanges();
+                return RedirectToAction("ViewAdmission");
+            }
+            return View(admission);
         }
         public IActionResult AddCondition()
         {
@@ -114,21 +143,21 @@ namespace WIRKDEVELOPER.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public IActionResult AddVitals(Vitals vitals)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        Context.vitals.Add(vitals);
-        //        Context.SaveChanges();
-        //        return RedirectToAction("ViewVitals");
-        //    }
-        //    return View(vitals);
-        //}
-        //public IActionResult ViewVitals()
-        //{
-        //    IEnumerable<Vitals> vitals = Context.vitals;
-        //    return View(vitals);
-        //} 
+        public IActionResult AddVitals(Vitals vitals)
+        {
+            if (ModelState.IsValid)
+            {
+                Context.vitals.Add(vitals);
+                Context.SaveChanges();
+                return RedirectToAction("ViewVitals");
+            }
+            return View(vitals);
+        }
+        public IActionResult ViewVitals()
+        {
+            IEnumerable<Vitals> vitals = Context.vitals;
+            return View(vitals);
+        }
         public IActionResult ViewPrescription()
         {
             IEnumerable<Prescription> prescriptions = Context.prescriptions;
