@@ -18,13 +18,11 @@
     <table class=" table table-bordered table-striped table-success">
         <thead>
             <tr>
-                <th>patient</th>
-                <th>date</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Date</th>
                 <th>prescriber</th>
-                <th>medication</th>
-                <th>quantity</th>
-                <th>Instructions</th>
-
                 <th>urgent</th>
                 <th>status</th>
                 <th>Update</th>
@@ -38,14 +36,14 @@
             {
 
                 <tr>
-                    @* <td>@prescription.PatientID</td> *@
+                    <td>@prescription.Name</td>
+                    <td>@prescription.Gender</td>
+                    <td>@prescription.Email</td>
                     <td>@prescription.Date</td>
-                    @*  <td>@UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName</td> *@
-                    <td>@prescription.PharmacyMedication.PharmacyMedicationName</td>
-                    <td>@prescription.Quantity</td>
-                    <td>@prescription.Instructions</td>
+                    <td>@prescription.Prescriber</td>
                     <td>@prescription.Urgent</td>
-                    <td>@prescription.status</td>
+                    <td>@prescription.Status</td>
+                   
                     <td>
                         <div class="">
                             <a asp-controller="Surgeon" asp-action="updatePrescription" asp-route-ID="@prescription.PrescriptionID" class=" btn btn-blue-300 mx-1">Update</a>

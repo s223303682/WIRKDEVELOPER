@@ -15,8 +15,8 @@ namespace WIRKDEVELOPER.Models
 		public string Gender { get; set; }
 		public string Email { get; set; }
 		public DateTime Date { get; set; }
-		public TimeSpan Time { get; set; }
-		public string Province { get; set; }
+        public TimeSpan Time { get; set; }
+        public string Province { get; set; }
 		public string City { get; set; }
 		public string Suburb { get; set; }
 		public string Zip { get; set; }

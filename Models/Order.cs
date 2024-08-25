@@ -30,7 +30,7 @@ namespace WIRKDEVELOPER.Models
         public virtual PharmacyMedication PharmacyMedication { get; set; }
 
 
-        [Required]
+		[Required]
 		[DisplayName("Qunatity ")]
 		public int? Quantity { get; set; }
 
@@ -51,10 +51,13 @@ namespace WIRKDEVELOPER.Models
         [DisplayName("Notes")]
         public string? Notes { get; set; }
 
-        [DisplayName("Status")]
-        public string? rejectorder { get; set; }
+        //[DisplayName("Status")]
+        //public string? rejectorder { get; set; }
 
         [Key]
 		public int AnOrderID { get; set; }
-	}
+
+        //public virtual ICollection<AddOrder> AddOrders { get; set; }
+
+    }
 }

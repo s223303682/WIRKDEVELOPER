@@ -3,7 +3,6 @@
 @{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,13 +18,13 @@
     <h1>
         <div class="bg-info bg-opacity-50 text-center text-white rounded-1">BOOKINGS</div>
     </h1>
-    @if (Model.Any())
+    @if (Model.Count() > 0)
     {
         <table id="dataTable" class="table table-bordered table-striped table-white">
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>surname</th>
+                    <th>Surname</th>
                     <th>ID Number</th>
                     <th>Gender</th>
                     <th>Email</th>
@@ -36,7 +35,7 @@
                     <th>Anesthesiologist</th>
                     <th>Delete</th>
                     <th>Update</th>
-                    <th>Select</th>
+                    <th>Prescribe</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,19 +47,25 @@
                         <td>@booking.BookingNewPatientIDNUmber</td>
                         <td>@booking.Gender</td>
                         <td>@booking.Email</td>
-                        <td>@booking.Date.ToString("yyyy-MM-dd")</td>
-                        <td>@booking.Time.ToString("HH:mm")</td>
+                        <td>@booking.Date.ToString("HH: mm")</td>
+                        <td>@booking.Time.ToString(@"hh\:mm")</td>
                         <td>@booking.OperationTheatreID</td>
                         <td>@booking.TreatmentCodeID</td>
                         <td>@booking.Anaesthesiologist</td>
-                        <td>
+                        @* <td>
                             <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingNewPatientID" class="btn btn-blue-300 mx-1">Update</a>
                         </td>
                         <td>
                             <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingNewPatientID" class="btn btn-blue-300 mx-1">Delete</a>
-                        </td>
+                        </td> *@
                         <td>
-                            <a asp-controller="Prescription" asp-action="CreatePrescription" asp-route-bookingID="@booking.BookingNewPatientID" asp-route-name="@booking.BookingNewPatientName" asp-route-gender="@booking.Gender" asp-route-email="@booking.Email" class="btn btn-blue-300 mx-1">Create Prescription</a>
+                            <form asp-controller="Surgeon" asp-action="CreatePrescription" method="get">
+                                <input type="hidden" name="bookingID" value="@booking.BookingNewPatientID" />
+                                <input type="hidden" name="name" value="@booking.BookingNewPatientName" />
+                                <input type="hidden" name="gender" value="@booking.Gender" />
+                                <input type="hidden" name="email" value="@booking.Email" />
+                                <button type="submit" class="btn btn-blue-300 mx-1">Add</button>
+                            </form>
                         </td>
                     </tr>
                 }
@@ -73,5 +78,4 @@
     }
 </body>
 </html>
-
 

@@ -57,6 +57,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<Models.Administrator> admins { get; set; }
     public DbSet<BookingNewPatient> bookingNewPatients { get; set; }
+    public DbSet<MedicationPrescription> medicationPrescriptions { get; set; }
     public DbSet<Bed> beds { get; set; }
     public DbSet<Ward> ward { get; set; }
     public DbSet<Condition> conditions { get; set; }
