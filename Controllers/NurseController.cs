@@ -30,7 +30,7 @@ namespace WIRKDEVELOPER.Controllers
             IEnumerable<Patient> patient = Context.patients;
             return View(patient);
         }
-        public IActionResult AddAdmissions()
+        public IActionResult AddAdmission()
         {
             //ViewBag.Patients = (from U in Context.Users
             //                    join UR in Context.UserRoles on U.Id equals UR.UserId
@@ -189,7 +189,7 @@ namespace WIRKDEVELOPER.Controllers
             IEnumerable<DischargePatient> discharge = Context.discharge;
             return View(discharge);
         }
-        public IActionResult AddDischargePatient()
+        public IActionResult AddDischargedPatient()
         {
             return View();
         }

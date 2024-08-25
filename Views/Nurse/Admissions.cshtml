@@ -15,14 +15,14 @@
     <div class="row"
          <div class="col">
             <div class="form-group">
-               @*  <label asp-for="PatientID" class="label-control">Patient Name</label>
+                @*  <label asp-for="PatientID" class="label-control">Patient Name</label>
                 <select asp-for="PatientID" class="form-control">
                     @foreach (ApplicationUser item in ViewBag.Patients)
                     {
                         <option value="@item.Id">@item.FirstName @item.LastName</option>
                     }
                 </select> *@
-              
+
             </div>
         </div>
         <div class="col-md-3">
@@ -78,8 +78,8 @@
             <div class="form-group">
                 <label for="validityPeriod">Province</label>
                 <select id="PatientDropdown" asp-for="PatientProvince" class="form-control" id="validationName" required>
-                    <option value="Select">Eastern Cape</option> 
-                    <option value="Select">Free State</option> 
+                    <option value="Select">Eastern Cape</option>
+                    <option value="Select">Free State</option>
                     <option value="Select">Gauteng</option>
                     <option value="Select">Limpopo</option>
                     <option value="Select">Kwazulu-Natal</option>
@@ -126,7 +126,7 @@
                 <select id="PatientDropdown" asp-for="BedID" class="form-control" id="validationName" required>
                     <option value="Select">W01B1</option>
                     <option value="Select">W01B2</option>
-                    <option value="Select">W01B3</option> 
+                    <option value="Select">W01B3</option>
                     <option value="Select">W02B1</option>
                     <option value="Select">W02B2</option>
                     <option value="Select">W02B3</option>
@@ -191,5 +191,5 @@
             </div>
         </div>
     </div>
-</form> 
- 
+</form>
+
