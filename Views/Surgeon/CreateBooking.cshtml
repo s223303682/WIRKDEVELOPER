@@ -1,7 +1,5 @@
 ﻿@model WIRKDEVELOPER.Models.Booking;
-@{
-    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
-}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -109,7 +107,16 @@
                 <button style="width:10%" id='add-user'>&plus; more treamentCode</button><br>
             </div>
 
-
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Anaestesiologist"></label>
+                    <div>
+                        <input type="text" asp-for="Anaestesiologist" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="Anaestesiologist" class=" text-danger"></span>
+                </div>
+            </div>
 
 
         </div>

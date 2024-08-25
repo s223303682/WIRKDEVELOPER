@@ -1,83 +1,70 @@
 ﻿@model IEnumerable<WIRKDEVELOPER.Models.Booking>
-@{
 
-    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
-}
 <!DOCTYPE html>
 <html>
 <head>
 </head>
 <body>
-    <div class=" col-10 text-right">
-        <h1> <a asp-controller="Surgeon" asp-action="CreateBooking" style="width:100%">Creating Booking</a></h1>
+    <div class="col-10 text-right">
+        <h1><a asp-controller="Surgeon" asp-action="CreateBooking" style="width:100%">Creating Booking</a></h1>
     </div>
-    <h1><div class=" bg-info bg-opacity-50 text-center text-white rounded-1"> BOOKINGS</div></h1>
-    <from action="CreatePrescription.html" method="GET" id="dataForm">
-        @if (Model.Count() > 0)
+    <h1><div class="bg-info bg-opacity-50 text-center text-white rounded-1">BOOKINGS</div></h1>
+    <form action="CreatePrescription" method="GET" id="dataForm">
+        @if (Model != null && Model.Any())
         {
-            <table id="dataTable" class=" table table-bordered table-striped table-white">
+            <table id="dataTable" class="table table-bordered table-striped table-white">
                 <thead>
                     <tr>
-
-
                         <th>Name</th>
                         <th>Gender</th>
-                        <th>email</th>
-                        <th>date</th>
-                        <th>time</th>
+                        <th>Email</th>
+                        <th>Date</th>
+                        <th>Time</th>
                         <th>Theatre</th>
-                        <th>treatmentcode</th>
-                        <th> Anasthesiologist</th>
+                        <th>Treatment Code</th>
+                        <th>Anesthesiologist</th>
                         <th>Delete</th>
-                        <th> Update</th>
-                        <th> select</th>
-
-
-
+                        <th>Update</th>
+                        <th>Prescribe</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var booking in Model)
                     {
-
                         <tr>
-                            @*  <td>@booking.PatientID</td> *@
-                            <td>@booking.Gender</td>
-                            <td>@booking.EmailAddress</td>
-                            <td>@booking.Date</td>
-                            <td>@booking.Time</td>
-                            <td>@booking.OperationTheatreID</td>
-                            <td>@booking.TreatmentCodeID</td>
+                            <td>@booking.Addm?.Patient?.PatientName </td>
+                            <td>@booking.Gender </td>
+                            <td>@booking.EmailAddress </td>
+                            <td>@booking.Date?.ToString("yyyy-MM-dd") </td>
+                            <td>@booking.Time?.ToString(@"hh\:mm") ?</td>
+                            <td>@booking.OperationTheatreID </td>
+                            <td>@booking.TreatmentCodeID </td>
                             <td>@booking.Anaestesiologist</td>
-
                             <td>
-                                <div class="">
-                                    <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Update</a>
-                                </div>
+                                <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingID" class="btn btn-blue-300 mx-1">Update</a>
                             </td>
                             <td>
-                                <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingID" class=" btn btn-blue-300 mx-1">Delete</a>
+                                <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingID" class="btn btn-blue-300 mx-1">Delete</a>
                             </td>
-                            
-                            
+                            <td>
+                                <form asp-controller="Surgeon" asp-action="CreatePrescription" method="get">
+                                    <input type="hidden" name="bookingID" value="@booking.BookingID" />
+                                    <input type="hidden" name="name" value="@booking.Addm?.Patient?.PatientName " />
+                                    <input type="hidden" name="gender" value="@booking.Gender ?? "  />
+                                    <input type="hidden" name="email" value="@booking.EmailAddress "  />
+                                    <button type="submit" class="btn btn-blue-300 mx-1">Add</button>
+                                </form>
 
-
+                            </td>
                         </tr>
-
-
-
                     }
-
                 </tbody>
             </table>
         }
         else
         {
-            <p>NO bookings  has been done</p>
+            <p>No bookings have been made.</p>
         }
-       
-  </from>
-   
+    </form>
 </body>
-
 </html>

@@ -48,64 +48,73 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult PrescriptionList()
         {
-            IEnumerable<Prescription> list = _Context.prescriptions;
-                 //.Include(a => a.PharmacyMedication);
-            //.Include(a => a.Patient);
-            return View(list);
+            var prescriptions = _Context.prescriptions.ToList();
+            return View(prescriptions);
         }
+        // GET: Prescription/Create
         public IActionResult CreatePrescription(int bookingID, string name, string gender, string email)
         {
-            // Initialize a new prescription model with data from the booking
+            ViewBag.getPharmacyMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             var model = new Prescription
             {
-                BookingID = bookingID.ToString(),
                 Name = name,
                 Gender = gender,
                 Email = email,
-                Date = DateTime.Now // Default to current date; adjust as needed
+                // Initialize other fields as needed
             };
-
-            // Optionally, populate ViewBag or other data needed for the view
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
 
             return View(model);
         }
 
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CreatePrescription(Prescription prescription)
+        public IActionResult CreatePrescription(PrescriptionViewModel model)
         {
             if (ModelState.IsValid)
             {
+                // Create a new Prescription entity
+                var prescription = new Prescription
+                {
+                    Name = model.Name,
+                    Gender = model.Gender,
+                    Email = model.Email,
+                    Date = model.Date,
+                    Prescriber = model.Prescriber,
+                    Urgent = model.Urgent,
+                    Status = model.Status
+                };
+
                 _Context.prescriptions.Add(prescription);
                 _Context.SaveChanges();
-                return RedirectToAction("PrescriptionList");
+
+                // Add the medications
+                foreach (var medication in model.Medications)
+                {
+                    var prescriptionMedication = new PrescriptionMedication
+                    {
+                        PrescriptionID = prescription.PrescriptionID,
+                        PharmacyMedicationID = medication.PharmacyMedicationID,
+                        Quantity = medication.Quantity,
+                        Instructions = medication.Instructions
+                    };
+                    _Context.prescriptionMedications.Add(prescriptionMedication);
+                }
+
+                _Context.SaveChanges();
+
+                return RedirectToAction("PrescriptionSuccess");
             }
 
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName", prescription.PrescriptionID);
-            return View(prescription);
+            // If the model is invalid, return the same view with validation errors
+            return View(model);
         }
-        public IActionResult updatePrescription(int? ID)
-        {
-            if (ID == null || ID == 0)
-            {
-                return NotFound();
-            }
-            var list = _Context.prescriptions.Find(ID);
-            if (list == null)
-            {
-                return NotFound();
-            }
 
-            return View(list);
 
-        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult updatePrescription(Prescription prescription)
         {
-            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //bookSurgery.PatientID = user;
+            
             _Context.prescriptions.Update(prescription);
             _Context.SaveChanges();
             return RedirectToAction("PrescriptionList");

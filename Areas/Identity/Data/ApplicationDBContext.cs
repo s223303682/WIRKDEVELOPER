@@ -18,6 +18,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        // Configuring Booking-TreatmentCode relationship
         builder.Entity<Booking>()
             .HasOne(b => b.TreatmentCode)
             .WithMany()  // Assuming TreatmentCode does not have a collection of Bookings
@@ -31,20 +32,33 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(b => b.OperationTheatreID)
             .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
 
-        // Configuring Booking-Patient relationship (if applicable)
+        // Configuring Booking-Patient relationship
         builder.Entity<Booking>()
             .HasOne(b => b.Addm)
             .WithMany()  // Assuming Patient does not have a collection of Bookings
             .HasForeignKey(b => b.AddmID)
             .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
 
-        
+        // Configuring PrescriptionMedication-Prescription relationship
+        builder.Entity<PrescriptionMedication>()
+            .HasOne(pm => pm.Prescription)
+            .WithMany(p => p.PrescriptionMedications)
+            .HasForeignKey(pm => pm.PrescriptionID)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
+
+        // Configuring PrescriptionMedication-PharmacyMedication relationship
+        builder.Entity<PrescriptionMedication>()
+            .HasOne(pm => pm.PharmacyMedication)
+            .WithMany()  // Assuming PharmacyMedication does not have a collection of PrescriptionMedications
+            .HasForeignKey(pm => pm.PharmacyMedicationID)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
+
         base.OnModelCreating(builder);
-        // Customize the ASP.NET Identity model and override the defaults if needed.
-        // For example, you can rename the ASP.NET Identity table names and more.
-        // Add your customizations after calling base.OnModelCreating(builder);
+
+        // Apply additional configurations if needed
         builder.ApplyConfiguration(new applicationUserEntityConfiguration());
     }
+
     public class applicationUserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
@@ -58,6 +72,10 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Models.Administrator> admins { get; set; }
     public DbSet<BookingNewPatient> bookingNewPatients { get; set; }
     public DbSet<MedicationPrescription> medicationPrescriptions { get; set; }
+    public DbSet<PrescriptionMedication> prescriptionMedications { get; set; }
+    public DbSet<MedicationDetail> medicationDetails { get; set; }
+    public DbSet<PrescriptionViewModel> prescriptionViewModels { get; set; }
+  
     public DbSet<Bed> beds { get; set; }
     public DbSet<Ward> ward { get; set; }
     public DbSet<Condition> conditions { get; set; }
