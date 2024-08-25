@@ -68,20 +68,47 @@ namespace WIRKDEVELOPER.Controllers
 
 
         [HttpPost]
-        public IActionResult CreatePrescription(Prescription model)
+        public IActionResult CreatePrescription(PrescriptionViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Save the prescription to the database or perform the required action
-                _Context.prescriptions.Add(model);
-                ViewBag.getPharmacyMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+                // Create a new Prescription entity
+                var prescription = new Prescription
+                {
+                    Name = model.Name,
+                    Gender = model.Gender,
+                    Email = model.Email,
+                    Date = model.Date,
+                    Prescriber = model.Prescriber,
+                    Urgent = model.Urgent,
+                    Status = model.Status
+                };
+
+                _Context.prescriptions.Add(prescription);
                 _Context.SaveChanges();
 
-                return RedirectToAction("PrescriptionList"); // Redirect to a view displaying the list of prescriptions or another appropriate action
+                // Add the medications
+                foreach (var medication in model.Medications)
+                {
+                    var prescriptionMedication = new PrescriptionMedication
+                    {
+                        PrescriptionID = prescription.PrescriptionID,
+                        PharmacyMedicationID = medication.PharmacyMedicationID,
+                        Quantity = medication.Quantity,
+                        Instructions = medication.Instructions
+                    };
+                    _Context.prescriptionMedications.Add(prescriptionMedication);
+                }
+
+                _Context.SaveChanges();
+
+                return RedirectToAction("PrescriptionSuccess");
             }
 
-            return View(model); // Redisplay the form with validation errors if any
+            // If the model is invalid, return the same view with validation errors
+            return View(model);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

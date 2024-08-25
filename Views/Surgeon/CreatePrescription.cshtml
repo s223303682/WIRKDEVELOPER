@@ -1,4 +1,4 @@
-﻿@model WIRKDEVELOPER.Models.Prescription
+﻿@model WIRKDEVELOPER.Models.PrescriptionViewModel
 
 
 
@@ -17,8 +17,8 @@
             medicationDiv.innerHTML = `
                         <h4>Medication ${index + 1}</h4>
                         <div class="form-group">
-                            <label for="medication_${index}_PharmacyMedicationID">Medication</label>
-                            <select name="Medications[${index}].PharmacyMedicationID" id="medication_${index}_PharmacyMedicationID" class="form-control" required>
+                            <label for="Medications_${index}__PharmacyMedicationID">Medication</label>
+                            <select name="Medications[${index}].PharmacyMedicationID" id="Medications_${index}__PharmacyMedicationID" class="form-control" required>
                                 <option value="" disabled>--select medication--</option>
         @foreach (var medication in ViewBag.getPharmacyMedication)
         {
@@ -28,13 +28,13 @@
                             <span class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label for="medication_${index}_Quantity">Quantity</label>
-                            <input type="number" name="Medications[${index}].Quantity" id="medication_${index}_Quantity" class="form-control" />
+                            <label for="Medications_${index}__Quantity">Quantity</label>
+                            <input type="number" name="Medications[${index}].Quantity" id="Medications_${index}__Quantity" class="form-control" />
                             <span class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label for="medication_${index}_Instructions">Instructions</label>
-                            <input type="text" name="Medications[${index}].Instructions" id="medication_${index}_Instructions" class="form-control" />
+                            <label for="Medications_${index}__Instructions">Instructions</label>
+                            <input type="text" name="Medications[${index}].Instructions" id="Medications_${index}__Instructions" class="form-control" />
                             <span class="text-danger"></span>
                         </div>
                         <hr />
@@ -76,6 +76,7 @@
             <!-- Dynamic Medication Fields Will Be Added Here -->
         </div>
         <button type="button" onclick="addMedicationField()" class="btn btn-primary">Add Medication</button>
+
 
         <div class="form-group">
             <label asp-for="Date"></label>
