@@ -48,64 +48,46 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult PrescriptionList()
         {
-            IEnumerable<Prescription> list = _Context.prescriptions;
-                 //.Include(a => a.PharmacyMedication);
-            //.Include(a => a.Patient);
-            return View(list);
+            var prescriptions = _Context.prescriptions.ToList();
+            return View(prescriptions);
         }
+        // GET: Prescription/Create
         public IActionResult CreatePrescription(int bookingID, string name, string gender, string email)
         {
-            // Initialize a new prescription model with data from the booking
+            ViewBag.getPharmacyMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             var model = new Prescription
             {
-                BookingID = bookingID.ToString(),
                 Name = name,
                 Gender = gender,
                 Email = email,
-                Date = DateTime.Now // Default to current date; adjust as needed
+                // Initialize other fields as needed
             };
-
-            // Optionally, populate ViewBag or other data needed for the view
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
 
             return View(model);
         }
 
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult CreatePrescription(Prescription prescription)
+        public IActionResult CreatePrescription(Prescription model)
         {
             if (ModelState.IsValid)
             {
-                _Context.prescriptions.Add(prescription);
+                // Save the prescription to the database or perform the required action
+                _Context.prescriptions.Add(model);
+                ViewBag.getPharmacyMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
                 _Context.SaveChanges();
-                return RedirectToAction("PrescriptionList");
+
+                return RedirectToAction("PrescriptionList"); // Redirect to a view displaying the list of prescriptions or another appropriate action
             }
 
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName", prescription.PrescriptionID);
-            return View(prescription);
+            return View(model); // Redisplay the form with validation errors if any
         }
-        public IActionResult updatePrescription(int? ID)
-        {
-            if (ID == null || ID == 0)
-            {
-                return NotFound();
-            }
-            var list = _Context.prescriptions.Find(ID);
-            if (list == null)
-            {
-                return NotFound();
-            }
 
-            return View(list);
-
-        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult updatePrescription(Prescription prescription)
         {
-            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //bookSurgery.PatientID = user;
+            
             _Context.prescriptions.Update(prescription);
             _Context.SaveChanges();
             return RedirectToAction("PrescriptionList");

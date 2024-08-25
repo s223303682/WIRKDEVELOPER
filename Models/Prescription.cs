@@ -12,39 +12,26 @@ namespace WIRKDEVELOPER.Models
         [Key]
         public int PrescriptionID { get; set; } // Unique identifier for the prescription
 
+        public string Name { get; set; }
+        public string Gender { get; set; }
+        public string Email { get; set; }
+        public DateTime Date { get; set; }
+        public string Prescriber { get; set; }
+        public string Urgent { get; set; }
+        public string Status
+        {
+            get; set;
+
+        }
         [Required]
-        public string BookingID { get; set; } // ID of the related booking
+        public int PharmacyMedicationID { get; set; }
+        [ForeignKey("PharmacyMedicationID")]
+        public virtual PharmacyMedication? PharmacyMedication { get; set; }
 
-        [Required]
-        [Display(Name = "Patient Name")]
-        public string Name { get; set; } // Name of the patient
+        public int Quantity { get; set; }
+        public string Instructions { get; set; }
 
-        [Required]
-        [Display(Name = "Gender")]
-        public string Gender { get; set; } // Gender of the patient
-
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; } // Email of the patient
-
-        [Required]
-        [DisplayName("Prescription Date")]
-        public DateTime? Date { get; set; } // Date when the prescription was created
-
-        [Display(Name = "Prescriber")]
-        public string? Prescriber { get; set; } // Name of the person or system who created the prescription
-
-        [Required]
-        [Display(Name = "Urgent")]
-        public string? Urgent { get; set; } // Indicates if the prescription is urgent (e.g., "Yes", "No")
-
-        [Required]
-        [Display(Name = "Status")]
-        public string? Status { get; set; }
-
-
-
-
+        public List<PharmacyMedication> Medications { get; set; } = new List<PharmacyMedication>();
     }
+   
 }
