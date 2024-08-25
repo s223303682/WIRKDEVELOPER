@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<WIRKDEVELOPER.Models.AnVitals>
-
+@{
+    Layout = "AnaesthesiologistLayout";
+}
 
 @if (User.IsInRole("Anaesthesiologist"))
 {
@@ -9,7 +11,7 @@
                 <h2 class="text-primary">List of your screenings</h2>
             </div>
             <div class="col-6 text-end">
-                <a asp-controller="Anaesthesiologist" asp-action="AnVitals" class="btn btn-primary"><i class="bi bi-plus-circle"></i> SCREEN YOURSELF</a>
+                <a asp-controller="Anaesthesiologist" asp-action="Order" class="btn btn-primary"><i class="bi bi-plus-circle"></i>BACK</a>
             </div>
         </div>
         <br />
@@ -42,16 +44,7 @@
                             <td width="20%">@vital.Vital</td>
                             <td width="20%">@vital.Reading</td>
                             <td width="20%">@vital.Time</td>
-                            @*                         <td width="20%">@Scree.Date</td>
-                *@
-                            <td>
-                                <a asp-controller="Vaccs" asp-action="NewUpdateScreening" asp-route-ID="@vital.AnVitalID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
-
-                                <a asp-controller="Vaccs" asp-action="DeleteScreen" asp-route-ID="@vital.AnVitalID" class="btn btn-danger">
-                                    <i class="bi bi-trash3-fill"></i>Delete
-                                </a>
-
-                            </td>
+             
 
                         </tr>
                     }

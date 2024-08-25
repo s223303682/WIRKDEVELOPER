@@ -204,10 +204,13 @@
                                                                                         </div>
 
                                                                                     </div>
-
+                                                                                   
                                                                                 </div>
                                                                                 <div class="text-center">
                                                                                     <h1>VITALS</h1>
+                                                                                </div>
+                                                                                <div class="col-6 text-end">
+                                                                                    <a asp-controller="Anaesthesiologist" asp-action="IndexAnVitals" class="btn btn-primary"><i class="bi bi-plus-circle"></i>  VITALS</a>
                                                                                 </div>
 
 
@@ -259,10 +262,7 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
 
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                ALLERGIES
-                                            </button>
-
+                                            <a asp-controller="Anaesthesiologist" asp-action="IndexAnAllergies" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Allergies</a>
                                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -332,12 +332,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            
                                             <br />
 
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal4">
-                                                CURRENT MEDICATION
-                                            </button>
+                                            <a asp-controller="Anaesthesiologist" asp-action="IndexCurrentMedication" class="btn btn-primary"><i class="bi bi-plus-circle"></i>CurrentMedication</a>
+                                           
 
                                             <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
@@ -411,9 +410,9 @@
 
                                             <br />
 
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal5">
-                                                CONDITIONS
-                                            </button>
+                                 
+                                                <a asp-controller="Anaesthesiologist" asp-action="IndexConditions" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Condition</a>
+                                           
 
                                             <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">

@@ -9,16 +9,23 @@ namespace WIRKDEVELOPER.Models
 {
 	public class AnCurrentMedication
 	{
-		[DisplayName("Medication Name")]
-		public string? MedicationName { get; set; }
-		[ForeignKey("AdmissionID")]
+        //[Required]
+        //[DisplayName("Patient")]
+        //public int? AddmID { get; set; }
+        //[ForeignKey("AddmID")]
+        //public virtual Patient Addm { get; set; }
 
-		[DisplayName("Dosage")]
-		public string? Dosage { get; set; }
-		[ForeignKey("AdmissionID")]
+        [DisplayName("CurrentMedication")]
+		public int MedicationID { get; set; }
+		[ForeignKey("MedicationID")]
+        public virtual Medication Medication{get; set; }
+
+        //[DisplayName("Dosage")]
+        //public string? Dosage { get; set; }
+        //[ForeignKey("AdmissionID")]
 
 
-		[Key]
+        [Key]
 		public int CurrentMedicationID { get; set; }
 	}
 }
