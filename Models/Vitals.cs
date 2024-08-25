@@ -21,5 +21,15 @@ namespace WIRKDEVELOPER.Models
         [Required]
         [DisplayName("Maximum Range ")]
         public string? Maximumrange { get; set; }
+        public int Height { get; set; }
+        public int Weight { get; set; }
+        [Required]
+        [DisplayName("Patient Name")]
+        public string PatientName { get; set; }
+        [ForeignKey("PatientID")]
+        public DateTime Date { get; set; }
+        public DateTime Time { get; set; }
+        public string? Units { get; set; }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿@model WIRKDEVELOPER.Models.VitalRanges
+﻿@model WIRKDEVELOPER.Models.Vitals
 @{
     Layout = "_NurseLayout";
 }
@@ -10,8 +10,8 @@
             <h2 class="text-black-50 pt-3">Add Vitals</h2>
         </div>
     </div>
-   @*  <div class="row"
-         <div class="col">
+    <div class="row">
+         <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="PatientName"></label>
                 <div>
@@ -21,7 +21,7 @@
                 <span asp-validation-for="PatientName" class=" text-danger"></span>
             </div>
         </div>
-         <div class="col">
+         <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="Date"></label>
                 <div>
@@ -31,7 +31,7 @@
                 <span asp-validation-for="Date" class=" text-danger"></span>
             </div>
         </div>
-        <div class="col">
+        <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="Time"></label>
                 <div>
@@ -40,18 +40,18 @@
                 <div class="invalid-feedback"></div>
                 <span asp-validation-for="Time" class=" text-danger"></span>
             </div>
-        </div> *@
+        </div>
          <div class="col-md-3">
             <div class="form-group">
                 <label for="validityPeriod">Vital Type</label>
-                <select id="PatientDropdown" asp-for="Vital" class="form-control" id="validationName" required>
+                <select id="PatientDropdown" asp-for="VitalType" class="form-control" id="validationName" required>
                     <option value="Select">Heart Rate</option>
                     <option value="Select">Blood Pressure</option>
-                    <option value="Select">TTemperature</option>
+                    <option value="Select">Temperature</option>
                 </select>
             </div>
         </div>
-         <div class="col">
+         <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="Minimumrange"></label>
                 <div>
@@ -73,7 +73,7 @@
                 </select>
             </div>
         </div>
-        <div class="col">
+       @*  <div class="col">
             <div class="form-group">
                 <label asp-for="Maximumrange"></label>
                 <div>
@@ -94,8 +94,8 @@
                     <option value="Select">bpm</option>
                 </select>
             </div>
-        </div> 
-       @*  <div class="col">
+        </div>  *@
+        <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="Weight"></label>
                 <div>
@@ -117,7 +117,7 @@
                 </select>
             </div>
         </div>
-        <div class="col">
+        <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="Height"></label>
                 <div>
@@ -126,7 +126,7 @@
                 <div class="invalid-feedback"></div>
                 <span asp-validation-for="Height" class=" text-danger"></span>
             </div>
-        </div> *@
+        </div>
         <div class="col-md-3">
             <div class="form-group">
                 <label for="validityPeriod">Units</label>
@@ -139,7 +139,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-3">
+        @* <div class="col-md-3">
             <div class="form-group">
                 <label for="validityPeriod">Units</label>
                 <select id="PatientDropdown" asp-for="Units" class="form-control" id="validationName" required>
@@ -150,6 +150,23 @@
                     <option value="Select">bpm</option>
                 </select>
             </div>
+        </div> *@
+        </div>
+    <div class="row">
+        <div class="col">
+            <a asp-controller="Nurse" asp-action="Dashboard" class="btn btn-secondary">Back</a>
+        </div>
+        <div class="col">
+            <input type="submit" value="Submit" class="btn btn-primary" />
         </div>
     </div>
+
+   @*  <div class="row">
+        <div class="col">
+            <a asp-controller="Nurse" asp-action="Dashboard" class="btn btn-secondary">Back</a>
+        </div>
+        <div class="col">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </div>
+    </div> *@
 </form> 
