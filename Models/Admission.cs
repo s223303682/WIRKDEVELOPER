@@ -8,7 +8,9 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int AdmissionID { get; set; }
-        public int PatientID { get; set; }
+        public int PatientName { get; set; }
+        [ForeignKey("PatientID")]  
+        public int PatientSurname { get; set; }
         [ForeignKey("PatientID")] 
         public int PatientGender { get; set; }
         [ForeignKey("PatientID")]
@@ -41,9 +43,9 @@ namespace WIRKDEVELOPER.Models
         [ForeignKey("PatientID")]
         public int BedID { get; set; }
         [ForeignKey("BedID")]
-        public int ConditionID { get; set; }
+        public int ConditionName { get; set; }
         [ForeignKey("ConditionID")]
-        public int WardID { get; set; }
+        public int WardName { get; set; }
         [ForeignKey("WardID")] 
         public int AllergiesID { get; set; }
         [ForeignKey("AlergiesID")] 

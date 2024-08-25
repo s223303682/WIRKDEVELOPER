@@ -27,35 +27,23 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult ViewAdmission()
         {
-            IEnumerable<Patient> patient = Context.patients;
-            return View(patient);
+            IEnumerable<Patient> patients = Context.patients;
+            return View(patients);
         }
         public IActionResult AddAdmission()
         {
-            //ViewBag.Patients = (from U in Context.Users
-            //                    join UR in Context.UserRoles on U.Id equals UR.UserId
-            //                    join R in Context.Roles on UR.RoleId equals R.Id
-            //                    where R.Name == "Patient"
-            //                    select U).ToList();
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddAdmission(/*[Bind("AdmissionID,PatientID,PatientGender,PatientEmail,PatientPhone,Address1,Address2,Province,City,Suburb,PostalCode,Ward,Condition,Allergies,MedicationName,TreatmentCode")]*/Admission admission) 
+        public IActionResult AddAdmission(Admission admission) 
         { 
             if (ModelState.IsValid) 
             {
-                //ViewBag.Date = DateTime.Now.ToString("dd/mm/yyyy");
-                //ViewBag.Time = DateTime.Now.ToString("HH:MM");
                 Context.admission.Add(admission);
                 Context.SaveChanges();
-                return RedirectToAction("ViewAddmission");
+                return RedirectToAction("ViewAdmission");
             }
-            //ViewBag.Patients = (from U in Context.Users
-            //                    join UR in Context.UserRoles on U.Id equals UR.UserId
-            //                    join R in Context.Roles on UR.RoleId equals R.Id
-            //                    where R.Name == "Patient"
-            //                    select U).ToList();
             return View(admission);
         } 
         public IActionResult AddBed()
@@ -96,22 +84,17 @@ namespace WIRKDEVELOPER.Controllers
             {
                 return NotFound();
             }
-            var patient = Context.admission.Find(ID);
-            if (patient == null)
+            var patients = Context.admission.Find(ID);
+            if (patients == null)
             {
                 return NotFound();
             }
-            //ViewBag.Patients = (from U in Context.Users
-            //                    join UR in Context.UserRoles on U.Id equals UR.UserId
-            //                    join R in Context.Roles on UR.RoleId equals R.Id
-            //                    where R.Name == "Patient"
-            //                    select U).ToList();
-            return View(patient);
+            return View(patients);
 
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UpdateAdmission(Admission admission)
+        public IActionResult UpdateAdmission(int ID,Admission admission)
         {
             if (ModelState.IsValid)
             {
@@ -157,6 +140,30 @@ namespace WIRKDEVELOPER.Controllers
         {
             IEnumerable<Vitals> vitals = Context.vitals;
             return View(vitals);
+        }
+        public IActionResult UpdateVital(int? ID)
+        {
+
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var objList = Context.vitals.Find(ID);
+            if (objList == null)
+            {
+                return NotFound();
+            }
+            return View(objList);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateVitals(int ID, Vitals vitals)
+        {
+
+
+            Context.vitals.Update(vitals);
+            Context.SaveChanges();
+            return RedirectToAction("ViewVitals");
         }
         public IActionResult ViewPrescription()
         {
@@ -204,6 +211,30 @@ namespace WIRKDEVELOPER.Controllers
                 return RedirectToAction("ViewDischargePatient");
             }
             return View(discharge);
+        }
+        public IActionResult UpdateDischargedPatient(int? ID)
+        {
+
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var objList = Context.vitals.Find(ID);
+            if (objList == null)
+            {
+                return NotFound();
+            }
+            return View(objList);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateDischargedPatient(int ID, DischargePatient discharge)
+        {
+
+
+            Context.discharge.Update(discharge);
+            Context.SaveChanges();
+            return RedirectToAction("ViewDischargedPatient");
         }
 
     }
