@@ -1,5 +1,173 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model WIRKDEVELOPER.Models.Patient
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <h1><div class=" bg-info bg-opacity-50 text-center text-white rounded-1">UPDATE PATIENT</div></h1>
+    <hr />
+    <div class="container p-3 bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
+        <form method="post" asp-action="updatePatient" class="bg-blue-200 p-2 text-dark  bg-blue-200 bg-opacity-50">
+            <input asp-for="PatientID" hidden />
+            <div>
+                <div class="col">
+                    <label asp-for="PatientName"></label>
+                    <input asp-for="PatientName" class="form-control" />
+                </div>
+                <div class="col">
+                    <label asp-for="PatientSurname"></label>
+                    <input asp-for="PatientSurname" class="form-control" />
+                </div>
+
+                <div class="col">
+                    <label asp-for="PatientIDNO"></label>
+                    <input asp-for="PatientIDNO" class="form-control" />
+                </div>
+                <div class="col">
+                    <label asp-for="province"></label>
+                    <input asp-for="province" class="form-control" />
+                </div>
+                <div class="col">
+                    <label asp-for="City"></label>
+                    <input asp-for="City" class="form-control" />
+                </div>
+                <div class="col">
+                    <label asp-for="surbub"></label>
+                    <input asp-for="surbub" class="form-control" />
+                </div>
+                <div class="col">
+                    <label asp-for="contactNumber"></label>
+                    <input asp-for="contactNumber" class="form-control" />
+                </div>
+                <div class="col">
+                    <label asp-for="EmailAddress"></label>
+                    <input asp-for="EmailAddress" class="form-control" />
+                </div>
+                <div class="col">
+                    <label asp-for="DateOfBirth"></label>
+                    <input asp-for="DateOfBirth" class="form-control" />
+                </div>
+                <div class="col">
+                    <label asp-for="Gender"></label>
+                    <input asp-for="Gender" class="form-control" />
+                </div>
+                <div class=" form-group row">
+                    <div class="col-6 ">
+                        <input type="submit" class="btn btn-info w-75" value="update" />
+                    </div>
+                    <div class="col-6">
+                        <a asp-action="BookingPatientList" class="btn btn-danger w-75"> Back</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+    <script>
+        const countryStateInfo = {
+            "North West": ["Mahikeng", "Stella"],
+            "Gauteng": ["Johannesburg", "Pretoria"],
+            "Free State": ["Bloemfontein"],
+            "Limpopo": ["Polokwana"],
+            "Mpumalanga": ["Mbombela"],
+            "Northen Cape": ["Kimberly"],
+            "Kwazulu-Natal": ["Durban", " Richards Bay", "Port Shepstone", "Newcastle", "Estcourt", "Ladysmith and Richmond."],
+            "Eastern Cape": ["Gqeberha", "Bisho", "Florida"],
+            "Western Cape": ["Cape Town"]
+        };
+
+        const stateCityInfo = {
+            "Gqeberha": ["Bridgemead", "Homewood", "Algoa park", "cotswold", "Lorraine", "Struandale", "Malabar", "Summerstrand"],
+            "Johannesburg": ["Houston", "Dallas", "Austin"],
+            "Mbombela": ["Kamagugu", "Barberton", "San Diego", "Riverside", "valencia park"],
+            "Durban": ["Essenwood", "kenville", "Cato manor", "Masgrave", "Bluff", "Glenmore", "kwamashu", "inanda", "Tongaat", "Greyville"]
+
+        };
+        const stateZipInfo = {
+            "Makagagu": [1200],
+            "Essenwood": [4001],
+            "Bridgemead": [6025],
+            "kenville": [4051],
+            "Homewood": [6001],
+            "Cato manor": [4091],
+            "Algoa park": [6001],
+            "Masgrave": [4001],
+            "Barberton": [1300],
+            "Bluff": [4052],
+            "cotswold": [6045],
+            "Glenmore": [4001],
+            "Riverside": [1226],
+            "Lorraine": [6070],
+            "Kwamashu": [4359],
+            "inanda": [4309],
+            "Struandale": [6001],
+            "valencia park": [1201],
+            "Tongaat": [4399],
+            "Greyville": [4001],
+            "Malabar": [6020],
+            "Summerstrand": ["6001"]
+        };
+
+        function populateStates() {
+            const countrySelect = document.getElementById("country");
+            const stateSelect = document.getElementById("state");
+            const citySelect = document.getElementById("city");
+            const selectedCountry = countrySelect.value;
+
+            stateSelect.innerHTML = "<option value=''>Select State</option>";
+            citySelect.innerHTML = "<option value=''>Select City</option>";
+
+            if (selectedCountry) {
+                const states = countryStateInfo[selectedCountry];
+                states.forEach(state => {
+                    const option = document.createElement("option");
+                    option.value = state;
+                    option.textContent = state;
+                    stateSelect.appendChild(option);
+                });
+            }
+        }
+
+        function populateCities() {
+            const stateSelect = document.getElementById("state");
+            const citySelect = document.getElementById("city");
+            const selectedState = stateSelect.value;
+
+            citySelect.innerHTML = "<option value=''>Select City</option>";
+
+            if (selectedState) {
+                const cities = stateCityInfo[selectedState];
+                cities.forEach(city => {
+                    const option = document.createElement("option");
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+            }
+        }
+        function populateZip() {
+            const citySelect = document.getElementById("city");
+            const zipSelect = document.getElementById("zip");
+            const selectedCity = citySelect.value;
+
+            zipSelect.innerHTML = "<option value=''>Select Zip</option>";
+
+            if (selectedCity) {
+                const zips = stateZipInfo[selectedCity];
+                zips.forEach(zip => {
+                    const option = document.createElement("option");
+                    option.value = zip;
+                    option.textContent = zip;
+                    zipSelect.appendChild(option);
+                });
+            }
+        }
+
+    </script>
+</body>
+</html>
+
+
