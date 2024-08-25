@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<MedicationAdministration>
+
+@{
     ViewData["Title"] = "ViewmedAdmin";
     Layout = "~/Views/Shared/_NurseLayout.cshtml";
 }
@@ -9,6 +11,9 @@
 </head>
 <div id="Header" class="bg-info">
     <h2 class="m-1 pt-4 text-center text-white">Medication Administration</h2>
+</div>
+<div class="col-6 text-end">
+    <a asp-controller="Nurse" asp-action="AddmedAdmin" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add Medication</a>
 </div>
 <div class="container-fluid bg-white border p-4">
     <table id="myTable" table class="table table-hover  table-sm" style="width:100%">
@@ -41,13 +46,13 @@
                 <tr>
 
                     <td width="20%">@med.PatientName</td>
-                    <td width="20%">@med.IssueDate</td>
+                    <td width="20%">@med.IssuedDate</td>
                     <td width="20%">@med.Status</td>
                     <td width="20%">@med.Quantity</td>
-                    <td width="20%">@med.Medication</td>
+                    <td width="20%">@med.MedicationName</td>
                     <td width="20%">
-                        @med.MainUser.FirstName
-                        @med.MainUser.LastName
+                       @*  @med.MainUser.FirstName
+                        @med.MainUser.LastName *@
                     </td>
                     <td>
                         <div class="w-50 btn-group" role="group">

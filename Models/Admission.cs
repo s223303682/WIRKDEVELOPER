@@ -8,14 +8,16 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int AdmissionID { get; set; }
-        public int PatientName { get; set; }
-        [ForeignKey("PatientID")]  
-        public int PatientSurname { get; set; }
-        [ForeignKey("PatientID")] 
-        public int PatientGender { get; set; }
+        public string PatientName { get; set; }
+        [ForeignKey("PatientID")]
+        [DisplayName("Patient Name")]
+        public string PatientSurname { get; set; }
+        [ForeignKey("PatientID")]
+        [DisplayName("Patient Surname")]
+        public string PatientGender { get; set; }
         [ForeignKey("PatientID")]
         [DisplayName("Gender")] 
-        public int MedicationName { get; set; }
+        public string MedicationName { get; set; }
         [ForeignKey("CurrentMedicationID")]
         [DisplayName("Current Medication")] 
         public int TreatmentCode { get; set; }
@@ -24,10 +26,10 @@ namespace WIRKDEVELOPER.Models
         public int PatientPhone { get; set; }
         [ForeignKey("PatientID")]
         [DisplayName("Phone")]
-        public int PatientEmail { get; set; }
+        public string PatientEmail { get; set; }
         [ForeignKey("PatientID")] 
         [DisplayName("Email")]
-        public int PatientProvince { get; set; }
+        public string PatientProvince { get; set; }
         [ForeignKey("PatientID")]
         [DisplayName("Province")]
         public string Address1 { get; set; }
@@ -45,7 +47,7 @@ namespace WIRKDEVELOPER.Models
         [ForeignKey("BedID")]
         public int ConditionName { get; set; }
         [ForeignKey("ConditionID")]
-        public int WardName { get; set; }
+        public string WardName { get; set; }
         [ForeignKey("WardID")] 
         public int AllergiesID { get; set; }
         [ForeignKey("AlergiesID")] 

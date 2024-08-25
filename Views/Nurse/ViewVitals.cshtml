@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Vitals>
+
+@{
     ViewData["Title"] = "ViewmedVitals";
     Layout = "~/Views/Shared/_NurseLayout.cshtml";
 }
@@ -10,7 +12,7 @@
 <div id="Header" class="bg-info">
     <h2 class="m-1 pt-4 text-center text-white">Viewing Vitals</h2>
     <div class="col-6 text-end">
-        <a asp-controller="Nurse" asp-action="Vitals" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add Vitals</a>
+        <a asp-controller="Nurse" asp-action="AddVitals" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add Vitals</a>
     </div>
 </div>
 <div class="container-fluid bg-white border p-4">
@@ -38,7 +40,7 @@
                 <tr>
 
                     <td width="20%">@vi.PatientName</td>
-                    <td width="20%">@vi.VisitDate</td>
+                    <td width="20%">@vi.Date</td>
                     <td width="20%">@vi.Time</td>
                    
                     <td width="20%">

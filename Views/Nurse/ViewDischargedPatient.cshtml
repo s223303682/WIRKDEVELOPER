@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<DischargePatient>
+
+@{
     ViewData["Title"] = "ViewDischargedPatient";
     Layout = "~/Views/Shared/_NurseLayout.cshtml";
 }
@@ -8,8 +10,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" />
 </head>
 <div id="Header" class="bg-info">
-    <h2 class="m-1 pt-4 text-center text-white">View Admission</h2>
+    <h2 class="m-1 pt-4 text-center text-white">Discharged Patient</h2>
 </div>
+<div class="col-6 text-end">
+    <a asp-controller="Nurse" asp-action="AddDischargedPatient" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Discharge</a>
+</div><a href="c:\users\dell\source\repos\wirkdeveloper\new folder (8)\views\nurse\viewdischargedpatient.cshtml">c:\users\dell\source\repos\wirkdeveloper\new folder (8)\views\nurse\viewdischargedpatient.cshtml</a>
 <div class="container-fluid bg-white border p-4">
     <table id="myTable" table class="table table-hover  table-sm" style="width:100%">
         <thead class="table-secondary">
@@ -43,15 +48,15 @@
                     <td width="20%">@dis.PatientName</td>
                     <td width="20%">@dis.AdmissionDate</td>
                     <td width="20%">@dis.DischargeDate</td>
-                    <td width="20%">@dis.NurseDischarging</td>
-                    <td width="20%">@dis.Reseanfordischarging</td>
+                    @* <td width="20%">@dis.NurseDischarging</td>
+                    <td width="20%">@dis.Reseanfordischarging</td> *@
                     <td width="20%">
-                        @dis.MainUser.FirstName
-                        @dis.MainUser.LastName
+@*                         @dis.MainUser.FirstName
+                        @dis.MainUser.LastName *@
                     </td>
                     <td>
                         <div class="w-50 btn-group" role="group">
-                            <a asp-controller="Nurse" asp-action="ViewDischargePatient" asp-route-ID="@dis.DischargePatientID" class="btn btn-info mx-1">View</a>
+                            <a asp-controller="Nurse" asp-action="ViewDischargePatient" asp-route-ID="@dis.DischargePatientId" class="btn btn-info mx-1">View</a>
                         </div>
                     </td>
                 </tr>
