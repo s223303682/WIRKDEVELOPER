@@ -1,5 +1,8 @@
-﻿@model IEnumerable<Prescription>
+﻿@model IEnumerable<PrescriptionViewModel>
+@{
 
+    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
+}
 <table class="table">
     <thead>
         <tr>
@@ -7,7 +10,7 @@
             <th>Gender</th>
             <th>Email</th>
             <th>Date</th>
-            <th>Prescriber</th>
+            <th>medication</th>
             <th>Urgent</th>
             <th>Status</th>
         </tr>
@@ -20,6 +23,7 @@
                 <td>@prescription.Gender</td>
                 <td>@prescription.Email</td>
                 <td>@prescription.Date</td>
+                <td>@prescription.Medications.</td>
                 <td>@prescription.Prescriber</td>
                 <td>@prescription.Urgent</td>
                 <td>@prescription.Status</td>

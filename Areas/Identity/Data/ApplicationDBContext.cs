@@ -73,7 +73,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<BookingNewPatient> bookingNewPatients { get; set; }
     public DbSet<MedicationPrescription> medicationPrescriptions { get; set; }
     public DbSet<PrescriptionMedication> prescriptionMedications { get; set; }
-    public DbSet<MedicationDetail> medicationDetails { get; set; }
+   // public DbSet<MedicationDetail> medicationDetails { get; set; }
     public DbSet<PrescriptionViewModel> prescriptionViewModels { get; set; }
   
     public DbSet<Bed> beds { get; set; }

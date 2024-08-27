@@ -8,6 +8,8 @@ using System.Security.Claims;
 using System.Web.WebPages.Html;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
+
+using Newtonsoft.Json;
 namespace WIRKDEVELOPER.Controllers
 {
     public class SurgeonController: Controller
@@ -28,13 +30,13 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult SearchPatient(string searchby, string search)
         {
-            if (searchby == "Gender")
+            if (searchby == "PatientName")
             {
-                return View(_Context.patients.Where(x => x.PatientName == search || search == null).ToList());
+                return View(_Context.addm.Where(x => x.Patient.PatientName == search || search == null).ToList());
             }
-            else if (searchby == "Gender")
+            else if (searchby == "PatientIDNO")
             {
-                return View(_Context.patients.Where(x => x.Gender == search || search == null).ToList());
+                return View(_Context.addm.Where(x => x.Patient.PatientIDNO == search || search == null).ToList());
             }
             else
             {
@@ -48,24 +50,30 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult PrescriptionList()
         {
-            var prescriptions = _Context.prescriptions.ToList();
+            var prescriptions = _Context.prescriptionViewModels.ToList();
+            //IEnumerable<PrescriptionMedicationViewModel> prescriptions_ = _Context.prescriptionViewModels;
             return View(prescriptions);
         }
         // GET: Prescription/Create
         public IActionResult CreatePrescription(int bookingID, string name, string gender, string email)
         {
-            ViewBag.getPharmacyMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            var model = new Prescription
+            var medications = _Context.pharmacyMedications
+                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
+                .ToList();
+
+            // Serialize medications to JSON
+            ViewBag.Medications = JsonConvert.SerializeObject(medications);
+
+            var model = new PrescriptionViewModel
             {
                 Name = name,
                 Gender = gender,
-                Email = email,
+                Email = email
                 // Initialize other fields as needed
             };
 
             return View(model);
         }
-
 
         [HttpPost]
         public IActionResult CreatePrescription(PrescriptionViewModel model)
@@ -73,7 +81,7 @@ namespace WIRKDEVELOPER.Controllers
             if (ModelState.IsValid)
             {
                 // Create a new Prescription entity
-                var prescription = new Prescription
+                var prescription = new PrescriptionViewModel
                 {
                     Name = model.Name,
                     Gender = model.Gender,
@@ -84,7 +92,7 @@ namespace WIRKDEVELOPER.Controllers
                     Status = model.Status
                 };
 
-                _Context.prescriptions.Add(prescription);
+                _Context.prescriptionViewModels.Add(prescription);
                 _Context.SaveChanges();
 
                 // Add the medications
@@ -92,7 +100,7 @@ namespace WIRKDEVELOPER.Controllers
                 {
                     var prescriptionMedication = new PrescriptionMedication
                     {
-                        PrescriptionID = prescription.PrescriptionID,
+                        PrescriptionID = prescription.PrescriptionViewModelID,
                         PharmacyMedicationID = medication.PharmacyMedicationID,
                         Quantity = medication.Quantity,
                         Instructions = medication.Instructions
@@ -102,10 +110,14 @@ namespace WIRKDEVELOPER.Controllers
 
                 _Context.SaveChanges();
 
-                return RedirectToAction("PrescriptionSuccess");
+                return RedirectToAction("PrescriptionList");
             }
 
             // If the model is invalid, return the same view with validation errors
+            var medications = _Context.pharmacyMedications
+                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
+                .ToList();
+            ViewBag.Medications = JsonConvert.SerializeObject(medications);
             return View(model);
         }
 
