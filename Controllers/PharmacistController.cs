@@ -150,6 +150,36 @@ namespace WIRKDEVELOPER.Controllers
             return RedirectToAction("IndexMedication");
 
         }
+        public IActionResult updateMedication(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var objList = _Context.pharmacyMedications.Find(ID);
+            if (objList == null)
+            {
+                return NotFound();
+            }
+            ViewBag.getDosage = new SelectList(_Context.dosageForms, "DosageFormID", "DosageFormName");
+            ViewBag.getActive = new SelectList(_Context.active, "ActiveID", "ActiveName");
+            ViewBag.getSchedule = new SelectList(_Context.schedules, "ScheduleId", "ScheduleName");
+            return View(objList);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult updateMedication(PharmacyMedication pharmacy)
+        {
+            //var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //bookSurgery.PatientID = user;
+            _Context.pharmacyMedications.Update(pharmacy);
+            ViewBag.getDosage = new SelectList(_Context.dosageForms, "DosageFormID", "DosageFormName");
+            ViewBag.getActive = new SelectList(_Context.active, "ActiveID", "ActiveName");
+            ViewBag.getSchedule = new SelectList(_Context.schedules, "ScheduleId", "ScheduleName");
+            _Context.SaveChanges();
+            return RedirectToAction("IndexMedication");
+        }
         public IActionResult updatePharmIndexOrder(int? ID)
         {
             if (ID == null || ID == 0)

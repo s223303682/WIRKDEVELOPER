@@ -53,15 +53,15 @@
                 <img src="~/images/Surgeon/card2.jpg" width="60%" height="60%" alt="card image">
             </div>
             <div class="card-footer">
-                <a asp-controller="Pharmacist" asp-action="Createmedication">Medication</a>
+                <a asp-controller="Pharmacist" asp-action="AddMedication">Medication</a>
             </div>
         </div>
         <div class="col card" style="display:inline-block;width:calc(50%-50px)">
             <div class="card-body">
-                <img src="~/images/Surgeon/card1.jpg" width="60%" height="60%" alt="card image">
+                <img src="~/Images/Surgeon/stock-taking.jpg" width="60%" height="60%" alt="card image">
             </div>
             <div class="card-footer">
-                <a asp-controller="Pharmacist" asp-action="Createstock">Create prescription</a>
+                <a asp-controller="Pharmacist" asp-action="OrderMedications">StockTaking</a>
             </div>
         </div>
         <div class=" col card" style="display:inline-block;width:calc(50%-50px)">
@@ -69,7 +69,7 @@
                 <img src="~/images/Surgeon/card1.jpg" width="60%" height="60%" alt="card image">
             </div>
             <div class="card-footer">
-                <a asp-controller="Pharmacist" asp-action="StockList"> View prescriptions</a>
+                <a asp-controller="Pharmacist" asp-action="ReceivedMedication">StockRecieved</a>
             </div>
         </div>
     </div>
