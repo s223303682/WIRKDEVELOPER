@@ -33,6 +33,7 @@ namespace WIRKDEVELOPER.Models
         public string Urgent { get; set; }
         public string Status { get; set; }
 
+
         // List of medications to be added dynamically
         public List<PrescriptionMedicationViewModel> Medications { get; set; } = new List<PrescriptionMedicationViewModel>();
     }

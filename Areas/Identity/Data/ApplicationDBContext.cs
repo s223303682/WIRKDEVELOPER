@@ -52,6 +52,10 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
             .WithMany()  // Assuming PharmacyMedication does not have a collection of PrescriptionMedications
             .HasForeignKey(pm => pm.PharmacyMedicationID)
             .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
+       builder.Entity<Addm>()
+       .HasOne(a => a.Patient)
+       .WithMany()
+       .HasForeignKey("PatientID"); //
 
         base.OnModelCreating(builder);
 
@@ -73,7 +77,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<BookingNewPatient> bookingNewPatients { get; set; }
     public DbSet<MedicationPrescription> medicationPrescriptions { get; set; }
     public DbSet<PrescriptionMedication> prescriptionMedications { get; set; }
-   // public DbSet<MedicationDetail> medicationDetails { get; set; }
+   public DbSet<SearchPatient> searchPatients { get; set; }
     public DbSet<PrescriptionViewModel> prescriptionViewModels { get; set; }
   
     public DbSet<Bed> beds { get; set; }
@@ -128,5 +132,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Ranges> ranges {  get; set; }
     public DbSet<Addm> addm {  get; set; }
     public DbSet<StockReceived> StockReceiveds { get; set; }
+    public DbSet<OrderItems> orderItems { get; set; }
+    public DbSet<OrderCreate> orderCreates { get; set; }
 
 }

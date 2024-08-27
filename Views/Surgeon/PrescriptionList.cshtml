@@ -1,8 +1,10 @@
-﻿@model IEnumerable<PrescriptionViewModel>
-@{
+﻿@model IEnumerable<PrescriptionMedication>
 
+@{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
+
+<h1><div class="bg-info bg-opacity-50 text-center text-white rounded-1">PRESCRIPTIONS</div></h1>
 <table class="table">
     <thead>
         <tr>
@@ -10,7 +12,10 @@
             <th>Gender</th>
             <th>Email</th>
             <th>Date</th>
-            <th>medication</th>
+            <th>Medication</th>
+            <th>Quantity</th>
+            <th>Instructions</th>
+            <th>Prescriber</th>
             <th>Urgent</th>
             <th>Status</th>
         </tr>
@@ -19,14 +24,16 @@
         @foreach (var prescription in Model)
         {
             <tr>
-                <td>@prescription.Name</td>
-                <td>@prescription.Gender</td>
-                <td>@prescription.Email</td>
-                <td>@prescription.Date</td>
-                <td>@prescription.Medications.</td>
-                <td>@prescription.Prescriber</td>
-                <td>@prescription.Urgent</td>
-                <td>@prescription.Status</td>
+                <td>@prescription.Prescription?.Name</td>
+                <td>@prescription.Prescription?.Gender</td>
+                <td>@prescription.Prescription?.Email</td>
+                <td>@prescription.Prescription?.Date.ToString("d")</td>
+                <td>@prescription.PharmacyMedication?.PharmacyMedicationName </td>
+                <td>@prescription.Quantity</td>
+                <td>@prescription.Instructions</td>
+                <td>@prescription.Prescription?.Prescriber</td>
+                <td>@prescription.Prescription?.Urgent</td>
+                <td>@prescription.Prescription?.Status</td>
             </tr>
         }
     </tbody>

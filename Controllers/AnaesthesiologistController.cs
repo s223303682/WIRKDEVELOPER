@@ -84,77 +84,137 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-        public IActionResult IndexOrder()
+        public async Task<IActionResult> IndexOrders()
         {
-            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Addm);
-            return View(objList);
+            // Retrieve the list of orders from the database, including related entities if needed
+            var orders = await _Context.order
+                .Include(o => o.Addm) // Include related Patient entity
+                .Include(o => o.PharmacyMedication) // Include related PharmacyMedication entity
+                .ToListAsync();
 
+            return View(orders);
         }
-        public IActionResult Order()
+        public IActionResult CreateOrder()
         {
 
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-
-            return View();
+            // Initialize a new view model
+            var model = new OrderCreate
+            {
+                Medications = _Context.pharmacyMedications.ToList()
+            };
+            return View(model);
         }
+
+        // POST: Order/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Order(Order order)
+        public async Task<IActionResult> CreateOrder(OrderCreate viewModel)
         {
-
-            _Context.order.Add(order);
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-            //ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-            _Context.SaveChanges();
-
-
-            return RedirectToAction("IndexOrder");
-
-
-        }
-        public IActionResult NewUpdateOrder(int? ID)
-        {
-
-
-            if (ID == null || ID == 0)
-            {
-                return NotFound();
-            }
-            var objList = _Context.order.Find(ID);
-            if (objList == null)
-            {
-                return NotFound();
-            }
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-            return View(objList);
+            //if (ModelState.IsValid)
             
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult NewUpdateOrder(Order order)
-        {
-            _Context.order.Update(order);
+                foreach (var item in viewModel.OrderItems)
+                {
+                    var order = new Order
+                    {
+                        Date = viewModel.Date,
+                        AddmID = viewModel.AddmID,
+                        PharmacyMedicationID = item.PharmacyMedicationID,
+                        Quantity = item.Quantity,
+                        Instructions = item.Instructions,
+                        Status = "Ordered",
+                        //Notes = viewModel.Notes
+                    };
+
+                    _Context.order.Add(order);
+                }
+
+                await _Context.SaveChangesAsync();
+               
+            
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-            _Context.SaveChanges();
-            return RedirectToAction("IndexOrder");
-            
+            // If we got this far, something failed, redisplay form
+            viewModel.Medications = _Context.pharmacyMedications.ToList();
+            return RedirectToAction("IndexOrders"); // Redirect to a list or index view after creation
         }
-        public IActionResult DeleteOrder(int? ID)
-        {
-            var obj = _Context.order.Find(ID);
 
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            _Context.order.Remove(obj);
-            _Context.SaveChanges();
-            return RedirectToAction("IndexOrder");
-        }
+
+
+
+
+        //public IActionResult IndexOrder()
+        //{
+        //    IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Addm);
+        //    return View(objList);
+
+        //}
+        //public IActionResult Order()
+        //{
+
+        //    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+        //    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+
+        //    return View();
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Order(Order order)
+        //{
+
+        //    _Context.order.Add(order);
+        //    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+        //    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+
+        //    _Context.SaveChanges();
+
+
+        //    return RedirectToAction("IndexOrder");
+
+
+        //}
+        //public IActionResult NewUpdateOrder(int? ID)
+        //{
+
+
+        //    if (ID == null || ID == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var objList = _Context.order.Find(ID);
+        //    if (objList == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+        //    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+        //    return View(objList);
+
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult NewUpdateOrder(Order order)
+        //{
+        //    _Context.order.Update(order);
+        //    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+        //    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+        //    _Context.SaveChanges();
+        //    return RedirectToAction("IndexOrder");
+
+        //}
+        //public IActionResult DeleteOrder(int? ID)
+        //{
+        //    var obj = _Context.order.Find(ID);
+
+        //    if (obj == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _Context.order.Remove(obj);
+        //    _Context.SaveChanges();
+        //    return RedirectToAction("IndexOrder");
+        //}
         public IActionResult IndexVitalRanges()
         {
             IEnumerable<VitalRanges> objList = _Context.vitalranges;
