@@ -11,6 +11,13 @@ namespace WIRKDEVELOPER.Models
 
         [Key]
         public int OrderCreateID { get; set; }
+
+        [Required]
+        [DisplayName("Order")]
+        public int? AnOrderID { get; set; }
+        [ForeignKey("AnOrderID")]
+        public virtual Order Order { get; set; }
+
         [Required]
         public DateTime Date { get; set; } = DateTime.Now;
 
@@ -20,7 +27,11 @@ namespace WIRKDEVELOPER.Models
         [ForeignKey("AddmID")]
         public virtual Patient Addm { get; set; }
 
+        [DisplayName("Urgent")]
+        public string? Urgent { get; set; }
+
         public string? Notes { get; set; }
+
 
         public List<PharmacyMedication> Medications { get; set; }
 

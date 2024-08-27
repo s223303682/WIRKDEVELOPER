@@ -18,7 +18,8 @@
                     @Html.DisplayNameFor(model => model.Date)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Addm)
+                    Patient
+                    @* @Html.DisplayNameFor(model => model.Addm) *@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.PharmacyMedication)
@@ -28,6 +29,9 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Instructions)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Urgent)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Status)
@@ -46,10 +50,11 @@
                         @order.Date
                     </td>
                     <td>
-                        @order.Addm?.PatientName // Assuming Patient has a Name property
+                        @order.Addm?.PatientName @* // Assuming Patient has a Name property *@
                     </td>
                     <td>
-                        @order.PharmacyMedication?.PharmacyMedicationName// Assuming PharmacyMedication has a Name property
+                        
+                        @order.PharmacyMedication?.PharmacyMedicationName @* // Assuming PharmacyMedication has a Name property *@
                     </td>
                     <td>
                         @order.Quantity
@@ -58,15 +63,18 @@
                         @order.Instructions
                     </td>
                     <td>
+                        @order.Urgent
+                    </td>
+                    <td>
                         @order.Status
                     </td>
                     @* <td>
                         @order.Notes
                     </td> *@
                     <td>
-                        <a asp-action="Edit" asp-route-id="@order.AnOrderID" class="btn btn-warning">Edit</a>
+                        <a asp-action="EditOrder" asp-route-id="@order.AnOrderID" class="btn btn-warning">Edit</a>
                         <a asp-action="Details" asp-route-id="@order.AnOrderID" class="btn btn-info">Details</a>
-                        <a asp-action="Delete" asp-route-id="@order.AnOrderID" class="btn btn-danger">Delete</a>
+                        <a asp-action="DeleteOrder" asp-route-id="@order.AnOrderID" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             }

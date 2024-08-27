@@ -1,0 +1,65 @@
+﻿@model WIRKDEVELOPER.Models.OrderCreate
+
+@{
+    Layout = "AnaesthesiologistLayout";
+}
+
+<h1>Edit Order</h1>
+
+<form asp-action="EditOrder" method="post">
+    <input type="hidden" asp-for="AnOrderID" />
+
+    <div class="form-group">
+        <label asp-for="Date" class="control-label"></label>
+        <input asp-for="Date" class="form-control" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AddmID" class="control-label"></label>
+        <select asp-for="AddmID" class="form-control" asp-items="ViewBag.getPatient">
+            <!-- Options populated by ViewBag -->
+        </select>
+        <span asp-validation-for="AddmID" class="text-danger"></span>
+    </div>
+
+    <div id="order-items">
+        <div class="order-item row">
+            <div class="form-group col-md-3">
+                <label asp-for="OrderItems[0].PharmacyMedicationID" class="control-label"></label>
+                <select asp-for="OrderItems[0].PharmacyMedicationID" class="form-control" asp-items="ViewBag.getMedication">
+                    <!-- Options populated by ViewBag -->
+                </select>
+                <span asp-validation-for="OrderItems[0].PharmacyMedicationID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-2">
+                <label asp-for="OrderItems[0].Quantity" class="control-label"></label>
+                <input asp-for="OrderItems[0].Quantity" class="form-control" />
+                <span asp-validation-for="OrderItems[0].Quantity" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label asp-for="OrderItems[0].Instructions" class="control-label"></label>
+                <input asp-for="OrderItems[0].Instructions" class="form-control" />
+                <span asp-validation-for="OrderItems[0].Instructions" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <h4><label asp-for="Urgent"></label></h4>
+        <select id="PurposeDropdown" asp-for="Urgent" class="form-control" required>
+            <option value="Select">Select</option>
+            <option value="YES" class="bg-danger">YES</option>
+            <option value="NO">NO</option>
+        </select>
+        <span asp-validation-for="Urgent" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Update Order" class="btn btn-primary" />
+    </div>
+</form>
+
+

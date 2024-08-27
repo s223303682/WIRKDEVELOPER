@@ -120,6 +120,7 @@ namespace WIRKDEVELOPER.Controllers
                     {
                         Date = viewModel.Date,
                         AddmID = viewModel.AddmID,
+                        Urgent = viewModel.Urgent,
                         PharmacyMedicationID = item.PharmacyMedicationID,
                         Quantity = item.Quantity,
                         Instructions = item.Instructions,
@@ -139,6 +140,121 @@ namespace WIRKDEVELOPER.Controllers
             viewModel.Medications = _Context.pharmacyMedications.ToList();
             return RedirectToAction("IndexOrders"); // Redirect to a list or index view after creation
         }
+        public async Task<IActionResult> EditOrder(int id)
+        {
+            var order = await _Context.order
+                .Include(o => o.PharmacyMedication)
+                .Include(o => o.Addm)
+                .FirstOrDefaultAsync(o => o.AnOrderID == id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName", order.PharmacyMedicationID);
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", order.AddmID);
+
+            var model = new OrderCreate
+            {
+                Date = (DateTime)order.Date,
+                AddmID = order.AddmID,
+                Urgent = order.Urgent,
+                OrderItems = new List<OrderItems>
+                {
+                    new OrderItems
+                    {
+                         PharmacyMedicationID = order.PharmacyMedicationID,
+                        Quantity = (int)order.Quantity,
+                        Instructions = order.Instructions
+                    }
+                },
+                Medications = _Context.pharmacyMedications.ToList()
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditOrder(int id, OrderCreate viewModel)
+        {
+            if (id != viewModel.AnOrderID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var order = await _Context.order.FindAsync(id);
+                    if (order == null)
+                    {
+                        return NotFound();
+                    }
+
+
+                    order.Date = viewModel.Date;
+                    order.AddmID = viewModel.AddmID;
+                    order.Urgent = viewModel.Urgent;
+                    order.PharmacyMedicationID = viewModel.OrderItems[0].PharmacyMedicationID;
+                    order.Quantity = viewModel.OrderItems[0].Quantity;
+                    order.Instructions = viewModel.OrderItems[0].Instructions;
+
+                    _Context.Update(order);
+                    await _Context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_Context.order.Any(e => e.AnOrderID == id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(IndexOrders));
+            }
+
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName", viewModel.OrderItems[0].PharmacyMedicationID);
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", viewModel.AddmID);
+            viewModel.Medications = _Context.pharmacyMedications.ToList();
+
+            return View(viewModel);
+        }
+
+
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            var order = await _Context.order
+                .Include(o => o.PharmacyMedication)
+                .Include(o => o.Addm)
+                .FirstOrDefaultAsync(o => o.AnOrderID == id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+        }
+        [HttpPost, ActionName("DeleteOrder")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var order = await _Context.order.FindAsync(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            _Context.order.Remove(order);
+            await _Context.SaveChangesAsync();
+            return RedirectToAction("IndexOrders");
+        }
+
 
 
 
