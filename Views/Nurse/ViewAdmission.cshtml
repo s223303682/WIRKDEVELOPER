@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Admission>
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Patient>
 
 @{
     ViewData["Title"] = "ViewAdmission";
@@ -26,13 +26,13 @@
                     Patient Surname
                 </th>
                 <th>
-                    Bed
+                    Ward Name
                 </th>
                 <th>
-                    Surgeon
+                    Contact Number
                 </th>
                 <th>
-                    Anatheosiologist
+                    Email Address
                 </th>
                 <th>
                     Action
@@ -47,16 +47,16 @@
 
                     <td width="20%">@ad.PatientName</td>
                     <td width="20%">@ad.PatientSurname</td>
-                    <td width="20%">@ad.ConditionName</td>
-                    <td width="20%">@ad.PatientPhone</td>
-                    <td width="20%">@ad.PatientEmail</td>
+                    <td width="20%">@ad.wardName</td>
+                    <td width="20%">@ad.contactNumber</td>
+                    <td width="20%">@ad.EmailAddress</td>
                     <td width="20%">
                         @* @ad.MainUser.FirstName
                         @ad.MainUser.LastName *@
                     </td>
                     <td>
                         <div class="w-50 btn-group" role="group">
-                            <a asp-controller="Nurse" asp-action="ViewAdmission" asp-route-ID="@ad.AdmissionID" class="btn btn-info mx-1">View</a>
+                            <a asp-controller="Nurse" asp-action="ViewAdmission" asp-route-ID="@ad.PatientID" class="btn btn-info mx-1">View</a>
                         </div>
                     </td>
                 </tr>
