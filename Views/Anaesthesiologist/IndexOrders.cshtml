@@ -1,0 +1,78 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Order>
+
+@{
+    Layout = "AnaesthesiologistLayout";
+}
+@if (User.IsInRole("Anaesthesiologist"))
+{
+    <h1>Orders List</h1>
+
+    <p>
+        <a asp-action="CreateOrder" class="btn btn-primary">Create New Order</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Addm)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PharmacyMedication)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Instructions)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+               @*  <th>
+                    @Html.DisplayNameFor(model => model.Notes)
+                </th> *@
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>
+                        @order.Date
+                    </td>
+                    <td>
+                        @order.Addm?.PatientName // Assuming Patient has a Name property
+                    </td>
+                    <td>
+                        @order.PharmacyMedication?.PharmacyMedicationName// Assuming PharmacyMedication has a Name property
+                    </td>
+                    <td>
+                        @order.Quantity
+                    </td>
+                    <td>
+                        @order.Instructions
+                    </td>
+                    <td>
+                        @order.Status
+                    </td>
+                    @* <td>
+                        @order.Notes
+                    </td> *@
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@order.AnOrderID" class="btn btn-warning">Edit</a>
+                        <a asp-action="Details" asp-route-id="@order.AnOrderID" class="btn btn-info">Details</a>
+                        <a asp-action="Delete" asp-route-id="@order.AnOrderID" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
