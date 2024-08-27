@@ -19,11 +19,11 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         // Configuring Booking-TreatmentCode relationship
-        builder.Entity<Booking>()
-            .HasOne(b => b.TreatmentCode)
-            .WithMany()  // Assuming TreatmentCode does not have a collection of Bookings
-            .HasForeignKey(b => b.TreatmentCodeID)
-            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
+        //builder.Entity<Booking>()
+        //    .HasOne(b => b.TreatmentCode)
+        //    .WithMany()  // Assuming TreatmentCode does not have a collection of Bookings
+        //    .HasForeignKey(b => b.TreatmentCodeID)
+        //    .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
 
         // Configuring Booking-OperationTheatre relationship
         builder.Entity<Booking>()
@@ -77,7 +77,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<BookingNewPatient> bookingNewPatients { get; set; }
     public DbSet<MedicationPrescription> medicationPrescriptions { get; set; }
     public DbSet<PrescriptionMedication> prescriptionMedications { get; set; }
-   public DbSet<SearchPatient> searchPatients { get; set; }
+  
     public DbSet<PrescriptionViewModel> prescriptionViewModels { get; set; }
   
     public DbSet<Bed> beds { get; set; }

@@ -35,14 +35,19 @@
                     @foreach (var booking in Model)
                     {
                         <tr>
-                            <td>@booking.Addm?.Patient?.PatientName </td>
-                            <td>@booking.Gender </td>
-                            <td>@booking.EmailAddress </td>
-                            <td>@booking.Date?.ToString("yyyy-MM-dd") </td>
-                            <td>@booking.Time?.ToString(@"hh\:mm") ?</td>
-                            <td>@booking.OperationTheatreID </td>
-                            <td>@booking.TreatmentCodeID </td>
+                            <td>@booking.BookingID</td>
+                            <td>@booking.Addm?.Patient.PatientName</td>
+                            <td>@booking.Gender</td>
+                            <td>@booking.EmailAddress</td>
+                            <td>@booking.Date?.ToShortDateString()</td>
+                            <td>@booking.Time?.ToShortTimeString()</td>
+                            <td>@booking.OperationTheatre?.OperationTheatreName</td>
                             <td>@booking.Anaestesiologist</td>
+                            <td>
+                                @foreach (var code in booking.TreatmentCodeIDs)
+                                {
+                                    <span class="badge bg-secondary">@code</span> <!-- Use badges or another style -->
+                                }
                             <td>
                                 <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingID" class="btn btn-blue-300 mx-1">Update</a>
                             </td>
