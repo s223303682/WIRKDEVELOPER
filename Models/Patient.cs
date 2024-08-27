@@ -14,7 +14,7 @@ namespace WIRKDEVELOPER.Models
         [DisplayName("Patient ID Number")]
         public string? PatientIDNO { get; set; }
         [Required]
-        [DisplayName("Patient name")]
+        [DisplayName("Patient Name")]
         public string? PatientName { get; set; }
         [Required]
         [DisplayName("Patient Surname")]
@@ -57,7 +57,7 @@ namespace WIRKDEVELOPER.Models
         [ForeignKey("TreatmentCodeID")]
         [Required]
         [DisplayName("Allergies")]
-        public string? Allergies { get; set; }
+        public string? AllergiesName { get; set; }
         [ForeignKey("AllergiesID")]
         [Required]
         [DisplayName("Date of birth")]

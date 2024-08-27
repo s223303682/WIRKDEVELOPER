@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PrescriptionMedication>
+﻿@model IEnumerable<PrescriptionViewModel>
 
 @{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
@@ -12,9 +12,7 @@
             <th>Gender</th>
             <th>Email</th>
             <th>Date</th>
-            <th>Medication</th>
-            <th>Quantity</th>
-            <th>Instructions</th>
+            <th>Medications</th> <!-- Change column header to "Medications" -->
             <th>Prescriber</th>
             <th>Urgent</th>
             <th>Status</th>
@@ -24,16 +22,26 @@
         @foreach (var prescription in Model)
         {
             <tr>
-                <td>@prescription.Prescription?.Name</td>
-                <td>@prescription.Prescription?.Gender</td>
-                <td>@prescription.Prescription?.Email</td>
-                <td>@prescription.Prescription?.Date.ToString("d")</td>
-                <td>@prescription.PharmacyMedication?.PharmacyMedicationName </td>
-                <td>@prescription.Quantity</td>
-                <td>@prescription.Instructions</td>
-                <td>@prescription.Prescription?.Prescriber</td>
-                <td>@prescription.Prescription?.Urgent</td>
-                <td>@prescription.Prescription?.Status</td>
+                <td>@prescription.Name</td>
+                <td>@prescription.Gender</td>
+                <td>@prescription.Email</td>
+                <td>@prescription.Date.ToString("d")</td>
+                <td>
+                    @if (prescription.Medications != null && prescription.Medications.Any())
+                    {
+                        <ul>
+                            @foreach (var medication in prescription.Medications)
+                            {
+                                <li>
+                                    @medication.PharmacyMedicationID - Quantity: @medication.Quantity, Instructions: @medication.Instructions
+                                </li>
+                            }
+                        </ul>
+                    }
+                </td>
+                <td>@prescription.Prescriber</td>
+                <td>@prescription.Urgent</td>
+                <td>@prescription.Status</td>
             </tr>
         }
     </tbody>

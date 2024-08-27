@@ -149,13 +149,23 @@
                     <span asp-validation-for="OperationTheatreID" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col">
-                <div class="form-group border-1">
-                    <label asp-for="TreatmentCodeID"></label>
-                    <select asp-for="TreatmentCodeID" class="form-control" asp-items="@ViewBag.getTreatmentCode" required>
-                        <option value="" disabled selected>--Select Treatment Code</option>
-                    </select>
-                    <span asp-validation-for="TreatmentCodeID" class="text-danger"></span>
+            <!-- Treatment Codes Section -->
+            <div class="row">
+                <div class="col" id="treatmentCodesContainer">
+                    <div class="form-group treatmentCodeItem">
+                        <label for="TreatmentCodeID">Treatment Codes</label>
+                        <select class="form-control" name="TreatmentCodeIDs" required>
+                            <option selected disabled>--Select Treatment Code</option>
+                            @foreach (var item in ViewBag.getTreatmentCode as SelectList)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button type="button" id="addTreatmentCode" class="btn btn-success mt-2">+ Add Another Treatment Code</button>
                 </div>
             </div>
             <div class="col">
@@ -239,6 +249,12 @@
                     });
                 }
             });
+        });
+        document.getElementById('addTreatmentCode').addEventListener('click', function () {
+            var container = document.getElementById('treatmentCodesContainer');
+            var template = container.querySelector('.treatmentCodeItem').cloneNode(true);
+            template.querySelector('select').name = "TreatmentCodeIDs";
+            container.appendChild(template);
         });
     </script>
 </body>

@@ -28,30 +28,22 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-        public IActionResult SearchPatient(string searchTerm)
+        public IActionResult IndexViewPatient(String searchpatient)
         {
-            if (string.IsNullOrWhiteSpace(searchTerm))
-            {
-                // Handle empty search term
-                return View(new SearchPatient
-                {
-                    SearchTerm = searchTerm,
-                    addms = Enumerable.Empty<Addm>()
-                });
-            }
 
-            var patients = _Context.addm
-                .Include(a => a.Patient) // Ensure navigation property is included
-                .Where(a => a.Patient.PatientIDNO.Contains(searchTerm) || a.Patient.PatientName.Contains(searchTerm))
-                .ToList();
+            //var patient = _Context.admission.Where(e => e.Date == searchDate.Date).ToList();
+            //return View(patient);
+            var patient = _Context.addm.Include(a => a.Ward).Include(a => a.Bed).Include(a => a.Patient).Where(e => e.Patient.PatientIDNO == searchpatient).ToList();
+            return View(patient);
+        }
+        public IActionResult ViewPatientRec()
+        {
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+            ViewBag.getWard = new SelectList(_Context.ward, "WardID", "WardName");
+            ViewBag.getBed = new SelectList(_Context.bed, "BedID", "BedNumber");
 
-            var viewModel = new SearchPatient
-            {
-                SearchTerm = searchTerm,
-                addms = patients
-            };
+            return View();
 
-            return View(viewModel);
         }
 
         public IActionResult AddPatient()
@@ -60,13 +52,30 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult PrescriptionList()
         {
-            var prescriptions = _Context.prescriptionMedications
-                .Include(pm => pm.Prescription) // Include the Prescription entity
-                .Include(pm => pm.PharmacyMedication) // Include the PharmacyMedication entity
-                .ToList();
+            var prescriptions = _Context.prescriptions
+                .Include(p => p.PrescriptionMedications)
+                    .ThenInclude(pm => pm.PharmacyMedication) // Include related PharmacyMedication data
+                .Select(p => new PrescriptionViewModel
+                {
+                    Name = p.Name,
+                    Gender = p.Gender,
+                    Email = p.Email,
+                    Date = p.Date,
+                    Prescriber = p.Prescriber,
+                    Urgent = p.Urgent,
+                    Status = p.Status,
+                    Medications = p.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
+                    {
+                        PharmacyMedicationID = m.PharmacyMedicationID,
+                        Quantity = m.Quantity,
+                        Instructions = m.Instructions
+                    }).ToList()
+                }).ToList();
 
             return View(prescriptions);
         }
+
+
 
         // GET: Prescription/Create
         // GET: Prescription/Create
@@ -240,49 +249,89 @@ namespace WIRKDEVELOPER.Controllers
         public IActionResult BookingList()
         {
             var bookings = _Context.bookings
-                .Include(b => b.OperationTheatre)
-                .Include(b => b.TreatmentCode)
-                .Include(b => b.Addm) // Assuming you have a Patient entity
-                .ToList();
-            return View(bookings);
+                .Include(b => b.Addm) // Include related Addm data if needed
+                .Select(b => new
+                {
+                    b.BookingID,
+                    b.AddmID,
+                    PatientName = b.Addm.Patient.PatientName + " " + b.Addm.Patient.PatientSurname,
+                    TreatmentCodeIDs = b.TreatmentCodeIDs // Keep TreatmentCodeIDs as a string
+                })
+                .ToList(); // Retrieve data from the database
+
+            // Now perform the split in memory
+            var bookingViewModels = bookings.Select(b => new BookingViewModel
+            {
+                BookingID = b.BookingID,
+                PatientName = b.PatientName,
+                TreatmentCodes = string.IsNullOrEmpty(b.TreatmentCodeIDs)
+                    ? new List<string>() // Return an empty list if TreatmentCodeIDs is null or empty
+                    : b.TreatmentCodeIDs.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList() // Split treatment codes into a list
+            }).ToList();
+
+            return View(bookingViewModels); // Pass the list of BookingViewModel to the view
         }
+
+
 
         public IActionResult CreateBooking()
         {
             // Populate dropdowns for the view
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getPatient = new SelectList(_Context.addm, "AddmID", "PatientName"); 
 
-            return View();
+            // Retrieve Addm records along with their associated Patient
+            var patients = _Context.addm.Include(a => a.Patient)
+                                         .Select(a => new
+                                         {
+                                             AddmID = a.AddmID,
+                                             PatientName = a.Patient.PatientName + " " + a.Patient.PatientSurname
+                                         })
+                                         .ToList();
+
+            ViewBag.getPatient = new SelectList(patients, "AddmID", "PatientName");
+
+            // Create a new Booking object to pass to the view
+            var bookingModel = new Booking();
+
+            return View(bookingModel); // Pass the Booking model to the view
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateBooking(Booking booking)
+        public IActionResult CreateBooking(Booking booking, string[] TreatmentCodeIDs)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    // Convert the array of TreatmentCodeIDs to a comma-separated string
+                    booking.TreatmentCodeIDs = string.Join(",", TreatmentCodeIDs);
+
                     _Context.bookings.Add(booking);
                     _Context.SaveChanges();
                     return RedirectToAction("BookingList");
                 }
                 catch (Exception ex)
                 {
-                    // Log the exception (ex) and handle accordingly
                     ModelState.AddModelError("", "An error occurred while creating the booking. Please try again.");
                 }
             }
 
             // Re-populate dropdowns in case of validation errors
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName", booking.OperationTheatreID);
-            ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE", booking.TreatmentCodeID);
-            ViewBag.getPatient = new SelectList(_Context.addm, "AddmID", "PatientName", booking.Addm);
+            ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE", booking.TreatmentCodeIDs);
+            var patients = _Context.addm.Include(a => a.Patient)
+                                          .Select(a => new { AddmID = a.AddmID, PatientName = a.Patient.PatientName })
+                                          .ToList();
+
+            ViewBag.getPatient = new SelectList(patients, "AddmID", "PatientName");
 
             return View(booking);
         }
+
+
+
         public IActionResult updateBooking(int? ID)
         {
             if (ID == null || ID == 0)
