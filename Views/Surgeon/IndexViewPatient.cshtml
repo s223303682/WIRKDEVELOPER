@@ -128,7 +128,7 @@
                               
 
                             </td>
-                            <td>
+                            @* <td>
                                 <form asp-controller="Surgeon" asp-action="CreateBooking" method="get">
                                     <input type="hidden" name="bookingID" value="@booking.BookingID" />
                                     <input type="hidden" name="name" value="@booking.BookingNewPatientName" />
@@ -137,7 +137,7 @@
                                     <button type="submit" class="btn btn-blue-300 mx-1">Add</button>
                                 </form>
                             </td>
-
+ *@
                         </tr>
                     }
                 </tbody>
