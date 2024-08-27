@@ -36,15 +36,15 @@ namespace WIRKDEVELOPER.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddAdmission(Admission admission) 
+        public IActionResult AddAdmission(Patient patients) 
         { 
             if (ModelState.IsValid) 
             {
-                Context.admission.Add(admission);
+                Context.patients.Add(patients);
                 Context.SaveChanges();
                 return RedirectToAction("ViewAdmission");
             }
-            return View(admission);
+            return View(patients);
         } 
         public IActionResult AddBed()
         {

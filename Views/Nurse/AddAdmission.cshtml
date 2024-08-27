@@ -8,13 +8,13 @@
 </head>
 <body>
     <div class="row">
-        <div class="col">
-            <a asp-action="BookingList" class="btn btn-outline-primary">List</a>
+        <div class="col-6">
+            <a asp-action="ViewAdmission" class="btn btn-outline-primary">View</a>
         </div>
     </div>
-    <div class=" bg-info bg-opacity-50 text-center text-white rounded-1">PATIENT PROFILE</div>
+    <div class=" bg-info bg-opacity-50 text-center text-white rounded-1">Patient Admissions</div>
 
-    <form method="post" asp-action="CreatePatient" class="bg-white bg-opacity-60 border border-6 border-dark" id="newForm">
+    <form method="post" asp-action="AddAdmission"  id="newForm">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
@@ -23,7 +23,7 @@
                 <div class="form-group">
                     <label asp-for="PatientName"></label>
                     <div>
-                        <input type="email" asp-for="PatientName" class="form-control" id="InvalidName" required />
+                        <input type="text" asp-for="PatientName" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="PatientName" class=" text-danger"></span>
@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <label asp-for="PatientSurname"></label>
                     <div>
-                        <input type="email" asp-for="PatientSurname" class="form-control" id="InvalidName" required />
+                        <input type="text" asp-for="PatientSurname" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="PatientSurname" class=" text-danger"></span>
@@ -66,7 +66,7 @@
                 <div class="form-group">
                     <label asp-for="Address1"></label>
                     <div>
-                        <input type="email" asp-for="Address1" class="form-control" id="InvalidName" required />
+                        <input type="text" asp-for="Address1" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="Address1" class=" text-danger"></span>
@@ -76,7 +76,7 @@
                 <div class="form-group">
                     <label asp-for="Address2"></label>
                     <div>
-                        <input type="email" asp-for="Address2" class="form-control" id="InvalidName" required />
+                        <input type="text" asp-for="Address2" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="Address2" class=" text-danger"></span>
@@ -138,10 +138,20 @@
                 <div class="form-group">
                     <label asp-for="wardName"></label>
                     <div>
-                        <input type="email" asp-for="wardName" class="form-control" id="InvalidName" required />
+                        <input type="text" asp-for="wardName" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="wardName" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="MedicationName"></label>
+                    <div>
+                        <input type="text" asp-for="MedicationName" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="MedicationName" class=" text-danger"></span>
                 </div>
             </div>
             <div class="col">
@@ -154,15 +164,25 @@
                     <span asp-validation-for="Condition" class=" text-danger"></span>
                 </div>
             </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="AllergiesName"></label>
+                    <div>
+                        <input type="text" asp-for="AllergiesName" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="AllergiesName" class=" text-danger"></span>
+                </div>
+            </div>
         <div class="row">
             <div class="col">
-                <div class=" bg-white bg-opacity-25">
-                    <a asp-controller="Surgeon" asp-action="DashBoard">Back</a>
+                <div>
+                    <a asp-controller="Nurse" asp-action="DashBoard">Back</a>
 
                 </div>
             </div>
             <div class="col">
-                <div class="bg-white bg-opacity-25">
+                <div>
                     <input type="submit" class="btn-outline-primary" value="submit" />
 
                 </div>
