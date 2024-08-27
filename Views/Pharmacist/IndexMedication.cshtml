@@ -76,14 +76,11 @@
                                 }
                             </ul>
                         </td>
-                        @* <td>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#orderModal"
-                                    data-medicationid="@medication.PharmacyMedicationID"
-                                    data-medicationname="@medication.PharmacyMedicationName"
-                                    data-quantityonhand="@medication.stockhand">
-                                Order
-                            </button>
-                        </td> *@
+
+                        <td>
+                            <a asp-controller="Pharmacist" asp-action="updateMedication" asp-route-ID="@medication.PharmacyMedicationID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
+
+                        </td>
                     </tr>
                 }
             </tbody>
