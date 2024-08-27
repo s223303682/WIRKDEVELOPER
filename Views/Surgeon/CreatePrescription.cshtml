@@ -26,6 +26,8 @@
 
                 medicationDiv.innerHTML = `
                         <h4>Medication ${index + 1}</h4>
+                        <div class="row">
+                        <div class="col">
                         <div class="form-group">
                             <label for="Medications_${index}__PharmacyMedicationID">Medication</label>
                             <select name="Medications[${index}].PharmacyMedicationID" id="Medications_${index}__PharmacyMedicationID" class="form-control" required>
@@ -34,17 +36,23 @@
                             </select>
                             <span class="text-danger"></span>
                         </div>
+                        </div>
+                        <div class="col">
                         <div class="form-group">
                             <label for="Medications_${index}__Quantity">Quantity</label>
                             <input type="number" name="Medications[${index}].Quantity" id="Medications_${index}__Quantity" class="form-control" />
                             <span class="text-danger"></span>
                         </div>
+                        </div>
+                        <div class="col">
                         <div class="form-group">
                             <label for="Medications_${index}__Instructions">Instructions</label>
                             <input type="text" name="Medications[${index}].Instructions" id="Medications_${index}__Instructions" class="form-control" />
                             <span class="text-danger"></span>
                         </div>
+                        </div>
                         <hr />
+                        </div>
                     `;
                 medicationContainer.appendChild(medicationDiv);
             }
@@ -64,57 +72,84 @@
     <h1>Create Prescription</h1>
     <form asp-action="CreatePrescription" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                      <label asp-for="Name"></label>
+                  <input asp-for="Name" class="form-control" />
+                   <span asp-validation-for="Name" class="text-danger"></span>
+          
+                </div>
+            </div>
+             <div class="col">
+                 
+               <div class="form-group">
+                   <label asp-for="Gender"></label>
+                  <input asp-for="Gender" class="form-control" />
+                  <span asp-validation-for="Gender" class="text-danger"></span>
+           
+               </div>
+            </div
+             <div class="col">
 
-        <div class="form-group">
-            <label asp-for="Name"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+                  <div class="form-group">
+                    <label asp-for="Email"></label>
+                  <input asp-for="Email" class="form-control" />
+                 <span asp-validation-for="Email" class="text-danger"></span>
+            
+                 </div>
+             </div
         </div>
+        
 
-        <div class="form-group">
-            <label asp-for="Gender"></label>
-            <input asp-for="Gender" class="form-control" />
-            <span asp-validation-for="Gender" class="text-danger"></span>
-        </div>
 
-        <div class="form-group">
-            <label asp-for="Email"></label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
 
         <!-- Dynamic Medication Fields -->
         <div id="medicationContainer">
             <!-- Dynamic Medication Fields Will Be Added Here -->
         </div>
         <button type="button" id="addMedicationButton" class="btn btn-primary">Add Medication</button>
-
-        <div class="form-group">
-            <label asp-for="Date"></label>
-            <input asp-for="Date" class="form-control" />
-            <span asp-validation-for="Date" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Prescriber"></label>
-            <input asp-for="Prescriber" class="form-control" />
-            <span asp-validation-for="Prescriber" class="text-danger"></span>
-        </div>
-        <div class="form-group">
+        <div class="row">
+            <div class="col">
+                 <div class="form-group">
+               <label asp-for="Date"></label>
+               <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+              </div>
+            </div>
+           <div class="col">
+             <div class="form-group">
+              <label asp-for="Prescriber"></label>
+              <input asp-for="Prescriber" class="form-control" />
+              <span asp-validation-for="Prescriber" class="text-danger"></span>
+             </div>
+           </div>
+          <div class="col">
+             <div class="form-group">
             <label asp-for="Urgent"></label>
             <select asp-for="Urgent" class="form-control">
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
             </select>
             <span asp-validation-for="Urgent" class="text-danger"></span>
-        </div>
-        <div class="form-group">
+             </div>
+          </div>
+          <div class="col">
+             
+           <div class="form-group">
             <label asp-for="Status"></label>
             <select asp-for="Status" class="form-control">
                 <option value="pending">Pending</option>
                 <option value="completed">Completed</option>
             </select>
             <span asp-validation-for="Status" class="text-danger"></span>
+           </div>
+          </div>
         </div>
+        
+       
+       
+      
 
         <input type="submit" value="Create" class="btn btn-primary" />
     </form>
