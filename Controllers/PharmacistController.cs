@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Web.Helpers;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
@@ -20,6 +21,96 @@ namespace WIRKDEVELOPER.Controllers
         public IActionResult Dashboard()
         {
             return View();
+        }
+        public IActionResult UpdatePrescription(int id)
+        {
+            var prescription = _Context.prescriptions
+                .Include(p => p.PrescriptionMedications)
+                .FirstOrDefault(p => p.PrescriptionID == id);
+
+            if (prescription == null)
+            {
+                return NotFound();
+            }
+
+            var model = new PrescriptionViewModel
+            {
+                PrescriptionViewModelID = prescription.PrescriptionID,
+                Name = prescription.Name,
+                Gender = prescription.Gender,
+                Email = prescription.Email,
+                Date = prescription.Date,
+                Prescriber = prescription.Prescriber,
+                Urgent = prescription.Urgent,
+                Status = prescription.Status,
+                Medications = prescription.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
+                {
+                    PharmacyMedicationID = m.PharmacyMedicationID,
+                    Quantity = m.Quantity,
+                    Instructions = m.Instructions
+                }).ToList()
+            };
+
+            ViewBag.Medications = JsonConvert.SerializeObject(_Context.pharmacyMedications
+                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
+                .ToList());
+
+            return View(model);
+        }
+
+
+        // POST: Prescription/Update/5
+        [HttpPost]
+        public IActionResult UpdatePrescription(PrescriptionViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Log or inspect the model.PrescriptionID to verify it's not zero
+                var prescription = _Context.prescriptions
+                    .Include(p => p.PrescriptionMedications)
+                    .FirstOrDefault(p => p.PrescriptionID == model.PrescriptionViewModelID);
+
+                if (prescription == null)
+                {
+                    return NotFound();
+                }
+
+                // Update prescription details
+                prescription.Name = model.Name;
+                prescription.Gender = model.Gender;
+                prescription.Email = model.Email;
+                prescription.Date = model.Date;
+                prescription.Prescriber = model.Prescriber;
+                prescription.Urgent = model.Urgent;
+                prescription.Status = model.Status;
+
+                // Remove existing medications
+                _Context.prescriptionMedications.RemoveRange(prescription.PrescriptionMedications);
+
+                // Add updated medications
+                foreach (var medication in model.Medications)
+                {
+                    var prescriptionMedication = new PrescriptionMedication
+                    {
+                        PrescriptionID = prescription.PrescriptionID,
+                        PharmacyMedicationID = medication.PharmacyMedicationID,
+                        Quantity = medication.Quantity,
+                        Instructions = medication.Instructions
+                    };
+                    _Context.prescriptionMedications.Add(prescriptionMedication);
+                }
+
+                _Context.SaveChanges();
+
+                return RedirectToAction("PharmPrescriptionList");
+            }
+
+            // If the model is invalid, reload medications and return the view
+            var medications = _Context.pharmacyMedications
+                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
+                .ToList();
+            ViewBag.Medications = JsonConvert.SerializeObject(medications);
+            return View(model);
         }
         public IActionResult CreateMedication()
         {
