@@ -8,7 +8,7 @@
         <div class="card-body ">
             <div class="card-header bg-primary">
 
-                <h3 class="card-title text-white mt-2" id="exampleModalLabel">Active Ingredients</h3>
+                <h3 class="card-title text-white mt-2" id="exampleModalLabel">Active Schedule</h3>
             </div>
             <form method="post" asp-action="CreateSchedule">
                 <div class="border p-3 #FBD603">
@@ -62,6 +62,7 @@
                                         <div class="col-4 offset-9 row">
                                             <div class="col">
                                                 <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="SAVE" />
+                                                <a asp-controller="Admin" asp-action="ScheduleList" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Schedule</a>
                                             </div>
 
                                         </div>
