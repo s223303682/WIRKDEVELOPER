@@ -11,8 +11,8 @@ namespace WIRKDEVELOPER.Models
         public int BookingID { get; set; }
         [Required]
         public string? Name { get; set; }
-        [Required]
-        public string? Surname { get; set; }
+        //[Required]
+        //public string? Surname { get; set; }
 
 
 
@@ -22,8 +22,8 @@ namespace WIRKDEVELOPER.Models
         [ForeignKey("AddmID")]
         public virtual Addm? Addm { get; set; }
 
-        [Required]
-        public string? Gender { get; set; }
+        //[Required]
+        //public string? Gender { get; set; }
 
         [Required]
         [DisplayName("Email address")]
