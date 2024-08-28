@@ -154,8 +154,8 @@
                 <d <div class="col" id="treatmentCodesContainer">
         <!-- Template for treatment code items -->
         <div class="form-group treatmentCodeItem">
-            <label for="TreatmentCodeID">Treatment Codes</label>
-            <select class="form-control" name="TreatmentCodeIDs" required>
+            <label asp-for="TreatmentCodeID">Treatment Codes</label>
+            <select class="form-control" asp-for="TreatmentCodeID" required>
                 <option selected disabled>--Select Treatment Code</option>
                                 @foreach (var item in ViewBag.getTreatmentCode as SelectList)
                                 {

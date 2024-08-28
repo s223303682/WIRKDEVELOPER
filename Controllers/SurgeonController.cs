@@ -331,8 +331,8 @@ namespace WIRKDEVELOPER.Controllers
                 .Select(b => new BookingViewModel
                 {
                     BookingID = b.BookingID,
-                    PatientName = b.Name + " " + b.Surname,
-                    Gender = b.Gender,
+                    //PatientName = b.Name /*+ " " + b.Surname*/,
+                    //Gender = b.Gender,
                     EmailAddress = b.EmailAddress,
                     Date = b.Date,
                     Time = b.Time,
@@ -352,7 +352,7 @@ namespace WIRKDEVELOPER.Controllers
 
 
 
-        public IActionResult CreateBooking(int? AddmID, string? name, string? surname, string? email)
+        public IActionResult CreateBooking(int? AddmID, string? name, string? email)
         {
             // Populate dropdowns for the view
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
@@ -363,7 +363,7 @@ namespace WIRKDEVELOPER.Controllers
                                          .Select(a => new
                                          {
                                              AddmID = a.AddmID,
-                                             PatientName = a.Patient.PatientName + " " + a.Patient.PatientSurname
+                                             PatientName = a.Patient.PatientName /*+ " " + a.Patient.PatientSurname*/
                                          })
                                          .ToList();
 
@@ -374,7 +374,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 AddmID = AddmID,
                 Name = name,
-                Surname = surname,
+                //Surname = surname,
                 EmailAddress = email
             };
 
