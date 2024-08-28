@@ -57,7 +57,9 @@ namespace WIRKDEVELOPER.Models
         [Key]
 		public int AnOrderID { get; set; }
 
-        public ICollection<OrderItems> OrderItems { get; set; } // Collection of order items
+        // Navigation properties
+        public ICollection<OrderMedication> orderMedications { get; set; }
+        /*public ICollection<OrderItems> OrderItems { get; set; }*/ // Collection of order items
         //public virtual ICollection<AddOrder> AddOrders { get; set; }
 
     }

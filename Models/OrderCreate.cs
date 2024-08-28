@@ -19,7 +19,17 @@ namespace WIRKDEVELOPER.Models
         public virtual Order Order { get; set; }
 
         [Required]
-        public DateTime Date { get; set; } = DateTime.Now;
+        [DisplayName(" Date")]
+        public DateTime? Date { get; set; } = DateTime.Now;
+
+        [Required]
+        [DisplayName("Medication Ordered")]
+        public int PharmacyMedicationID { get; set; }
+        [ForeignKey("PharmacyMedicationID")]
+        public virtual PharmacyMedication PharmacyMedication { get; set; }
+
+        [DisplayName("Status")]
+        public string? Status { get; set; } = "Odered";
 
         [Required]
         [DisplayName("Patient")]

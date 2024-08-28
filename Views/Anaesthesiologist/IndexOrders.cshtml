@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WIRKDEVELOPER.Models.Order>
+﻿@model IEnumerable<WIRKDEVELOPER.Models.OrderCreate>
 
 @{
     Layout = "AnaesthesiologistLayout";
@@ -24,12 +24,12 @@
                 <th>
                     @Html.DisplayNameFor(model => model.PharmacyMedication)
                 </th>
-                <th>
+                @* <th>
                     @Html.DisplayNameFor(model => model.Quantity)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Instructions)
-                </th>
+                </th> *@
                 <th>
                     @Html.DisplayNameFor(model => model.Urgent)
                 </th>
@@ -53,20 +53,23 @@
                         @order.Date
                     </td>
                     <td>
-                        @order.Addm?.PatientName @* // Assuming Patient has a Name property *@
+                        @order.Addm?.PatientName 
                     </td>
-                    @* <td>
-                        <ul>
-                            @foreach(var med in order.OrderItems)
-                            {
-                                <li>
-                                    @med.PharmacyMedication?.PharmacyMedicationName -  @med.Quantity -@med.Instructions
-                                </li>
-                                
-                            }
-                        </ul>
-                    </td> *@
                     <td>
+                        @if (order.OrderItems != null && order.OrderItems.Any())
+                        {
+                            <ul>
+                                @foreach (var medication in order.OrderItems)
+                                {
+                                    <li>
+                                        @medication.PharmacyMedicationID - Quantity: @medication.Quantity, Instructions: @medication.Instructions
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </td>
+                    
+                    @* <td>
                         
                         @order.PharmacyMedication?.PharmacyMedicationName
                     </td>
@@ -75,7 +78,7 @@
                     </td>
                     <td>
                         @order.Instructions
-                    </td>
+                    </td> *@
                     <td>
                         @order.Urgent
                     </td>

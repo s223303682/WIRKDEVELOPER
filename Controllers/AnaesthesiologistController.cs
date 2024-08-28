@@ -4,6 +4,10 @@ using WIRKDEVELOPER.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using WIRKDEVELOPER.Models;
 using System.Security.Claims;
+using Newtonsoft.Json;
+using System.Web.Helpers;
+using System.Xml.Linq;
+using WIRKDEVELOPER.Models.Account;
 
 namespace WIRKDEVELOPER.Controllers
 {
@@ -84,62 +88,112 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> IndexOrders()
+        public IActionResult IndexOrders()
         {
             // Retrieve the list of orders from the database, including related entities if needed
-            var orders = await _Context.order
-                .Include(o => o.Addm)
-                .Include(o => o.OrderItems)  // Include related Patient entity
-                .Include(o => o.PharmacyMedication) // Include related PharmacyMedication entity
-                .ToListAsync();
+            var orders = _Context.order
+                .Include(o => o.Addm)                   // Include related Patient entity
+                /*.Include(o => o.OrderItems) */                 // Include related OrderItems
+                .Include(o => o.orderMedications)                  // Include related OrderItems
+                .Include(o => o.PharmacyMedication)         // Include related PharmacyMedication entity
+                //.ToListAsync()
+
+             .Select(item => new OrderCreate
+              {
+                 Date = item.Date,
+                 AddmID = item.AddmID,
+                 Urgent = item.Urgent,
+                 PharmacyMedicationID = item.PharmacyMedicationID,             
+                 Status = "Ordered",
+                 OrderItems = item.orderMedications.Select(m => new OrderItems
+                 {
+                      PharmacyMedicationID = m.PharmacyMedicationID,
+                      Quantity = m.Quantity,
+                      Instructions = m.Instructions
+                  }).ToList()
+              }).ToList();
+
+            //return View(prescriptions);
 
             return View(orders);
         }
-        public IActionResult CreateOrder()
+        public IActionResult CreateOrder(int AddmID, DateTime Date)
         {
+            var medications = _Context.pharmacyMedications
+                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
+                .ToList();
 
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-            // Initialize a new view model
+            // Serialize medications to JSON
+            ViewBag.Medications = JsonConvert.SerializeObject(medications);
+
             var model = new OrderCreate
             {
-                Medications = _Context.pharmacyMedications.ToList()
+                Date = Date,
+                AddmID = AddmID,
+                // Initialize other fields as needed
             };
+
             return View(model);
+
+            //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            //ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+
+            //var model = new OrderCreate
+            //{
+            //    Medications = _Context.pharmacyMedications.ToList()
+            //};
+            //return View(model);
         }
 
         // POST: Order/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateOrder(OrderCreate viewModel)
+        public IActionResult CreateOrder(OrderCreate viewModel)
         {
-            //if (ModelState.IsValid)
-            
-                foreach (var item in viewModel.OrderItems)
-                {
-                    var order = new Order
-                    {
-                        Date = viewModel.Date,
-                        AddmID = viewModel.AddmID,
-                        Urgent = viewModel.Urgent,
-                        PharmacyMedicationID = item.PharmacyMedicationID,
-                        Quantity = item.Quantity,
-                        Instructions = item.Instructions,
-                        Status = "Ordered",
-                        //Notes = viewModel.Notes
-                    };
 
-                    _Context.order.Add(order);
+            if (ModelState.IsValid)
+            {
+                var order = new Order
+                {
+                    Date = viewModel.Date,
+                    AddmID = viewModel.AddmID,
+                    Urgent = viewModel.Urgent,
+                    Status = "Ordered",
+
+                };
+                _Context.order.Add(order);
+                 _Context.SaveChanges();
+
+                // Add the medications
+                foreach (var medication in viewModel.OrderItems)
+                {
+                    var ordermedication = new OrderMedication
+                    {
+                        AnOrderID = order.AnOrderID, // Use the ID generated by the database
+                        PharmacyMedicationID = medication.PharmacyMedicationID,
+                        Quantity = medication.Quantity,
+                        Instructions = medication.Instructions
+                    };
+                    _Context.ordermedication.Add(ordermedication);
                 }
 
-                await _Context.SaveChangesAsync();
-               
+                _Context.SaveChanges();
+
+                return RedirectToAction("IndexOrders");
+            }
+            // If the model is invalid, return the same view with validation errors
+            var medications = _Context.pharmacyMedications
+                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
+                .ToList();
+            ViewBag.Medications = JsonConvert.SerializeObject(medications);
+            return View(viewModel);
+
+
+            //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            //ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
             
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-            // If we got this far, something failed, redisplay form
-            viewModel.Medications = _Context.pharmacyMedications.ToList();
-            return RedirectToAction("IndexOrders"); // Redirect to a list or index view after creation
+            //viewModel.Medications = _Context.pharmacyMedications.ToList();
+            //return RedirectToAction("IndexOrders"); 
         }
         public async Task<IActionResult> EditOrder(int id)
         {
