@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Web.Helpers;
@@ -60,13 +61,51 @@ namespace WIRKDEVELOPER.Controllers
         //}
         public IActionResult PharmPrescriptionList()
         {
-            IEnumerable<Prescription> list = _Context.prescriptions;
-            return View(list);
+            var prescriptions = _Context.prescriptions
+               .Include(p => p.PrescriptionMedications)
+                   .ThenInclude(pm => pm.PharmacyMedication) // Include related PharmacyMedication data
+               .Select(p => new PrescriptionViewModel
+               {
+                   Name = p.Name,
+                   Gender = p.Gender,
+                   Email = p.Email,
+                   Date = p.Date,
+                   Prescriber = p.Prescriber,
+                   Urgent = p.Urgent,
+                   Status = p.Status,
+                   Medications = p.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
+                   {
+                       PharmacyMedicationID = m.PharmacyMedicationID,
+                       Quantity = m.Quantity,
+                       Instructions = m.Instructions
+                   }).ToList()
+               }).ToList();
+
+            return View(prescriptions);
         }
         public IActionResult AllPrescriptionList()
         {
-            IEnumerable<Prescription> list = _Context.prescriptions;
-            return View(list);
+            var prescriptions = _Context.prescriptions
+               .Include(p => p.PrescriptionMedications)
+                   .ThenInclude(pm => pm.PharmacyMedication) // Include related PharmacyMedication data
+               .Select(p => new PrescriptionViewModel
+               {
+                   Name = p.Name,
+                   Gender = p.Gender,
+                   Email = p.Email,
+                   Date = p.Date,
+                   Prescriber = p.Prescriber,
+                   Urgent = p.Urgent,
+                   Status = p.Status,
+                   Medications = p.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
+                   {
+                       PharmacyMedicationID = m.PharmacyMedicationID,
+                       Quantity = m.Quantity,
+                       Instructions = m.Instructions
+                   }).ToList()
+               }).ToList();
+
+            return View(prescriptions);
         }
         //public async Task<IActionResult> AcceptOrder(int? ID)
         //{
@@ -232,31 +271,32 @@ namespace WIRKDEVELOPER.Controllers
             _Context.SaveChanges();
             return RedirectToAction("PharmIndexOrder");
         }
-		public IActionResult updatePharmPrescription(int? ID)
-		{
-			if (ID == null || ID == 0)
-			{
-				return NotFound();
-			}
-			var objList = _Context.prescriptions.Find(ID);
-			if (objList == null)
-			{
-				return NotFound();
-			}
+        [HttpPost]
+        public IActionResult UpdatePharmPrescription(int userId)
+        {
+            var prescription = _Context.prescriptionViewModels.Find(userId);
+            if (prescription == null)
+            {
+                return NotFound();
+            }
 
-			return View(objList);
+            prescription.Status = "Dispensed";
+            _Context.prescriptionViewModels.Update(prescription);
+            _Context.SaveChanges(); // Ensure changes are saved
 
-		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult updatePharmPrescription(Prescription prescription)
-		{
-			//var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			//bookSurgery.PatientID = user;
-			_Context.prescriptions.Update(prescription);
-			_Context.SaveChanges();
-			return RedirectToAction("PharmPrescriptionList");
-		}
+            return RedirectToAction("PharmPrescriptionList");
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult updatePharmPrescription(Prescription prescription)
+        //{
+        //	//var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //	//bookSurgery.PatientID = user;
+        //	_Context.prescriptions.Update(prescription);
+        //	_Context.SaveChanges();
+        //	return RedirectToAction("PharmPrescriptionList");
+        //}
         public IActionResult RejectPharmPrescription(int? ID)
         {
             if (ID == null || ID == 0)
