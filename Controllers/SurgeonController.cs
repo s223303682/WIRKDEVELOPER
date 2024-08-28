@@ -147,11 +147,13 @@ namespace WIRKDEVELOPER.Controllers
             return View(model);
         }
 
-        public IActionResult updatePrescription(int id)
+        // GET: Prescription/Update/5
+        // GET: Prescription/Update/5
+        public IActionResult UpdatePrescription(int id)
         {
-            // Retrieve the prescription record with the specified ID
+            // Fetch the existing prescription by ID
             var prescription = _Context.prescriptions
-                .Include(p => p.PrescriptionMedications)
+                .Include(p => p.PrescriptionMedications) // Include medications
                 .FirstOrDefault(p => p.PrescriptionID == id);
 
             if (prescription == null)
@@ -159,7 +161,7 @@ namespace WIRKDEVELOPER.Controllers
                 return NotFound();
             }
 
-            // Retrieve the list of medications
+            // Get available medications for dropdown
             var medications = _Context.pharmacyMedications
                 .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
                 .ToList();
@@ -167,82 +169,58 @@ namespace WIRKDEVELOPER.Controllers
             // Serialize medications to JSON
             ViewBag.Medications = JsonConvert.SerializeObject(medications);
 
-            // Convert prescription and its medications to the view model
             var model = new PrescriptionViewModel
             {
                 PrescriptionViewModelID = prescription.PrescriptionID,
                 Name = prescription.Name,
+              
                 Gender = prescription.Gender,
                 Email = prescription.Email,
                 Date = prescription.Date,
                 Prescriber = prescription.Prescriber,
                 Urgent = prescription.Urgent,
                 Status = prescription.Status,
-                Medications = prescription.PrescriptionMedications
-                    .Select(pm => new PrescriptionMedicationViewModel
-                    {
-                        PharmacyMedicationID = pm.PharmacyMedicationID,
-                        Quantity = pm.Quantity,
-                        Instructions = pm.Instructions
-                    }).ToList()
+                Medications = prescription.PrescriptionMedications.Select(pm => new PrescriptionMedicationViewModel
+                {
+                    PharmacyMedicationID = pm.PharmacyMedicationID,
+                    Quantity = pm.Quantity,
+                    Instructions = pm.Instructions
+                }).ToList()
             };
 
             return View(model);
         }
 
-
+        // POST: Prescription/Update
         [HttpPost]
-        public IActionResult updatePrescription(PrescriptionViewModel model)
+        public IActionResult UpdatePrescription(PrescriptionViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Find the existing prescription record
-                var prescription = _Context.prescriptions
-                    .Include(p => p.PrescriptionMedications)
-                    .FirstOrDefault(p => p.PrescriptionID == model.PrescriptionViewModelID);
-
+                // Fetch the existing prescription from the database
+                var prescription = _Context.prescriptions.Find(model.PrescriptionViewModelID);
                 if (prescription == null)
                 {
                     return NotFound();
                 }
 
-                // Update prescription details
-                prescription.Name = model.Name;
-                prescription.Gender = model.Gender;
-                prescription.Email = model.Email;
-                prescription.Date = model.Date;
-                prescription.Prescriber = model.Prescriber;
-                prescription.Urgent = model.Urgent;
+                // Update only the status field
                 prescription.Status = model.Status;
 
-                // Remove old medications
-                _Context.prescriptionMedications.RemoveRange(prescription.PrescriptionMedications);
-
-                // Add new medications
-                foreach (var medication in model.Medications)
-                {
-                    var prescriptionMedication = new PrescriptionMedication
-                    {
-                        PrescriptionID = prescription.PrescriptionID,
-                        PharmacyMedicationID = medication.PharmacyMedicationID,
-                        Quantity = medication.Quantity,
-                        Instructions = medication.Instructions
-                    };
-                    _Context.prescriptionMedications.Add(prescriptionMedication);
-                }
-
+                // Save changes to the database
                 _Context.SaveChanges();
 
-                return RedirectToAction("PrescriptionList");
+                return RedirectToAction("PrescriptionList"); // Redirect to the list after update
             }
 
-            // If the model is invalid, return the same view with validation errors
+            // If the model is invalid, re-fetch medications and return the view with errors
             var medications = _Context.pharmacyMedications
                 .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
                 .ToList();
             ViewBag.Medications = JsonConvert.SerializeObject(medications);
             return View(model);
         }
+
 
         public IActionResult BookingPatientList()
         {

@@ -46,7 +46,8 @@
                 <td>@prescription.Urgent</td>
                 <td>@prescription.Status</td>
                 <td>
-                    <a asp-controller="Surgeon" asp-action="updatePrescription" asp-route-ID="@prescription.PrescriptionViewModelID" class="btn btn-blue-300 mx-1">Update</a>
+                    <a asp-controller="Surgeon" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionViewModelID" class="btn btn-warning">Update</a>
+
                 </td>
             </tr>
         }

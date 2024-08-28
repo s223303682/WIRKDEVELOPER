@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<PrescriptionViewModel>
-@{
 
+@{
     Layout = "~/Views/Shared/Pharmacy.cshtml";
 }
 
@@ -9,6 +9,7 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>surname</th>
             <th>Gender</th>
             <th>Email</th>
             <th>Date</th>
@@ -16,111 +17,40 @@
             <th>Prescriber</th>
             <th>Urgent</th>
             <th>Status</th>
-            <th>Action</th>
-            <th>Action</th>
+            <th>update</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var prescription in Model)
         {
-            if (prescription.Urgent.ToLower() == "yes")
-            {
-                <tr scope="row" style="background-color: red;">
-                    <td>@prescription.Name</td>
-                    <td>@prescription.Gender</td>
-                    <td>@prescription.Email</td>
-                    <td>@prescription.Date.ToString("d")</td>
-                    <td>
-                        @if (prescription.Medications != null && prescription.Medications.Any())
-                        {
-                            <ul>
-                                @foreach (var medication in prescription.Medications)
-                                {
-                                    <li>
-                                        @medication.PharmacyMedicationID - Quantity: @medication.Quantity, Instructions: @medication.Instructions
-                                    </li>
-                                }
-                            </ul>
-                        }
-                    </td>
-                    <td>@prescription.Prescriber</td>
-                    <td>@prescription.Urgent</td>
-                    <td>@prescription.Status</td>
-                    <td>
-                        <button class="btn btn-primary" onclick="confirmToggleUserStatus(@prescription.PrescriptionViewModelID)">
-                            <i class="bi bi-arrow-repeat"></i> Dispense
-                        </button>
-                    </td>
+            <tr>
+                <td>@prescription.Name</td>
+                <td>@prescription.surname</td>
+                <td>@prescription.Gender</td>
+                <td>@prescription.Email</td>
+                <td>@prescription.Date.ToString("d")</td>
+                <td>
+                    @if (prescription.Medications != null && prescription.Medications.Any())
+                    {
+                        <ul>
+                            @foreach (var medication in prescription.Medications)
+                            {
+                                <li>
+                                    @medication.PharmacyMedicationID - Quantity: @medication.Quantity, Instructions: @medication.Instructions
+                                </li>
+                            }
+                        </ul>
+                    }
+                </td>
+                <td>@prescription.Prescriber</td>
+                <td>@prescription.Urgent</td>
+                <td>@prescription.Status</td>
+                <td>
+                    <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionViewModelID" class="btn btn-warning">Update</a>
 
-                    <td>
-                        <a asp-controller="Pharmacist" asp-action="RejectPharmIndexOrder" asp-route-ID="@prescription.PrescriptionViewModelID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Reject</a>
-                    </td>
-                </tr>
-            }
-            else
-            {
-                <tr>
-                    <td>@prescription.Name</td>
-                    <td>@prescription.Gender</td>
-                    <td>@prescription.Email</td>
-                    <td>@prescription.Date.ToString("d")</td>
-                    <td>
-                        @if (prescription.Medications != null && prescription.Medications.Any())
-                        {
-                            <ul>
-                                @foreach (var medication in prescription.Medications)
-                                {
-                                    <li>
-                                        @medication.PharmacyMedicationID - Quantity: @medication.Quantity, Instructions: @medication.Instructions
-                                    </li>
-                                }
-                            </ul>
-                        }
-                    </td>
-                    <td>@prescription.Prescriber</td>
-                    <td>@prescription.Urgent</td>
-                    <td>@prescription.Status</td>
-                    <td>
-                        <a asp-controller="Pharmacist" asp-action="updatePharmPrescription" asp-route-ID="@prescription.PrescriptionViewModelID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Dispense</a>
-
-                    </td>
-                    <td>
-                        <a asp-controller="Pharmacist" asp-action="RejectPharmIndexOrder" asp-route-ID="@prescription.PrescriptionViewModelID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Reject</a>
-                    </td>
-                </tr>
-            }
-
+                </td>
+            </tr>
         }
     </tbody>
 </table>
-
-<div class="modal fade" id="confirmToggleUserStatusModal" tabindex="-1" role="dialog" aria-labelledby="confirmToggleUserStatusModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header text-white">
-                <h5 class="modal-title" id="confirmToggleUserStatusModalLabel">Confirm Action</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to dispense medication?
-            </div>
-            <div class="modal-footer">
-                <form id="toggleUserStatusForm" asp-controller="Pharmacist" asp-action="UpdatePharmPrescription" method="post">
-                    <input type="hidden" name="userId" id="toggleUserStatusUserId" />
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Confirm</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function confirmToggleUserStatus(ID) {
-        $('#toggleUserStatusUserId').val(ID);
-        $('#confirmToggleUserStatusModal').modal('show');
-    }
-</script>
 
