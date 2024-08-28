@@ -10,15 +10,15 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" />
 </head>
 <div id="Header" class="bg-info container">
-    <h2 class="m-1 pt-4 text-center text-white">List of Dosage Forms</h2>
+    <h2 class="m-1 pt-4 text-center text-white">List of Schedule</h2>
 </div>
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">
-            <h2 class="text-primary">List of ActiveIngredients</h2>
+            <h2 class="text-primary">List of Schedule</h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="Admin" asp-action="CreateSchedule" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Active Ingre</a>
+            <a asp-controller="Admin" asp-action="CreateSchedule" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Back</a>
         </div>
     </div>
     <br />
@@ -36,7 +36,7 @@
             <thead class="table-secondary">
                 <tr>
                     <th>
-                        Dosage Form Name
+                        Schedule Name
                     </th>
                 </tr>
             </thead>
@@ -46,7 +46,7 @@
                 {
                     <tr>
                         <td width="20%">@vital.ScheduleName</td>
-                        <td class=" col-10 text-end">
+                        @* <td class=" col-10 text-end">
                             <a asp-controller="Admin" asp-action="UpdateDosageForm" asp-route-ID="@vital.ScheduleId" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Update</a>
 
                             <a asp-controller="Admin" asp-action="DeleteDosageForm" asp-route-ID="@vital.ScheduleId" class="btn btn-danger">
@@ -54,7 +54,7 @@
                             </a>
 
                         </td>
-
+ *@
 
                     </tr>
                 }
@@ -64,7 +64,7 @@
     }
     else
     {
-        <p>No Dosage Form added yet</p>
+        <p>No Schedule added yet</p>
     }
 
 </div>
