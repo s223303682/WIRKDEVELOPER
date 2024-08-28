@@ -88,7 +88,8 @@ namespace WIRKDEVELOPER.Controllers
         {
             // Retrieve the list of orders from the database, including related entities if needed
             var orders = await _Context.order
-                .Include(o => o.Addm) // Include related Patient entity
+                .Include(o => o.Addm)
+                .Include(o => o.OrderItems)  // Include related Patient entity
                 .Include(o => o.PharmacyMedication) // Include related PharmacyMedication entity
                 .ToListAsync();
 
@@ -119,7 +120,7 @@ namespace WIRKDEVELOPER.Controllers
                     var order = new Order
                     {
                         Date = viewModel.Date,
-                       // AddmID = viewModel.AddmID,
+                        AddmID = viewModel.AddmID,
                         Urgent = viewModel.Urgent,
                         PharmacyMedicationID = item.PharmacyMedicationID,
                         Quantity = item.Quantity,
@@ -158,7 +159,7 @@ namespace WIRKDEVELOPER.Controllers
             var model = new OrderCreate
             {
                 Date = (DateTime)order.Date,
-               // AddmID = order.AddmID,
+                AddmID = order.AddmID,
                 Urgent = order.Urgent,
                 OrderItems = new List<OrderItems>
                 {
@@ -195,7 +196,7 @@ namespace WIRKDEVELOPER.Controllers
 
 
                     order.Date = viewModel.Date;
-                    //order.AddmID = viewModel.AddmID;
+                    order.AddmID = viewModel.AddmID;
                     order.Urgent = viewModel.Urgent;
                     order.PharmacyMedicationID = viewModel.OrderItems[0].PharmacyMedicationID;
                     order.Quantity = viewModel.OrderItems[0].Quantity;
@@ -215,11 +216,11 @@ namespace WIRKDEVELOPER.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(IndexOrders));
+                return RedirectToAction("IndexOrders");
             }
 
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName", viewModel.OrderItems[0].PharmacyMedicationID);
-           // ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", viewModel.AddmID);
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", viewModel.AddmID);
             viewModel.Medications = _Context.pharmacyMedications.ToList();
 
             return View(viewModel);

@@ -36,6 +36,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Status)
                 </th>
+                <th>
+                    Action
+                </th>
                @*  <th>
                     @Html.DisplayNameFor(model => model.Notes)
                 </th> *@
@@ -52,9 +55,20 @@
                     <td>
                         @order.Addm?.PatientName @* // Assuming Patient has a Name property *@
                     </td>
+                    @* <td>
+                        <ul>
+                            @foreach(var med in order.OrderItems)
+                            {
+                                <li>
+                                    @med.PharmacyMedication?.PharmacyMedicationName -  @med.Quantity -@med.Instructions
+                                </li>
+                                
+                            }
+                        </ul>
+                    </td> *@
                     <td>
                         
-                        @order.PharmacyMedication?.PharmacyMedicationName @* // Assuming PharmacyMedication has a Name property *@
+                        @order.PharmacyMedication?.PharmacyMedicationName
                     </td>
                     <td>
                         @order.Quantity

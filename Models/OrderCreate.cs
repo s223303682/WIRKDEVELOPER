@@ -21,11 +21,11 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public DateTime Date { get; set; } = DateTime.Now;
 
-        //[Required]
-        //[DisplayName("Patient")]
-        //public int? AddmID { get; set; }
-        //[ForeignKey("AddmID")]
-        //public virtual Patient Addm { get; set; }
+        [Required]
+        [DisplayName("Patient")]
+        public int? AddmID { get; set; }
+        [ForeignKey("AddmID")]
+        public virtual Patient Addm { get; set; }
 
         [DisplayName("Urgent")]
         public string? Urgent { get; set; }
