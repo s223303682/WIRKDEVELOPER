@@ -133,6 +133,6 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Addm> addm {  get; set; }
     public DbSet<StockReceived> StockReceiveds { get; set; }
     public DbSet<OrderItems> orderItems { get; set; }
-    public DbSet<OrderCreate> orderCreates { get; set; }
+   // public DbSet<OrderCreate> orderCreates { get; set; }
 
 }

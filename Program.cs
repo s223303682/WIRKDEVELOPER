@@ -49,12 +49,15 @@ app.UseAuthentication();;
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 
 app.MapRazorPages();
-
+app.Run();
 //using (var scope = app.Services.CreateScope())
 //{
 //    var roleManager =
@@ -183,4 +186,4 @@ app.MapRazorPages();
 //	}
 
 //}
-app.Run();
+

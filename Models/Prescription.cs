@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+
 namespace WIRKDEVELOPER.Models
 {
     public class Prescription
@@ -26,6 +27,7 @@ namespace WIRKDEVELOPER.Models
         [Key]
         public int PrescriptionViewModelID { get; set; }
         public string Name { get; set; }
+        public string surname { get; set; }
         public string Gender { get; set; }
         public string Email { get; set; }
         public DateTime Date { get; set; }

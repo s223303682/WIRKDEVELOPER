@@ -24,41 +24,29 @@
     </div>
     <form method="post" asp-action="CreateBooking" class="bg-white bg-opacity-60 border border-3 border-dark">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="row">
+       
             <!-- Patient and Gender Fields -->
-           
-            <div class="col">
+            <div class="row">
                 <div class="form-group">
-                    <label asp-for="AddmID"></label>
-                    <select asp-for="AddmID" class="form-control" asp-items="@ViewBag.getPatient" required>
-                        <option selected disabled>--select patient</option>
-                    </select>
-                    <span asp-validation-for="AddmID" class="text-danger"></span>
+                    <label asp-for="Name" for="Name">Patient Name</label>
+                <input asp-for="Name" type="text" id="Name" name="Name" class="form-control" value="@Model.Name" readonly />
                 </div>
+                <div class="form-group">
+                    <label asp-for='Surname' for="Surname">Patient Surname</label>
+                <input asp-for='Surname' type="text" id="Surname" name="Surname" class="form-control" value="@Model.Surname" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Gender" for="Gender">genger</label>
+                <input asp-for="Gender" type="text" id="gender" name="gender" class="form-control" value="@Model.Gender" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmailAddress" for="EmailAddress">Email Address</label>
+                <input asp-for="EmailAddress" type="email" id="EmailAddress" name="EmailAddress" class="form-control" value="@Model.EmailAddress" readonly />
+                </div>
+            </div>
 
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="Gender"></label>
-                    <select asp-for="Gender" class="form-control">
-                        <option selected disabled>--select gender</option>
-                        <option>Female</option>
-                        <option>Male</option>
-                    </select>
-                    <span asp-validation-for="Gender" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Email, Date, and Time Fields -->
-        <div class="row">
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="EmailAddress"></label>
-                    <input asp-for="EmailAddress" type="email" class="form-control" required />
-                    <span asp-validation-for="EmailAddress" class="text-danger"></span>
-                </div>
-            </div>
+       
+       <div class="row">
             <div class="col">
                 <div class="form-group">
                     <label asp-for="Date"></label>
@@ -73,10 +61,10 @@
                     <span asp-validation-for="Time" class="text-danger"></span>
                 </div>
             </div>
-        </div>
+       </div>
 
         <!-- Operation Theatre and Anaestesiologist Fields -->
-        <div class="row">
+      <div class="row">
             <div class="col">
                 <div class="form-group">
                     <label asp-for="OperationTheatreID"></label>
@@ -93,11 +81,11 @@
                     <span asp-validation-for="Anaestesiologist" class="text-danger"></span>
                 </div>
             </div>
-        </div>
+        
 
         <!-- Treatment Codes Section -->
-        <div class="row">
             <div class="col" id="treatmentCodesContainer">
+                <!-- Template for treatment code items -->
                 <div class="form-group treatmentCodeItem">
                     <label for="TreatmentCodeID">Treatment Codes</label>
                     <select class="form-control" name="TreatmentCodeIDs" required>
@@ -108,12 +96,18 @@
                         }
                     </select>
                     <span class="text-danger"></span>
+                    <!-- Add a Remove button -->
+                    <button type="button" class="btn btn-danger removeTreatmentCode mt-2">Remove</button>
                 </div>
             </div>
             <div class="col-12">
                 <button type="button" id="addTreatmentCode" class="btn btn-success mt-2">+ Add Another Treatment Code</button>
             </div>
-        </div>
+     </div>
+    
+   
+
+
 
         <!-- Submission Section -->
         <br>
@@ -130,14 +124,39 @@
     </form>
 
     <!-- JavaScript to Add More Treatment Codes -->
-    <script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Function to handle adding a new treatment code item
         document.getElementById('addTreatmentCode').addEventListener('click', function () {
             var container = document.getElementById('treatmentCodesContainer');
             var template = container.querySelector('.treatmentCodeItem').cloneNode(true);
-            template.querySelector('select').name = "TreatmentCodeIDs";
+            
+            // Clear or reset any values as needed
+            template.querySelector('select').value = ''; // Optional: clear selection
+            template.querySelector('select').name = "TreatmentCodeIDs"; 
+
+            // Attach event listener to the new "Remove" button
+            template.querySelector('.removeTreatmentCode').addEventListener('click', function () {
+                container.removeChild(template);
+            });
+
+            // Append the new item to the container
             container.appendChild(template);
         });
-    </script>
+
+        // Event delegation to handle remove button clicks
+        document.getElementById('treatmentCodesContainer').addEventListener('click', function (event) {
+            if (event.target.classList.contains('removeTreatmentCode')) {
+                var itemToRemove = event.target.closest('.treatmentCodeItem');
+                if (itemToRemove) {
+                    itemToRemove.parentNode.removeChild(itemToRemove);
+                }
+            }
+        });
+    });
+</script>
+
+
 </body>
 </html>
 

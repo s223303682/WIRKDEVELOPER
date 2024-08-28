@@ -147,29 +147,103 @@ namespace WIRKDEVELOPER.Controllers
             return View(model);
         }
 
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult updatePrescription(Prescription prescription)
+        public IActionResult updatePrescription(int id)
         {
-            
-            _Context.prescriptions.Update(prescription);
-            _Context.SaveChanges();
-            return RedirectToAction("PrescriptionList");
-        }
-        public IActionResult DeletePrescription(int? ID)
-        {
-            var list = _Context.prescriptions.Find(ID);
-            if (list == null)
+            // Retrieve the prescription record with the specified ID
+            var prescription = _Context.prescriptions
+                .Include(p => p.PrescriptionMedications)
+                .FirstOrDefault(p => p.PrescriptionID == id);
+
+            if (prescription == null)
             {
                 return NotFound();
             }
-            _Context.prescriptions.Remove(list);
-            _Context.SaveChanges();
-            return RedirectToAction("PrescriptionList");
 
+            // Retrieve the list of medications
+            var medications = _Context.pharmacyMedications
+                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
+                .ToList();
+
+            // Serialize medications to JSON
+            ViewBag.Medications = JsonConvert.SerializeObject(medications);
+
+            // Convert prescription and its medications to the view model
+            var model = new PrescriptionViewModel
+            {
+                PrescriptionViewModelID = prescription.PrescriptionID,
+                Name = prescription.Name,
+                Gender = prescription.Gender,
+                Email = prescription.Email,
+                Date = prescription.Date,
+                Prescriber = prescription.Prescriber,
+                Urgent = prescription.Urgent,
+                Status = prescription.Status,
+                Medications = prescription.PrescriptionMedications
+                    .Select(pm => new PrescriptionMedicationViewModel
+                    {
+                        PharmacyMedicationID = pm.PharmacyMedicationID,
+                        Quantity = pm.Quantity,
+                        Instructions = pm.Instructions
+                    }).ToList()
+            };
+
+            return View(model);
         }
+
+
+        [HttpPost]
+        public IActionResult updatePrescription(PrescriptionViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Find the existing prescription record
+                var prescription = _Context.prescriptions
+                    .Include(p => p.PrescriptionMedications)
+                    .FirstOrDefault(p => p.PrescriptionID == model.PrescriptionViewModelID);
+
+                if (prescription == null)
+                {
+                    return NotFound();
+                }
+
+                // Update prescription details
+                prescription.Name = model.Name;
+                prescription.Gender = model.Gender;
+                prescription.Email = model.Email;
+                prescription.Date = model.Date;
+                prescription.Prescriber = model.Prescriber;
+                prescription.Urgent = model.Urgent;
+                prescription.Status = model.Status;
+
+                // Remove old medications
+                _Context.prescriptionMedications.RemoveRange(prescription.PrescriptionMedications);
+
+                // Add new medications
+                foreach (var medication in model.Medications)
+                {
+                    var prescriptionMedication = new PrescriptionMedication
+                    {
+                        PrescriptionID = prescription.PrescriptionID,
+                        PharmacyMedicationID = medication.PharmacyMedicationID,
+                        Quantity = medication.Quantity,
+                        Instructions = medication.Instructions
+                    };
+                    _Context.prescriptionMedications.Add(prescriptionMedication);
+                }
+
+                _Context.SaveChanges();
+
+                return RedirectToAction("PrescriptionList");
+            }
+
+            // If the model is invalid, return the same view with validation errors
+            var medications = _Context.pharmacyMedications
+                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
+                .ToList();
+            ViewBag.Medications = JsonConvert.SerializeObject(medications);
+            return View(model);
+        }
+
         public IActionResult BookingPatientList()
         {
             IEnumerable<BookingNewPatient> list = _Context.bookingNewPatients
@@ -248,33 +322,37 @@ namespace WIRKDEVELOPER.Controllers
     }
         public IActionResult BookingList()
         {
+            // Define the split characters as a local variable
+            char[] splitCharacters = new[] { ',' };
+
             var bookings = _Context.bookings
-                .Include(b => b.Addm) // Include related Addm data if needed
-                .Select(b => new
+                .Include(b => b.Addm)
+                .Include(b => b.OperationTheatre) // Ensure related entities are included
+                .Select(b => new BookingViewModel
                 {
-                    b.BookingID,
-                    b.AddmID,
-                    PatientName = b.Addm.Patient.PatientName + " " + b.Addm.Patient.PatientSurname,
-                    TreatmentCodeIDs = b.TreatmentCodeIDs // Keep TreatmentCodeIDs as a string
+                    BookingID = b.BookingID,
+                    PatientName = b.Name + " " + b.Surname,
+                    Gender = b.Gender,
+                    EmailAddress = b.EmailAddress,
+                    Date = b.Date,
+                    Time = b.Time,
+                    OperationTheatreName = b.OperationTheatre != null ? b.OperationTheatre.OperationTheatreName : null,
+                    TreatmentCodes = string.IsNullOrEmpty(b.TreatmentCodeIDs)
+                        ? new List<string>()
+                        : b.TreatmentCodeIDs.Split(splitCharacters, StringSplitOptions.RemoveEmptyEntries).ToList(),
+                    Anaestesiologist = b.Anaestesiologist
                 })
-                .ToList(); // Retrieve data from the database
+                .ToList();
 
-            // Now perform the split in memory
-            var bookingViewModels = bookings.Select(b => new BookingViewModel
-            {
-                BookingID = b.BookingID,
-                PatientName = b.PatientName,
-                TreatmentCodes = string.IsNullOrEmpty(b.TreatmentCodeIDs)
-                    ? new List<string>() // Return an empty list if TreatmentCodeIDs is null or empty
-                    : b.TreatmentCodeIDs.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList() // Split treatment codes into a list
-            }).ToList();
-
-            return View(bookingViewModels); // Pass the list of BookingViewModel to the view
+            return View(bookings);
         }
 
 
 
-        public IActionResult CreateBooking()
+
+
+
+        public IActionResult CreateBooking(int? AddmID, string? name, string? surname, string? email)
         {
             // Populate dropdowns for the view
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
@@ -291,8 +369,14 @@ namespace WIRKDEVELOPER.Controllers
 
             ViewBag.getPatient = new SelectList(patients, "AddmID", "PatientName");
 
-            // Create a new Booking object to pass to the view
-            var bookingModel = new Booking();
+            // Create a new Booking object with pre-filled fields if provided
+            var bookingModel = new Booking
+            {
+                AddmID = AddmID,
+                Name = name,
+                Surname = surname,
+                EmailAddress = email
+            };
 
             return View(bookingModel); // Pass the Booking model to the view
         }

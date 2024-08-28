@@ -9,6 +9,12 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int BookingID { get; set; }
+        [Required]
+        public string? Name { get; set; }
+        [Required]
+        public string? Surname { get; set; }
+
+
 
         [Required(ErrorMessage = "Required")]
         public int? AddmID { get; set; }
@@ -48,6 +54,14 @@ namespace WIRKDEVELOPER.Models
         public int BookingViewModelID { get; set; }
         public int BookingID { get; set; }
         public string PatientName { get; set; }
+        public string Gender { get; set; }
+        public string EmailAddress { get; set; }
+        public DateTime? Date { get; set; }
+        public DateTime? Time { get; set; }
+        public string? OperationTheatreName { get; set; }
         public List<string> TreatmentCodes { get; set; } = new List<string>();
+        public string Anaestesiologist { get; set; }
     }
+
 }
+

@@ -9,6 +9,7 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>surname</th>
             <th>Gender</th>
             <th>Email</th>
             <th>Date</th>
@@ -16,6 +17,7 @@
             <th>Prescriber</th>
             <th>Urgent</th>
             <th>Status</th>
+            <th>update</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +25,7 @@
         {
             <tr>
                 <td>@prescription.Name</td>
+                <td>@prescription.surname</td>
                 <td>@prescription.Gender</td>
                 <td>@prescription.Email</td>
                 <td>@prescription.Date.ToString("d")</td>
@@ -42,6 +45,9 @@
                 <td>@prescription.Prescriber</td>
                 <td>@prescription.Urgent</td>
                 <td>@prescription.Status</td>
+                <td>
+                    <a asp-controller="Surgeon" asp-action="updatePrescription" asp-route-ID="@prescription.PrescriptionViewModelID" class="btn btn-blue-300 mx-1">Update</a>
+                </td>
             </tr>
         }
     </tbody>
