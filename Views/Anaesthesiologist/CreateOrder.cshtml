@@ -45,20 +45,22 @@
                     <span asp-validation-for="@Model.OrderItems[i].Instructions" class="text-danger"></span>
                 </div>
 
+                <button type="button" class="btn btn-danger remove-item">Remove</button>
             </div>
         }
-        <div class="form-group">
-            <h4><label asp-for="Urgent"></label></h4>
-            <select id="PurposeDropdown" asp-for="Urgent" class="form-control" id="validationName" required>
-                <option value="Select" class="bg-opacity-50">Select</option>
-                <option value="YES" class="bg-danger">YES</option>
-                <option value="NO">NO</option>
-            </select>
-            <span asp-validation-for="Urgent" class="text-danger"></span>
-        </div>
-
-        <button type="button" id="add-item" class="btn btn-secondary">Add another item</button>
     </div>
+
+    <div class="form-group">
+        <h4><label asp-for="Urgent"></label></h4>
+        <select asp-for="Urgent" class="form-control">
+            <option value="Select">Select</option>
+            <option value="YES">YES</option>
+            <option value="NO">NO</option>
+        </select>
+        <span asp-validation-for="Urgent" class="text-danger"></span>
+    </div>
+
+    <button type="button" id="add-item" class="btn btn-secondary">Add another item</button>
 
     <div class="form-group">
         <input type="submit" value="Create Order" class="btn btn-primary" />
@@ -70,39 +72,39 @@
         document.getElementById('add-item').addEventListener('click', function () {
             var index = document.querySelectorAll('.order-item').length;
             var newItem = `
-                <div class="order-item">
-                    <div class="form-group">
-                        <label for="OrderItems_${index}__PharmacyMedicationID" class="control-label"></label>
-                        <select name="OrderItems[${index}].PharmacyMedicationID" class="form-control">
-                            @foreach (var medication in ViewBag.getMedication as SelectList)
-                            {
-                                <option value="@medication.Value">@medication.Text</option>
-                            }
-                        </select>
-                        <span class="text-danger"></span>
-                    </div>
+                        <div class="order-item">
+                            <div class="form-group">
+                                <label for="OrderItems_${index}__PharmacyMedicationID" class="control-label"></label>
+                                <select name="OrderItems[${index}].PharmacyMedicationID" class="form-control">
+        @foreach (var medication in ViewBag.getMedication as SelectList)
+        {
+                                            <option value="@medication.Value">@medication.Text</option>
+        }
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
 
-                    <div class="form-group">
-                        <label for="OrderItems_${index}__Quantity" class="control-label"></label>
-                        <input name="OrderItems[${index}].Quantity" class="form-control" />
-                        <span class="text-danger"></span>
-                    </div>
+                            <div class="form-group col-md-2">
+                                <label for="OrderItems_${index}__Quantity" class="control-label"></label>
+                                <input name="OrderItems[${index}].Quantity" class="form-control" />
+                                <span class="text-danger"></span>
+                            </div>
 
-                    <div class="form-group">
-                        <label for="OrderItems_${index}__Instructions" class="control-label"></label>
-                        <input name="OrderItems[${index}].Instructions" class="form-control" />
-                        <span class="text-danger"></span>
-                    </div>
+                            <div class="form-group col-md-4">
+                                <label for="OrderItems_${index}__Instructions" class="control-label"></label>
+                                <input name="OrderItems[${index}].Instructions" class="form-control" />
+                                <span class="text-danger"></span>
+                            </div>
 
-                    <button type="button" class="btn btn-danger remove-item">Remove</button>
-                </div>`;
+                            <button type="button" class="btn btn-danger remove-item">Remove</button>
+                        </div>`;
             document.getElementById('order-items').insertAdjacentHTML('beforeend', newItem);
             addRemoveFunctionality();
         });
 
         function addRemoveFunctionality() {
             var removeButtons = document.querySelectorAll('.remove-item');
-            removeButtons.forEach(function(button) {
+            removeButtons.forEach(function (button) {
                 button.addEventListener('click', function () {
                     button.parentElement.remove();
                 });
@@ -113,6 +115,7 @@
         addRemoveFunctionality();
     </script>
 }
+
 
 
 

@@ -119,6 +119,9 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult CreateOrder(int AddmID, DateTime Date)
         {
+
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             var medications = _Context.pharmacyMedications
                 .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
                 .ToList();
@@ -150,6 +153,8 @@ namespace WIRKDEVELOPER.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateOrder(OrderCreate viewModel)
         {
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
 
             if (ModelState.IsValid)
             {
