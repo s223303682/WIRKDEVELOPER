@@ -8,6 +8,7 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int AddmID { get; set; }
+
         public int PatientID { get; set; }
         [ForeignKey("PatientID")]
         [DisplayName("Patient Name")]

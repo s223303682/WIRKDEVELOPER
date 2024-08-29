@@ -57,7 +57,37 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
        .WithMany()
        .HasForeignKey("PatientID"); //
 
-        base.OnModelCreating(builder);
+
+		builder.Entity<OrderCreate>()
+		.HasOne(o => o.patient)
+		.WithMany() // Specify the relationship if it's one-to-many, or adjust accordingly
+		.HasForeignKey(o => o.AddmID)
+		.OnDelete(DeleteBehavior.Restrict);
+
+		builder.Entity<OrderCreate>()
+			.HasOne(o => o.PharmacyMedication)
+			.WithMany() // Adjust relationship if it's different
+			.HasForeignKey(o => o.PharmacyMedicationID)
+			.OnDelete(DeleteBehavior.Restrict);
+
+		// Add similar configurations for other relationships if needed
+
+		builder.Entity<Order>()
+		.HasOne(o => o.Addm)
+		.WithMany() // Adjust the relationship as needed
+		.HasForeignKey(o => o.AddmID)
+		.OnDelete(DeleteBehavior.Restrict);
+
+		builder.Entity<Order>()
+			.HasOne(o => o.PharmacyMedication)
+			.WithMany() // Adjust the relationship as needed
+			.HasForeignKey(o => o.PharmacyMedicationID)
+			.OnDelete(DeleteBehavior.Restrict);
+
+		// Add similar configurations for other relationships if needed
+
+
+		base.OnModelCreating(builder);
 
         // Apply additional configurations if needed
         builder.ApplyConfiguration(new applicationUserEntityConfiguration());

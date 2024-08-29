@@ -35,7 +35,7 @@ namespace WIRKDEVELOPER.Models
         [DisplayName("Patient")]
         public int? AddmID { get; set; }
         [ForeignKey("AddmID")]
-        public virtual Patient Addm { get; set; }
+        public virtual Patient patient { get; set; }
 
         [DisplayName("Urgent")]
         public string? Urgent { get; set; }
