@@ -30,6 +30,12 @@ namespace WIRKDEVELOPER.Models
         [ForeignKey("TreatmentCodeID")]
         public virtual TreatmentCode? treatmentCode { get; set; }
         public string Anaesthesiologist { get; set; }
-    }
+		[DisplayName("Ward")]
+		public string? Ward { get; set; } = " - ";
+		[DisplayName("Bed")]
+		public string? Bed { get; set; } = " - ";
+		[DisplayName("Status")]
+		public string? Status { get; set; } = "Not Admitted ";
+	}
    
 }

@@ -19,6 +19,6 @@ namespace WIRKDEVELOPER.Models
         public int Quantity { get; set; }
 
         [Required]
-        public string Instructions { get; set; }
+        public string? Instructions { get; set; }
     }
 }

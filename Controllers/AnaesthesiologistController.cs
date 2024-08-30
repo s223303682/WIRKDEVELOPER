@@ -42,7 +42,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult IndexViewBookedPatients(DateTime searchDate)
         {
-            var patient = _Context.addm.Include(a => a.Ward).Include(a => a.Bed).Include(a => a.Patient).Where(e => e.Date == searchDate.Date).ToList();
+            var patient = _Context.bookingNewPatients.Where(e => e.Date == searchDate.Date).ToList();
             return View(patient);
             
 

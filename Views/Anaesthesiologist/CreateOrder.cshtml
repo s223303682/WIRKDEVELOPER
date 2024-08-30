@@ -7,6 +7,8 @@
 <h1>Create Order</h1>
 
 <form asp-action="CreateOrder" method="post">
+    @Html.AntiForgeryToken()
+
     <div class="form-group">
         <label asp-for="Date" class="control-label"></label>
         <input asp-for="Date" class="form-control" />
@@ -15,9 +17,7 @@
 
     <div class="form-group">
         <label asp-for="AddmID" class="control-label"></label>
-        <select asp-for="AddmID" class="form-control" asp-items="ViewBag.getPatient">
-            <!-- Options will be populated by ViewBag -->
-        </select>
+        <select asp-for="AddmID" class="form-control" asp-items="ViewBag.getPatient"></select>
         <span asp-validation-for="AddmID" class="text-danger"></span>
     </div>
 
@@ -25,11 +25,9 @@
         @for (int i = 0; i < Model.OrderItems.Count; i++)
         {
             <div class="order-item row">
-                <div class="form-group">
+                <div class="form-group col-md-4">
                     <label asp-for="@Model.OrderItems[i].PharmacyMedicationID" class="control-label"></label>
-                    <select asp-for="@Model.OrderItems[i].PharmacyMedicationID" class="form-control" asp-items="ViewBag.getMedication">
-                        <!-- Options will be populated by ViewBag -->
-                    </select>
+                    <select asp-for="@Model.OrderItems[i].PharmacyMedicationID" class="form-control" asp-items="ViewBag.getMedication"></select>
                     <span asp-validation-for="@Model.OrderItems[i].PharmacyMedicationID" class="text-danger"></span>
                 </div>
 
@@ -45,10 +43,14 @@
                     <span asp-validation-for="@Model.OrderItems[i].Instructions" class="text-danger"></span>
                 </div>
 
-                <button type="button" class="btn btn-danger remove-item">Remove</button>
+                <div class="form-group col-md-2">
+                    <button type="button" class="btn btn-danger remove-item">Remove</button>
+                </div>
             </div>
         }
     </div>
+
+    <button type="button" id="add-item" class="btn btn-secondary">Add another item</button>
 
     <div class="form-group">
         <h4><label asp-for="Urgent"></label></h4>
@@ -60,8 +62,6 @@
         <span asp-validation-for="Urgent" class="text-danger"></span>
     </div>
 
-    <button type="button" id="add-item" class="btn btn-secondary">Add another item</button>
-
     <div class="form-group">
         <input type="submit" value="Create Order" class="btn btn-primary" />
     </div>
@@ -72,9 +72,9 @@
         document.getElementById('add-item').addEventListener('click', function () {
             var index = document.querySelectorAll('.order-item').length;
             var newItem = `
-                        <div class="order-item">
-                            <div class="form-group">
-                                <label for="OrderItems_${index}__PharmacyMedicationID" class="control-label"></label>
+                        <div class="order-item row">
+                            <div class="form-group col-md-4">
+                                <label for="OrderItems_${index}__PharmacyMedicationID" class="control-label">Medication Ordered</label>
                                 <select name="OrderItems[${index}].PharmacyMedicationID" class="form-control">
         @foreach (var medication in ViewBag.getMedication as SelectList)
         {
@@ -85,36 +85,33 @@
                             </div>
 
                             <div class="form-group col-md-2">
-                                <label for="OrderItems_${index}__Quantity" class="control-label"></label>
+                                        <label for="OrderItems_${index}__Quantity" class="control-label">Quantity</label>
                                 <input name="OrderItems[${index}].Quantity" class="form-control" />
                                 <span class="text-danger"></span>
                             </div>
 
                             <div class="form-group col-md-4">
-                                <label for="OrderItems_${index}__Instructions" class="control-label"></label>
+                                <label for="OrderItems_${index}__Instructions" class="control-label">Instructions</label>
                                 <input name="OrderItems[${index}].Instructions" class="form-control" />
                                 <span class="text-danger"></span>
                             </div>
 
-                            <button type="button" class="btn btn-danger remove-item">Remove</button>
+                            <div class="form-group col-md-2">
+                                <button type="button" class="btn btn-danger remove-item">Remove</button>
+                            </div>
                         </div>`;
             document.getElementById('order-items').insertAdjacentHTML('beforeend', newItem);
-            addRemoveFunctionality();
         });
 
-        function addRemoveFunctionality() {
-            var removeButtons = document.querySelectorAll('.remove-item');
-            removeButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    button.parentElement.remove();
-                });
-            });
-        }
-
-        // Add remove functionality to initial items
-        addRemoveFunctionality();
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('remove-item')) {
+                event.target.closest('.order-item').remove();
+            }
+        });
     </script>
 }
+
+
 
 
 
