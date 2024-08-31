@@ -27,8 +27,8 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult ViewAdmission()
         {
-            IEnumerable<Patient> patients = Context.patients;
-            return View(patients);
+            IEnumerable<Patient> Adlist = Context.patients;
+            return View(Adlist);
         }
         public IActionResult AddAdmission()
         {
@@ -138,8 +138,8 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult ViewVitals()
         {
-            IEnumerable<Vitals> vitals = Context.vitals;
-            return View(vitals);
+            IEnumerable<Vitals> vitlist = Context.vitals;
+            return View(vitlist);
         }
         public IActionResult UpdateVital(int? ID)
         {
@@ -188,13 +188,13 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult ViewmedAdmin()
         {
-            IEnumerable<MedicationAdministration> medAdmin = Context.medAdmin;
-            return View(medAdmin);
+            IEnumerable<MedicationAdministration> medAdminlist = Context.medAdmin;
+            return View(medAdminlist);
         }
         public IActionResult ViewDischargedPatient()
         {
-            IEnumerable<DischargePatient> discharge = Context.discharge;
-            return View(discharge);
+            IEnumerable<DischargePatient> dischargelist = Context.discharge;
+            return View(dischargelist);
         }
         public IActionResult AddDischargedPatient()
         {

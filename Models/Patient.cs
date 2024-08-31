@@ -36,29 +36,36 @@ namespace WIRKDEVELOPER.Models
         [Required]
         [DisplayName("Address 1")]
         public string? Address1 { get; set; }
+
         [Required]
         [DisplayName("Address 2")]
         public string? Address2 { get; set; }
+
         [Required]
         [DisplayName("Ward Name ")]
         public string? wardName { get; set; }
         [ForeignKey("WardID")]
+
         [Required]
         [DisplayName("Condition ")]
         public string? Condition { get; set; }
         [ForeignKey("ConditionID")]
+
         [Required]
         [DisplayName("Medication Name")]
         public string? MedicationName { get; set; }
         [ForeignKey("MedicationID")]
+
         [Required]
         [DisplayName("Treatment Code")]
         public string? TreatmentCode { get; set; }
         [ForeignKey("TreatmentCodeID")]
+
         [Required]
         [DisplayName("Allergies")]
         public string? AllergiesName { get; set; }
         [ForeignKey("AllergiesID")]
+
         [Required]
         [DisplayName("Date of birth")]
         public DateTime? DateOfBirth { get; set; }
