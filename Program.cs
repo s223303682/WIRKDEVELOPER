@@ -3,9 +3,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using WIRKDEVELOPER.Areas.Identity.Data;
+using WIRKDEVELOPER.Models.sendemail;
+
+
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddTransient<EmailService>();  // Register EmailService
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDBContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDBContextConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>

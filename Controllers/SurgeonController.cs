@@ -8,17 +8,25 @@ using System.Security.Claims;
 using System.Web.WebPages.Html;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using WIRKDEVELOPER.Models.sendemail;  // Check if this is the correct namespace
 
 using Newtonsoft.Json;
+using WIRKDEVELOPER.Models.sendemail;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 namespace WIRKDEVELOPER.Controllers
 {
     public class SurgeonController: Controller
     {
         private readonly ApplicationDBContext _Context;
-
-        public SurgeonController(ApplicationDBContext applicationDBContext)
+        private readonly EmailService _emailService;
+        public SurgeonController(ApplicationDBContext applicationDBContext, EmailService emailService)
         {
             _Context = applicationDBContext;
+            _emailService = emailService;
+
         }
         public IActionResult ToDoList()
         {
@@ -241,15 +249,19 @@ namespace WIRKDEVELOPER.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateBookingPatient(BookingNewPatient bookingNewPatient)
+        public async Task<IActionResult> CreateBookingPatientAsync(BookingNewPatient bookingNewPatient)
         {
+                _Context.bookingNewPatients.Add(bookingNewPatient);
+                ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
+                ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
 
-           _Context.bookingNewPatients.Add(bookingNewPatient);
-            ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
-            ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
+                _Context.SaveChanges();
+                string subject = "Booking Confirmation";
+                string body = $"Dear {bookingNewPatient.BookingNewPatientName}, your booking is confirmed for {bookingNewPatient.Date}.";
+
+                await _emailService.SendEmailAsync(bookingNewPatient.Email, subject, body);
+                return RedirectToAction("BookingPatientList");
             
-            _Context.SaveChanges();
-            return RedirectToAction("BookingPatientList");
         }
         //return View(bookingNew);
 
