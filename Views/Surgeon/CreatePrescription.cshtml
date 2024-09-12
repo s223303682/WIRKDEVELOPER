@@ -11,9 +11,54 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Create Prescription</title>
     <script>
+        var medications = @Html.Raw(ViewBag.Medications);
+        var patientAllergies = @Html.Raw(ViewBag.PatientAllergies);
+
+        function checkForAllergies() {
+            var selectedMedications = [];
+            var matchingAllergies = [];
+
+            // Gather selected medications
+            $('select.medication-dropdown').each(function () {
+                var selectedId = $(this).val();
+                var medication = medications.find(m => m.PharmacyMedicationIngredientId == selectedId);
+                if (medication) {
+                    selectedMedications.push(medication);
+                }
+            });
+
+            // Compare selected medications with patient allergies
+            selectedMedications.forEach(function (med) {
+                if (patientAllergies.includes(med.ActiveName)) {
+                    matchingAllergies.push(med.ActiveName);
+                }
+            });
+
+            // If any matches are found, show a pop-up alert
+            if (matchingAllergies.length > 0) {
+                var ignoreReason = prompt(`The following active ingredients match the patient's allergies: ${matchingAllergies.join(", ")}. Please provide a reason for ignoring these allergies if you wish to continue:`);
+
+                if (!ignoreReason) {
+                    return false; // Prevent form submission if no reason is given
+                }
+
+                // Store the ignore reason in a hidden input
+                $('#IgnoreReason').val(ignoreReason);
+            }
+
+            return true; // Allow form submission
+        }
+
+        // Attach the allergy check to the form submit event
+        $('form').on('submit', function (e) {
+            if (!checkForAllergies()) {
+                e.preventDefault(); // Prevent form submission if no reason for ignoring allergies is provided
+            }
+        });
         document.addEventListener('DOMContentLoaded', function () {
             // Parse the JSON data passed from the server
             const medications = JSON.parse('@Html.Raw(ViewBag.Medications)');
+            const allergies = JSON.parse('@Html.Raw(ViewBag.PatientAllergies)'); // Assumed that you passed this via ViewBag
 
             function addMedicationField() {
                 const medicationContainer = document.getElementById('medicationContainer');
@@ -27,36 +72,64 @@
                 ).join('');
 
                 medicationDiv.innerHTML = `
-                        <h4>Medication ${index + 1}</h4>
-                        <div class="row">
+                    <h4>Medication ${index + 1}</h4>
+                    <div class="row">
                         <div class="col">
-                        <div class="form-group">
-                            <label for="Medications_${index}__PharmacyMedicationID">Medication</label>
-                            <select name="Medications[${index}].PharmacyMedicationID" id="Medications_${index}__PharmacyMedicationID" class="form-control" required>
-                                <option value="" disabled>--select medication--</option>
-                                ${medicationOptions}
-                            </select>
-                            <span class="text-danger"></span>
-                        </div>
-                        </div>
-                        <div class="col">
-                        <div class="form-group">
-                            <label for="Medications_${index}__Quantity">Quantity</label>
-                            <input type="number" name="Medications[${index}].Quantity" id="Medications_${index}__Quantity" class="form-control" />
-                            <span class="text-danger"></span>
-                        </div>
+                            <div class="form-group">
+                                <label for="Medications_${index}__PharmacyMedicationID">Medication</label>
+                                <select name="Medications[${index}].PharmacyMedicationID" id="Medications_${index}__PharmacyMedicationID" class="form-control" required>
+                                    <option value="" disabled>--select medication--</option>
+                                    ${medicationOptions}
+                                </select>
+                                <span class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="col">
-                        <div class="form-group">
-                            <label for="Medications_${index}__Instructions">Instructions</label>
-                            <input type="text" name="Medications[${index}].Instructions" id="Medications_${index}__Instructions" class="form-control" />
-                            <span class="text-danger"></span>
+                            <div class="form-group">
+                                <label for="Medications_${index}__Quantity">Quantity</label>
+                                <input type="number" name="Medications[${index}].Quantity" id="Medications_${index}__Quantity" class="form-control" />
+                                <span class="text-danger"></span>
+                            </div>
                         </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="Medications_${index}__Instructions">Instructions</label>
+                                <input type="text" name="Medications[${index}].Instructions" id="Medications_${index}__Instructions" class="form-control" />
+                                <span class="text-danger"></span>
+                            </div>
                         </div>
-                        <hr />
-                        </div>
-                    `;
+                    </div>
+                    <hr />
+                `;
                 medicationContainer.appendChild(medicationDiv);
+            }
+
+            function checkAllergies() {
+                const selectedMedications = document.querySelectorAll('[id^="Medications_"]');
+                let allergyMatch = false;
+
+                selectedMedications.forEach(medicationSelect => {
+                    const medicationID = medicationSelect.value;
+                    const selectedMedication = medications.find(m => m.PharmacyMedicationID == medicationID);
+                    if (selectedMedication && allergies.includes(selectedMedication.ActiveID)) {
+                        allergyMatch = true;
+                    }
+                });
+
+                if (allergyMatch) {
+                    if (!confirm("Warning: The selected medication contains active ingredients that match the patient's known allergies. Do you want to proceed?")) {
+                        // Optional: force the user to provide a reason if they ignore the warning
+                        const reason = prompt("Please provide a reason for ignoring this warning:");
+                        if (reason) {
+                            // Store the reason
+                            document.getElementById("ignoreReason").value = reason;
+                        } else {
+                            alert("You must provide a reason to proceed.");
+                            return false;
+                        }
+                    }
+                }
+                return true; // Continue with form submission
             }
 
             // Attach event listener to the button
@@ -66,54 +139,45 @@
 
 </head>
 <body>
-    <div class="text-danger">PLEASE NOTE:you have to view booking first before filling this form</div>
+    <div class="text-danger">PLEASE NOTE: You have to view the booking first before filling this form.</div>
     <div class="row">
         <div class="col-1">
             <a asp-action="PrescriptionList" class="btn btn-primary">List</a>
         </div>
     </div>
     <h1>Create Prescription</h1>
-    <form asp-action="CreatePrescription" method="post">
+    <form asp-action="CreatePrescription" method="post" onsubmit="return checkAllergies()">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                      <label asp-for="Name"></label>
-                  <input asp-for="Name" class="form-control" />
-                   <span asp-validation-for="Name" class="text-danger"></span>
-          
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                      <label asp-for="surname"></label>
-                  <input asp-for="surname" class="form-control" />
-                   <span asp-validation-for="surname" class="text-danger"></span>
-          
+                    <label asp-for="surname"></label>
+                    <input asp-for="surname" class="form-control" />
+                    <span asp-validation-for="surname" class="text-danger"></span>
                 </div>
             </div>
-             <div class="col">
-                 
-               <div class="form-group">
-                   <label asp-for="Gender"></label>
-                  <input asp-for="Gender" class="form-control" />
-                  <span asp-validation-for="Gender" class="text-danger"></span>
-           
-               </div>
-            </div
-             <div class="col">
-
-                  <div class="form-group">
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Gender"></label>
+                    <input asp-for="Gender" class="form-control" />
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
                     <label asp-for="Email"></label>
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
-            
-                 </div>
-             </div
+                </div>
+            </div>
         </div>
-        
-
-
 
         <!-- Dynamic Medication Fields -->
         <div id="medicationContainer">
@@ -122,46 +186,47 @@
         <button type="button" id="addMedicationButton" class="btn btn-primary">Add Medication</button>
         <div class="row">
             <div class="col">
-                 <div class="form-group">
-               <label asp-for="Date"></label>
-               <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-              </div>
+                <div class="form-group">
+                    <label asp-for="Date"></label>
+                    <input asp-for="Date" class="form-control" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
             </div>
-           <div class="col">
-             <div class="form-group">
-              <label asp-for="Prescriber"></label>
-              <input asp-for="Prescriber" class="form-control" />
-              <span asp-validation-for="Prescriber" class="text-danger"></span>
-             </div>
-           </div>
-          <div class="col">
-             <div class="form-group">
-            <label asp-for="Urgent"></label>
-            <select asp-for="Urgent" class="form-control">
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
-            <span asp-validation-for="Urgent" class="text-danger"></span>
-             </div>
-          </div>
-          <div class="col">
-             
-           <div class="form-group">
-            <label asp-for="Status"></label>
-            <select asp-for="Status" class="form-control">
-                <option value="pending">Pending</option>
-                <option value="completed">Completed</option>
-            </select>
-            <span asp-validation-for="Status" class="text-danger"></span>
-           </div>
-          </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Prescriber"></label>
+                    <input asp-for="Prescriber" class="form-control" />
+                    <span asp-validation-for="Prescriber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Urgent"></label>
+                    <select asp-for="Urgent" class="form-control">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                    <span asp-validation-for="Urgent" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Status"></label>
+                    <select asp-for="Status" class="form-control">
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+            </div>
         </div>
-        
-      
+
+        <input type="hidden" id="IgnoreReason" name="IgnoreReason" />
 
         <input type="submit" value="Create" class="btn btn-primary" />
     </form>
+
+
       <div class=" row-2">
                         <div class="col-8  row">
                             <div class="col">

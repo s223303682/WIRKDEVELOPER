@@ -85,34 +85,83 @@ namespace WIRKDEVELOPER.Controllers
 
 
 
-        // GET: Prescription/Create
-        // GET: Prescription/Create
+
         public IActionResult CreatePrescription(int bookingID, string name, string gender, string email)
         {
-            var medications = _Context.pharmacyMedications
-                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
+            // Fetch the booking details and retrieve patient data
+            var booking = _Context.bookings
+                .Where(b => b.BookingID == bookingID)
+                .Select(b => new
+                {
+                    b.Addm.Patient.PatientName,
+                    b.Addm.Patient.Gender,
+                    b.EmailAddress,
+                    b.Addm.PatientID
+                })
+                .FirstOrDefault();
+
+            if (booking == null)
+            {
+                return NotFound(); // Handle case where booking doesn't exist
+            }
+
+            // Get patient's known allergies using PatientID
+            var patientAllergies = _Context.addm
+                .Where(a => a.PatientID == booking.PatientID)
+                .Select(a => a.AnAllergies.Active.ActiveName)
                 .ToList();
 
-            // Serialize medications to JSON
-            ViewBag.Medications = JsonConvert.SerializeObject(medications);
+            // Get available medications with active ingredients
+            var medications = _Context.PharmacyMedicationIngredients
+                .Select(pm => new
+                {
+                    pm.PharmacyMedicationIngredientId,
+                    pm.PharmacyMedication.PharmacyMedicationName,
+                    pm.Active.ActiveName
+                })
+                .ToList();
 
+            // Serialize medications and allergies to JSON
+            ViewBag.Medications = JsonConvert.SerializeObject(medications);
+            ViewBag.PatientAllergies = JsonConvert.SerializeObject(patientAllergies);
+
+            // Create the prescription view model
             var model = new PrescriptionViewModel
             {
-                Name = name,
-                Gender = gender,
-                Email = email
-                // Initialize other fields as needed
+                Name = booking.PatientName,
+                Gender = booking.Gender,
+                Email = booking.EmailAddress
             };
 
             return View(model);
         }
 
-        // POST: Prescription/Create
         [HttpPost]
-        public IActionResult CreatePrescription(PrescriptionViewModel model)
+        public IActionResult CreatePrescription(PrescriptionViewModel model, int bookingID)
         {
             if (ModelState.IsValid)
             {
+                // Fetch the PatientID from the booking table using bookingID
+                var patientID = _Context.bookings
+                    .Where(b => b.BookingID == bookingID)
+                    .Select(b => b.AddmID)
+                    .FirstOrDefault();
+
+                if (patientID == 0)
+                {
+                    ModelState.AddModelError("", "Invalid booking ID.");
+                    // Return the same view with errors if patientID is not found
+                    return View(model);
+                }
+
+                // Get patient's known allergies using PatientID
+                var patientAllergies = _Context.addm
+                    .Where(a => a.PatientID == patientID) // Use the fetched PatientID
+                    .Select(a => a.AnAllergies.Active.ActiveName)
+                    .ToList();
+
+                // Check for allergies in medications (similar to previous logic)
+
                 // Create a new Prescription entity
                 var prescription = new Prescription
                 {
@@ -122,7 +171,8 @@ namespace WIRKDEVELOPER.Controllers
                     Date = model.Date,
                     Prescriber = model.Prescriber,
                     Urgent = model.Urgent,
-                    Status = model.Status
+                    Status = model.Status,
+                    IgnoreReason = model.IgnoreReason // Add the reason for ignoring allergies if applicable
                 };
 
                 // Add the prescription to the database
@@ -152,8 +202,26 @@ namespace WIRKDEVELOPER.Controllers
                 .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
                 .ToList();
             ViewBag.Medications = JsonConvert.SerializeObject(medications);
+
+            // Fetch the PatientID again in case of validation errors
+            var patientIDForErrors = _Context.bookings
+                .Where(b => b.BookingID == bookingID)
+                .Select(b => b.AddmID)
+                .FirstOrDefault();
+
+            if (patientIDForErrors != 0)
+            {
+                var patientAllergies = _Context.addm
+                    .Where(a => a.PatientID == patientIDForErrors)
+                    .Select(a => a.AnAllergies.Active.ActiveName)
+                    .ToList();
+                ViewBag.PatientAllergies = JsonConvert.SerializeObject(patientAllergies);
+            }
+
             return View(model);
         }
+
+
 
         // GET: Prescription/Update/5
         // GET: Prescription/Update/5
@@ -249,7 +317,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateBookingPatientAsync(BookingNewPatient bookingNewPatient)
+        public async Task<IActionResult> CreateBookingPatient(BookingNewPatient bookingNewPatient)
         {
                 _Context.bookingNewPatients.Add(bookingNewPatient);
                 ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");

@@ -18,6 +18,7 @@ namespace WIRKDEVELOPER.Models
         public string Prescriber { get; set; }
         public string Urgent { get; set; }
         public string Status { get; set; }
+        public string IgnoreReason { get; set; }
 
         // Navigation properties
         public ICollection<PrescriptionMedication> PrescriptionMedications { get; set; }
@@ -34,6 +35,7 @@ namespace WIRKDEVELOPER.Models
         public string Prescriber { get; set; }
         public string Urgent { get; set; }
         public string Status { get; set; }
+        public string IgnoreReason { get; set; }
 
 
         // List of medications to be added dynamically
