@@ -46,22 +46,22 @@ namespace WIRKDEVELOPER.Controllers
             }
             return View(patients);
         } 
-        public IActionResult AddBed()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddBed(Bed bed) 
-        { 
-            if (ModelState.IsValid) 
-            {
-                Context.bed.Add(bed);
-                Context.SaveChanges();
-                return RedirectToAction("AddBed");
-            }
-            return View(bed);
-        } 
+        //public IActionResult AddBed()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult AddBed(Bed bed) 
+        //{ 
+        //    if (ModelState.IsValid) 
+        //    {
+        //        Context.bed.Add(bed);
+        //        Context.SaveChanges();
+        //        return RedirectToAction("AddBed");
+        //    }
+        //    return View(bed);
+        //} 
         public IActionResult AddPatient()
         {
             return View();
@@ -74,7 +74,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 Context.patients.Add(patients);
                 Context.SaveChanges();
-                return RedirectToAction("AddPatient");
+                return RedirectToAction("ViewAdmission");
             }
             return View(patients);
         }

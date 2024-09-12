@@ -1,6 +1,6 @@
 ﻿@model WIRKDEVELOPER.Models.Patient;
 @{
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_NurseLayout.cshtml";
 }
 <!DOCTYPE html>
 <html>
@@ -9,12 +9,12 @@
 <body>
     <div class="row">
         <div class="col">
-            <a asp-action="BookingList" class="btn btn-outline-primary">List</a>
+            <a asp-action="ViewAdmission" class="btn btn-outline-primary">List</a>
         </div>
     </div>
     <h1><div class=" bg-info bg-opacity-50 text-center text-white rounded-1">PATIENT PROFILE</div></h1>
 
-    <form method="post" asp-action="CreatePatient" class="bg-white bg-opacity-60 border border-3 border-dark" id="newForm">
+    <form method="post" asp-action="AddPatient" class="bg-white bg-opacity-60 border border-3 border-dark" id="newForm">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
@@ -139,7 +139,7 @@
         <div class="row">
             <div class="col">
                 <div class=" bg-white bg-opacity-25">
-                    <a asp-controller="Surgeon" asp-action="DashBoard">Back</a>
+                    <a asp-controller="Nurse" asp-action="DashBoard">Back</a>
 
                 </div>
             </div>
