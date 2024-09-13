@@ -14,7 +14,7 @@
     </div>
     <h1><div class=" bg-info bg-opacity-50 text-center text-white rounded-1">PATIENT PROFILE</div></h1>
 
-    <form method="post" asp-action="AddPatient" class="bg-white bg-opacity-60 border border-3 border-dark" id="newForm">
+    <form asp-action="AddPatient" method="post" class="bg-white bg-opacity-60 border border-3 border-dark" id="newForm">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
@@ -23,7 +23,7 @@
                 <div class="form-group">
                     <label asp-for="PatientName"></label>
                     <div>
-                        <input type="email" asp-for="PatientName" class="form-control" id="InvalidName" required />
+                        <input type="text" asp-for="PatientName" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="PatientName" class=" text-danger"></span>
@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <label asp-for="PatientSurname"></label>
                     <div>
-                        <input type="email" asp-for="PatientSurname" class="form-control" id="InvalidName" required />
+                        <input type="text" asp-for="PatientSurname" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="PatientSurname" class=" text-danger"></span>
@@ -43,7 +43,7 @@
                 <div class="form-group">
                     <label asp-for="PatientIDNO"></label>
                     <div>
-                        <input type="email" asp-for="PatientIDNO" class="form-control" id="InvalidName" required />
+                        <input type="text" asp-for="PatientIDNO" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="PatientIDNO" class=" text-danger"></span>
@@ -144,10 +144,7 @@
                 </div>
             </div>
             <div class="col">
-                <div class="bg-white bg-opacity-25">
-                    <input type="submit" class="btn-outline-primary" value="submit" />
-
-                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
 
         </div>
