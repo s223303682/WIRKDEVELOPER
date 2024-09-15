@@ -23,21 +23,21 @@ namespace WIRKDEVELOPER.Models
 
 
 
-        [Required]
-		[DisplayName("Medication Ordered")]
-		public int PharmacyMedicationID { get; set; }
-        [ForeignKey("PharmacyMedicationID")]
-        public virtual PharmacyMedication PharmacyMedication { get; set; }
+  //      [Required]
+		//[DisplayName("Medication Ordered")]
+		//public int PharmacyMedicationID { get; set; }
+  //      [ForeignKey("PharmacyMedicationID")]
+  //      public virtual PharmacyMedication PharmacyMedication { get; set; }
 
 
-		[Required]
-		[DisplayName("Qunatity ")]
-		public int? Quantity { get; set; }
+		//[Required]
+		//[DisplayName("Qunatity ")]
+		//public int? Quantity { get; set; }
 
 
-		[Required]
-		[DisplayName("Instructions")]
-		public string? Instructions { get; set; }
+		//[Required]
+		//[DisplayName("Instructions")]
+		//public string? Instructions { get; set; }
 
 
 		[DisplayName("Urgent")]

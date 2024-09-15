@@ -72,19 +72,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
 
 		// Add similar configurations for other relationships if needed
 
-		builder.Entity<Order>()
-		.HasOne(o => o.Addm)
-		.WithMany() // Adjust the relationship as needed
-		.HasForeignKey(o => o.AddmID)
-		.OnDelete(DeleteBehavior.Restrict);
-
-		builder.Entity<Order>()
-			.HasOne(o => o.PharmacyMedication)
-			.WithMany() // Adjust the relationship as needed
-			.HasForeignKey(o => o.PharmacyMedicationID)
-			.OnDelete(DeleteBehavior.Restrict);
-
-		// Add similar configurations for other relationships if needed
+		
 
 
 		base.OnModelCreating(builder);

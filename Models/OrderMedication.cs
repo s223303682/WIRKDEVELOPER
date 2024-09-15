@@ -10,13 +10,21 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int OrderMedicationID { get; set; }
-        public int AnOrderID { get; set; }
+        [DisplayName("Order")]
+        public int? AnOrderID { get; set; }
+        [ForeignKey("AnOrderID")]
+        public virtual Order Order { get; set; }
+
+        [DisplayName("Medication Ordered")]
         public int PharmacyMedicationID { get; set; }
+        [ForeignKey("PharmacyMedicationID")]
+        public virtual PharmacyMedication PharmacyMedication { get; set; }
+
         public int Quantity { get; set; }
         public string Instructions { get; set; }
 
         // Navigation properties
-        public Order order { get; set; }
-        public PharmacyMedication PharmacyMedication { get; set; }
+        //public Order order { get; set; }
+        //public PharmacyMedication PharmacyMedication { get; set; }
     }
 }

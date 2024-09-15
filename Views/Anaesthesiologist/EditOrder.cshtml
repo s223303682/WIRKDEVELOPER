@@ -1,65 +1,97 @@
 ﻿@model WIRKDEVELOPER.Models.OrderCreate
-
 @{
-    Layout = "AnaesthesiologistLayout";
+    ViewData["Title"] = "Edit Order";
 }
 
-<h1>Edit Order</h1>
+<h2>Edit Order</h2>
 
 <form asp-action="EditOrder" method="post">
-    <input type="hidden" asp-for="AnOrderID" />
-
     <div class="form-group">
-        <label asp-for="Date" class="control-label"></label>
-        <input asp-for="Date" class="form-control" />
+        <label asp-for="Date"></label>
+        <input asp-for="Date" class="form-control" type="date" />
         <span asp-validation-for="Date" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="AddmID" class="control-label"></label>
-        <select asp-for="AddmID" class="form-control" asp-items="ViewBag.getPatient">
-            <!-- Options populated by ViewBag -->
-        </select>
+        <label asp-for="AddmID">Select Patient</label>
+        <select asp-for="AddmID" class="form-control" asp-items="ViewBag.getPatient"></select>
         <span asp-validation-for="AddmID" class="text-danger"></span>
     </div>
 
-    <div id="order-items">
-        <div class="order-item row">
-            <div class="form-group col-md-3">
-                <label asp-for="OrderItems[0].PharmacyMedicationID" class="control-label"></label>
-                <select asp-for="OrderItems[0].PharmacyMedicationID" class="form-control" asp-items="ViewBag.getMedication">
-                    <!-- Options populated by ViewBag -->
-                </select>
-                <span asp-validation-for="OrderItems[0].PharmacyMedicationID" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-md-2">
-                <label asp-for="OrderItems[0].Quantity" class="control-label"></label>
-                <input asp-for="OrderItems[0].Quantity" class="form-control" />
-                <span asp-validation-for="OrderItems[0].Quantity" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-md-4">
-                <label asp-for="OrderItems[0].Instructions" class="control-label"></label>
-                <input asp-for="OrderItems[0].Instructions" class="form-control" />
-                <span asp-validation-for="OrderItems[0].Instructions" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-
     <div class="form-group">
-        <h4><label asp-for="Urgent"></label></h4>
-        <select id="PurposeDropdown" asp-for="Urgent" class="form-control" required>
-            <option value="Select">Select</option>
-            <option value="YES" class="bg-danger">YES</option>
-            <option value="NO">NO</option>
-        </select>
+        <label asp-for="Urgent"></label>
+        <input asp-for="Urgent" class="form-control" />
         <span asp-validation-for="Urgent" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <input type="submit" value="Update Order" class="btn btn-primary" />
+        <label asp-for="Status"></label>
+        <input asp-for="Status" class="form-control" />
+        <span asp-validation-for="Status" class="text-danger"></span>
     </div>
+
+    <h4>Medications</h4>
+    <div id="medication-list">
+        @for (int i = 0; i < Model.OrderItems.Count; i++)
+        {
+            <div class="medication-item">
+                <div class="form-group">
+                    <label>Select Medication</label>
+                    <select asp-for="@Model.OrderItems[i].PharmacyMedicationID" class="form-control" asp-items="ViewBag.getMedication"></select>
+                    <span asp-validation-for="@Model.OrderItems[i].PharmacyMedicationID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.OrderItems[i].Quantity"></label>
+                    <input asp-for="@Model.OrderItems[i].Quantity" class="form-control" />
+                    <span asp-validation-for="@Model.OrderItems[i].Quantity" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.OrderItems[i].Instructions"></label>
+                    <input asp-for="@Model.OrderItems[i].Instructions" class="form-control" />
+                    <span asp-validation-for="@Model.OrderItems[i].Instructions" class="text-danger"></span>
+                </div>
+                <button type="button" class="btn btn-danger" onclick="removeMedication(this)">Remove Medication</button>
+            </div>
+        }
+    </div>
+
+    <button type="button" class="btn btn-secondary" onclick="addMedication()">Add Medication</button>
+
+    <button type="submit" class="btn btn-primary">Save</button>
 </form>
 
+@section Scripts {
+    <script>
+        function addMedication() {
+            var medicationList = document.getElementById("medication-list");
+            var itemCount = medicationList.getElementsByClassName("medication-item").length;
+            var newItem = `<div class="medication-item">
+                        <div class="form-group">
+                            <label>Select Medication</label>
+                            <select name="OrderItems[${itemCount}].PharmacyMedicationID" class="form-control">
+        @foreach (var med in (SelectList)ViewBag.getMedication)
+        {
+                                        <option value="@med.Value">@med.Text</option>
+        }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input name="OrderItems[${itemCount}].Quantity" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Instructions</label>
+                            <input name="OrderItems[${itemCount}].Instructions" class="form-control" />
+                        </div>
+                        <button type="button" class="btn btn-danger" onclick="removeMedication(this)">Remove Medication</button>
+                    </div>`;
+            medicationList.insertAdjacentHTML('beforeend', newItem);
+        }
+
+        function removeMedication(button) {
+            var item = button.parentElement;
+            item.remove();
+        }
+    </script>
+}
 

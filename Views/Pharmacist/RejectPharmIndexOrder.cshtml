@@ -56,11 +56,11 @@
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <h4><label asp-for="PharmacyMedicationID"></label></h4>
+                                           @*  <h4><label asp-for="PharmacyMedicationID"></label></h4>
                                             <select id="PurposeDropdown" asp-for="PharmacyMedicationID" class="form-control" asp-items="@ViewBag.getMedication" id="validationName" required>
                                                 <option selected disabled>--Select dosage--</option>
                                             </select>
-                                            <span asp-validation-for="PharmacyMedicationID" class="text-danger"></span>
+                                            <span asp-validation-for="PharmacyMedicationID" class="text-danger"></span> *@
                                            @*  <h4><label asp-for="Medicationordered"></label> *@</h4>@*These names come from our properties in the model *@
                                             @* <input asp-for="Medicationordered" class="form-control box mb-2" type="text" placeholder="select" readonly />
                                             <span asp-validation-for="Medicationordered" class="text-danger"></span> *@

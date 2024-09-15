@@ -95,15 +95,15 @@ namespace WIRKDEVELOPER.Controllers
                 .Include(o => o.Addm)                   // Include related Patient entity
                 /*.Include(o => o.OrderItems) */                 // Include related OrderItems
                 .Include(o => o.orderMedications)                  // Include related OrderItems
-                .Include(o => o.PharmacyMedication)         // Include related PharmacyMedication entity
+                .ThenInclude(o => o.PharmacyMedication)         // Include related PharmacyMedication entity
                 //.ToListAsync()
 
              .Select(item => new OrderCreate
               {
                  Date = item.Date,
                  AddmID = item.AddmID,
+                 patient = item.Addm,
                  Urgent = item.Urgent,
-                 PharmacyMedicationID = item.PharmacyMedicationID,             
                  Status = "Ordered",
                  OrderItems = item.orderMedications.Select(m => new OrderItems
                  {
@@ -156,8 +156,8 @@ namespace WIRKDEVELOPER.Controllers
             ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
 
-            if (ModelState.IsValid)
-            {
+            
+            
                 var order = new Order
                 {
                     Date = viewModel.Date,
@@ -182,10 +182,11 @@ namespace WIRKDEVELOPER.Controllers
                     _Context.ordermedication.Add(ordermedication);
                 }
 
+
                 _Context.SaveChanges();
 
                 return RedirectToAction("IndexOrders");
-            }
+            
             // If the model is invalid, return the same view with validation errors
             var medications = _Context.pharmacyMedications
                 .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
@@ -202,34 +203,36 @@ namespace WIRKDEVELOPER.Controllers
         }
         public async Task<IActionResult> EditOrder(int id)
         {
+            // Retrieve the order along with related medications and patient data
             var order = await _Context.order
-                .Include(o => o.PharmacyMedication)
-                .Include(o => o.Addm)
+                .Include(o => o.Addm)                      // Include the related patient
+                .Include(o => o.orderMedications)          // Include the related medications
+                .ThenInclude(om => om.PharmacyMedication)  // Include the PharmacyMedication for each OrderMedication
                 .FirstOrDefaultAsync(o => o.AnOrderID == id);
 
             if (order == null)
             {
-                return NotFound();
+                return NotFound(); // If the order does not exist
             }
 
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName", order.PharmacyMedicationID);
+            // Populate the ViewBag with dropdown data for medications and patients
             ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", order.AddmID);
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
 
+            // Prepare the view model
             var model = new OrderCreate
             {
+                AnOrderID = order.AnOrderID,
                 Date = (DateTime)order.Date,
                 AddmID = order.AddmID,
                 Urgent = order.Urgent,
-                OrderItems = new List<OrderItems>
+                Status = order.Status,
+                OrderItems = order.orderMedications.Select(m => new OrderItems
                 {
-                    new OrderItems
-                    {
-                         PharmacyMedicationID = order.PharmacyMedicationID,
-                        Quantity = (int)order.Quantity,
-                        Instructions = order.Instructions
-                    }
-                },
-                Medications = _Context.pharmacyMedications.ToList()
+                    PharmacyMedicationID = m.PharmacyMedicationID,
+                    Quantity = m.Quantity,
+                    Instructions = m.Instructions
+                }).ToList()
             };
 
             return View(model);
@@ -240,57 +243,90 @@ namespace WIRKDEVELOPER.Controllers
         {
             if (id != viewModel.AnOrderID)
             {
-                return NotFound();
+                return NotFound(); // Ensure the ID matches the viewModel
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var order = await _Context.order.FindAsync(id);
+                    // Retrieve the existing order
+                    var order = await _Context.order
+                        .Include(o => o.orderMedications)  // Include medications to update them
+                        .FirstOrDefaultAsync(o => o.AnOrderID == id);
+
                     if (order == null)
                     {
                         return NotFound();
                     }
 
-
+                    // Update the order details
                     order.Date = viewModel.Date;
                     order.AddmID = viewModel.AddmID;
                     order.Urgent = viewModel.Urgent;
-                    order.PharmacyMedicationID = viewModel.OrderItems[0].PharmacyMedicationID;
-                    order.Quantity = viewModel.OrderItems[0].Quantity;
-                    order.Instructions = viewModel.OrderItems[0].Instructions;
+                    order.Status = viewModel.Status;
 
-                    _Context.Update(order);
+                    // Clear existing medications
+                    _Context.ordermedication.RemoveRange(order.orderMedications);
+
+                    // Add updated medications
+                    foreach (var medication in viewModel.OrderItems)
+                    {
+                        var ordermedication = new OrderMedication
+                        {
+                            AnOrderID = order.AnOrderID,
+                            PharmacyMedicationID = medication.PharmacyMedicationID,
+                            Quantity = medication.Quantity,
+                            Instructions = medication.Instructions
+                        };
+                        _Context.ordermedication.Add(ordermedication);
+                    }
+
+                    // Save changes to the database
                     await _Context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!_Context.order.Any(e => e.AnOrderID == id))
                     {
-                        return NotFound();
+                        return NotFound(); // Handle concurrency issues
                     }
                     else
                     {
-                        throw;
+                        throw; // Re-throw if there’s another issue
                     }
                 }
                 return RedirectToAction("IndexOrders");
             }
 
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName", viewModel.OrderItems[0].PharmacyMedicationID);
+            // Repopulate the dropdowns if validation fails
             ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", viewModel.AddmID);
-            viewModel.Medications = _Context.pharmacyMedications.ToList();
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
 
-            return View(viewModel);
+            return View(viewModel); // Return the view with validation errors
         }
-
 
         public async Task<IActionResult> DeleteOrder(int id)
         {
+            // Retrieve the order by ID, including related patient data
             var order = await _Context.order
-                .Include(o => o.PharmacyMedication)
                 .Include(o => o.Addm)
+                .FirstOrDefaultAsync(o => o.AnOrderID == id);
+
+            if (order == null)
+            {
+                return NotFound(); // Return 404 if the order is not found
+            }
+
+            return View(order); // Display the order details on the delete confirmation page
+        }
+        [HttpPost, ActionName("DeleteOrder")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            // Retrieve the order along with its related medications
+            var order = await _Context.order
+                .Include(o => o.orderMedications)
                 .FirstOrDefaultAsync(o => o.AnOrderID == id);
 
             if (order == null)
@@ -298,22 +334,19 @@ namespace WIRKDEVELOPER.Controllers
                 return NotFound();
             }
 
-            return View(order);
-        }
-        [HttpPost, ActionName("DeleteOrder")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var order = await _Context.order.FindAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
+            // Remove related medications first
+            _Context.ordermedication.RemoveRange(order.orderMedications);
 
+            // Remove the order
             _Context.order.Remove(order);
+
+            // Save changes to the database
             await _Context.SaveChangesAsync();
+
             return RedirectToAction("IndexOrders");
         }
+
+
 
 
 
@@ -492,10 +525,10 @@ namespace WIRKDEVELOPER.Controllers
         {
 
 
-      
-            IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Addm);
-            return View(objList);
-            
+
+            //IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Addm);
+            //return View(objList);
+            return View();
         }
        
         public IActionResult CreateNoteForOrder(int ID)

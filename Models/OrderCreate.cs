@@ -43,11 +43,14 @@ namespace WIRKDEVELOPER.Models
         public string? Notes { get; set; }
 
 
-        public List<PharmacyMedication> Medications { get; set; }
+        // List of medications to be added dynamically
+        public List<OrderItems> OrderItems { get; set; } = new List<OrderItems>();
 
-        public List<OrderItems> OrderItems { get; set; } = new List<OrderItems>
-        {
-            new OrderItems() // Add one empty item initially
-        };
+        //public List<PharmacyMedication> Medications { get; set; }
+
+        //public List<OrderItems> OrderItems { get; set; } = new List<OrderItems>
+        //{
+        //    new OrderItems() 
+        //};
     }
 }
