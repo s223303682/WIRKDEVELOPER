@@ -22,6 +22,7 @@ namespace WIRKDEVELOPER.Models
         [ForeignKey("PharmacyMedicationID")]
         public int PharmacyMedicationID { get; set; }
         public virtual PharmacyMedication PharmacyMedication { get; set; }
+        //public string Email { get; set; }
 
         //public List<PharmacyMedication> MedicationEntries { get; set; } = new List<PharmacyMedication>();
 

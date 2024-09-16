@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Web.Helpers;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
+using WIRKDEVELOPER.Models.sendemail;
 
 
 namespace WIRKDEVELOPER.Controllers
@@ -13,10 +14,12 @@ namespace WIRKDEVELOPER.Controllers
     public class PharmacistController : Controller
     {
         private readonly ApplicationDBContext _Context;
+        private readonly EmailService _emailService;
 
-        public PharmacistController(ApplicationDBContext applicationDBContext)
+        public PharmacistController(ApplicationDBContext applicationDBContext, EmailService emailService)
         {
             _Context = applicationDBContext;
+            _emailService = emailService;
         }
         public IActionResult Dashboard()
         {
@@ -425,7 +428,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         //Stock management
         // Action to display the order form
-        public IActionResult OrderMedications()
+        public async Task<IActionResult> OrderMedications()
         {
             var viewModel = new MedicationOrderView
             {
@@ -452,28 +455,80 @@ namespace WIRKDEVELOPER.Controllers
 
             return View(viewModel);
         }
-
-        // Action to process the order
         [HttpPost]
-        public IActionResult OrderMedications(MedicationOrderView model)
+        public async Task<IActionResult> OrderMedications(MedicationOrderView model, string orderEmail)
         {
+            // Check if the provided email is not empty
+            if (string.IsNullOrWhiteSpace(orderEmail))
+            {
+                // Handle the case where email is not provided
+                ModelState.AddModelError("OrderEmail", "Email is required.");
+                return View(model); // Return to the view with error
+            }
+
+            // Add stock orders to the database
             foreach (var item in model.Medications.Where(m => m.IsSelected && m.OrderQuantity > 0))
             {
                 var stockOrder = new PharmStock
                 {
-                    PharmacyMedicationID= item.PharmacyMedicationId,
+                    PharmacyMedicationID = item.PharmacyMedicationId,
                     Date = DateTime.Now,
                     QuantityOrdered = item.OrderQuantity,
                     Status = "Ordered"
                 };
 
                 _Context.pharmStock.Add(stockOrder);
+
+                // Optionally, add to StockOrders if needed for email or other purposes
+                model.StockOrders.Add(new StockOrderView
+                {
+                    MedicationName = item.MedicationName,
+                    OrderQuantity = item.OrderQuantity,
+                    Status = stockOrder.Status,
+                    Date = stockOrder.Date,
+                    Email = orderEmail // Use the single email address for all orders
+                });
             }
 
-            _Context.SaveChanges();
+            await _Context.SaveChangesAsync();
+
+            // Send a single email for all stock orders
+            if (model.StockOrders.Any())
+            {
+                var firstOrder = model.StockOrders.First(); // Take the first order to get email address
+                string subject = "Booking Confirmation";
+                string body = $@"
+                    Dear Customer,
+
+                    Your booking is confirmed with the following details:
+
+                    {string.Join("\n", model.StockOrders.Select(o => $@"
+                        Medication Name: {o.MedicationName}
+                        Quantity Ordered: {o.OrderQuantity}
+                        Status: {o.Status}
+                        Date: {o.Date?.ToString("MMMM dd, yyyy")}
+                    "))}
+
+                    Thank you for your order!
+
+                    Best regards,
+                    Your Pharmacy";
+
+                try
+                {
+                    await _emailService.SendEmailAsync(orderEmail, subject, body);
+                }
+                catch (Exception ex)
+                {
+                    // Handle exception (e.g., log it)
+                    // Example: _logger.LogError(ex, "Failed to send email to {0}.", orderEmail);
+                }
+            }
 
             return RedirectToAction("IndexStock");
         }
+
+
 
         public IActionResult IndexRecieved()
         {

@@ -1,12 +1,19 @@
 ﻿@model WIRKDEVELOPER.Models.MedicationOrderView
-@{
 
+@{
     Layout = "~/Views/Shared/Pharmacy.cshtml";
 }
+
 <h1>Order Medications</h1>
 
 <!-- Form to place new orders -->
 <form asp-action="OrderMedications" asp-controller="Pharmacist" method="post">
+    <!-- Email input for the order -->
+    <div class="form-group">
+        <label for="orderEmail">Email:</label>
+        <input type="email" id="orderEmail" name="OrderEmail" class="form-control" required />
+    </div>
+
     <table class="table table-sm table-hover">
         <thead class="table-secondary">
             <tr>
@@ -15,6 +22,7 @@
                 <th>Quantity On Hand</th>
                 <th>Reorder Level</th>
                 <th>Order Quantity</th>
+                <th>Email</th>
             </tr>
         </thead>
         <tbody>
@@ -29,38 +37,21 @@
                     <td>@Model.Medications[i].QuantityOnHand</td>
                     <td>@Model.Medications[i].ReorderLevel</td>
                     <td>
-                        <input type="number" name="Medications[@i].OrderQuantity" value="@Model.Medications[i].OrderQuantity" />
+                        <input type="number" name="Medications[@i].OrderQuantity" value="@Model.Medications[i].OrderQuantity" min="0" />
+                    </td>
+                    <td>
+                        <input type="hidden" name="Medications[@i].Email" value="N/A" />
                     </td>
                     <input type="hidden" name="Medications[@i].PharmacyMedicationId" value="@Model.Medications[i].PharmacyMedicationId" />
                 </tr>
             }
         </tbody>
     </table>
-    <button type="submit">Place Order</button>   <button asp-controller="Pharmacist" asp-action="IndexStock" ><i class="bi bi-arrow-repeat"></i>StockList</button>
+
+    <button type="submit">Place Order</button>
+    <a asp-controller="Pharmacist" asp-action="IndexStock" class="btn btn-secondary">
+        <i class="bi bi-arrow-repeat"></i> Stock List
+    </a>
 </form>
 
-@* !-- Table to display existing orders -->
-<h2>Existing Orders</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Medication Name</th>
-            <th>Order Quantity</th>
-            <th>Date</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var order in Model.StockOrders)
-        {
-            <tr>
-                <td>@order.MedicationName</td>
-                <td>@order.OrderQuantity</td>
-                <td width="20%">@order.</td>
-                <td width="20%">@pharmstock.PharmacyMedication.stocklevel </td>
-                <td>@order.Date</td>
-                <td>@order.Status</td>
-            </tr>
-        }
-    </tbody>
-</table> *@
+
