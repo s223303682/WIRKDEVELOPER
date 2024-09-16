@@ -311,6 +311,7 @@ namespace WIRKDEVELOPER.Controllers
         public IActionResult CreateBookingPatient()
         {
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.operationTheatres, "AnaesthesiologistID", "ApplicationUser");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
            
             return View();
@@ -321,13 +322,23 @@ namespace WIRKDEVELOPER.Controllers
         {
                 _Context.bookingNewPatients.Add(bookingNewPatient);
                 ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
-                ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.operationTheatres, "AnaesthesiologistID", "ApplicationUser");
+            ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
 
                 _Context.SaveChanges();
                 string subject = "Booking Confirmation";
-                string body = $"Dear {bookingNewPatient.BookingNewPatientName}, your booking is confirmed for {bookingNewPatient.Date}.";
+            string body = $@"
+Hello {bookingNewPatient.BookingNewPatientName},
 
-                await _emailService.SendEmailAsync(bookingNewPatient.Email, subject, body);
+We are pleased to confirm your booking for {bookingNewPatient.Date}.
+
+Thank you for choosing our services. If you have any questions or need further assistance, feel free to reach out.
+
+Best regards,
+The [St Mary's] Team
+";
+
+            await _emailService.SendEmailAsync(bookingNewPatient.Email, subject, body);
                 return RedirectToAction("BookingPatientList");
             
         }
@@ -395,10 +406,11 @@ namespace WIRKDEVELOPER.Controllers
                     Date = b.Date,
                     Time = b.Time,
                     OperationTheatreName = b.OperationTheatre != null ? b.OperationTheatre.OperationTheatreName : null,
+                    AnaestesiologistName = b.Anaesthesiologist !=null ? b.Anaesthesiologist.ApplicationUser.FirstName:null,
                     TreatmentCodes = string.IsNullOrEmpty(b.TreatmentCodeIDs)
                         ? new List<string>()
-                        : b.TreatmentCodeIDs.Split(splitCharacters, StringSplitOptions.RemoveEmptyEntries).ToList(),
-                    Anaestesiologist = b.Anaestesiologist
+                        : b.TreatmentCodeIDs.Split(splitCharacters, StringSplitOptions.RemoveEmptyEntries).ToList()
+                   // Anaestesiologist = b.Anaestesiologist
                 })
                 .ToList();
 
@@ -414,6 +426,7 @@ namespace WIRKDEVELOPER.Controllers
         {
             // Populate dropdowns for the view
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.operationTheatres, "AnaesthesiologistID", "ApplicationUser");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
 
             // Retrieve Addm records along with their associated Patient
@@ -441,7 +454,7 @@ namespace WIRKDEVELOPER.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateBooking(Booking booking, string[] TreatmentCodeIDs)
+        public async Task<IActionResult>CreateBooking(Booking booking, string[] TreatmentCodeIDs)
         {
             if (ModelState.IsValid)
             {
@@ -452,6 +465,19 @@ namespace WIRKDEVELOPER.Controllers
 
                     _Context.bookings.Add(booking);
                     _Context.SaveChanges();
+                    string subject = "Booking Confirmation";
+                    string body = $@"
+Hello {booking.Name},
+
+We are pleased to confirm your booking for {booking.Date}.
+
+Thank you for choosing our services. If you have any questions or need further assistance, feel free to reach out.
+
+Best regards,
+The [St Mary's] Team
+";
+
+                    await _emailService.SendEmailAsync(booking.EmailAddress, subject, body);
                     return RedirectToAction("BookingList");
                 }
                 catch (Exception ex)
@@ -462,6 +488,7 @@ namespace WIRKDEVELOPER.Controllers
 
             // Re-populate dropdowns in case of validation errors
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName", booking.OperationTheatreID);
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.operationTheatres, "AnaesthesiologistID", "ApplicationUser",booking.AnaesthesiologistID);
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE", booking.TreatmentCodeIDs);
             var patients = _Context.addm.Include(a => a.Patient)
                                           .Select(a => new { AddmID = a.AddmID, PatientName = a.Patient.PatientName })
