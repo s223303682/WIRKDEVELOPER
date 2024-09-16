@@ -74,9 +74,11 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="Anaestesiologist"></label>
-                    <input type="text" asp-for="Anaestesiologist" class="form-control" required />
-                    <span asp-validation-for="Anaestesiologist" class="text-danger"></span>
+                    <label asp-for="AnaesthesiologistID"></label>
+                    <select asp-for="AnaesthesiologistID" class="form-control" asp-items="@ViewBag.getAnaesthesiologist" required>
+                        <option selected disabled>--select Anaesthesiologist</option>
+                    </select>
+                    <span asp-validation-for="AnaesthesiologistID" class="text-danger"></span>
                 </div>
             </div>
         

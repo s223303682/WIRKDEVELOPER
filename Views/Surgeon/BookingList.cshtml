@@ -63,7 +63,7 @@
                                         <span class="text-muted">No codes</span>
                                     }
                                 </td>
-                                <td>@booking.Anaestesiologist</td>
+                                <td>@booking.AnaestesiologistName</td>
                                 <td>
                                     <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingID" class="btn btn-warning">Update</a>
                                 </td>
@@ -76,7 +76,7 @@
                                         <input type="hidden" name="name" value="@booking.PatientName" />
                                         <input type="hidden" name="gender" value="@booking.Gender" />
                                         <input type="hidden" name="email" value="@booking.EmailAddress" />
-                                        <button type="submit" class="btn btn-success">Add</button>
+                                        <button type="submit" class="btn btn-success">Click</button>
                                     </form>
                                 </td>
                             </tr>
