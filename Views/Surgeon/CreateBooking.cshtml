@@ -25,26 +25,26 @@
     </div>
     <form method="post" asp-action="CreateBooking" class="bg-white bg-opacity-60 border border-3 border-dark">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-       
-            <!-- Patient and Gender Fields -->
-            <div class="row">
-                <div class="form-group">
-                    <label asp-for="Name" for="Name">Patient Name</label>
-                <input asp-for="Name" type="text" id="Name" name="Name" class="form-control" value="@Model.Name" readonly />
-                </div>
-              @*   <div class="form-group">
-                    <label asp-for='Surname' for="Surname">Patient Surname</label>
-                <input asp-for='Surname' type="text" id="Surname" name="Surname" class="form-control" value="@Model.Surname" readonly />
-                </div> *@
-              
-                <div class="form-group">
-                    <label asp-for="EmailAddress" for="EmailAddress">Email Address</label>
-                <input asp-for="EmailAddress" type="email" id="EmailAddress" name="EmailAddress" class="form-control" value="@Model.EmailAddress" readonly />
-                </div>
-            </div>
 
-       
-       <div class="row">
+        <!-- Patient and Gender Fields -->
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="Name" for="Name">Patient Name</label>
+                <input asp-for="Name" type="text" id="Name" name="Name" class="form-control" value="@Model.Name" readonly />
+            </div>
+            @*   <div class="form-group">
+            <label asp-for='Surname' for="Surname">Patient Surname</label>
+            <input asp-for='Surname' type="text" id="Surname" name="Surname" class="form-control" value="@Model.Surname" readonly />
+            </div> *@
+
+            <div class="form-group">
+                <label asp-for="EmailAddress" for="EmailAddress">Email Address</label>
+                <input asp-for="EmailAddress" type="email" id="EmailAddress" name="EmailAddress" class="form-control" value="@Model.EmailAddress" readonly />
+            </div>
+        </div>
+
+
+        <div class="row">
             <div class="col">
                 <div class="form-group">
                     <label asp-for="Date"></label>
@@ -59,10 +59,10 @@
                     <span asp-validation-for="Time" class="text-danger"></span>
                 </div>
             </div>
-       </div>
+        </div>
 
         <!-- Operation Theatre and Anaestesiologist Fields -->
-      <div class="row">
+        <div class="row">
             <div class="col">
                 <div class="form-group">
                     <label asp-for="OperationTheatreID"></label>
@@ -74,16 +74,14 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="AnaesthesiologistID"></label>
-                    <select asp-for="AnaesthesiologistID" class="form-control" asp-items="@ViewBag.getAnaesthesiologist" required>
-                        <option selected disabled>--select Anaesthesiologist</option>
-                    </select>
-                    <span asp-validation-for="AnaesthesiologistID" class="text-danger"></span>
+                    <label asp-for="Anaestesiologist"></label>
+                    <input type="text" asp-for="Anaestesiologist" class="form-control" required />
+                    <span asp-validation-for="Anaestesiologist" class="text-danger"></span>
                 </div>
             </div>
-        
 
-        <!-- Treatment Codes Section -->
+
+            <!-- Treatment Codes Section -->
             <div class="col" id="treatmentCodesContainer">
                 <!-- Template for treatment code items -->
                 <div class="form-group treatmentCodeItem">
@@ -103,7 +101,7 @@
             <div class="col-12">
                 <button type="button" id="addTreatmentCode" class="btn btn-success mt-2">+ Add Another Treatment Code</button>
             </div>
-     </div>
+        </div>
 
         <div class="col">
             <input type="submit" value="Create" class="btn btn-primary" />
@@ -115,49 +113,52 @@
         <br>
         <div class="row">
             @* <div class="col">
-                <div class="bg-white bg-opacity-25">
-                    <a asp-controller="Surgeon" asp-action="Dashboard">Back</a>
-                </div>
+            <div class="bg-white bg-opacity-25">
+            <a asp-controller="Surgeon" asp-action="Dashboard">Back</a>
+            </div>
             </div> *@
-            
+
         </div>
     </form>
 
     <!-- JavaScript to Add More Treatment Codes -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Function to handle adding a new treatment code item
-        document.getElementById('addTreatmentCode').addEventListener('click', function () {
-            var container = document.getElementById('treatmentCodesContainer');
-            var template = container.querySelector('.treatmentCodeItem').cloneNode(true);
-            
-            // Clear or reset any values as needed
-            template.querySelector('select').value = ''; // Optional: clear selection
-            template.querySelector('select').name = "TreatmentCodeIDs"; 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to handle adding a new treatment code item
+            document.getElementById('addTreatmentCode').addEventListener('click', function () {
+                var container = document.getElementById('treatmentCodesContainer');
+                var template = container.querySelector('.treatmentCodeItem').cloneNode(true);
 
-            // Attach event listener to the new "Remove" button
-            template.querySelector('.removeTreatmentCode').addEventListener('click', function () {
-                container.removeChild(template);
+                // Clear or reset any values as needed
+                template.querySelector('select').value = ''; // Optional: clear selection
+                template.querySelector('select').name = "TreatmentCodeIDs";
+
+                // Attach event listener to the new "Remove" button
+                template.querySelector('.removeTreatmentCode').addEventListener('click', function () {
+                    container.removeChild(template);
+                });
+
+                
+                // Append the new item to the container
+                container.appendChild(template);
             });
 
-            // Append the new item to the container
-            container.appendChild(template);
-        });
-
-        // Event delegation to handle remove button clicks
-        document.getElementById('treatmentCodesContainer').addEventListener('click', function (event) {
-            if (event.target.classList.contains('removeTreatmentCode')) {
-                var itemToRemove = event.target.closest('.treatmentCodeItem');
-                if (itemToRemove) {
-                    itemToRemove.parentNode.removeChild(itemToRemove);
+            // Event delegation to handle remove button clicks
+            document.getElementById('treatmentCodesContainer').addEventListener('click', function (event) {
+                if (event.target.classList.contains('removeTreatmentCode')) {
+                    var itemToRemove = event.target.closest('.treatmentCodeItem');
+                    if (itemToRemove) {
+                        itemToRemove.parentNode.removeChild(itemToRemove);
+                    }
                 }
-            }
+            });
         });
-    });
-</script>
+    </script>
 
 
 </body>
 </html>
+
+
 
 

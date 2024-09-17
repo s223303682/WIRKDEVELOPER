@@ -51,11 +51,11 @@
                         <td>@booking.Time.ToString(@"hh\:mm")</td>
                         <td>@booking.OperationTheatreID</td>
                         @* <td>
-                            @foreach (var code in booking.TreatmentCodeID.Split(','))
-                            {
-                                <div>@code</div>
-                            }
-                        </td> *@
+                @foreach (var code in booking.TreatmentCodeID.Split(','))
+                {
+                <div>@code</div>
+                }
+                </td> *@
                         <td>@booking.Anaesthesiologist</td>
                         <td>
                             <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingNewPatientID" class="btn btn-blue-300 mx-1">Update</a>
@@ -69,7 +69,7 @@
                                 <input type="hidden" name="name" value="@booking.BookingNewPatientName" />
                                 <input type="hidden" name="gender" value="@booking.Gender" />
                                 <input type="hidden" name="email" value="@booking.Email" />
-                                <button type="submit" class="btn btn-blue-300 mx-1">Click</button>
+                                <button type="submit" class="btn btn-blue-300 mx-1">Add</button>
                             </form>
                         </td>
                     </tr>
@@ -83,4 +83,3 @@
     }
 </body>
 </html>
-

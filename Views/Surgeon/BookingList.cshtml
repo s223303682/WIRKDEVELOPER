@@ -63,7 +63,7 @@
                                         <span class="text-muted">No codes</span>
                                     }
                                 </td>
-                                <td>@booking.AnaestesiologistName</td>
+                                <td>@booking.Anaestesiologist</td>
                                 <td>
                                     <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingID" class="btn btn-warning">Update</a>
                                 </td>
@@ -76,7 +76,7 @@
                                         <input type="hidden" name="name" value="@booking.PatientName" />
                                         <input type="hidden" name="gender" value="@booking.Gender" />
                                         <input type="hidden" name="email" value="@booking.EmailAddress" />
-                                        <button type="submit" class="btn btn-success">Click</button>
+                                        <button type="submit" class="btn btn-success">Add</button>
                                     </form>
                                 </td>
                             </tr>
@@ -90,8 +90,10 @@
             }
         </form>
     </div>
-  @*   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    @*   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> *@
 </body>
 </html>
+
+

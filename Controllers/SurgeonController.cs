@@ -85,83 +85,34 @@ namespace WIRKDEVELOPER.Controllers
 
 
 
-
+        // GET: Prescription/Create
+        // GET: Prescription/Create
         public IActionResult CreatePrescription(int bookingID, string name, string gender, string email)
         {
-            // Fetch the booking details and retrieve patient data
-            var booking = _Context.bookings
-                .Where(b => b.BookingID == bookingID)
-                .Select(b => new
-                {
-                    b.Addm.Patient.PatientName,
-                    b.Addm.Patient.Gender,
-                    b.EmailAddress,
-                    b.Addm.PatientID
-                })
-                .FirstOrDefault();
-
-            if (booking == null)
-            {
-                return NotFound(); // Handle case where booking doesn't exist
-            }
-
-            // Get patient's known allergies using PatientID
-            var patientAllergies = _Context.addm
-                .Where(a => a.PatientID == booking.PatientID)
-                .Select(a => a.AnAllergies.Active.ActiveName)
+            var medications = _Context.pharmacyMedications
+                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
                 .ToList();
 
-            // Get available medications with active ingredients
-            var medications = _Context.PharmacyMedicationIngredients
-                .Select(pm => new
-                {
-                    pm.PharmacyMedicationIngredientId,
-                    pm.PharmacyMedication.PharmacyMedicationName,
-                    pm.Active.ActiveName
-                })
-                .ToList();
-
-            // Serialize medications and allergies to JSON
+            // Serialize medications to JSON
             ViewBag.Medications = JsonConvert.SerializeObject(medications);
-            ViewBag.PatientAllergies = JsonConvert.SerializeObject(patientAllergies);
 
-            // Create the prescription view model
             var model = new PrescriptionViewModel
             {
-                Name = booking.PatientName,
-                Gender = booking.Gender,
-                Email = booking.EmailAddress
+                Name = name,
+                Gender = gender,
+                Email = email
+                // Initialize other fields as needed
             };
 
             return View(model);
         }
 
+        // POST: Prescription/Create
         [HttpPost]
-        public IActionResult CreatePrescription(PrescriptionViewModel model, int bookingID)
+        public IActionResult CreatePrescription(PrescriptionViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Fetch the PatientID from the booking table using bookingID
-                var patientID = _Context.bookings
-                    .Where(b => b.BookingID == bookingID)
-                    .Select(b => b.AddmID)
-                    .FirstOrDefault();
-
-                if (patientID == 0)
-                {
-                    ModelState.AddModelError("", "Invalid booking ID.");
-                    // Return the same view with errors if patientID is not found
-                    return View(model);
-                }
-
-                // Get patient's known allergies using PatientID
-                var patientAllergies = _Context.addm
-                    .Where(a => a.PatientID == patientID) // Use the fetched PatientID
-                    .Select(a => a.AnAllergies.Active.ActiveName)
-                    .ToList();
-
-                // Check for allergies in medications (similar to previous logic)
-
                 // Create a new Prescription entity
                 var prescription = new Prescription
                 {
@@ -171,8 +122,7 @@ namespace WIRKDEVELOPER.Controllers
                     Date = model.Date,
                     Prescriber = model.Prescriber,
                     Urgent = model.Urgent,
-                    Status = model.Status,
-                    IgnoreReason = model.IgnoreReason // Add the reason for ignoring allergies if applicable
+                    Status = model.Status
                 };
 
                 // Add the prescription to the database
@@ -202,29 +152,9 @@ namespace WIRKDEVELOPER.Controllers
                 .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
                 .ToList();
             ViewBag.Medications = JsonConvert.SerializeObject(medications);
-
-            // Fetch the PatientID again in case of validation errors
-            var patientIDForErrors = _Context.bookings
-                .Where(b => b.BookingID == bookingID)
-                .Select(b => b.AddmID)
-                .FirstOrDefault();
-
-            if (patientIDForErrors != 0)
-            {
-                var patientAllergies = _Context.addm
-                    .Where(a => a.PatientID == patientIDForErrors)
-                    .Select(a => a.AnAllergies.Active.ActiveName)
-                    .ToList();
-                ViewBag.PatientAllergies = JsonConvert.SerializeObject(patientAllergies);
-            }
-
             return View(model);
         }
 
-
-
-        // GET: Prescription/Update/5
-        // GET: Prescription/Update/5
         public IActionResult UpdatePrescription(int id)
         {
             // Fetch the existing prescription by ID
@@ -297,12 +227,11 @@ namespace WIRKDEVELOPER.Controllers
             return View(model);
         }
 
-
         public IActionResult BookingPatientList()
         {
             IEnumerable<BookingNewPatient> list = _Context.bookingNewPatients
                 .Include(a => a.OperationTheatre)
-               
+
                 .Include(s => s.treatmentCode);
 
 
@@ -311,38 +240,26 @@ namespace WIRKDEVELOPER.Controllers
         public IActionResult CreateBookingPatient()
         {
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.operationTheatres, "AnaesthesiologistID", "ApplicationUser");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-           
+
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateBookingPatient(BookingNewPatient bookingNewPatient)
         {
-                _Context.bookingNewPatients.Add(bookingNewPatient);
-                ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.operationTheatres, "AnaesthesiologistID", "ApplicationUser");
+            _Context.bookingNewPatients.Add(bookingNewPatient);
+            ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
 
-                _Context.SaveChanges();
-                string subject = "Booking Confirmation";
-            string body = $@"
-Hello {bookingNewPatient.BookingNewPatientName},
-
-We are pleased to confirm your booking for {bookingNewPatient.Date}.
-
-Thank you for choosing our services. If you have any questions or need further assistance, feel free to reach out.
-
-Best regards,
-The [St Mary's] Team
-";
+            _Context.SaveChanges();
+            string subject = "Booking Confirmation";
+            string body = $"Dear {bookingNewPatient.BookingNewPatientName}, your booking is confirmed for {bookingNewPatient.Date}.";
 
             await _emailService.SendEmailAsync(bookingNewPatient.Email, subject, body);
-                return RedirectToAction("BookingPatientList");
-            
+            return RedirectToAction("BookingPatientList");
+
         }
-        //return View(bookingNew);
 
 
 
@@ -406,11 +323,10 @@ The [St Mary's] Team
                     Date = b.Date,
                     Time = b.Time,
                     OperationTheatreName = b.OperationTheatre != null ? b.OperationTheatre.OperationTheatreName : null,
-                    AnaestesiologistName = b.Anaesthesiologist !=null ? b.Anaesthesiologist.ApplicationUser.FirstName:null,
                     TreatmentCodes = string.IsNullOrEmpty(b.TreatmentCodeIDs)
                         ? new List<string>()
-                        : b.TreatmentCodeIDs.Split(splitCharacters, StringSplitOptions.RemoveEmptyEntries).ToList()
-                   // Anaestesiologist = b.Anaestesiologist
+                        : b.TreatmentCodeIDs.Split(splitCharacters, StringSplitOptions.RemoveEmptyEntries).ToList(),
+                    Anaestesiologist = b.Anaestesiologist
                 })
                 .ToList();
 
@@ -419,14 +335,10 @@ The [St Mary's] Team
 
 
 
-
-
-
         public IActionResult CreateBooking(int? AddmID, string? name, string? email)
         {
             // Populate dropdowns for the view
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.operationTheatres, "AnaesthesiologistID", "ApplicationUser");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
 
             // Retrieve Addm records along with their associated Patient
@@ -454,7 +366,7 @@ The [St Mary's] Team
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult>CreateBooking(Booking booking, string[] TreatmentCodeIDs)
+        public IActionResult CreateBooking(Booking booking, string[] TreatmentCodeIDs)
         {
             if (ModelState.IsValid)
             {
@@ -465,19 +377,6 @@ The [St Mary's] Team
 
                     _Context.bookings.Add(booking);
                     _Context.SaveChanges();
-                    string subject = "Booking Confirmation";
-                    string body = $@"
-Hello {booking.Name},
-
-We are pleased to confirm your booking for {booking.Date}.
-
-Thank you for choosing our services. If you have any questions or need further assistance, feel free to reach out.
-
-Best regards,
-The [St Mary's] Team
-";
-
-                    await _emailService.SendEmailAsync(booking.EmailAddress, subject, body);
                     return RedirectToAction("BookingList");
                 }
                 catch (Exception ex)
@@ -488,7 +387,6 @@ The [St Mary's] Team
 
             // Re-populate dropdowns in case of validation errors
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName", booking.OperationTheatreID);
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.operationTheatres, "AnaesthesiologistID", "ApplicationUser",booking.AnaesthesiologistID);
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE", booking.TreatmentCodeIDs);
             var patients = _Context.addm.Include(a => a.Patient)
                                           .Select(a => new { AddmID = a.AddmID, PatientName = a.Patient.PatientName })
