@@ -23,33 +23,68 @@
     <tbody>
         @foreach (var prescription in Model)
         {
-            <tr>
-                <td>@prescription.Name</td>
-                <td>@prescription.surname</td>
-                <td>@prescription.Gender</td>
-                <td>@prescription.Email</td>
-                <td>@prescription.Date.ToString("d")</td>
-                <td>
-                    @if (prescription.Medications != null && prescription.Medications.Any())
-                    {
-                        <ul>
-                            @foreach (var medication in prescription.Medications)
-                            {
-                                <li>
-                                    @medication.PharmacyMedicationID - Quantity: @medication.Quantity, Instructions: @medication.Instructions
-                                </li>
-                            }
-                        </ul>
-                    }
-                </td>
-                <td>@prescription.Prescriber</td>
-                <td>@prescription.Urgent</td>
-                <td>@prescription.Status</td>
-                <td>
-                    <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionViewModelID" class="btn btn-warning">Update</a>
+            if (prescription.Urgent.ToLower() == "yes")
+            {
+                <tr scope="row" style="background-color:red;">
+                    <td>@prescription.Name</td>
+                    <td>@prescription.surname</td>
+                    <td>@prescription.Gender</td>
+                    <td>@prescription.Email</td>
+                    <td>@prescription.Date.ToString("d")</td>
+                    <td>
+                        @if (prescription.Medications != null && prescription.Medications.Any())
+                        {
+                            <ul>
+                                @foreach (var medication in prescription.Medications)
+                                {
+                                    <li>
+                                        @medication.PharmacyMedicationID - Quantity: @medication.Quantity, Instructions: @medication.Instructions
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </td>
+                    <td>@prescription.Prescriber</td>
+                    <td>@prescription.Urgent</td>
+                    <td>@prescription.Status</td>
+                    <td>
+                       @*  <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionViewModelID" class="btn btn-warning">Update</a> *@
+                        <a class="btn btn-info" href="@Url.Action("UpdatePrescription","Pharmacist",new{id = prescription.PrescriptionViewModelID})">Update</a>
 
-                </td>
-            </tr>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr scope="row">
+                    <td>@prescription.Name</td>
+                    <td>@prescription.surname</td>
+                    <td>@prescription.Gender</td>
+                    <td>@prescription.Email</td>
+                    <td>@prescription.Date.ToString("d")</td>
+                    <td>
+                        @if (prescription.Medications != null && prescription.Medications.Any())
+                        {
+                            <ul>
+                                @foreach (var medication in prescription.Medications)
+                                {
+                                    <li>
+                                        @medication.PharmacyMedicationID - Quantity: @medication.Quantity, Instructions: @medication.Instructions
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </td>
+                    <td>@prescription.Prescriber</td>
+                    <td>@prescription.Urgent</td>
+                    <td>@prescription.Status</td>
+                    <td>
+                        <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionViewModelID" class="btn btn-warning">Update</a>
+
+                    </td>
+                </tr>
+            }
+
         }
     </tbody>
 </table>
