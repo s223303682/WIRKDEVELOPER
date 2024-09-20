@@ -312,7 +312,7 @@ namespace WIRKDEVELOPER.Controllers
             char[] splitCharacters = new[] { ',' };
 
             var bookings = _Context.bookings
-                .Include(b => b.Addm)
+               
                 .Include(b => b.OperationTheatre) // Ensure related entities are included
                 .Select(b => new BookingViewModel
                 {
@@ -335,7 +335,7 @@ namespace WIRKDEVELOPER.Controllers
 
 
 
-        public IActionResult CreateBooking(int? AddmID, string? name, string? email)
+        public IActionResult CreateBooking( string? name, string? email)
         {
             // Populate dropdowns for the view
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
@@ -355,7 +355,7 @@ namespace WIRKDEVELOPER.Controllers
             // Create a new Booking object with pre-filled fields if provided
             var bookingModel = new Booking
             {
-                AddmID = AddmID,
+              
                 Name = name,
                 //Surname = surname,
                 EmailAddress = email
@@ -368,22 +368,13 @@ namespace WIRKDEVELOPER.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateBooking(Booking booking, string[] TreatmentCodeIDs)
         {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    // Convert the array of TreatmentCodeIDs to a comma-separated string
+           
                     booking.TreatmentCodeIDs = string.Join(",", TreatmentCodeIDs);
 
                     _Context.bookings.Add(booking);
                     _Context.SaveChanges();
                     return RedirectToAction("BookingList");
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", "An error occurred while creating the booking. Please try again.");
-                }
-            }
+             
 
             // Re-populate dropdowns in case of validation errors
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName", booking.OperationTheatreID);

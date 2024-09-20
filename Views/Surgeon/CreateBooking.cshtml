@@ -24,6 +24,7 @@
         </div>
     </div>
     <form method="post" asp-action="CreateBooking" class="bg-white bg-opacity-60 border border-3 border-dark">
+        @Html.AntiForgeryToken()
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <!-- Patient and Gender Fields -->
@@ -102,22 +103,9 @@
                 <button type="button" id="addTreatmentCode" class="btn btn-success mt-2">+ Add Another Treatment Code</button>
             </div>
         </div>
-
         <div class="col">
-            <input type="submit" value="Create" class="btn btn-primary" />
+            <input type="submit" value="Add" class="btn btn-primary" />
         </div>
-
-
-
-        <!-- Submission Section -->
-        <br>
-        <div class="row">
-            @* <div class="col">
-            <div class="bg-white bg-opacity-25">
-            <a asp-controller="Surgeon" asp-action="Dashboard">Back</a>
-            </div>
-            </div> *@
-
         </div>
     </form>
 

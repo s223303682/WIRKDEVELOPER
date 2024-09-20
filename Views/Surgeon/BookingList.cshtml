@@ -74,6 +74,7 @@
                                     <form asp-controller="Surgeon" asp-action="CreatePrescription" method="get" class="d-inline">
                                         <input type="hidden" name="bookingID" value="@booking.BookingID" />
                                         <input type="hidden" name="name" value="@booking.PatientName" />
+   
                                         <input type="hidden" name="gender" value="@booking.Gender" />
                                         <input type="hidden" name="email" value="@booking.EmailAddress" />
                                         <button type="submit" class="btn btn-success">Add</button>
