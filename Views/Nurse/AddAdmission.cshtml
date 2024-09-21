@@ -1,4 +1,4 @@
-﻿@model WIRKDEVELOPER.Models.Patient;
+﻿@model WIRKDEVELOPER.Models.Admission
 @{
     Layout = "~/Views/Shared/_NurseLayout.cshtml";
 }
@@ -14,7 +14,7 @@
     </div>
     <div class=" bg-info bg-opacity-50 text-center text-white rounded-1">Patient Admissions</div>
 
-    <form method="post" asp-action="AddAdmission"  id="newForm">
+    <form asp-action="AddAdmission" method="post">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
@@ -29,7 +29,7 @@
                     <span asp-validation-for="PatientName" class=" text-danger"></span>
                 </div>
             </div>
-            <div class="col">
+           @*  <div class="col">
                 <div class="form-group">
                     <label asp-for="PatientSurname"></label>
                     <div>
@@ -38,28 +38,28 @@
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="PatientSurname" class=" text-danger"></span>
                 </div>
-            </div>
+            </div> *@
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="EmailAddress"></label>
+                    <label asp-for="PatientEmail"></label>
                     <div>
-                        <input type="email" asp-for="EmailAddress" class="form-control" id="InvalidName" required />
+                        <input type="email" asp-for="PatientEmail" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
-                    <span asp-validation-for="EmailAddress" class=" text-danger"></span>
+                    <span asp-validation-for="PatientEmail" class=" text-danger"></span>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="Gender"></label>
-                    <select id="Dropdown" asp-for="Gender" class=" form-control" id="validation" required>
+                    <label asp-for="PatientGender"></label>
+                    <select id="Dropdown" asp-for="PatientGender" class=" form-control" id="validation" required>
                         <option value="" disabled>--select gender</option>
                         <option value="Female">Female</option>
                         <option value="Male">Male</option>
 
                     </select>
                     <div class="invalid-feedback"></div>
-                    <span asp-validation-for="Gender" class=" text-danger"></span>
+                    <span asp-validation-for="PatientGender" class=" text-danger"></span>
                 </div>
             </div>
             <div class="col">
@@ -108,8 +108,8 @@
                 </select>
             </div>
             <div class="col">
-                <label asp-for="surbub" for="city">Surbub:</label>
-                <select asp-for="surbub" id="city" name="city" class="form-control">
+                <label asp-for="Surbub" for="city">Surbub:</label>
+                <select asp-for="Surbub" id="city" name="city" class="form-control">
                     <option value="">Select City</option>
                 </select>
             </div>
@@ -122,26 +122,35 @@
 
 
         </div>
-        <div class="row">
 
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="contactNumber"></label>
+                    <label asp-for="PatientPhone"></label>
                     <div>
-                        <input type="text" asp-for="contactNumber" class="form-control" id="InvalidName" required />
+                        <input type="text" asp-for="PatientPhone" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
-                    <span asp-validation-for="contactNumber" class=" text-danger"></span>
+                    <span asp-validation-for="PatientPhone" class=" text-danger"></span>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="wardName"></label>
+                    <label asp-for="WardName"></label>
                     <div>
-                        <input type="text" asp-for="wardName" class="form-control" id="InvalidName" required />
+                        <input type="text" asp-for="WardName" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
-                    <span asp-validation-for="wardName" class=" text-danger"></span>
+                    <span asp-validation-for="WardName" class=" text-danger"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="BedNumber"></label>
+                    <div>
+                        <input type="text" asp-for="BedNumber" class="form-control" id="InvalidName" required />
+                    </div>
+                    <div class="invalid-feedback"></div>
+                    <span asp-validation-for="BedNumber" class=" text-danger"></span>
                 </div>
             </div>
             <div class="col">
@@ -156,12 +165,12 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="Condition"></label>
+                    <label asp-for="ConditionName"></label>
                     <div>
-                        <input type="text" asp-for="Condition" class="form-control" id="InvalidName" required />
+                        <input type="text" asp-for="ConditionName" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
-                    <span asp-validation-for="Condition" class=" text-danger"></span>
+                    <span asp-validation-for="ConditionName" class=" text-danger"></span>
                 </div>
             </div>
             <div class="col">
@@ -183,7 +192,7 @@
             </div>
             <div class="col">
                 <div>
-                    <input type="submit" class="btn-outline-primary" value="submit" />
+                    <input type="submit" class="btn-info" value="submit" />
 
                 </div>
             </div>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
@@ -32,19 +33,20 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult AddAdmission()
         {
+            ViewBag.getPatient = new SelectList(Context.patients, "PatientID", "PatientName");
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddAdmission(Patient patients) 
+        public IActionResult AddAdmission(Admission admission) 
         { 
             if (ModelState.IsValid) 
             {
-                Context.patients.Add(patients);
+                Context.admission.Add(admission);
                 Context.SaveChanges();
                 return RedirectToAction("ViewAdmission");
             }
-            return View(patients);
+            return View(admission);
         } 
         //public IActionResult AddBed()
         //{

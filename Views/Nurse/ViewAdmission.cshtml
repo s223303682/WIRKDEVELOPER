@@ -1,13 +1,13 @@
-﻿@model WIRKDEVELOPER.Models.Patient
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Admission>
 @{
 
     Layout = "_NurseLayout";
 }
 <h1>View Admissions</h1>
 
-<form asp-action="AddPatient" asp-controller="Nurse" method="post">
+<form asp-action="AddAdmission" asp-controller="Nurse" method="post">
 <div class="col-6 text-end">
-    <a asp-controller="Nurse" asp-action="AddPatient" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Admit</a>
+    <a asp-controller="Nurse" asp-action="AddAdmission" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Admit</a>
 </div>
 <div class="container-fluid bg-white border p-4">
     <table id="myTable" table class="table table-hover  table-sm" style="width:100%">
@@ -35,27 +35,27 @@
         </thead>
 
         <tbody>
-           @*  @foreach (var ad in Model)
+            @foreach (var ad in Model)
             {
                 <tr>
 
                     <td width="20%">@ad.PatientName</td>
-                    <td width="20%">@ad.PatientSurname</td>
-                    <td width="20%">@ad.wardName</td>
-                    <td width="20%">@ad.contactNumber</td>
-                    <td width="20%">@ad.EmailAddress</td>
+                    @* <td width="20%">@ad.PatientSurname</td> *@
+                    <td width="20%">@ad.WardName</td>
+                    <td width="20%">@ad.PatientPhone</td>
+                    <td width="20%">@ad.PatientEmail</td>
                     <td width="20%">
                        
                     </td>
                     <td>
                         <div class="w-50 btn-group" role="group">
-                            <a asp-controller="Nurse" asp-action="ViewAdmission" asp-route-ID="@ad.PatientID" class="btn btn-info mx-1">View</a>
+                            <a asp-controller="Nurse" asp-action="ViewAdmission" asp-route-ID="@ad.AdmissionID" class="btn btn-info mx-1">View</a>
                         </div>
                     </td>
                 </tr>
 
 
-            } *@
+            }
         </tbody>
     </table>
 </div>
