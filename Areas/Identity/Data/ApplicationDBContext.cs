@@ -32,13 +32,6 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(b => b.OperationTheatreID)
             .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
 
-        // Configuring Booking-Patient relationship
-        builder.Entity<Booking>()
-            .HasOne(b => b.Addm)
-            .WithMany()  // Assuming Patient does not have a collection of Bookings
-            .HasForeignKey(b => b.AddmID)
-            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
-
         // Configuring PrescriptionMedication-Prescription relationship
         builder.Entity<PrescriptionMedication>()
             .HasOne(pm => pm.Prescription)

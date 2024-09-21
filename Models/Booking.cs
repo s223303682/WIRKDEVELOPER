@@ -14,17 +14,6 @@ namespace WIRKDEVELOPER.Models
         //[Required]
         //public string? Surname { get; set; }
 
-
-
-        [Required(ErrorMessage = "Required")]
-        public int? AddmID { get; set; }
-
-        [ForeignKey("AddmID")]
-        public virtual Addm? Addm { get; set; }
-
-        //[Required]
-        //public string? Gender { get; set; }
-
         [Required]
         [DisplayName("Email address")]
         public string? EmailAddress { get; set; }
