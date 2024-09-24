@@ -10,127 +10,67 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Update Prescription</title>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Parse the JSON data passed from the server
-            const medications = JSON.parse('@Html.Raw(ViewBag.Medications)');
-
-            function createMedicationField(index, medication) {
-                const medicationDiv = document.createElement('div');
-                medicationDiv.classList.add('form-group');
-
-                // Create medication options as a string
-                const medicationOptions = medications.map(medication =>
-                    `<option value="${medication.PharmacyMedicationID}" ${medication.PharmacyMedicationID == medication.PharmacyMedicationID ? "selected" : ""}>${medication.PharmacyMedicationName}</option>`
-                ).join('');
-
-                medicationDiv.innerHTML = `
-                                <h4>Medication ${index + 1}</h4>
-                                <div class="row">
-                                <div class="col">
-                                <div class="form-group">
-                                    <label for="Medications_${index}__PharmacyMedicationID">Medication</label>
-                                    <select name="Medications[${index}].PharmacyMedicationID" id="Medications_${index}__PharmacyMedicationID" class="form-control" disabled>
-                                        <option value="" disabled>--select medication--</option>
-                                        ${medicationOptions}
-                                    </select>
-                                    <span class="text-danger"></span>
-                                </div>
-                                </div>
-                                <div class="col">
-                                <div class="form-group">
-                                    <label for="Medications_${index}__Quantity">Quantity</label>
-                                    <input type="number" name="Medications[${index}].Quantity" id="Medications_${index}__Quantity" class="form-control" value="${medication.Quantity}" readonly />
-                                    <span class="text-danger"></span>
-                                </div>
-                                </div>
-                                <div class="col">
-                                <div class="form-group">
-                                    <label for="Medications_${index}__Instructions">Instructions</label>
-                                    <input type="text" name="Medications[${index}].Instructions" id="Medications_${index}__Instructions" class="form-control" value="${medication.Instructions}" readonly />
-                                    <span class="text-danger"></span>
-                                </div>
-                                </div>
-                                <hr />
-                                </div>
-                            `;
-                return medicationDiv;
-            }
-
-            function loadExistingMedications() {
-                const existingMedications = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Medications));
-                const medicationContainer = document.getElementById('medicationContainer');
-                existingMedications.forEach((medication, index) => {
-                    const medicationDiv = createMedicationField(index, medication);
-                    medicationContainer.appendChild(medicationDiv);
-                });
-            }
-
-            // Load existing medications when the document is ready
-            loadExistingMedications();
-        });
-    </script>
 </head>
 <body>
     <div class="row">
         <div class="col-1">
-            <a asp-action="PrescriptionList" class="btn btn-primary">List</a>
+            <a asp-action="PrescriptionList" class="btn btn-primary">Back to List</a>
         </div>
     </div>
+
     <h1>Update Prescription</h1>
+
     <form asp-action="UpdatePrescription" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @Html.HiddenFor(model => model.PrescriptionViewModelID)
 
+        <!-- Display Patient Information (Read-only) -->
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="Name"></label>
-                    <input asp-for="Name" class="form-control" readonly />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-            </div>
-            
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="Gender"></label>
-                    <input asp-for="Gender" class="form-control" readonly />
-                    <span asp-validation-for="Gender" class="text-danger"></span>
+                    <label asp-for="Name">Patient Name</label>
+                    <input asp-for="Name" type="text" class="form-control" readonly />
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" readonly />
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <label asp-for='surname'>Patient Surname</label>
+                    <input asp-for='surname' type="text" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for='Gender'>Patient Gender</label>
+                    <input asp-for='Gender' type="text" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Email">Email Address</label>
+                    <input asp-for="Email" type="email" class="form-control" readonly />
                 </div>
             </div>
         </div>
 
-        <!-- Dynamic Medication Fields -->
-        <div id="medicationContainer">
-            <!-- Existing Medications Will Be Loaded Here -->
-        </div>
-
+        <!-- Editable Fields for Prescription Details -->
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="Date"></label>
-                    <input asp-for="Date" class="form-control" readonly />
+                    <label asp-for="Date">Date</label>
+                    <input asp-for="Date" class="form-control" />
                     <span asp-validation-for="Date" class="text-danger"></span>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="Prescriber"></label>
-                    <input asp-for="Prescriber" class="form-control" readonly />
+                    <label asp-for="Prescriber">Prescriber</label>
+                    <input asp-for="Prescriber" class="form-control" />
                     <span asp-validation-for="Prescriber" class="text-danger"></span>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="Urgent"></label>
-                    <select asp-for="Urgent" class="form-control" readonly>
+                    <label asp-for="Urgent">Urgent</label>
+                    <select asp-for="Urgent" class="form-control">
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                     </select>
@@ -139,7 +79,7 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="Status"></label>
+                    <label asp-for="Status">Status</label>
                     <select asp-for="Status" class="form-control">
                         <option value="pending">Pending</option>
                         <option value="completed">Completed</option>
@@ -149,8 +89,36 @@
             </div>
         </div>
 
-        <input type="submit" value="Update" class="btn btn-primary" />
+        <!-- Display Medications (Read-only) -->
+        <h4>Medications</h4>
+        <div id="medicationContainer">
+            @for (int i = 0; i < Model.Medications.Count; i++)
+            {
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Medication</label>
+                            <input type="text" class="form-control" value="@Model.Medications[i].PharmacyMedicationID" readonly />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" class="form-control" value="@Model.Medications[i].Quantity" readonly />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Instructions</label>
+                            <input type="text" class="form-control" value="@Model.Medications[i].Instructions" readonly />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Submit Button -->
+        <input type="submit" value="Update Prescription" class="btn btn-primary" />
     </form>
 </body>
 </html>
-

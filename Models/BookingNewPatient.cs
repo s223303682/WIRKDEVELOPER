@@ -11,8 +11,13 @@ namespace WIRKDEVELOPER.Models
         public int BookingNewPatientID { get; set; }
         public string BookingNewPatientName { get; set; }
         public string BookingNewPatientSurname { get; set; }
+        [Required(ErrorMessage = "ID Number is required.")]
+        [RegularExpression(@"^\d{13}$", ErrorMessage = "ID Number must be 13 digits long.")]
         public string BookingNewPatientIDNUmber { get; set; }
         public string Gender { get; set; }
+        [Required(ErrorMessage = "Contact number is required.")]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "Contact number must be 10 digits.")]
+        public string ContactNumber { get; set; }
         public string Email { get; set; }
         public DateTime Date { get; set; }
         public TimeSpan Time { get; set; }
@@ -20,7 +25,7 @@ namespace WIRKDEVELOPER.Models
         public string City { get; set; }
         public string Suburb { get; set; }
         public string Zip { get; set; }
-        public string ContactNumber { get; set; }
+       
         [Required(ErrorMessage = "Required")]
         public int? OperationTheatreID { get; set; }
         [ForeignKey("OperationTheatreID")]

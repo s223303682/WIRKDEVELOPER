@@ -75,46 +75,34 @@
     <h1>Create Prescription</h1>
     <form asp-action="CreatePrescription" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+       
+        <!-- Patient and Gender Fields -->
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                      <label asp-for="Name"></label>
-                  <input asp-for="Name" class="form-control" />
-                   <span asp-validation-for="Name" class="text-danger"></span>
-          
+                    <label asp-for="Name" for="Name">Patient Name</label>
+                    <input asp-for="Name" type="text" id="Name" name="Name" class="form-control" value="@Model.Name" readonly />
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                      <label asp-for="surname"></label>
-                  <input asp-for="surname" class="form-control" />
-                   <span asp-validation-for="surname" class="text-danger"></span>
-          
+                    <label asp-for='surname' for="surname">Patient Surname</label>
+                    <input asp-for='surname' type="text" id="surname" name="Surname" class="form-control" value="@Model.surname" readonly />
                 </div>
             </div>
-             <div class="col">
-                 
-               <div class="form-group">
-                   <label asp-for="Gender"></label>
-                  <input asp-for="Gender" class="form-control" />
-                  <span asp-validation-for="Gender" class="text-danger"></span>
-           
-               </div>
-            </div
-             <div class="col">
-
-                  <div class="form-group">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-            
-                 </div>
-             </div
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for='Gender' for="gender">Patient Gender</label>
+                    <input asp-for='Gender' type="text" id="gender" name="gender" class="form-control" value="@Model.Gender" readonly />
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Email" for="EmailAddress">Email Address</label>
+                    <input asp-for="Email" type="email" id="EmailAddress" name="EmailAddress" class="form-control" value="@Model.Email" readonly />
+                </div>
+            </div>
         </div>
-        
-
-
-
         <!-- Dynamic Medication Fields -->
         <div id="medicationContainer">
             <!-- Dynamic Medication Fields Will Be Added Here -->

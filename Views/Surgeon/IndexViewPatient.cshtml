@@ -81,7 +81,7 @@
                     <tr>
                         <th>Date</th>
                         <th>Patient</th>
-                        @* <th>Patient surname</th> *@
+                        <th>Patient surname</th> 
                         <th>PatientIDNO</th>
                         <th>Ward</th>
                         <th>Bed</th>
@@ -107,9 +107,9 @@
                             <td>
                                 <form asp-controller="Surgeon" asp-action="CreateBooking" method="get">
                                     <input type="hidden" name="AddmID" value="@patient.AddmID" />
-                                    <input type="hidden" name="name" value="@patient.Patient.PatientName" />
-                                   @*  <input type="hidden" name="gender" value="@patient.Patient.PatientSurname" /> *@
-                                    
+                                    <input type="hidden" name="surnname" value="@patient.Patient.PatientName" />
+                                    <input type="hidden" name="name" value="@patient.Patient.PatientSurname" />
+                                    <input type="hidden" name="gender" value="@patient.Patient.Gender" /> 
                                     <input type="hidden" name="email" value="@patient.Patient.EmailAddress" />
                                     <button type="submit" class="btn btn-blue-300 mx-1">Add</button>
                                 </form>

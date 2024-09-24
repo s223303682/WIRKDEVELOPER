@@ -11,9 +11,10 @@ namespace WIRKDEVELOPER.Models
         public int BookingID { get; set; }
         [Required]
         public string? Name { get; set; }
-        //[Required]
-        //public string? Surname { get; set; }
-
+        [Required]
+        public string? Surname { get; set; }
+        [Required]
+        public string? Gender { get; set; }
         [Required]
         [DisplayName("Email address")]
         public string? EmailAddress { get; set; }
@@ -43,6 +44,7 @@ namespace WIRKDEVELOPER.Models
         public int BookingViewModelID { get; set; }
         public int BookingID { get; set; }
         public string PatientName { get; set; }
+        public string PatientSurname { get; set; }
         public string Gender { get; set; }
         public string EmailAddress { get; set; }
         public DateTime? Date { get; set; }

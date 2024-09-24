@@ -30,6 +30,7 @@
                         <tr>
                             <th>Booking ID</th>
                             <th>Patient Name</th>
+                            <th>Patient Surname</th>
                             <th>Gender</th>
                             <th>Email</th>
                             <th>Date</th>
@@ -48,6 +49,7 @@
                             <tr>
                                 <td>@booking.BookingID</td>
                                 <td>@booking.PatientName</td>
+                                <td>@booking.PatientSurname</td>
                                 <td>@booking.Gender</td>
                                 <td>@booking.EmailAddress</td>
                                 <td>@booking.Date?.ToShortDateString()</td>
@@ -71,14 +73,13 @@
                                     <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingID" class="btn btn-danger">Delete</a>
                                 </td>
                                 <td>
-                                    <form asp-controller="Surgeon" asp-action="CreatePrescription" method="get" class="d-inline">
-                                        <input type="hidden" name="bookingID" value="@booking.BookingID" />
-                                        <input type="hidden" name="name" value="@booking.PatientName" />
-   
-                                        <input type="hidden" name="gender" value="@booking.Gender" />
-                                        <input type="hidden" name="email" value="@booking.EmailAddress" />
-                                        <button type="submit" class="btn btn-success">Add</button>
-                                    </form>
+                                <td>
+                                    <a asp-controller="Surgeon" asp-action="CreatePrescription"
+                                       asp-route-bookingID="@booking.BookingID"
+                                       asp-route-name="@booking.PatientName"
+                                       asp-route-gender="@booking.Gender"
+                                       asp-route-email="@booking.EmailAddress"
+                                       class="btn btn-success">Prescribe</a>
                                 </td>
                             </tr>
                         }

@@ -117,6 +117,7 @@ namespace WIRKDEVELOPER.Controllers
                 var prescription = new Prescription
                 {
                     Name = model.Name,
+                    Surname = model.surname,
                     Gender = model.Gender,
                     Email = model.Email,
                     Date = model.Date,
@@ -155,31 +156,26 @@ namespace WIRKDEVELOPER.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public IActionResult UpdatePrescription(int id)
         {
-            // Fetch the existing prescription by ID
+            // Fetch the prescription with the specified ID
             var prescription = _Context.prescriptions
-                .Include(p => p.PrescriptionMedications) // Include medications
-                .FirstOrDefault(p => p.PrescriptionID == id);
+                                       .Include(p => p.PrescriptionMedications)
+                                       .ThenInclude(pm => pm.PharmacyMedication)
+                                       .FirstOrDefault(p => p.PrescriptionID == id);
 
             if (prescription == null)
             {
                 return NotFound();
             }
 
-            // Get available medications for dropdown
-            var medications = _Context.pharmacyMedications
-                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
-                .ToList();
-
-            // Serialize medications to JSON
-            ViewBag.Medications = JsonConvert.SerializeObject(medications);
-
-            var model = new PrescriptionViewModel
+            // Map the Prescription model to the PrescriptionViewModel
+            var viewModel = new PrescriptionViewModel
             {
                 PrescriptionViewModelID = prescription.PrescriptionID,
                 Name = prescription.Name,
-              
+                surname = prescription.Surname,
                 Gender = prescription.Gender,
                 Email = prescription.Email,
                 Date = prescription.Date,
@@ -194,36 +190,40 @@ namespace WIRKDEVELOPER.Controllers
                 }).ToList()
             };
 
-            return View(model);
+            return View(viewModel); // Pass the view model to the view
         }
 
-        // POST: Prescription/Update
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult UpdatePrescription(PrescriptionViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Fetch the existing prescription from the database
-                var prescription = _Context.prescriptions.Find(model.PrescriptionViewModelID);
+                // Retrieve the existing prescription from the database
+                var prescription = _Context.prescriptions
+                                           .Include(p => p.PrescriptionMedications)
+                                           .FirstOrDefault(p => p.PrescriptionID == model.PrescriptionViewModelID);
+
                 if (prescription == null)
                 {
                     return NotFound();
                 }
 
-                // Update only the status field
+                // Update the allowed fields
+                prescription.Date = model.Date;
+                prescription.Prescriber = model.Prescriber;
+                prescription.Urgent = model.Urgent;
                 prescription.Status = model.Status;
 
                 // Save changes to the database
+                _Context.prescriptions.Update(prescription);
                 _Context.SaveChanges();
 
-                return RedirectToAction("PrescriptionList"); // Redirect to the list after update
+                // Redirect to the list of prescriptions or another page
+                return RedirectToAction("PrescriptionList");
             }
 
-            // If the model is invalid, re-fetch medications and return the view with errors
-            var medications = _Context.pharmacyMedications
-                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
-                .ToList();
-            ViewBag.Medications = JsonConvert.SerializeObject(medications);
+            // If the model state is invalid, return the view with the current data
             return View(model);
         }
 
@@ -346,7 +346,7 @@ namespace WIRKDEVELOPER.Controllers
                                          .Select(a => new
                                          {
                                              AddmID = a.AddmID,
-                                             PatientName = a.Patient.PatientName /*+ " " + a.Patient.PatientSurname*/
+                                             PatientName = a.Patient.PatientName + a.Patient.PatientSurname
                                          })
                                          .ToList();
 
