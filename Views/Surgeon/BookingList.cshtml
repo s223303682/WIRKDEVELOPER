@@ -74,12 +74,14 @@
                                 </td>
                                 <td>
                                 <td>
-                                    <a asp-controller="Surgeon" asp-action="CreatePrescription"
-                                       asp-route-bookingID="@booking.BookingID"
-                                       asp-route-name="@booking.PatientName"
-                                       asp-route-gender="@booking.Gender"
-                                       asp-route-email="@booking.EmailAddress"
-                                       class="btn btn-success">Prescribe</a>
+                                    <form asp-controller="Surgeon" asp-action="CreatePrescription" method="get">
+                                        <input type="hidden" name="BookingID" value="@booking.BookingID" />
+                                        <input type="hidden" name="name" value="@booking.PatientName" />
+                                        <input type="hidden" name="surname" value="@booking.PatientSurname" />
+                                        <input type="hidden" name="gender" value="@booking.Gender" />
+                                        <input type="hidden" name="email" value="@booking.EmailAddress" />
+                                        <button type="submit" class="btn btn-blue-300 mx-1">Add</button>
+                                    </form>
                                 </td>
                             </tr>
                         }

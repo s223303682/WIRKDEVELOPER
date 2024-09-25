@@ -66,6 +66,7 @@ namespace WIRKDEVELOPER.Controllers
                 .Select(p => new PrescriptionViewModel
                 {
                     Name = p.Name,
+                    surname = p.Surname,
                     Gender = p.Gender,
                     Email = p.Email,
                     Date = p.Date,
@@ -85,9 +86,8 @@ namespace WIRKDEVELOPER.Controllers
 
 
 
-        // GET: Prescription/Create
-        // GET: Prescription/Create
-        public IActionResult CreatePrescription(int bookingID, string name, string gender, string email)
+       
+        public IActionResult CreatePrescription(int bookingID, string name,string surname, string gender, string email)
         {
             var medications = _Context.pharmacyMedications
                 .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
@@ -99,6 +99,7 @@ namespace WIRKDEVELOPER.Controllers
             var model = new PrescriptionViewModel
             {
                 Name = name,
+               surname = surname,
                 Gender = gender,
                 Email = email
                 // Initialize other fields as needed
@@ -317,8 +318,10 @@ namespace WIRKDEVELOPER.Controllers
                 .Select(b => new BookingViewModel
                 {
                     BookingID = b.BookingID,
+                    PatientName = b.Name,
+                    PatientSurname = b.Surname,
                     //PatientName = b.Name /*+ " " + b.Surname*/,
-                    //Gender = b.Gender,
+                    Gender = b.Gender,
                     EmailAddress = b.EmailAddress,
                     Date = b.Date,
                     Time = b.Time,
@@ -335,7 +338,7 @@ namespace WIRKDEVELOPER.Controllers
 
 
 
-        public IActionResult CreateBooking( string? name, string? email)
+        public IActionResult CreateBooking( string? name,string surname,string gender, string? email)
         {
             // Populate dropdowns for the view
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
@@ -357,7 +360,8 @@ namespace WIRKDEVELOPER.Controllers
             {
               
                 Name = name,
-                //Surname = surname,
+                Surname = surname,
+                Gender = gender,
                 EmailAddress = email
             };
 
@@ -376,7 +380,7 @@ namespace WIRKDEVELOPER.Controllers
                     return RedirectToAction("BookingList");
              
 
-            // Re-populate dropdowns in case of validation errors
+          
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName", booking.OperationTheatreID);
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE", booking.TreatmentCodeIDs);
             var patients = _Context.addm.Include(a => a.Patient)
