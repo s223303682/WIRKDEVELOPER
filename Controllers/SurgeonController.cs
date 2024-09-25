@@ -89,11 +89,13 @@ namespace WIRKDEVELOPER.Controllers
        
         public IActionResult CreatePrescription(int bookingID, string name,string surname, string gender, string email)
         {
-            var medications = _Context.pharmacyMedications
-                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
-                .ToList();
+            var medications = _Context.pharmacyMedications.Select(m => new
+            {
+                m.PharmacyMedicationID,
+                m.PharmacyMedicationName
+            }).ToList();
 
-            // Serialize medications to JSON
+            ViewBag.Medications = medications;
             ViewBag.Medications = JsonConvert.SerializeObject(medications);
 
             var model = new PrescriptionViewModel
@@ -131,7 +133,6 @@ namespace WIRKDEVELOPER.Controllers
                 _Context.prescriptions.Add(prescription);
                 _Context.SaveChanges(); // Save to generate the PrescriptionID
 
-                // Add the medications
                 foreach (var medication in model.Medications)
                 {
                     var prescriptionMedication = new PrescriptionMedication
@@ -143,7 +144,6 @@ namespace WIRKDEVELOPER.Controllers
                     };
                     _Context.prescriptionMedications.Add(prescriptionMedication);
                 }
-
                 _Context.SaveChanges();
 
                 return RedirectToAction("PrescriptionList");

@@ -31,8 +31,8 @@
                         <div class="row">
                         <div class="col">
                         <div class="form-group">
-                            <label for="Medications_${index}__PharmacyMedicationID">Medication</label>
-                            <select name="Medications[${index}].PharmacyMedicationID" id="Medications_${index}__PharmacyMedicationID" class="form-control" required>
+                                    <label asp-for="Medication" for="Medications_${index}__PharmacyMedicationID">Medication</label>
+                                    <select asp-for="Medication" name="Medications[${index}].PharmacyMedicationID" id="Medications_${index}__PharmacyMedicationID" class="form-control" required>
                                 <option value="" disabled>--select medication--</option>
                                 ${medicationOptions}
                             </select>
@@ -75,34 +75,37 @@
     <h1>Create Prescription</h1>
     <form asp-action="CreatePrescription" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-       
-        <!-- Patient and Gender Fields -->
+      <!-- Patient and Gender Fields -->
         <div class="row">
-            <div class="col">
+           <div class="col">
                 <div class="form-group">
                     <label asp-for="Name" for="Name">Patient Name</label>
-                    <input asp-for="Name" type="text" id="Name" name="Name" class="form-control" value="@Model.Name" readonly />
+                    <input asp-for="Name" type="text" id="name" name="Name" class="form-control" value="@Model.Name" readonly />
                 </div>
-            </div>
+           </div>
             <div class="col">
                 <div class="form-group">
-                    <label asp-for='surname' for="surname">Patient Surname</label>
+                    <label asp-for='surname' for="Surname">Patient Surname</label>
                     <input asp-for='surname' type="text" id="surname" name="Surname" class="form-control" value="@Model.surname" readonly />
                 </div>
             </div>
-            <div class="col">
+           <div class="col">
                 <div class="form-group">
-                    <label asp-for='Gender' for="gender">Patient Gender</label>
-                    <input asp-for='Gender' type="text" id="gender" name="gender" class="form-control" value="@Model.Gender" readonly />
-                </div>
+                <label asp-for='Gender' for="gender">Patient Gender</label>
+                <input asp-for='Gender' type="text" id="gender" name="gender" class="form-control" value="@Model.Gender" readonly />
             </div>
-            <div class="col">
+           </div>
+           <div class="col">
                 <div class="form-group">
                     <label asp-for="Email" for="EmailAddress">Email Address</label>
                     <input asp-for="Email" type="email" id="EmailAddress" name="EmailAddress" class="form-control" value="@Model.Email" readonly />
                 </div>
-            </div>
+           </div>
         </div>
+        
+
+
+
         <!-- Dynamic Medication Fields -->
         <div id="medicationContainer">
             <!-- Dynamic Medication Fields Will Be Added Here -->
