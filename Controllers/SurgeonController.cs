@@ -15,6 +15,8 @@ using WIRKDEVELOPER.Models.sendemail;  // Check if this is the correct namespace
 using Newtonsoft.Json;
 using WIRKDEVELOPER.Models.sendemail;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Web.Helpers;
+using System.Xml.Linq;
 
 namespace WIRKDEVELOPER.Controllers
 {
@@ -58,43 +60,24 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-        public IActionResult PrescriptionList()
+
+        public IActionResult CreatePrescription(int bookingId, string name, string surname, string gender, string email)
         {
-            var prescriptions = _Context.prescriptions
-                .Include(p => p.PrescriptionMedications)
-                    .ThenInclude(pm => pm.PharmacyMedication) // Include related PharmacyMedication data
-                .Select(p => new PrescriptionViewModel
-                {
-                    Name = p.Name,
-                    surname = p.Surname,
-                    Gender = p.Gender,
-                    Email = p.Email,
-                    Date = p.Date,
-                    Prescriber = p.Prescriber,
-                    Urgent = p.Urgent,
-                    Status = p.Status,
-                    Medications = p.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
-                    {
-                        PharmacyMedicationID = m.PharmacyMedicationID,
-                        Quantity = m.Quantity,
-                        Instructions = m.Instructions
-                    }).ToList()
-                }).ToList();
+            var viewModel = new PrescriptionViewModel
+            {
+                Name = name,
+                surname = surname,
+                Gender = gender,
+                Email = email
+            };
 
-            return View(prescriptions);
-        }
-
-
-
-        // GET: Prescription/Create
-        public IActionResult CreatePrescription()
-        {
-            // Fetch available medications for the dropdown
+            // Get list of medications
             ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList();
-            return View(new PrescriptionViewModel());
+
+            return View(viewModel);
         }
 
-        // POST: Prescription/Create
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreatePrescription(PrescriptionViewModel model)
@@ -121,28 +104,57 @@ namespace WIRKDEVELOPER.Controllers
 
                 _Context.prescriptions.Add(prescription);
                 _Context.SaveChanges();
-                return RedirectToAction("Index"); // Or wherever you want to redirect
+
+                return RedirectToAction("PrescriptionList"); // After creation, redirect to the list of prescriptions
             }
 
-            // Re-populate the dropdown on validation error
+            // If validation fails, re-populate the medications dropdown
             ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList();
             return View(model);
         }
-        [HttpGet]
-        public IActionResult UpdatePrescription(int id)
+
+
+        // GET: Prescription/List
+        public IActionResult PrescriptionList()
         {
-            // Fetch the prescription with the specified ID
+            var prescriptions = _Context.prescriptions
+                .Include(p => p.PrescriptionMedications)
+                    .ThenInclude(pm => pm.PharmacyMedication) // Include related PharmacyMedication data
+                .Select(p => new PrescriptionViewModel
+                {
+                    Name = p.Name,
+                    surname = p.Surname,
+                    Gender = p.Gender,
+                    Email = p.Email,
+                    Date = p.Date,
+                    Prescriber = p.Prescriber,
+                    Urgent = p.Urgent,
+                    Status = p.Status,
+                    Medications = p.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
+                    {
+                        PharmacyMedicationID = m.PharmacyMedicationID,
+                        Quantity = m.Quantity,
+                        Instructions = m.Instructions
+                    }).ToList()
+                }).ToList();
+
+            return View(prescriptions);
+        }
+        // GET: Prescription/Edit/{id}
+        public IActionResult updatePrescription(int id)
+        {
+            // Fetch the prescription by ID, including its medications
             var prescription = _Context.prescriptions
-                                       .Include(p => p.PrescriptionMedications)
-                                       .ThenInclude(pm => pm.PharmacyMedication)
-                                       .FirstOrDefault(p => p.PrescriptionID == id);
+                .Include(p => p.PrescriptionMedications)
+                .ThenInclude(pm => pm.PharmacyMedication)
+                .FirstOrDefault(p => p.PrescriptionID == id);
 
             if (prescription == null)
             {
                 return NotFound();
             }
 
-            // Map the Prescription model to the PrescriptionViewModel
+            // Map to ViewModel
             var viewModel = new PrescriptionViewModel
             {
                 PrescriptionViewModelID = prescription.PrescriptionID,
@@ -154,50 +166,81 @@ namespace WIRKDEVELOPER.Controllers
                 Prescriber = prescription.Prescriber,
                 Urgent = prescription.Urgent,
                 Status = prescription.Status,
-                Medications = prescription.PrescriptionMedications.Select(pm => new PrescriptionMedicationViewModel
+                Medications = prescription.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
                 {
-                    PharmacyMedicationID = pm.PharmacyMedicationID,
-                    Quantity = pm.Quantity,
-                    Instructions = pm.Instructions
+                    PharmacyMedicationID = m.PharmacyMedicationID,
+                    Quantity = m.Quantity,
+                    Instructions = m.Instructions
                 }).ToList()
             };
 
-            return View(viewModel); // Pass the view model to the view
+            // Pass medications for dropdown
+            ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList();
+
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UpdatePrescription(PrescriptionViewModel model)
+        public IActionResult updatePrescription(PrescriptionViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Retrieve the existing prescription from the database
                 var prescription = _Context.prescriptions
-                                           .Include(p => p.PrescriptionMedications)
-                                           .FirstOrDefault(p => p.PrescriptionID == model.PrescriptionViewModelID);
+                    .Include(p => p.PrescriptionMedications)
+                    .FirstOrDefault(p => p.PrescriptionID == model.PrescriptionViewModelID);
 
                 if (prescription == null)
                 {
                     return NotFound();
                 }
 
-                // Update the allowed fields
+                // Update prescription properties
+                prescription.Name = model.Name;
+                prescription.Surname = model.surname;
+                prescription.Gender = model.Gender;
+                prescription.Email = model.Email;
                 prescription.Date = model.Date;
                 prescription.Prescriber = model.Prescriber;
                 prescription.Urgent = model.Urgent;
                 prescription.Status = model.Status;
 
-                // Save changes to the database
-                _Context.prescriptions.Update(prescription);
-                _Context.SaveChanges();
+                // Update medications
+                prescription.PrescriptionMedications.Clear();
+                prescription.PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
+                {
+                    PharmacyMedicationID = m.PharmacyMedicationID,
+                    Quantity = m.Quantity,
+                    Instructions = m.Instructions
+                }).ToList();
 
-                // Redirect to the list of prescriptions or another page
+                _Context.SaveChanges();
                 return RedirectToAction("PrescriptionList");
             }
 
-            // If the model state is invalid, return the view with the current data
+            // Re-populate medications if validation fails
+            ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList();
             return View(model);
         }
+
+        // GET: Prescription/Delete/{id}
+        public IActionResult DeletePrescription(int id)
+        {
+            var prescription = _Context.prescriptions
+                .Include(p => p.PrescriptionMedications)
+                .FirstOrDefault(p => p.PrescriptionID == id);
+
+            if (prescription == null)
+            {
+                return NotFound();
+            }
+
+            _Context.prescriptions.Remove(prescription);
+            _Context.SaveChanges();
+
+            return RedirectToAction("PrescriptionList");
+        }
+
 
         public IActionResult BookingPatientList()
         {
@@ -239,7 +282,7 @@ namespace WIRKDEVELOPER.Controllers
     {
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "AnaesthesiologistID", "ApplicationUser");
             if (ID == null || ID == 0)
         {
             return NotFound();
@@ -262,7 +305,7 @@ namespace WIRKDEVELOPER.Controllers
         _Context.bookingNewPatients.Update(bookingNewPatient);
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "AnaesthesiologistID", "ApplicationUser");
             _Context.SaveChanges();
         return RedirectToAction("BookingPatientList");
     }
@@ -280,56 +323,42 @@ namespace WIRKDEVELOPER.Controllers
     }
         public IActionResult BookingList()
         {
-            // Define the split characters as a local variable
             char[] splitCharacters = new[] { ',' };
 
             var bookings = _Context.bookings
-               
                 .Include(b => b.OperationTheatre) // Ensure related entities are included
+                .Include(b => b.Anaesthesiologist) // Include the anaesthesiologist
                 .Select(b => new BookingViewModel
                 {
                     BookingID = b.BookingID,
                     PatientName = b.Name,
                     PatientSurname = b.Surname,
-                    //PatientName = b.Name /*+ " " + b.Surname*/,
                     Gender = b.Gender,
                     EmailAddress = b.EmailAddress,
                     Date = b.Date,
                     Time = b.Time,
                     OperationTheatreName = b.OperationTheatre != null ? b.OperationTheatre.OperationTheatreName : null,
+                    AnaName = b.OperationTheatre != null ? b.Anaesthesiologist.ApplicationUser.FirstName: null,
                     TreatmentCodes = string.IsNullOrEmpty(b.TreatmentCodeIDs)
                         ? new List<string>()
-                        : b.TreatmentCodeIDs.Split(splitCharacters, StringSplitOptions.RemoveEmptyEntries).ToList(),
-                    Anaestesiologist = b.Anaestesiologist
+                        : b.TreatmentCodeIDs.Split(splitCharacters, StringSplitOptions.RemoveEmptyEntries).ToList()
+                 // Assuming ApplicationUser has a UserName property
                 })
                 .ToList();
 
             return View(bookings);
         }
 
-
-
-        public IActionResult CreateBooking( string? name,string surname,string gender, string? email)
+        public IActionResult CreateBooking(string? name, string surname, string gender, string? email)
         {
             // Populate dropdowns for the view
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-
-            // Retrieve Addm records along with their associated Patient
-            var patients = _Context.addm.Include(a => a.Patient)
-                                         .Select(a => new
-                                         {
-                                             AddmID = a.AddmID,
-                                             PatientName = a.Patient.PatientName + a.Patient.PatientSurname
-                                         })
-                                         .ToList();
-
-            ViewBag.getPatient = new SelectList(patients, "AddmID", "PatientName");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser"); // This remains the same
 
             // Create a new Booking object with pre-filled fields if provided
             var bookingModel = new Booking
             {
-              
                 Name = name,
                 Surname = surname,
                 Gender = gender,
@@ -339,21 +368,23 @@ namespace WIRKDEVELOPER.Controllers
             return View(bookingModel); // Pass the Booking model to the view
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateBooking(Booking booking, string[] TreatmentCodeIDs)
         {
-           
-                    booking.TreatmentCodeIDs = string.Join(",", TreatmentCodeIDs);
+            if (ModelState.IsValid)
+            {
+                booking.TreatmentCodeIDs = string.Join(",", TreatmentCodeIDs);
+                _Context.bookings.Add(booking);
+                _Context.SaveChanges();
+                return RedirectToAction("BookingList");
+            }
 
-                    _Context.bookings.Add(booking);
-                    _Context.SaveChanges();
-                    return RedirectToAction("BookingList");
-             
-
-          
+            // Repopulate dropdowns if validation fails
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName", booking.OperationTheatreID);
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE", booking.TreatmentCodeIDs);
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser", booking.AnaesthesiologistID); // Re-populate
             var patients = _Context.addm.Include(a => a.Patient)
                                           .Select(a => new { AddmID = a.AddmID, PatientName = a.Patient.PatientName })
                                           .ToList();
@@ -362,7 +393,6 @@ namespace WIRKDEVELOPER.Controllers
 
             return View(booking);
         }
-
 
 
         public IActionResult updateBooking(int? ID)

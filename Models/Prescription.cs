@@ -26,7 +26,7 @@ namespace WIRKDEVELOPER.Models
     public class PrescriptionViewModel
     {
         [Key]
-        public int PrescriptionViewModelID { get; set; }
+        public int PrescriptionViewModelID { get; set; } // Changed from PrescriptionViewModelID to PrescriptionID
         public string Name { get; set; }
         public string surname { get; set; }
         public string Gender { get; set; }
@@ -36,10 +36,10 @@ namespace WIRKDEVELOPER.Models
         public string Urgent { get; set; }
         public string Status { get; set; }
 
-
         // List of medications to be added dynamically
         public List<PrescriptionMedicationViewModel> Medications { get; set; } = new List<PrescriptionMedicationViewModel>();
     }
+
 
     public class PrescriptionMedication
     {

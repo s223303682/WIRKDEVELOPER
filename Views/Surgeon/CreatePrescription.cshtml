@@ -1,121 +1,192 @@
 ﻿@model WIRKDEVELOPER.Models.PrescriptionViewModel
 @{
-    ViewBag.Title = "Create Prescription";
+    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Prescription</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .remove-medication {
+            margin-top: 32px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Create Prescription</h2>
+        <form asp-controller="Surgeon" asp-action="CreatePrescription" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<h2>Create Prescription</h2>
+            <!-- Patient Details -->
+            <div class="card mb-4">
+                <div class="card-header bg-secondary text-white">Patient Information</div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="Name">Patient Name</label>
+                            <input asp-for="Name" type="text" id="Name" name="Name" class="form-control" readonly />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="Surname">Patient Surname</label>
+                            <input asp-for="surname" type="text" id="Surname" name="Surname" class="form-control" readonly />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="Gender">Gender</label>
+                            <input asp-for="Gender" type="text" id="Gender" name="Gender" class="form-control" readonly />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="Email">Email Address</label>
+                            <input asp-for="Email" type="email" id="Email" name="Email" class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<form asp-controller="Surgeon" asp-action="CreatePrescription" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <!-- Prescription Details -->
+            <div class="card mb-4">
+                <div class="card-header bg-secondary text-white">Prescription Details</div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label asp-for="Date">Date</label>
+                            <input asp-for="Date" type="date" class="form-control" required />
+                            <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Prescriber">Prescriber</label>
+                            <input asp-for="Prescriber" type="text" class="form-control" required />
+                            <span asp-validation-for="Prescriber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Urgent">Urgency</label>
+                            <select asp-for="Urgent" class="form-control" required>
+                                <option value="">Select Urgency</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                            <span asp-validation-for="Urgent" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Status">Status</label>
+                            <select asp-for="Status" class="form-control" required>
+                                <option value="">Select Status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Patient and Gender Fields -->
-    <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Name" for="Name">Patient Name</label>
-                <input asp-for="Name" type="text" id="name" name="Name" class="form-control" value="@Model.Name" readonly />
+            <!-- Medications Section -->
+            <div class="card mb-4">
+                <div class="card-header bg-secondary text-white">Medications</div>
+                <div class="card-body">
+                    <div id="medicationsContainer">
+                        @for (int i = 0; i < Model.Medications.Count; i++)
+                        {
+                            <div class="form-row medication-row mb-3" data-index="@i">
+                                <div class="form-group col-md-4">
+                                    <label >Medication</label>
+                                    <select asp-for="Medications[@i].PharmacyMedicationID" class="form-control" required>
+                                        <option value="">Select Medication</option>
+                                        @foreach (var medication in ViewBag.PharmacyMedications)
+                                        {
+                                            <option value="@medication.PharmacyMedicationID">@medication.PharmacyMedicationName</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Medications[@i].PharmacyMedicationID" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label >Quantity</label>
+                                    <input asp-for="Medications[@i].Quantity" type="number" min="1" class="form-control" placeholder="Quantity" required />
+                                    <span asp-validation-for="Medications[@i].Quantity" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Instructions</label>
+                                    <input asp-for="Medications[@i].Instructions" type="text" class="form-control" placeholder="Instructions" />
+                                    <span asp-validation-for="Medications[@i].Instructions" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-1 d-flex align-items-end">
+                                    <button type="button" class="btn btn-danger remove-medication">Remove</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <button type="button" class="btn btn-primary" id="addMedication">Add Medication</button>
+                </div>
             </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for='surname' for="Surname">Patient Surname</label>
-                <input asp-for='surname' type="text" id="surname" name="Surname" class="form-control" value="@Model.surname" readonly />
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for='Gender' for="gender">Patient Gender</label>
-                <input asp-for='Gender' type="text" id="gender" name="gender" class="form-control" value="@Model.Gender" readonly />
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Email" for="EmailAddress">Email Address</label>
-                <input asp-for="Email" type="email" id="EmailAddress" name="EmailAddress" class="form-control" value="@Model.Email" readonly />
-            </div>
-        </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-success">Create Prescription</button>
+            <br />
+            <br />
+            <br />
+        </form>
     </div>
-    <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Date"></label>
-                <input type="date" asp-for="Date" class="form-control" required />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Prescriber"></label>
-                <input type="text" asp-for="Prescriber" class="form-control" required />
-                <span asp-validation-for="Prescriber" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Urgent"></label>
-                <input type="text" asp-for="Urgent" class="form-control" required />
-                <span asp-validation-for="Urgent" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <label asp-for="Status"></label>
-                <input type="text" asp-for="Status" class="form-control" required />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
 
-    <h4>Medications</h4>
-    <div id="medicationsContainer">
-        @for (int i = 0; i < Model.Medications.Count; i++)
-        {
-            <div class="form-group medication-row" data-index="@i">
-                <select asp-for="Medications[@i].PharmacyMedicationID" class="form-control">
+    <!-- Hidden Template for Medication Rows -->
+    <div id="medicationTemplate" style="display: none;">
+        <div class="form-row medication-row mb-3" data-index="__index__">
+            <div class="form-group col-md-4">
+                <label for="Medications___index___PharmacyMedicationID">Medication</label>
+                <select name="Medications[__index__].PharmacyMedicationID" class="form-control" required>
                     <option value="">Select Medication</option>
                     @foreach (var medication in ViewBag.PharmacyMedications)
                     {
                         <option value="@medication.PharmacyMedicationID">@medication.PharmacyMedicationName</option>
                     }
                 </select>
-                <input asp-for="Medications[@i].Quantity" class="form-control" placeholder="Quantity" />
-                <input asp-for="Medications[@i].Instructions" class="form-control" placeholder="Instructions" />
+                <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].PharmacyMedicationID" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="Medications___index___Quantity">Quantity</label>
+                <input name="Medications[__index__].Quantity" type="number" min="1" class="form-control" placeholder="Quantity" required />
+                <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].Quantity" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="Medications___index___Instructions">Instructions</label>
+                <input name="Medications[__index__].Instructions" type="text" class="form-control" placeholder="Instructions" />
+                <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].Instructions" data-valmsg-replace="true"></span>
+            </div>
+            <div class="form-group col-md-1 d-flex align-items-end">
                 <button type="button" class="btn btn-danger remove-medication">Remove</button>
             </div>
-        }
+        </div>
     </div>
 
-    <button type="button" class="btn btn-primary" id="addMedication">Add Medication</button>
+    <!-- Scripts Section -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Include Bootstrap JS (optional, for better styling) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Include jQuery Validation Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
 
-    <button type="submit" class="btn btn-success">Create</button>
-</form>
-
-@section Scripts {
     <script>
         $(document).ready(function () {
-            var index = @Model.Medications.Count;
+            var medicationIndex = @Model.Medications.Count;
 
+            // Function to add a new medication row
             $('#addMedication').click(function () {
-                var newRow = `<div class="form-group medication-row" data-index="${index}">
-                                        <select name="Medications[${index}].PharmacyMedicationID" class="form-control">
-                                            <option value="">Select Medication</option>
-        @foreach (var medication in ViewBag.PharmacyMedications)
-        {
-                                                    <option value="@medication.PharmacyMedicationID">@medication.PharmacyMedicationName</option>
-        }
-                                        </select>
-                                        <input name="Medications[${index}].Quantity" class="form-control" placeholder="Quantity" />
-                                        <input name="Medications[${index}].Instructions" class="form-control" placeholder="Instructions" />
-                                        <button type="button" class="btn btn-danger remove-medication">Remove</button>
-                                     </div>`;
-
+                // Get the template and replace placeholder with the current index
+                var newRow = $('#medicationTemplate').html().replace(/__index__/g, medicationIndex);
                 $('#medicationsContainer').append(newRow);
-                index++;
+                medicationIndex++;
             });
 
+            // Function to remove a medication row
             $(document).on('click', '.remove-medication', function () {
                 $(this).closest('.medication-row').remove();
             });
         });
     </script>
-}
+</body>
+</html>

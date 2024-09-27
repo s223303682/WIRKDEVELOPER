@@ -30,9 +30,11 @@ namespace WIRKDEVELOPER.Models
 
         [ForeignKey("OperationTheatreID")]
         public virtual OperationTheatre? OperationTheatre { get; set; }
-
         [Required(ErrorMessage = "Required")]
-        public string Anaestesiologist { get; set; }
+        public int AnaesthesiologistID { get; set; }
+
+        [ForeignKey("AnaesthesiologistID")]
+        public virtual Anaesthesiologist Anaesthesiologist { get; set; }
 
         // Store treatment codes as a comma-separated string or implement a many-to-many relationship
         [Required(ErrorMessage = "Required")]
@@ -51,7 +53,8 @@ namespace WIRKDEVELOPER.Models
         public DateTime? Time { get; set; }
         public string? OperationTheatreName { get; set; }
         public List<string> TreatmentCodes { get; set; } = new List<string>();
-        public string Anaestesiologist { get; set; }
+        [Required(ErrorMessage = "Required")]
+        public string? AnaName { get; set; }
     }
 
 }

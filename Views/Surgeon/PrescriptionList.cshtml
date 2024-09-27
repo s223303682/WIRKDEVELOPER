@@ -1,52 +1,53 @@
-﻿@model IEnumerable<PrescriptionViewModel>
-
+﻿@model List<WIRKDEVELOPER.Models.PrescriptionViewModel>
 @{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
 
-<h1><div class="bg-info bg-opacity-50 text-center text-white rounded-1">PRESCRIPTIONS</div></h1>
-<table class="table">
+<h2>Prescription List</h2>
+
+<table class="table table-bordered">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>surname</th>
+          
+            <th>Patient Name</th>
+            <th>Surname</th>
             <th>Gender</th>
             <th>Email</th>
             <th>Date</th>
-            <th>Medications</th> <!-- Change column header to "Medications" -->
             <th>Prescriber</th>
             <th>Urgent</th>
             <th>Status</th>
-            <th>update</th>
+            <th>Medications</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var prescription in Model)
         {
             <tr>
+               
                 <td>@prescription.Name</td>
                 <td>@prescription.surname</td>
                 <td>@prescription.Gender</td>
                 <td>@prescription.Email</td>
-                <td>@prescription.Date.ToString("d")</td>
-                <td>
-                    @if (prescription.Medications != null && prescription.Medications.Any())
-                    {
-                        <ul>
-                            @foreach (var medication in prescription.Medications)
-                            {
-                                <li>
-                                    @medication.PharmacyMedicationID - Quantity: @medication.Quantity, Instructions: @medication.Instructions
-                                </li>
-                            }
-                        </ul>
-                    }
-                </td>
+                <td>@prescription.Date.ToShortDateString()</td>
                 <td>@prescription.Prescriber</td>
                 <td>@prescription.Urgent</td>
                 <td>@prescription.Status</td>
                 <td>
-                    <a asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionViewModelID">Edit</a>
+                    <ul>
+                        @foreach (var med in prescription.Medications)
+                        {
+                            <li>
+                                @med.PharmacyMedicationID - Quantity: @med.Quantity, Instructions: @med.Instructions
+                            </li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    <!-- Add any action buttons like Edit, Delete, etc. -->
+                    <a asp-action="updatePrescription" asp-route-id="@prescription.PrescriptionViewModelID" class="btn btn-primary btn-sm">Edit</a>
+                    <a asp-action="DeletePrescription" asp-route-id="@prescription.PrescriptionViewModelID" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
         }

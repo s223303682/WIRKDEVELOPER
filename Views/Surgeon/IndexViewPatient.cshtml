@@ -24,9 +24,9 @@
 
                                     <div class="col-4">
                                         @* <label asp-for="Date"></label> *@
-                                        <label for="searchDate"><h1>>SEARCH BY ID NUMBER</h1></label>
+                                        <label for="searchDate"><h1>SEARCH BY ID NUMBER</h1></label>
                                         <input type="text" class="form-control" id="searchpatient" name="searchpatient" required />
-
+                                        <input type="submit" class="btn btn-primary w-75 bi bi-arrow-left-circle" value="Search" />
                                         @* <input asp-for="Date" class="form-control" /> *@
                                         @*    <span asp-validation-for="Date" class="text-danger"></span> *@
                                     </div>
@@ -36,16 +36,6 @@
 
                             </div>
 
-                            <div class="form-group row">
-                                <div class="col-8 offset-2 row">
-                                    <div class="col">
-                                        <input type="submit" class="btn btn-primary w-75 bi bi-arrow-left-circle" value="VIEW" />
-                                    </div>
-                                    @*  <div class="col">
-                                <a asp-action="IndexScree" class="btn btn-danger w-75"><i class="bi bi-arrow-left-circle"></i>BACK</a>
-                                </div> *@
-                                </div>
-                            </div>
 
                         </div>
                     </div>
@@ -64,9 +54,9 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" />
     </head>
 
-    <div id="Header" class="bg-info container">
-        <h2 class="m-1 pt-5 text-center text-white">View Patients</h2>
-    </div>
+    <h1>
+        <div class="bg-info bg-opacity-50 text-center text-white rounded-1"> Patient Details</div>
+    </h1>
     <div class="container p-3">
         <div class="row pt-4">
             @* <div class="col-6">
@@ -122,7 +112,7 @@
         else
         {
             <p>No records created yet</p>
-            <a asp-controller="Surgeon" asp-action="CreateBooking">Create Booking</a>
+            <a asp-controller="Surgeon" asp-action="CreateBookingPatient"class="text-primary">Create Booking for new patient</a>
         }
 
 

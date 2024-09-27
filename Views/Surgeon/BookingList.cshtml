@@ -28,7 +28,7 @@
                 <table id="dataTable" class="table table-bordered table-striped table-white">
                     <thead>
                         <tr>
-                            <th>Booking ID</th>
+                         
                             <th>Patient Name</th>
                             <th>Patient Surname</th>
                             <th>Gender</th>
@@ -47,7 +47,7 @@
                         @foreach (var booking in Model)
                         {
                             <tr>
-                                <td>@booking.BookingID</td>
+                               
                                 <td>@booking.PatientName</td>
                                 <td>@booking.PatientSurname</td>
                                 <td>@booking.Gender</td>
@@ -65,7 +65,7 @@
                                         <span class="text-muted">No codes</span>
                                     }
                                 </td>
-                                <td>@booking.Anaestesiologist</td>
+                                <td>@booking.AnaName</td>
                                 <td>
                                     <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingID" class="btn btn-warning">Update</a>
                                 </td>
