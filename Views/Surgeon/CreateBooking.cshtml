@@ -1,4 +1,4 @@
-﻿@model WIRKDEVELOPER.Models.Booking;
+﻿@model WIRKDEVELOPER.Models.CreateBookingViewModel
 @{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
@@ -8,9 +8,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Create Booking</title>
 </head>
 <body>
-    <div class="text-danger">PLEASE NOTE :you  have to view patient before filling the form</div>
+    <div class="text-danger">PLEASE NOTE: You have to view patient before filling the form</div>
     <div class="row">
         <div class="col-1">
             <a asp-action="BookingList" class="btn btn-primary">List</a>
@@ -19,7 +20,7 @@
     <div class="row">
         <div class="col">
             <h1>
-                <div class="mt-2 bg-info bg-opacity-50 text-center text-white rounded-1">BOOKING  PATIENT</div>
+                <div class="mt-2 bg-info bg-opacity-50 text-center text-white rounded-1">BOOKING PATIENT</div>
             </h1>
         </div>
     </div>
@@ -29,32 +30,31 @@
 
         <!-- Patient and Gender Fields -->
         <div class="row">
-           <div class="col">
-                <div class="form-group">
-                    <label asp-for="Name" for="Name">Patient Name</label>
-                    <input asp-for="Name" type="text" id="name" name="Name" class="form-control" value="@Model.Name" readonly />
-                </div>
-           </div>
             <div class="col">
                 <div class="form-group">
-                    <label asp-for='Surname' for="Surname">Patient Surname</label>
-                    <input asp-for='Surname' type="text" id="surname" name="Surname" class="form-control" value="@Model.Surname" readonly />
+                    <label asp-for="Name">Patient Name</label>
+                    <input asp-for="Name" type="text" id="name" name="Name" class="form-control" readonly />
                 </div>
             </div>
-           <div class="col">
+            <div class="col">
                 <div class="form-group">
-                <label asp-for='Gender' for="gender">Patient Gender</label>
-                <input asp-for='Gender' type="text" id="gender" name="gender" class="form-control" value="@Model.Gender" readonly />
-            </div>
-           </div>
-           <div class="col">
-                <div class="form-group">
-                    <label asp-for="EmailAddress" for="EmailAddress">Email Address</label>
-                    <input asp-for="EmailAddress" type="email" id="EmailAddress" name="EmailAddress" class="form-control" value="@Model.EmailAddress" readonly />
+                    <label asp-for="Surname">Patient Surname</label>
+                    <input asp-for="Surname" type="text" id="surname" name="Surname" class="form-control" readonly />
                 </div>
-           </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="Gender">Patient Gender</label>
+                    <input asp-for="Gender" type="text" id="gender" name="Gender" class="form-control" readonly />
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label asp-for="EmailAddress">Email Address</label>
+                    <input asp-for="EmailAddress" type="email" id="EmailAddress" name="EmailAddress" class="form-control" readonly />
+                </div>
+            </div>
         </div>
-
 
         <div class="row">
             <div class="col">
@@ -73,52 +73,56 @@
             </div>
         </div>
 
-        <!-- Operation Theatre and Anaestesiologist Fields -->
+        <!-- Operation Theatre and Anaesthesiologist Fields -->
         <div class="row">
             <div class="col">
                 <div class="form-group">
                     <label asp-for="OperationTheatreID"></label>
-                    <select asp-for="OperationTheatreID" class="form-control" asp-items="@ViewBag.getOperationTheatre" required>
-                        <option selected disabled>--select Theatre</option>
+                    <select asp-for="OperationTheatreID" class="form-control" asp-items="Model.OperationTheatres" required>
+                        <option selected disabled>--Select Theatre--</option>
                     </select>
                     <span asp-validation-for="OperationTheatreID" class="text-danger"></span>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label asp-for="AnaesthesiologistID"></label>
-                    <select asp-for="AnaesthesiologistID" class="form-control" asp-items="@ViewBag.getAnaesthesiologist" required>
-                        <option selected disabled>--select Anaesthesiologist</option>
+                    <label asp-for="UserId"></label>
+                    <select asp-for="UserId" class="form-control" asp-items="Model.Anaesthesiologists" required>
+                        <option selected disabled>--Select Anaesthesiologist--</option>
                     </select>
-                    <span asp-validation-for="AnaesthesiologistID" class="text-danger"></span>
+                    <span asp-validation-for="UserId" class="text-danger"></span>
                 </div>
             </div>
+        </div>
 
-
-            <!-- Treatment Codes Section -->
-            <div class="col" id="treatmentCodesContainer">
-                <!-- Template for treatment code items -->
-                <div class="form-group treatmentCodeItem">
-                    <label for="TreatmentCodeID">Treatment Codes</label>
-                    <select class="form-control" name="TreatmentCodeIDs" required>
-                        <option selected disabled>--Select Treatment Code</option>
-                        @foreach (var item in ViewBag.getTreatmentCode as SelectList)
-                        {
-                            <option value="@item.Value">@item.Text</option>
-                        }
-                    </select>
-                    <span class="text-danger"></span>
-                    <!-- Add a Remove button -->
-                    <button type="button" class="btn btn-danger removeTreatmentCode mt-2">Remove</button>
-                </div>
-            </div>
+        <!-- Treatment Codes Section -->
+        <div class="row">
             <div class="col-12">
-                <button type="button" id="addTreatmentCode" class="btn btn-success mt-2">+ Add Another Treatment Code</button>
+                <div class="form-group">
+                    <label>Treatment Codes</label>
+                    <div id="treatmentCodesContainer">
+                        <!-- Template for treatment code items -->
+                        <div class="form-group treatmentCodeItem">
+                            <select class="form-control" name="TreatmentCodeIDs" required>
+                                <option selected disabled>--Select Treatment Code--</option>
+                                @foreach (var item in Model.TreatmentCodes)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                            <span class="text-danger"></span>
+                            <!-- Add a Remove button -->
+                            <button type="button" class="btn btn-danger removeTreatmentCode mt-2">Remove</button>
+                        </div>
+                    </div>
+                    <button type="button" id="addTreatmentCode" class="btn btn-success mt-2">+ Add Another Treatment Code</button>
+                </div>
             </div>
         </div>
-        <div class="col">
-            <input type="submit" value="Add" class="btn btn-primary" />
-        </div>
+        <div class="row">
+            <div class="col">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
         </div>
     </form>
 
@@ -130,35 +134,31 @@
                 var container = document.getElementById('treatmentCodesContainer');
                 var template = container.querySelector('.treatmentCodeItem').cloneNode(true);
 
-                // Clear or reset any values as needed
-                template.querySelector('select').value = ''; // Optional: clear selection
-                template.querySelector('select').name = "TreatmentCodeIDs";
+                // Clear the selected value
+                template.querySelector('select').value = '';
 
-                // Attach event listener to the new "Remove" button
-                template.querySelector('.removeTreatmentCode').addEventListener('click', function () {
-                    container.removeChild(template);
-                });
-
-                
                 // Append the new item to the container
                 container.appendChild(template);
             });
 
             // Event delegation to handle remove button clicks
-            document.getElementById('treatmentCodesContainer').addEventListener('click', function (event) {
+            var container = document.getElementById('treatmentCodesContainer');
+            container.addEventListener('click', function (event) {
                 if (event.target.classList.contains('removeTreatmentCode')) {
                     var itemToRemove = event.target.closest('.treatmentCodeItem');
                     if (itemToRemove) {
-                        itemToRemove.parentNode.removeChild(itemToRemove);
+                        container.removeChild(itemToRemove);
                     }
                 }
             });
         });
     </script>
 
-
+    <!-- Include validation scripts -->
+    <partial name="_ValidationScriptsPartial" />
 </body>
 </html>
+
 
 
 
