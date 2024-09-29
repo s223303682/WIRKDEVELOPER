@@ -325,125 +325,40 @@ namespace WIRKDEVELOPER.Controllers
     }
         public IActionResult BookingList()
         {
-            try
-            {
-                char[] splitCharacters = new[] { ',' };
+            IEnumerable<Booking> list = _Context.bookings
+                .Include(a => a.OperationTheatre)
+                .Include(a => a.Anaesthesiologist)
 
-                var bookings = _Context.bookings
-                    .Include(b => b.OperationTheatre)
-                    .Include(b => b.Anaesthesiologist)
-                        .ThenInclude(a => a.ApplicationUser)
-                    .Select(b => new BookingViewModel
-                    {
-                        BookingID = b.BookingID,
-                        PatientName = b.Name,
-                        PatientSurname = b.Surname,
-                        Gender = b.Gender,
-                        EmailAddress = b.EmailAddress,
-                        Date = b.Date,
-                        Time = b.Time,
-                        OperationTheatreName = b.OperationTheatre != null ? b.OperationTheatre.OperationTheatreName : null,
-                        AnaName = b.Anaesthesiologist != null ?
-                                  (b.Anaesthesiologist.ApplicationUser.FirstName + " " + b.Anaesthesiologist.ApplicationUser.LastName)
-                                  : null,
-                        TreatmentCodes = string.IsNullOrEmpty(b.TreatmentCodeIDs)
-                            ? new List<string>()
-                            : b.TreatmentCodeIDs.Split(splitCharacters, StringSplitOptions.RemoveEmptyEntries).ToList()
-                    })
-                    .ToList();
+                .Include(s => s.treatmentCode);
 
-                return View(bookings);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception
-                // e.g., _logger.LogError(ex, "Error fetching booking list.");
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-            }
+
+            return View(list);
         }
-
-        public IActionResult CreateBooking(string? name, string surname, string gender, string? email)
+        public IActionResult CreateBooking()
         {
-            var viewModel = new CreateBookingViewModel
-            {
-                Name = name,
-                Surname = surname,
-                Gender = gender,
-                EmailAddress = email,
-                Date = DateTime.Now, // Optionally set a default date
-                Time = DateTime.Now, // Optionally set a default time
-                OperationTheatres = _Context.operationTheatres
-                    .Select(o => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                    {
-                        Value = o.OperationTheatreID.ToString(),
-                        Text = o.OperationTheatreName
-                    }),
-                TreatmentCodes = _Context.treatmentCodes
-                    .Select(tc => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                    {
-                        Value = tc.TreatmentCodeID.ToString(),
-                        Text = tc.ICDCODE
-                    }),
-                Anaesthesiologists = _Context.Anaesthesiologists
-                    .Include(a => a.ApplicationUser)
-                    .Select(a => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                    {
-                        Value = a.UserId.ToString(),
-                        Text = a.ApplicationUser.FirstName + " " + a.ApplicationUser.LastName
-                    })
-            };
+            ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
+            ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
 
-            return View(viewModel);
+            return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateBooking(CreateBookingViewModel viewModel)
+        public async Task<IActionResult> CreateBooking(Booking bookingNewPatient)
         {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var booking = new Booking
-                    {
-                        Name = viewModel.Name,
-                        Surname = viewModel.Surname,
-                        Gender = viewModel.Gender,
-                        EmailAddress = viewModel.EmailAddress,
-                        Date = viewModel.Date,
-                        Time = viewModel.Time, // Now a TimeSpan?
-                        OperationTheatreID = viewModel.OperationTheatreID,
-                        UserId = viewModel.UserId, // 
-                        TreatmentCodeIDs = string.Join(",", viewModel.TreatmentCodeIDs)
-                    };
+            _Context.bookings.Add(bookingNewPatient);
+            ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
 
-                    _Context.bookings.Add(booking);
-                    _Context.SaveChanges();
+            ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
 
-                    TempData["SuccessMessage"] = "Booking created successfully!";
-                    return RedirectToAction("BookingList");
-                }
-                catch (Exception ex)
-                {
-                    // Log the exception (you can use a logging framework here)
-                    ModelState.AddModelError("", "An error occurred while creating the booking. Please try again.");
-                }
-            }
+            _Context.SaveChanges();
+            string subject = "Booking Confirmation";
+            string body = $"Dear {bookingNewPatient.PatientName + bookingNewPatient.PatientSurname}, your booking is confirmed for {bookingNewPatient.Date} at {bookingNewPatient.Time}.";
 
-            // If we reach here, something failed; redisplay the form with validation errors
+            await _emailService.SendEmailAsync(bookingNewPatient.Email, subject, body);
+            return RedirectToAction("BookingPatientList");
 
-            // Repopulate dropdowns
-            viewModel.OperationTheatres = _Context.operationTheatres
-                .Select(o => new SelectListItem { Value = o.OperationTheatreID.ToString(), Text = o.OperationTheatreName });
-
-            viewModel.TreatmentCodes = _Context.treatmentCodes
-                .Select(tc => new SelectListItem { Value = tc.TreatmentCodeID.ToString(), Text = tc.ICDCODE });
-
-            viewModel.Anaesthesiologists = _Context.Anaesthesiologists
-               
-                .Select(a => new SelectListItem { Value = a.UserId.ToString(), Text = a.ApplicationUser.FirstName + " " + a.ApplicationUser.LastName });
-
-            return View(viewModel);
         }
 
 
