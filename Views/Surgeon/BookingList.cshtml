@@ -1,1 +1,43 @@
-﻿
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Booking>
+@{
+    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
+}
+<h1>Booking List</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Gender</th>
+            <th>Email</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Operation Theatre</th>
+            <th>Anaesthesiologist</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model)
+        {
+            <tr>
+                <td>@booking.Name</td>
+                <td>@booking.Surname</td>
+                <td>@booking.Gender</td>
+                <td>@booking.Email</td>
+                <td>@booking.Date.ToString("yyyy-MM-dd")</td>
+                <td>@booking.Time</td>
+                <td>@booking.OperationTheatre?.OperationTheatreName</td>
+                <td>@booking.Anaesthesiologist?.ApplicationUser.FirstName @booking.Anaesthesiologist?.ApplicationUser.LastName</td>
+                <td>@booking.Status</td>
+                <td>
+                    <!-- You can add action buttons here, like Edit or Delete -->
+                    <a asp-action="Edit" asp-route-id="@booking.BookingID" class="btn btn-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@booking.BookingID" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

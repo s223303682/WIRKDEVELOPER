@@ -1,4 +1,4 @@
-﻿@model WIRKDEVELOPER.Models.Booking
+﻿@model WIRKDEVELOPER.Models.BookingViewModel
 @{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
@@ -7,12 +7,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 </head>
 <body>
     <div class="row">
         <div class="col-1">
-            <a asp-action="BookingPatientList" class="btn btn-primary">List</a>
+            <a asp-action="BookingList" class="btn btn-primary">List</a>
         </div>
     </div>
     <div class="row">
@@ -22,7 +21,7 @@
             </div>
         </div>
     </div>
-    <form method="post" asp-action="CreateBookingPatient" class="bg-white bg-opacity-60 border border-3 border-dark">
+    <form method="post" asp-action="CreateBooking" class="bg-white bg-opacity-60 border border-3 border-dark">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <!-- Patient Details -->
@@ -50,8 +49,8 @@
             </div>
         </div>
 
+        <!-- Booking Details -->
         <div class="row">
-
             <div class="col">
                 <div class="form-group">
                     <label asp-for="Date"></label>
@@ -68,48 +67,52 @@
             </div>
         </div>
 
+        <!-- Dropdown for Anaesthesiologist and Operation Theatre -->
         <div class="row">
-
             <div class="col">
-                <div class="form-group border-1">
+                <div class="form-group">
                     <label asp-for="UserId"></label>
-                    <select asp-for="UserId" class="form-control" asp-items="@ViewBag.getAnaesthesiologist" required>
-                        <option value="" disabled selected>--Select Anaesthesiologist</option>
+                    <select asp-for="UserId" class="form-control" asp-items="ViewBag.getAnaesthesiologist" required>
+                        <option value="" disabled selected>Select Anaesthesiologist</option>
                     </select>
-                    <span asp-validation-for="OperationTheatreID" class="text-danger"></span>
+                    <span asp-validation-for="UserId" class="text-danger"></span>
                 </div>
+
+
             </div>
             <div class="col">
-                <div class="form-group border-1">
+                <div class="form-group">
                     <label asp-for="OperationTheatreID"></label>
                     <select asp-for="OperationTheatreID" class="form-control" asp-items="@ViewBag.getOperationTheatre" required>
-                        <option value="" disabled selected>--Select Theatre</option>
+                        <option value="" disabled selected>--Select Theatre--</option>
                     </select>
                     <span asp-validation-for="OperationTheatreID" class="text-danger"></span>
                 </div>
             </div>
-            <!-- Treatment Codes Section -->
-            <div class="row">
-                <d <div class="col" id="treatmentCodesContainer">
-        <!-- Template for treatment code items -->
-        <div class="form-group treatmentCodeItem">
-            <label asp-for="TreatmentCodeID">Treatment Codes</label>
-            <select class="form-control" asp-for="TreatmentCodeID" required>
-                <option selected disabled>--Select Treatment Code</option>
-                                @foreach (var item in ViewBag.getTreatmentCode as SelectList)
-                                {
-                                <option value="@item.Value">@item.Text</option>
-                                }
-            </select>
-            <span class="text-danger"></span>
-            <!-- Add a Remove button -->
-            <button type="button" class="btn btn-danger removeTreatmentCode mt-2">Remove</button>
         </div>
-    </div>
-    <div class="col-12">
-        <button type="button" id="addTreatmentCode" class="btn btn-success mt-2">+ Add Another Treatment Code</button>
-    </div>
-     
+
+        <!-- Treatment Codes Section -->
+        <div class="row">
+            <div class="col" id="treatmentCodesContainer">
+                <div class="form-group treatmentCodeItem">
+                    <label>Treatment Codes</label>
+                    <select class="form-control" name="TreatmentCodeIDs[]" required>
+                        <option value="" disabled selected>--Select Treatment Code--</option>
+                        @foreach (var item in ViewBag.getTreatmentCode)
+                        {
+                            <option value="@item.Value">@item.Text</option> <!-- Show only ICD-10 code -->
+                        }
+                    </select>
+                    <span class="text-danger"></span>
+                    <button type="button" class="btn btn-danger removeTreatmentCode mt-2">Remove</button>
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="button" id="addTreatmentCode" class="btn btn-success mt-2">+ Add Another Treatment Code</button>
+            </div>
+        </div>
+
+        <!-- Submit Section -->
         <div class="row">
             <div class="col">
                 <a asp-controller="Surgeon" asp-action="Dashboard" class="btn btn-secondary">Back</a>
@@ -119,8 +122,8 @@
             </div>
         </div>
     </form>
+
     <script>
-     
         document.addEventListener('DOMContentLoaded', function () {
             // Function to handle adding a new treatment code item
             document.getElementById('addTreatmentCode').addEventListener('click', function () {
@@ -128,10 +131,7 @@
                 var template = container.querySelector('.treatmentCodeItem').cloneNode(true);
 
                 // Clear or reset any values as needed
-                template.querySelector('select').value = ''; // Optional: clear selection
-                template.querySelector('select').name = "TreatmentCodeIDs";
-
-                // Attach event listener to the new "Remove" button
+                template.querySelector('select').value = ''; // Clear selection
                 template.querySelector('.removeTreatmentCode').addEventListener('click', function () {
                     container.removeChild(template);
                 });

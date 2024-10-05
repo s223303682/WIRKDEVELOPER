@@ -34,7 +34,9 @@ namespace WIRKDEVELOPER.Models
         public int TreatmentCodeID { get; set; }
         [ForeignKey("TreatmentCodeID")]
         public virtual TreatmentCode? treatmentCode { get; set; }
-        public string Anaesthesiologist { get; set; }
+        public int? UserId { get; set; } // Change this to string
+        [ForeignKey("UserId")]
+        public virtual Anaesthesiologist? Anaesthesiologist { get; set; }
         [DisplayName("Ward")]
         public string? Ward { get; set; } = " - ";
         [DisplayName("Bed")]
