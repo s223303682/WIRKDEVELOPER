@@ -284,7 +284,7 @@ namespace WIRKDEVELOPER.Controllers
     {
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "AnaesthesiologistID", "ApplicationUser");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
             if (ID == null || ID == 0)
         {
             return NotFound();
@@ -307,7 +307,7 @@ namespace WIRKDEVELOPER.Controllers
         _Context.bookingNewPatients.Update(bookingNewPatient);
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "AnaesthesiologistID", "ApplicationUser");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
             _Context.SaveChanges();
         return RedirectToAction("BookingPatientList");
     }
@@ -327,6 +327,7 @@ namespace WIRKDEVELOPER.Controllers
         {
             IEnumerable<Booking> list = _Context.bookings
                 .Include(a => a.OperationTheatre)
+
                 .Include(a => a.Anaesthesiologist)
 
                 .Include(s => s.treatmentCode);
@@ -334,11 +335,25 @@ namespace WIRKDEVELOPER.Controllers
 
             return View(list);
         }
-        public IActionResult CreateBooking()
+        public IActionResult CreateBooking(string name, string surname, string gender, string email)
         {
+            var anaesthesiologists = _Context.Anaesthesiologists
+      .Include(a => a.ApplicationUser) // Include related ApplicationUser to access FirstName and LastName
+      .Select(a => new
+      {
+          a.UserId,
+          FullName = a.ApplicationUser.FirstName + " " + a.ApplicationUser.LastName // Combine names
+      }).ToList();
+
+            ViewBag.getAnaesthesiologist = new SelectList(anaesthesiologists, "UserId", "ApplicationUser");
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
+
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
+
+            ViewBag.PatientName = name;
+            ViewBag.PatientSurname = surname;
+            ViewBag.PatientGender = gender;
+            ViewBag.PatientEmail = email;
 
             return View();
         }
@@ -346,20 +361,29 @@ namespace WIRKDEVELOPER.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateBooking(Booking bookingNewPatient)
         {
-            _Context.bookings.Add(bookingNewPatient);
-            ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
-            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
+            bookingNewPatient.Status = "Sent"; // Set status
+            if (ModelState.IsValid)
+            {
+                _Context.bookings.Add(bookingNewPatient);
+                await _Context.SaveChangesAsync(); // Save changes
 
+                // Email confirmation logic
+                string subject = "Booking Confirmation";
+                string body = $"Dear {bookingNewPatient.Name}, your booking is confirmed for {bookingNewPatient.Date}.";
+                await _emailService.SendEmailAsync(bookingNewPatient.Email, subject, body);
+
+                return RedirectToAction("BookingList");
+            }
+
+            // Repopulate dropdowns
+            ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
+            ViewBag.getAnaesthesiologist = new SelectList(_Context.Anaesthesiologists, "UserId", "ApplicationUser");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
 
-            _Context.SaveChanges();
-            string subject = "Booking Confirmation";
-            string body = $"Dear {bookingNewPatient.PatientName + bookingNewPatient.PatientSurname}, your booking is confirmed for {bookingNewPatient.Date} at {bookingNewPatient.Time}.";
-
-            await _emailService.SendEmailAsync(bookingNewPatient.Email, subject, body);
-            return RedirectToAction("BookingPatientList");
-
+            return View(bookingNewPatient); // Return the same view with the invalid model
         }
+
+
 
 
         public IActionResult updateBooking(int? ID)

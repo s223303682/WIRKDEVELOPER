@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-    <form method="post" asp-action="CreateBooking" class="bg-white bg-opacity-60 border border-3 border-dark">
+    <form method="post" asp-action="CreateBookingPatient" class="bg-white bg-opacity-60 border border-3 border-dark">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <!-- Patient Details -->
@@ -32,11 +32,11 @@
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="Name">Patient Name</label>
-                        <input asp-for="PatientName" type="text" id="Name" name="Name" class="form-control" readonly />
+                        <input asp-for="Name" type="text" id="Name" name="Name" class="form-control" readonly />
                     </div>
                     <div class="form-group col-md-3">
                         <label for="Surname">Patient Surname</label>
-                        <input asp-for="PatientSurname" type="text" id="Surname" name="Surname" class="form-control" readonly />
+                        <input asp-for="Surname" type="text" id="Surname" name="Surname" class="form-control" readonly />
                     </div>
                     <div class="form-group col-md-3">
                         <label for="Gender">Gender</label>
@@ -49,6 +49,9 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+
             <div class="col">
                 <div class="form-group">
                     <label asp-for="Date"></label>
@@ -65,9 +68,17 @@
             </div>
         </div>
 
-
         <div class="row">
 
+            <div class="col">
+                <div class="form-group border-1">
+                    <label asp-for="UserId"></label>
+                    <select asp-for="UserId" class="form-control" asp-items="@ViewBag.getAnaesthesiologist" required>
+                        <option value="" disabled selected>--Select Anaesthesiologist</option>
+                    </select>
+                    <span asp-validation-for="OperationTheatreID" class="text-danger"></span>
+                </div>
+            </div>
             <div class="col">
                 <div class="form-group border-1">
                     <label asp-for="OperationTheatreID"></label>
@@ -75,16 +86,6 @@
                         <option value="" disabled selected>--Select Theatre</option>
                     </select>
                     <span asp-validation-for="OperationTheatreID" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="form-group border-1">
-                    <label asp-for="userId"></label>
-                    <select asp-for="userId" class="form-control" asp-items="@ViewBag.getAnaesthesiologist" required>
-                        <option value="" disabled selected>--Select Anaesthesiologist</option>
-                    </select>
-                    <span asp-validation-for="userId" class="text-danger"></span>
                 </div>
             </div>
             <!-- Treatment Codes Section -->
@@ -97,7 +98,7 @@
                 <option selected disabled>--Select Treatment Code</option>
                                 @foreach (var item in ViewBag.getTreatmentCode as SelectList)
                                 {
-                            <option value="@item.Value">@item.Text</option>
+                                <option value="@item.Value">@item.Text</option>
                                 }
             </select>
             <span class="text-danger"></span>
@@ -108,10 +109,7 @@
     <div class="col-12">
         <button type="button" id="addTreatmentCode" class="btn btn-success mt-2">+ Add Another Treatment Code</button>
     </div>
-            </div>
-         
-        </div>
-
+     
         <div class="row">
             <div class="col">
                 <a asp-controller="Surgeon" asp-action="Dashboard" class="btn btn-secondary">Back</a>
@@ -163,4 +161,13 @@
 
 
 
-            
+
+
+
+
+
+
+
+
+
+
