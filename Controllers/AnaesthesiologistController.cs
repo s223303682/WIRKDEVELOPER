@@ -94,18 +94,19 @@ namespace WIRKDEVELOPER.Controllers
             var orders = _Context.order
                 .Include(o => o.Addm)                   // Include related Patient entity
                 /*.Include(o => o.OrderItems) */                 // Include related OrderItems
-                .Include(o => o.orderMedications)                  // Include related OrderItems
+                .Include(o => o.OrderMedications)                  // Include related OrderItems
                 .ThenInclude(o => o.PharmacyMedication)         // Include related PharmacyMedication entity
                 //.ToListAsync()
 
              .Select(item => new OrderCreate
               {
+                 AnOrderID = item.AnOrderID,
                  Date = item.Date,
                  AddmID = item.AddmID,
-                 patient = item.Addm,
+                 Patient = item.Addm,
                  Urgent = item.Urgent,
-                 Status = "Ordered",
-                 OrderItems = item.orderMedications.Select(m => new OrderItems
+                 Status = item.Status,
+                 OrderItems = item.OrderMedications.Select(m => new OrderItems
                  {
                       PharmacyMedicationID = m.PharmacyMedicationID,
                       Quantity = m.Quantity,
@@ -163,7 +164,7 @@ namespace WIRKDEVELOPER.Controllers
                     Date = viewModel.Date,
                     AddmID = viewModel.AddmID,
                     Urgent = viewModel.Urgent,
-                    Status = "Ordered",
+                    Status = viewModel.Status,
 
                 };
                 _Context.order.Add(order);
@@ -206,7 +207,7 @@ namespace WIRKDEVELOPER.Controllers
             // Retrieve the order along with related medications and patient data
             var order = await _Context.order
                 .Include(o => o.Addm)                      // Include the related patient
-                .Include(o => o.orderMedications)          // Include the related medications
+                .Include(o => o.OrderMedications)          // Include the related medications
                 .ThenInclude(om => om.PharmacyMedication)  // Include the PharmacyMedication for each OrderMedication
                 .FirstOrDefaultAsync(o => o.AnOrderID == id);
 
@@ -223,11 +224,11 @@ namespace WIRKDEVELOPER.Controllers
             var model = new OrderCreate
             {
                 AnOrderID = order.AnOrderID,
-                Date = (DateTime)order.Date,
+                Date = order.Date,
                 AddmID = order.AddmID,
                 Urgent = order.Urgent,
                 Status = order.Status,
-                OrderItems = order.orderMedications.Select(m => new OrderItems
+                OrderItems = order.OrderMedications.Select(m => new OrderItems
                 {
                     PharmacyMedicationID = m.PharmacyMedicationID,
                     Quantity = m.Quantity,
@@ -246,13 +247,13 @@ namespace WIRKDEVELOPER.Controllers
                 return NotFound(); // Ensure the ID matches the viewModel
             }
 
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            
                 try
                 {
                     // Retrieve the existing order
                     var order = await _Context.order
-                        .Include(o => o.orderMedications)  // Include medications to update them
+                        .Include(o => o.OrderMedications)  // Include medications to update them
                         .FirstOrDefaultAsync(o => o.AnOrderID == id);
 
                     if (order == null)
@@ -267,7 +268,7 @@ namespace WIRKDEVELOPER.Controllers
                     order.Status = viewModel.Status;
 
                     // Clear existing medications
-                    _Context.ordermedication.RemoveRange(order.orderMedications);
+                    _Context.ordermedication.RemoveRange(order.OrderMedications);
 
                     // Add updated medications
                     foreach (var medication in viewModel.OrderItems)
@@ -297,7 +298,7 @@ namespace WIRKDEVELOPER.Controllers
                     }
                 }
                 return RedirectToAction("IndexOrders");
-            }
+            
 
             // Repopulate the dropdowns if validation fails
             ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", viewModel.AddmID);
@@ -311,6 +312,8 @@ namespace WIRKDEVELOPER.Controllers
             // Retrieve the order by ID, including related patient data
             var order = await _Context.order
                 .Include(o => o.Addm)
+                .Include(o => o.OrderMedications)          // Include the related medications for display
+            .ThenInclude(om => om.PharmacyMedication)
                 .FirstOrDefaultAsync(o => o.AnOrderID == id);
 
             if (order == null)
@@ -326,7 +329,7 @@ namespace WIRKDEVELOPER.Controllers
         {
             // Retrieve the order along with its related medications
             var order = await _Context.order
-                .Include(o => o.orderMedications)
+                .Include(o => o.OrderMedications)
                 .FirstOrDefaultAsync(o => o.AnOrderID == id);
 
             if (order == null)
@@ -335,7 +338,7 @@ namespace WIRKDEVELOPER.Controllers
             }
 
             // Remove related medications first
-            _Context.ordermedication.RemoveRange(order.orderMedications);
+            _Context.ordermedication.RemoveRange(order.OrderMedications);
 
             // Remove the order
             _Context.order.Remove(order);
@@ -343,7 +346,7 @@ namespace WIRKDEVELOPER.Controllers
             // Save changes to the database
             await _Context.SaveChangesAsync();
 
-            return RedirectToAction("IndexOrders");
+            return RedirectToAction("IndexOrders"); // Redirect to the order list after deletion
         }
 
 

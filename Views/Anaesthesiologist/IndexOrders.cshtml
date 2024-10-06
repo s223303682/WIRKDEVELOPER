@@ -50,7 +50,7 @@
                             @order.Date
                         </td>
                         <td>
-                            @order.patient.PatientName
+                            @order.Patient.PatientName
                         </td>
                         <td>
                             @if (order.OrderItems != null && order.OrderItems.Any())
@@ -86,9 +86,9 @@
             @order.Notes
             </td> *@
                         <td>
-                            <a asp-action="EditOrder" asp-route-id="@order.AnOrderID" class="btn btn-warning">Edit</a>
-                            <a asp-action="Details" asp-route-id="@order.AnOrderID" class="btn btn-info">Details</a>
-                            <a asp-action="DeleteOrder" asp-route-id="@order.AnOrderID" class="btn btn-danger">Delete</a>
+                            <a asp-controller="Anaesthesiologist" asp-action="EditOrder" asp-route-id="@order.AnOrderID" class="btn btn-warning">Edit</a>
+                            <a asp-controller="Anaesthesiologist" asp-action="Details" asp-route-id="@order.AnOrderID" class="btn btn-info">Details</a>
+                            <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-id="@order.AnOrderID" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 }

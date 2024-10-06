@@ -194,7 +194,7 @@ namespace WIRKDEVELOPER.Controllers
             var orders = _Context.order
                 .Include(o => o.Addm)                   // Include related Patient entity
                 /*.Include(o => o.OrderItems) */                 // Include related OrderItems
-                .Include(o => o.orderMedications)                  // Include related OrderItems
+                .Include(o => o.OrderMedications)                  // Include related OrderItems
                 .ThenInclude(o => o.PharmacyMedication)         // Include related PharmacyMedication entity
                                                                 //.ToListAsync()
 
@@ -202,10 +202,10 @@ namespace WIRKDEVELOPER.Controllers
              {
                  Date = item.Date,
                  AddmID = item.AddmID,
-                 patient = item.Addm,
+                 Patient = item.Addm,
                  Urgent = item.Urgent,
                  Status = "Ordered",
-                 OrderItems = item.orderMedications.Select(m => new OrderItems
+                 OrderItems = item.OrderMedications.Select(m => new OrderItems
                  {
                      PharmacyMedicationID = m.PharmacyMedicationID,
                      Quantity = m.Quantity,
@@ -223,7 +223,7 @@ namespace WIRKDEVELOPER.Controllers
             var orders = _Context.order
                 .Include(o => o.Addm)                   // Include related Patient entity
                 /*.Include(o => o.OrderItems) */                 // Include related OrderItems
-                .Include(o => o.orderMedications)                  // Include related OrderItems
+                .Include(o => o.OrderMedications)                  // Include related OrderItems
                 .ThenInclude(o => o.PharmacyMedication)         // Include related PharmacyMedication entity
                                                                 //.ToListAsync()
 
@@ -231,10 +231,10 @@ namespace WIRKDEVELOPER.Controllers
              {
                  Date = item.Date,
                  AddmID = item.AddmID,
-                 patient = item.Addm,
+                 Patient = item.Addm,
                  Urgent = item.Urgent,
                  Status = "Ordered",
-                 OrderItems = item.orderMedications.Select(m => new OrderItems
+                 OrderItems = item.OrderMedications.Select(m => new OrderItems
                  {
                      PharmacyMedicationID = m.PharmacyMedicationID,
                      Quantity = m.Quantity,

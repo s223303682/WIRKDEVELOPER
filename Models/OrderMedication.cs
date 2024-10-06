@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 using WIRKDEVELOPER.Areas.Identity.Data;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace WIRKDEVELOPER.Models
 {
@@ -10,21 +10,25 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int OrderMedicationID { get; set; }
+
         [DisplayName("Order")]
         public int? AnOrderID { get; set; }
+
         [ForeignKey("AnOrderID")]
         public virtual Order Order { get; set; }
 
         [DisplayName("Medication Ordered")]
         public int PharmacyMedicationID { get; set; }
+
         [ForeignKey("PharmacyMedicationID")]
         public virtual PharmacyMedication PharmacyMedication { get; set; }
 
-        public int Quantity { get; set; }
-        public string Instructions { get; set; }
+        [Required]
+        public int Quantity { get; set; }  // Consider adding validation for positive quantity
 
-        // Navigation properties
-        //public Order order { get; set; }
-        //public PharmacyMedication PharmacyMedication { get; set; }
+        [Required]
+        public string Instructions { get; set; }
     }
 }
+
+

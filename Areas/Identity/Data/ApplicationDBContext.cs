@@ -52,7 +52,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
 
 
 		builder.Entity<OrderCreate>()
-		.HasOne(o => o.patient)
+		.HasOne(o => o.Patient)
 		.WithMany() // Specify the relationship if it's one-to-many, or adjust accordingly
 		.HasForeignKey(o => o.AddmID)
 		.OnDelete(DeleteBehavior.Restrict);
