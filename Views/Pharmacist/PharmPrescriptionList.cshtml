@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PrescriptionViewModel>
+﻿@model IEnumerable<Prescription>
 
 @{
     Layout = "~/Views/Shared/Pharmacy.cshtml";
@@ -32,10 +32,10 @@
                     <td>@prescription.Email</td>
                     <td>@prescription.Date.ToString("d")</td>
                     <td>
-                        @if (prescription.Medications != null && prescription.Medications.Any())
+                        @if (prescription.PrescriptionMedications != null && prescription.PrescriptionMedications.Any())
                         {
                             <ul>
-                                @foreach (var medication in prescription.Medications)
+                                @foreach (var medication in prescription.PrescriptionMedications)
                                 {
                                     <li>
                                         @medication.PharmacyMedicationID - Quantity: @medication.Quantity, Instructions: @medication.Instructions
@@ -48,8 +48,8 @@
                     <td>@prescription.Urgent</td>
                     <td>@prescription.Status</td>
                     <td>
-                       @*  <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionViewModelID" class="btn btn-warning">Update</a> *@
-                        <a class="btn btn-info" href="@Url.Action("UpdatePrescription","Pharmacist",new{id = prescription.PrescriptionViewModelID})">Update</a>
+                       <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-warning">Update</a> 
+                       @*  <a class="btn btn-info" href="@Url.Action("UpdatePrescription","Pharmacist",new{id = prescription.PrescriptionViewModelID})">Update</a> *@
 
                     </td>
                 </tr>
@@ -63,10 +63,10 @@
                     <td>@prescription.Email</td>
                     <td>@prescription.Date.ToString("d")</td>
                     <td>
-                        @if (prescription.Medications != null && prescription.Medications.Any())
+                        @if (prescription.PrescriptionMedications != null && prescription.PrescriptionMedications.Any())
                         {
                             <ul>
-                                @foreach (var medication in prescription.Medications)
+                                @foreach (var medication in prescription.PrescriptionMedications)
                                 {
                                     <li>
                                         @medication.PharmacyMedicationID - Quantity: @medication.Quantity, Instructions: @medication.Instructions
@@ -79,7 +79,7 @@
                     <td>@prescription.Urgent</td>
                     <td>@prescription.Status</td>
                     <td>
-                        <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionViewModelID" class="btn btn-warning">Update</a>
+                        <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-warning">Update</a>
 
                     </td>
                 </tr>

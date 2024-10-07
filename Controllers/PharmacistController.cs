@@ -25,96 +25,34 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-        public IActionResult UpdatePrescription(int id)
+        // GET: UpdatePrescription
+        // GET: UpdatePrescription
+        public IActionResult UpdatePrescription(int? ID)
         {
-            var prescription = _Context.prescriptions
-                .Include(p => p.PrescriptionMedications)
-                .FirstOrDefault(p => p.PrescriptionID == id);
-
-            if (prescription == null)
+            if (ID == null || ID == 0)
             {
                 return NotFound();
             }
-
-            var model = new PrescriptionViewModel
+            var objList = _Context.prescriptions.Find(ID);
+            if (objList == null)
             {
-                PrescriptionViewModelID = prescription.PrescriptionID,
-                Name = prescription.Name,
-                Gender = prescription.Gender,
-                Email = prescription.Email,
-                Date = prescription.Date,
-                Prescriber = prescription.Prescriber,
-                Urgent = prescription.Urgent,
-                Status = prescription.Status,
-                Medications = prescription.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
-                {
-                    PharmacyMedicationID = m.PharmacyMedicationID,
-                    Quantity = m.Quantity,
-                    Instructions = m.Instructions
-                }).ToList()
-            };
-
-            ViewBag.Medications = JsonConvert.SerializeObject(_Context.pharmacyMedications
-                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
-                .ToList());
-
-            return View(model);
-        }
-
-
-        // POST: Prescription/Update/5
-        [HttpPost]
-        public IActionResult UpdatePrescription(PrescriptionViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                // Log or inspect the model.PrescriptionID to verify it's not zero
-                var prescription = _Context.prescriptions
-                    .Include(p => p.PrescriptionMedications)
-                    .FirstOrDefault(p => p.PrescriptionID == model.PrescriptionViewModelID);
-
-                if (prescription == null)
-                {
-                    return NotFound();
-                }
-
-                // Update prescription details
-                prescription.Name = model.Name;
-                prescription.Gender = model.Gender;
-                prescription.Email = model.Email;
-                prescription.Date = model.Date;
-                prescription.Prescriber = model.Prescriber;
-                prescription.Urgent = model.Urgent;
-                prescription.Status = model.Status;
-
-                // Remove existing medications
-                _Context.prescriptionMedications.RemoveRange(prescription.PrescriptionMedications);
-
-                // Add updated medications
-                foreach (var medication in model.Medications)
-                {
-                    var prescriptionMedication = new PrescriptionMedication
-                    {
-                        PrescriptionID = prescription.PrescriptionID,
-                        PharmacyMedicationID = medication.PharmacyMedicationID,
-                        Quantity = medication.Quantity,
-                        Instructions = medication.Instructions
-                    };
-                    _Context.prescriptionMedications.Add(prescriptionMedication);
-                }
-
-                _Context.SaveChanges();
-
-                return RedirectToAction("PharmPrescriptionList");
+                return NotFound();
             }
+            
+            return View(objList);
 
-            // If the model is invalid, reload medications and return the view
-            var medications = _Context.pharmacyMedications
-                .Select(pm => new { pm.PharmacyMedicationID, pm.PharmacyMedicationName })
-                .ToList();
-            ViewBag.Medications = JsonConvert.SerializeObject(medications);
-            return View(model);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdatePrescription(Prescription prescription)
+        {
+            
+            _Context.prescriptions.Update(prescription);
+            _Context.SaveChanges();
+            return RedirectToAction("PharmPrescriptionList");
+        }
+
+
         public IActionResult CreateMedication()
         {
             return View();
@@ -137,32 +75,35 @@ namespace WIRKDEVELOPER.Controllers
             IEnumerable<Medication> list = _Context.medications;
             return View(list);
         }
-   
-        
+
+
         public IActionResult PharmPrescriptionList()
         {
             var prescriptions = _Context.prescriptions
-               .Include(p => p.PrescriptionMedications)
-                   .ThenInclude(pm => pm.PharmacyMedication) // Include related PharmacyMedication data
-               .Select(p => new PrescriptionViewModel
-               {
-                   Name = p.Name,
-                   Gender = p.Gender,
-                   Email = p.Email,
-                   Date = p.Date,
-                   Prescriber = p.Prescriber,
-                   Urgent = p.Urgent,
-                   Status = p.Status,
-                   Medications = p.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
-                   {
-                       PharmacyMedicationID = m.PharmacyMedicationID,
-                       Quantity = m.Quantity,
-                       Instructions = m.Instructions
-                   }).ToList()
-               }).ToList();
+                .Include(p => p.PrescriptionMedications)
+                    .ThenInclude(pm => pm.PharmacyMedication) // Include related PharmacyMedication data
+                .Select(p => new Prescription
+                {
+                    PrescriptionID = p.PrescriptionID,
+                    Name = p.Name,
+                    Surname = p.Surname, // Ensure this property is included
+                    Gender = p.Gender,
+                    Email = p.Email,
+                    Date = p.Date,
+                    Prescriber = p.Prescriber,
+                    Urgent = p.Urgent,
+                    Status = p.Status,
+                    PrescriptionMedications = p.PrescriptionMedications.Select(m => new PrescriptionMedication
+                    {
+                        PharmacyMedicationID = m.PharmacyMedicationID,
+                        Quantity = m.Quantity,
+                        Instructions = m.Instructions
+                    }).ToList()
+                }).ToList();
 
             return View(prescriptions);
         }
+
         public IActionResult AllPrescriptionList()
         {
             var prescriptions = _Context.prescriptions
