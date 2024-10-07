@@ -101,7 +101,7 @@
                                     <input type="hidden" name="surname" value="@patient.Patient.PatientSurname" />
                                     <input type="hidden" name="gender" value="@patient.Patient.Gender" /> 
                                     <input type="hidden" name="email" value="@patient.Patient.EmailAddress" />
-                                    <button type="submit" class="btn btn-blue-300 mx-1">Add</button>
+                                    <button type="submit" class="btn btn-blue-300 mx-1">Add Booking</button>
                                 </form>
                             </td>
                         </tr>
@@ -111,7 +111,7 @@
         }
         else
         {
-            <p>No records created yet</p>
+            <p class=" text-danger">No records created yet</p>
             <a asp-controller="Surgeon" asp-action="CreateBookingPatient"class="text-primary">Create Booking for new patient</a>
         }
 

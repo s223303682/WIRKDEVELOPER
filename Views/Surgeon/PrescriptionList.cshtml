@@ -5,51 +5,74 @@
 
 <h2>Prescription List</h2>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-          
-            <th>Patient Name</th>
-            <th>Surname</th>
-            <th>Gender</th>
-            <th>Email</th>
-            <th>Date</th>
-            <th>Prescriber</th>
-            <th>Urgent</th>
-            <th>Status</th>
-            <th>Medications</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var prescription in Model)
-        {
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">No prescriptions available.</div>
+}
+else
+{
+    <table class="table table-bordered table-responsive">
+        <thead class="thead-light">
             <tr>
-               
-                <td>@prescription.Name</td>
-                <td>@prescription.surname</td>
-                <td>@prescription.Gender</td>
-                <td>@prescription.Email</td>
-                <td>@prescription.Date.ToShortDateString()</td>
-                <td>@prescription.Prescriber</td>
-                <td>@prescription.Urgent</td>
-                <td>@prescription.Status</td>
-                <td>
-                    <ul>
-                        @foreach (var med in prescription.Medications)
-                        {
-                            <li>
-                                @med.PharmacyMedicationID - Quantity: @med.Quantity, Instructions: @med.Instructions
-                            </li>
-                        }
-                    </ul>
-                </td>
-                <td>
-                    <!-- Add any action buttons like Edit, Delete, etc. -->
-                    <a asp-action="updatePrescription" asp-route-id="@prescription.PrescriptionViewModelID" class="btn btn-primary btn-sm">Edit</a>
-                    <a asp-action="DeletePrescription" asp-route-id="@prescription.PrescriptionViewModelID" class="btn btn-danger btn-sm">Delete</a>
-                </td>
+                <th>Patient Name</th>
+                <th>Surname</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Date</th>
+                <th>Prescriber</th>
+                <th>Urgent</th>
+                <th>Status</th>
+                <th>Medications</th>
+                <th>Reason for Ignoring</th> <!-- New column for reason -->
+                <th>Actions</th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach (var prescription in Model)
+            {
+                <tr>
+                    <td>@prescription.Name</td>
+                    <td>@prescription.Surname</td>
+                    <td>@prescription.Gender</td>
+                    <td>@prescription.Email</td>
+                    <td>@prescription.Date.ToShortDateString()</td>
+                    <td>@prescription.Prescriber</td>
+                    <td>@prescription.Urgent</td>
+                    <td>@prescription.Status</td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @foreach (var med in prescription.Medications)
+                            {
+                                <li>
+                                    Medication ID: @med.PharmacyMedicationID - Quantity: @med.Quantity, Instructions: @med.Instructions
+                                </li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(prescription.IgnoreReason))
+                        {
+                            <span>@prescription.IgnoreReason</span> <!-- Display the reason -->
+                        }
+                        else
+                        {
+                            <span>N/A</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionViewModelID" class="btn btn-primary btn-sm">Edit</a>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@prescription.PrescriptionViewModelID')">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<script>
+    function confirmDelete(id) {
+        if (confirm("Are you sure you want to delete this prescription?")) {
+            window.location.href = '@Url.Action("DeletePrescription", "Surgeon")/' + id;
         }
-    </tbody>
-</table>
+    }
+</script>

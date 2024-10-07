@@ -95,12 +95,12 @@
         <div class="row">
             <div class="col" id="treatmentCodesContainer">
                 <div class="form-group treatmentCodeItem">
-                    <label>Treatment Codes</label>
-                    <select class="form-control" name="TreatmentCodeIDs[]" required>
+                    <label asp-for="TreatmentCodeIDs">Treatment Codes</label>
+                    <select class="form-control treatmentCodeSelect" required>
                         <option value="" disabled selected>--Select Treatment Code--</option>
                         @foreach (var item in ViewBag.getTreatmentCode)
                         {
-                            <option value="@item.Value">@item.Text</option> <!-- Show only ICD-10 code -->
+                            <option value="@item.Value">@item.Text</option>
                         }
                     </select>
                     <span class="text-danger"></span>
@@ -111,6 +111,14 @@
                 <button type="button" id="addTreatmentCode" class="btn btn-success mt-2">+ Add Another Treatment Code</button>
             </div>
         </div>
+
+        <div class="row mt-2">
+            <div class="col">
+                <h5>Selected Treatment Codes:</h5>
+                <div id="selectedTreatmentCodes" class="text-success"></div>
+            </div>
+        </div>
+
 
         <!-- Submit Section -->
         <div class="row">
@@ -125,19 +133,35 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            let treatmentCodeIndex = 1; // Start from 1 since we already have the first element
+
+            // Function to update the displayed selected treatment codes
+            function updateSelectedCodes() {
+                const selectedCodesContainer = document.getElementById('selectedTreatmentCodes');
+                const selectedCodes = Array.from(document.querySelectorAll('.treatmentCodeSelect'))
+                    .map(select => select.options[select.selectedIndex]?.text || '')
+                    .filter(text => text !== '')
+                    .join(', ');
+
+                selectedCodesContainer.textContent = selectedCodes;
+            }
+
             // Function to handle adding a new treatment code item
             document.getElementById('addTreatmentCode').addEventListener('click', function () {
                 var container = document.getElementById('treatmentCodesContainer');
                 var template = container.querySelector('.treatmentCodeItem').cloneNode(true);
 
-                // Clear or reset any values as needed
-                template.querySelector('select').value = ''; // Clear selection
+                // Clear selection and update the name attribute
+                var select = template.querySelector('select');
+                select.value = '';
                 template.querySelector('.removeTreatmentCode').addEventListener('click', function () {
                     container.removeChild(template);
+                    updateSelectedCodes(); // Update the selected codes after removing
                 });
 
                 // Append the new item to the container
                 container.appendChild(template);
+                updateSelectedCodes(); // Update the selected codes after adding
             });
 
             // Event delegation to handle remove button clicks
@@ -146,11 +170,20 @@
                     var itemToRemove = event.target.closest('.treatmentCodeItem');
                     if (itemToRemove) {
                         itemToRemove.parentNode.removeChild(itemToRemove);
+                        updateSelectedCodes(); // Update the selected codes after removing
                     }
+                }
+            });
+
+            // Update selected codes on change
+            document.getElementById('treatmentCodesContainer').addEventListener('change', function (event) {
+                if (event.target.classList.contains('treatmentCodeSelect')) {
+                    updateSelectedCodes();
                 }
             });
         });
     </script>
+
 </body>
 </html>
 
