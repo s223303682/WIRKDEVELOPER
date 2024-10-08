@@ -96,7 +96,7 @@
             <div class="col" id="treatmentCodesContainer">
                 <div class="form-group treatmentCodeItem">
                     <label asp-for="TreatmentCodeIDs">Treatment Codes</label>
-                    <select class="form-control treatmentCodeSelect" required>
+                    <select class="form-control treatmentCodeSelect" name="TreatmentCodeIDs" required>
                         <option value="" disabled selected>--Select Treatment Code--</option>
                         @foreach (var item in ViewBag.getTreatmentCode)
                         {
@@ -112,14 +112,7 @@
             </div>
         </div>
 
-        <div class="row mt-2">
-            <div class="col">
-                <h5>Selected Treatment Codes:</h5>
-                <div id="selectedTreatmentCodes" class="text-success"></div>
-            </div>
-        </div>
-
-
+      
         <!-- Submit Section -->
         <div class="row">
             <div class="col">
@@ -133,7 +126,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            let treatmentCodeIndex = 1; // Start from 1 since we already have the first element
+            let treatmentCodeIndex = 1;
 
             // Function to update the displayed selected treatment codes
             function updateSelectedCodes() {
@@ -148,29 +141,27 @@
 
             // Function to handle adding a new treatment code item
             document.getElementById('addTreatmentCode').addEventListener('click', function () {
-                var container = document.getElementById('treatmentCodesContainer');
-                var template = container.querySelector('.treatmentCodeItem').cloneNode(true);
+                const container = document.getElementById('treatmentCodesContainer');
+                const template = container.querySelector('.treatmentCodeItem').cloneNode(true);
 
                 // Clear selection and update the name attribute
-                var select = template.querySelector('select');
+                const select = template.querySelector('select');
                 select.value = '';
-                template.querySelector('.removeTreatmentCode').addEventListener('click', function () {
-                    container.removeChild(template);
-                    updateSelectedCodes(); // Update the selected codes after removing
-                });
+                select.name = `TreatmentCodeIDs[${treatmentCodeIndex}]`; // Update name for model binding
+                treatmentCodeIndex++;
 
                 // Append the new item to the container
                 container.appendChild(template);
-                updateSelectedCodes(); // Update the selected codes after adding
+                updateSelectedCodes(); // Update selected codes after adding
             });
 
             // Event delegation to handle remove button clicks
             document.getElementById('treatmentCodesContainer').addEventListener('click', function (event) {
                 if (event.target.classList.contains('removeTreatmentCode')) {
-                    var itemToRemove = event.target.closest('.treatmentCodeItem');
+                    const itemToRemove = event.target.closest('.treatmentCodeItem');
                     if (itemToRemove) {
                         itemToRemove.parentNode.removeChild(itemToRemove);
-                        updateSelectedCodes(); // Update the selected codes after removing
+                        updateSelectedCodes(); // Update selected codes after removing
                     }
                 }
             });
@@ -182,6 +173,7 @@
                 }
             });
         });
+
     </script>
 
 </body>

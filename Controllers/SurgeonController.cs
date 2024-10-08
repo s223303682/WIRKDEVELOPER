@@ -62,7 +62,6 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-
         public IActionResult CreatePrescription(int bookingId, string name, string surname, string gender, string email)
         {
             var viewModel = new PrescriptionViewModel
@@ -71,49 +70,53 @@ namespace WIRKDEVELOPER.Controllers
                 Surname = surname,
                 Gender = gender,
                 Email = email,
-                IgnoreReason = string.Empty
+                IgnoreReason = string.Empty,
+                Medications = new List<PrescriptionMedicationViewModel>() // Initialize to avoid null reference
             };
 
             // Get list of medications
             ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList();
-
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreatePrescription(PrescriptionViewModel model)
+        public IActionResult CreatePrescription(PrescriptionViewModel model, string ignoreReason)
         {
-            // Retrieve patient allergies based on provided patient information
+            // Get patient allergies from the database
             var patientAllergies = _Context.addm
                 .Include(a => a.AnAllergies)
                 .Where(a => a.Patient.PatientName == model.Name && a.Patient.PatientSurname == model.Surname)
                 .Select(a => a.AnAllergies.ActiveID)
                 .ToList();
 
-            var hasAllergy = false;
+            var allergyAlerts = new List<string>();
 
+            // Check each medication against patient allergies
             foreach (var medication in model.Medications)
             {
                 var medicationIngredients = _Context.pharmacyMedications
                     .Include(pm => pm.Ingredients)
                     .FirstOrDefault(pm => pm.PharmacyMedicationID == medication.PharmacyMedicationID)?.Ingredients;
 
+                // Check for allergies
                 if (medicationIngredients != null && medicationIngredients.Any(ing => patientAllergies.Contains(ing.ActiveID)))
                 {
-                    hasAllergy = true;
-                    break;
+                    allergyAlerts.Add(medicationIngredients.First().PharmacyMedication.PharmacyMedicationName);
                 }
             }
 
-            if (hasAllergy)
+            // Handle allergy alerts
+            if (allergyAlerts.Any())
             {
                 ModelState.AddModelError("", "One or more medications may cause an allergy.");
-                ViewBag.ShowAllergyAlert = true; // Show the alert modal
-                ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList(); // Pass medications back to the view
-                return View(model);
+                ViewBag.ShowAllergyAlert = true;
+                ViewBag.AllergyAlerts = allergyAlerts;
+                ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList();
+                return View(model); // Return view with alerts
             }
 
+            // Proceed if model state is valid and no allergy alerts
             if (ModelState.IsValid)
             {
                 var prescription = new Prescription
@@ -126,7 +129,7 @@ namespace WIRKDEVELOPER.Controllers
                     Prescriber = model.Prescriber,
                     Urgent = model.Urgent,
                     Status = model.Status,
-                    IgnoreReason = model.IgnoreReason,
+                    IgnoreReason = ignoreReason,
                     PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
                     {
                         PharmacyMedicationID = m.PharmacyMedicationID,
@@ -135,18 +138,18 @@ namespace WIRKDEVELOPER.Controllers
                     }).ToList()
                 };
 
+                // Add the prescription and save
                 _Context.prescriptions.Add(prescription);
                 _Context.SaveChanges();
 
-                // Redirect to PrescriptionList after a successful creation
+                // Redirect to PrescriptionList after success
                 return RedirectToAction("PrescriptionList");
             }
 
-            // If model state is not valid or there are allergies
+            // If model state is not valid
             ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList();
             return View(model);
         }
-
 
 
         // GET: Prescription/List
@@ -154,7 +157,7 @@ namespace WIRKDEVELOPER.Controllers
         {
             var prescriptions = _Context.prescriptions
                 .Include(p => p.PrescriptionMedications)
-                    .ThenInclude(pm => pm.PharmacyMedication) // Include related PharmacyMedication data
+                    .ThenInclude(pm => pm.PharmacyMedication)
                 .Select(p => new PrescriptionViewModel
                 {
                     Name = p.Name,
@@ -175,9 +178,7 @@ namespace WIRKDEVELOPER.Controllers
 
             return View(prescriptions);
         }
-        // GET: Prescription/Edit/{id}
-     
-      
+
 
         // GET: Prescription/Delete/{id}
         public IActionResult DeletePrescription(int id)
@@ -364,7 +365,6 @@ namespace WIRKDEVELOPER.Controllers
                     });
                 }
 
-
                 _Context.bookings.Add(booking);
                 _Context.SaveChanges();
 
@@ -373,7 +373,6 @@ namespace WIRKDEVELOPER.Controllers
 
             // If model state is invalid, repopulate the dropdowns
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-
             var anaesthesiologists = _Context.Anaesthesiologists
                 .Select(a => new SelectListItem
                 {
@@ -386,6 +385,7 @@ namespace WIRKDEVELOPER.Controllers
 
             return View(model);
         }
+
         public IActionResult BookingList()
         {
             var bookings = _Context.bookings

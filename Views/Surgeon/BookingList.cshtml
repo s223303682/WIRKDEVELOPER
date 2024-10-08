@@ -46,17 +46,15 @@
                         <td>@booking.Time.ToString(@"hh\:mm")</td>
                         <td>@booking.OperationTheatre?.OperationTheatreName</td>
                         <td>
-                            @if (booking.BookingTreatmentCodes != null && booking.BookingTreatmentCodes.Any())
+                            @if (booking.BookingTreatmentCodes.Any())
                             {
-                                @string.Join(", ", booking.BookingTreatmentCodes.Select(t => t.TreatmentCode?.ICDCODE).Where(code => code != null))
+                                @string.Join(", ", booking.BookingTreatmentCodes.Select(tc => tc.TreatmentCode.ICDCODE))
                             }
                             else
                             {
-                                <div>No treatment codes</div>
+                                <span>No Treatment Codes</span>
                             }
                         </td>
-
-
                         <td>
                             @if (booking.Anaesthesiologist != null)
                             {
@@ -70,6 +68,7 @@
                         <td>
                             <a asp-controller="Surgeon" asp-action="UpdateBooking" asp-route-ID="@booking.BookingID" class="btn btn-primary mx-1">Update</a>
                             <a asp-controller="Surgeon" asp-action="DeleteBooking" asp-route-ID="@booking.BookingID" class="btn btn-danger mx-1">Delete</a>
+                        </td>
                         <td>
                             <form asp-controller="Surgeon" asp-action="CreatePrescription" method="get">
                                 <input type="hidden" name="BookingID" value="@booking.BookingID" />
@@ -80,7 +79,6 @@
                                 <button type="submit" class="btn btn-blue-300 mx-1">Add prescription</button>
                             </form>
                         </td>
-                        
                     </tr>
                 }
             </tbody>
@@ -92,3 +90,4 @@
     }
 </body>
 </html>
+
