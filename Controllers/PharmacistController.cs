@@ -53,6 +53,7 @@ namespace WIRKDEVELOPER.Controllers
         }
 
 
+
         public IActionResult CreateMedication()
         {
             return View();
@@ -571,6 +572,47 @@ namespace WIRKDEVELOPER.Controllers
                 .ToList();
 
             return View(model);
+        }
+        public IActionResult IndexAnVitals()
+        {
+            IEnumerable<AnVitals> objList = _Context.anvitals;
+            return View(objList);
+            //var patient = _Context.ViewRecords.Where(e => e.Date == searchDate.Date).ToList();
+            //return View(patient);
+        }
+        public IActionResult AnVitals()
+        {
+            return View();
+        }
+        public IActionResult IndexAnAllergies()
+        {
+            IEnumerable<AnAllergies> objList = _Context.anallergies.Include(a => a.Active);
+            return View(objList);
+
+        }
+        public IActionResult AnAllergies()
+        {
+            return View();
+        }
+        public IActionResult IndexCurrentMedication()
+        {
+            IEnumerable<AnCurrentMedication> objList = _Context.ancurrentmedication;
+            return View(objList);
+
+        }
+        public IActionResult AnCurrentMedication()
+        {
+            return View();
+        }
+        public IActionResult IndexConditions()
+        {
+            IEnumerable<AnConditions> objList = _Context.anconditions;
+            return View(objList);
+
+        }
+        public IActionResult AnConditions()
+        {
+            return View();
         }
 
 
