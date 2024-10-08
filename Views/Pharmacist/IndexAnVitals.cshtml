@@ -1,0 +1,63 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.AnVitals>
+@{
+
+    Layout = "~/Views/Shared/Pharmacy.cshtml";
+}
+
+
+    <div class="container p-3">
+        <div class="row pt-4">
+            <div class="col-6">
+                <h2 class="text-primary">List of your screenings</h2>
+            </div>
+            <div class="col-6 text-end">
+            <a onclick="history.back()" class="btn btn-primary"><i class="bi bi-plus-circle"></i>BACK</a>
+            </div>
+        </div>
+        <br />
+        @if (Model.Count() > 0)
+        {
+            @*<table class="table table-bordered table-striped" style="width:100%">*@
+            <table class="table table-info table-hover">
+
+                <thead>
+                    <tr>
+                        <th>
+                            Vital
+                        </th>
+                        <th>
+                            Reading
+                        </th>
+                        <th>
+                            Time
+                        </th>
+                        @*  <th>
+                Date
+                </th> *@
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var vital in Model)
+                    {
+                        <tr>
+                            <td width="20%">@vital.Vital</td>
+                            <td width="20%">@vital.Reading</td>
+                            <td width="20%">@vital.Time</td>
+
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        }
+        else
+        {
+            <p>No Vitals</p>
+        }
+
+    </div>
+
+
+
