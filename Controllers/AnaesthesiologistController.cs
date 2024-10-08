@@ -526,18 +526,70 @@ namespace WIRKDEVELOPER.Controllers
 
         public IActionResult SearchPatient(string patientName)
         {
+            // Retrieve the list of orders from the database, including related entities if needed
+            var orders = _Context.order
+                .Include(o => o.Addm)                   // Include related Patient entity
+                /*.Include(o => o.OrderItems) */                 // Include related OrderItems
+                .Include(o => o.OrderMedications)                  // Include related OrderItems
+                .ThenInclude(o => o.PharmacyMedication)         // Include related PharmacyMedication entity
+                                                                //.ToListAsync()
+
+             .Select(item => new OrderCreate
+             {
+                 AnOrderID = item.AnOrderID,
+                 Date = item.Date,
+                 AddmID = item.AddmID,
+                 Patient = item.Addm,
+                 Urgent = item.Urgent,
+                 Status = item.Status,
+                 OrderItems = item.OrderMedications.Select(m => new OrderItems
+                 {
+                     PharmacyMedicationID = m.PharmacyMedicationID,
+                     Quantity = m.Quantity,
+                     Instructions = m.Instructions
+                 }).ToList()
+             }).ToList();
+
+            //return View(prescriptions);
+
+            return View(orders);
 
 
+    //        var orders = _Context.order
+    //    .Include(o => o.Addm)                   // Include related Patient entity
+    //    .Include(o => o.OrderMedications)        // Include related OrderItems
+    //    .ThenInclude(o => o.PharmacyMedication)  // Include related PharmacyMedication entity
+    //    .Where(o => o.Addm.PatientName.Contains(patientName)) // Filter by patient name
+    //    .Select(item => new OrderCreate
+    //    {
+    //        AnOrderID = item.AnOrderID,
+    //        Date = item.Date,
+    //        AddmID = item.AddmID,
+    //        Patient = item.Addm,
+    //        Urgent = item.Urgent,
+    //        Status = item.Status,
+    //        Notes = item.Notes, // Include Notes
+    //        OrderItems = item.OrderMedications.Select(m => new OrderItems
+    //        {
+    //            PharmacyMedicationID = m.PharmacyMedicationID,
+    //            Quantity = m.Quantity,
+    //            Instructions = m.Instructions
+    //        }).ToList()
+    //    }).ToList();
 
-            //IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Addm);
-            //return View(objList);
-            return View();
+    //return View(orders);
         }
        
         public IActionResult CreateNoteForOrder(int ID)
         {
+            // Retrieve the order by ID, including related patient data
+            var order =  _Context.order
+                .Include(o => o.Addm)
+                .Include(o => o.OrderMedications)          // Include the related medications for display
+            .ThenInclude(om => om.PharmacyMedication)
+                .FirstOrDefault(o => o.AnOrderID == ID);
 
-            if(ID == null || ID == 0)
+            if (ID == null || ID == 0)
             {
                 return NotFound();
             }
@@ -568,7 +620,7 @@ namespace WIRKDEVELOPER.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateNoteForOrder(Order note)
+        public IActionResult CreateNoteForOrder(Order note, int id)
         {
             //_Context.order.Update(note);
             //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
@@ -576,12 +628,17 @@ namespace WIRKDEVELOPER.Controllers
             //_Context.SaveChanges();
             //return RedirectToAction("SearchPatient");
 
-            if (ModelState.IsValid)
-             {
-                 _Context.order.Update(note);
+            // Retrieve the order along with its related medications
+            //var order =  _Context.order
+            //    .Include(o => o.OrderMedications)
+            //    .FirstOrDefault(o => o.AnOrderID == id);
+
+            //if (ModelState.IsValid)
+
+            _Context.order.Add(note);
                  _Context.SaveChanges();
                    return RedirectToAction("SearchPatient");
-            }
+            
 
              ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
              ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
@@ -594,6 +651,26 @@ namespace WIRKDEVELOPER.Controllers
 
             //var order = _Context.order.Find(note.AnOrderID);
             //return RedirectToAction("SearchPatient", new { patientName = order.AddmID });
+
+
+
+
+            //if (ModelState.IsValid)
+            //{
+            //    // If creating a new note, you might want to find the existing order
+            //    var existingOrder = _Context.order.Find(id);
+            //    if (existingOrder != null)
+            //    {
+            //        existingOrder.Notes = note.Notes; // Save notes to the existing order
+            //        _Context.SaveChanges();
+            //    }
+            //    return RedirectToAction("SearchPatient");
+            //}
+
+            //// If the model is invalid, return the same view with validation errors
+            //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+            //ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+            //return View(note);
 
 
         }

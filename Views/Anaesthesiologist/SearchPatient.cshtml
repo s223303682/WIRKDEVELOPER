@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WIRKDEVELOPER.Models.Order>
+﻿@model IEnumerable<WIRKDEVELOPER.Models.OrderCreate>
 
 @{
     Layout = "AnaesthesiologistLayout";
@@ -36,12 +36,6 @@
                 Medication ordered
             </th>
             <th>
-                Quantity
-            </th>
-            <th>
-                Instruction
-            </th>
-            <th>
                 Urgent
             </th>
             <th>
@@ -67,10 +61,20 @@
             {
                 <tr scope="row">
                     <td width="20%">@order.Date</td>
-                    <td width="20%">@order.Addm.PatientName</td>
-                    @* <td width="20%">@order.PharmacyMedication.PharmacyMedicationName</td>
-                    <td width="10%">@order.Quantity</td>
-                    <td width="10%">@order.Instructions</td> *@
+                    <td width="20%">@order.Patient.PatientName</td>
+                    <td>
+                        @if (order.OrderItems != null && order.OrderItems.Any())
+                        {
+                            <ul>
+                                @foreach (var medication in order.OrderItems)
+                                {
+                                    <li>
+                                        @medication.PharmacyMedicationID - Quantity: @medication.Quantity, Instructions: @medication.Instructions
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </td>
                     <td width="10%">@order.Urgent</td>
                     <td width="10%">@order.Status</td>
                     <td width="10%">@order.Notes</td>
