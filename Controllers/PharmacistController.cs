@@ -70,11 +70,27 @@ namespace WIRKDEVELOPER.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult RejectPrescription(Prescription prescription)
         {
+            if (ModelState.IsValid)
+            {
+                // Find the existing prescription in the database
+                var existingPrescription = _Context.prescriptions.Find(prescription.PrescriptionID);
+                if (existingPrescription != null)
+                {
+                    // Update the status and ignore reason
+                    existingPrescription.Status = prescription.Status;
+                    existingPrescription.IgnoreReason = prescription.IgnoreReason; // Assuming this is the rejection reason
 
-            _Context.prescriptions.Update(prescription);
-            _Context.SaveChanges();
-            return RedirectToAction("PharmPrescriptionList");
+                    _Context.SaveChanges();
+                    return RedirectToAction("PharmPrescriptionList");
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            return View(prescription); // Return the view with validation errors if the model state is not valid
         }
+
 
 
 
@@ -638,6 +654,7 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
+
 
 
 

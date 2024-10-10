@@ -68,12 +68,13 @@
                         <option value="Rejected">Reject</option>
 
                     </select>
-                    <span asp-validation-for="Status" class="text-danger"></span>
-                    <div class="form-group col-md-3" id="rejectionReasonGroup" style="display: none;">
-                        <label for="RejectionReason">Reason for Rejection</label>
-                        <input asp-for="IgnoreReason" type="text" id="RejectionReason" class="form-control" />
-                        <span asp-validation-for="IgnoreReason" class="text-danger"></span>
-                    </div>
+                   
+                </div>
+                <span asp-validation-for="IgnoreReason" class="text-danger"></span>
+                <div class="form-group col-md-3" id="rejectionReasonGroup" style="display: none;">
+                    <label for="RejectionReason">Reason for Rejection</label>
+                    <input asp-for="IgnoreReason" type="text" id="RejectionReason" class="form-control" />
+                    <span asp-validation-for="IgnoreReason" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -440,15 +441,15 @@
     }
 }
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const statusSelect = document.querySelector("select[name='Status']");
-        const rejectionReasonGroup = document.getElementById("rejectionReasonGroup");
+    document.addEventListener('DOMContentLoaded', function () {
+        const statusSelect = document.getElementById('Status');
+        const rejectionReasonGroup = document.getElementById('rejectionReasonGroup');
 
-        statusSelect.addEventListener("change", function () {
-            if (this.value === "Rejected") {
-                rejectionReasonGroup.style.display = "block";
+        statusSelect.addEventListener('change', function () {
+            if (statusSelect.value === 'Rejected') {
+                rejectionReasonGroup.style.display = 'block';
             } else {
-                rejectionReasonGroup.style.display = "none";
+                rejectionReasonGroup.style.display = 'none';
             }
         });
     });

@@ -27,10 +27,10 @@ namespace WIRKDEVELOPER.Models
         public string Urgent { get; set; }
         [Required]
         public string Status { get; set; }
-
+        public string? IgnoreReason { get; set; } = "None";
         // Navigation properties
         public virtual ICollection<PrescriptionMedication> PrescriptionMedications { get; set; } = new List<PrescriptionMedication>();
-        public string IgnoreReason { get; set; } = "none";
+     
     }
 
     public class PrescriptionViewModel
