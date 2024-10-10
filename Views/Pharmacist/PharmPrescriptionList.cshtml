@@ -18,6 +18,7 @@
             <th>Urgent</th>
             <th>Status</th>
             <th>update</th>
+            <th>update</th>
         </tr>
     </thead>
     <tbody>
@@ -47,6 +48,7 @@
                     <td>@prescription.Prescriber</td>
                     <td>@prescription.Urgent</td>
                     <td>@prescription.Status</td>
+                    <td>@prescription.IgnoreReason</td>
                     <td>
                        <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-primary">Update</a> 
                        @*  <a class="btn btn-info" href="@Url.Action("UpdatePrescription","Pharmacist",new{id = prescription.PrescriptionViewModelID})">Update</a> *@
