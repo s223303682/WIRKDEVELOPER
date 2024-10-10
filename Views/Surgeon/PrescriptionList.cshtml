@@ -44,7 +44,11 @@ else
                             @foreach (var med in prescription.Medications)
                             {
                                 <li>
-                                    Medication ID: @med.PharmacyMedicationID - Quantity: @med.Quantity, Instructions: @med.Instructions
+                                    <strong>Medication:</strong> @med.PharmacyMedicationID
+                                    <br>
+                                    <strong>Quantity:</strong> @med.Quantity
+                                    <br>
+                                    <strong>Instructions:</strong> @med.Instructions
                                 </li>
                             }
                         </ul>

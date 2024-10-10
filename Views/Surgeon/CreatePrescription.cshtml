@@ -195,10 +195,12 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Back to Form</button>
                     <button type="button" class="btn btn-primary" id="confirmIgnore">Ignore and Proceed</button>
+                    <button type="button" class="btn btn-success" id="continueButton">Continue</button>
                 </div>
             </div>
         </div>
     </div>
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
@@ -238,6 +240,26 @@
                 }
             });
 
+            // Continue button logic
+            $('#continueButton').click(function () {
+                var reason = $('#ignoreReason').val().trim();
+                if (!reason) {
+                    alert("Please provide a reason for ignoring the alert.");
+                    return;
+                }
+
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'IgnoreReason',
+                    value: reason
+                }).appendTo('form');
+
+                $('#ignoreAlertModal').modal('hide');
+
+                // Validate and submit the form when "Continue" is clicked
+                $('form').submit();
+            });
+
             $('.close, .btn-secondary').click(function () {
                 $('#ignoreAlertModal').modal('hide');
             });
@@ -246,11 +268,12 @@
         @if (ViewBag.ShowAllergyAlert != null && ViewBag.ShowAllergyAlert == true)
         {
             <text>
-                        $('#ignoreAlertModal').modal('show');
+                    $('#ignoreAlertModal').modal('show');
             </text>
         }
             });
     </script>
+
 
 </body>
 </html>

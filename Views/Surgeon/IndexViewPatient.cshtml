@@ -5,8 +5,7 @@
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
 
-@if (User.IsInRole("Surgeon"))
-{
+
     <form method="post" asp-action="IndexViewPatient">
         <div class="border p-3 #FBD603">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
@@ -118,4 +117,4 @@
 
     </div>
 
-}
+
