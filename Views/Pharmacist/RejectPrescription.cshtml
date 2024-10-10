@@ -7,7 +7,7 @@
 
 <h2> Prescription </h2>
 
-<form asp-action="UpdatePrescription" method="post">
+<form asp-action="RejectPrescription" method="post">
     <input asp-for="PrescriptionID" hidden />
 
     <!-- Patient Details -->
@@ -56,7 +56,7 @@
                         <option value="">Select Urgency</option>
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
-                       
+
                     </select>
                     <span asp-validation-for="Urgent" class="text-danger"></span>
                 </div>
@@ -65,10 +65,15 @@
                     <select asp-for="Status" class="form-control" required>
                         <option value="">Select Status</option>
                         <option value="Despensed">Despense</option>
-                        @* <option value="Rejected">Reject</option> *@
+                        <option value="Rejected">Reject</option>
 
                     </select>
                     <span asp-validation-for="Status" class="text-danger"></span>
+                    <div class="form-group col-md-3" id="rejectionReasonGroup" style="display: none;">
+                        <label for="RejectionReason">Reason for Rejection</label>
+                        <input asp-for="IgnoreReason" type="text" id="RejectionReason" class="form-control" />
+                        <span asp-validation-for="IgnoreReason" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,7 +82,7 @@
     <a asp-action="PharmPrescriptionList" class="btn btn-primary">Cancel</a>
     <br />
     <br />
-            <div class=" row-2">
+    <div class=" row-2">
         <div class="col-8  row">
             <div class="col">
                 @*  <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Vital History" /> *@
@@ -185,7 +190,7 @@
                             </div>
 
                             <button asp-controller="Pharmacist" asp-action="IndexAnAllergies" class="btn btn-primary">Allegies</button>
-                              
+
                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -420,13 +425,13 @@
     </div>
 
 
-            </div>
-        </div>
+    </div>
+    </div>
 
     </div>
 
 
-    
+
 </form>
 <script src="~/css/JavaScript.js"></script>
 @section Scripts {
@@ -434,3 +439,17 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const statusSelect = document.querySelector("select[name='Status']");
+        const rejectionReasonGroup = document.getElementById("rejectionReasonGroup");
+
+        statusSelect.addEventListener("change", function () {
+            if (this.value === "Rejected") {
+                rejectionReasonGroup.style.display = "block";
+            } else {
+                rejectionReasonGroup.style.display = "none";
+            }
+        });
+    });
+</script>

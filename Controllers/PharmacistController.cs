@@ -51,6 +51,30 @@ namespace WIRKDEVELOPER.Controllers
             _Context.SaveChanges();
             return RedirectToAction("PharmPrescriptionList");
         }
+        public IActionResult RejectPrescription(int? ID)
+        {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+            var objList = _Context.prescriptions.Find(ID);
+            if (objList == null)
+            {
+                return NotFound();
+            }
+
+            return View(objList);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RejectPrescription(Prescription prescription)
+        {
+
+            _Context.prescriptions.Update(prescription);
+            _Context.SaveChanges();
+            return RedirectToAction("PharmPrescriptionList");
+        }
 
 
 

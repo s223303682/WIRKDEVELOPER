@@ -50,7 +50,7 @@
                     <td>
                        <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-primary">Update</a> 
                        @*  <a class="btn btn-info" href="@Url.Action("UpdatePrescription","Pharmacist",new{id = prescription.PrescriptionViewModelID})">Update</a> *@
-
+                        <a asp-controller="Pharmacist" asp-action="RejectPrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-primary">Reject</a>
                     </td>
                 </tr>
             }
