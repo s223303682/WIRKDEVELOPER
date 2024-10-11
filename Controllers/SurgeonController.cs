@@ -62,10 +62,11 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-        public IActionResult CreatePrescription(int bookingId, string name, string surname, string gender, string email)
+        public IActionResult CreatePrescription(int bookingId, string name, string surname,string IDNumber, string gender, string email)
         {
             var viewModel = new PrescriptionViewModel
             {
+                IDNumber = IDNumber,
                 Name = name,
                 Surname = surname,
                 Gender = gender,
@@ -121,6 +122,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 var prescription = new Prescription
                 {
+                    IDNumber = model.IDNumber,
                     Name = model.Name,
                     Surname = model.Surname,
                     Gender = model.Gender,
@@ -157,18 +159,19 @@ namespace WIRKDEVELOPER.Controllers
         {
             var prescriptions = _Context.prescriptions
                 .Include(p => p.PrescriptionMedications)
-                    .ThenInclude(pm => pm.PharmacyMedication)
-                .Select(p => new PrescriptionViewModel
+                    .ThenInclude(pm => pm.PharmacyMedication) // Include related PharmacyMedication data
+                .Select(p => new Prescription
                 {
+                    PrescriptionID = p.PrescriptionID,
                     Name = p.Name,
-                    Surname = p.Surname,
+                    Surname = p.Surname, // Ensure this property is included
                     Gender = p.Gender,
                     Email = p.Email,
                     Date = p.Date,
                     Prescriber = p.Prescriber,
                     Urgent = p.Urgent,
                     Status = p.Status,
-                    Medications = p.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
+                    PrescriptionMedications = p.PrescriptionMedications.Select(m => new PrescriptionMedication
                     {
                         PharmacyMedicationID = m.PharmacyMedicationID,
                         Quantity = m.Quantity,
@@ -306,10 +309,11 @@ namespace WIRKDEVELOPER.Controllers
         return RedirectToAction("BookingPatientList");
 
     }
-        public IActionResult CreateBooking(int addmId, string name, string surname, string gender, string email)
+        public IActionResult CreateBooking(int addmId, string name, string surname,string IDNumber, string gender, string email)
         {
             var viewModel = new BookingViewModel
             {
+                IDNumber = IDNumber,
                 Name = name,
                 Surname = surname,
                 Gender = gender,
@@ -336,7 +340,6 @@ namespace WIRKDEVELOPER.Controllers
 
             return View(viewModel);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateBooking(BookingViewModel model)
@@ -345,6 +348,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 var booking = new Booking
                 {
+                    IDNumber = model.IDNumber,
                     Name = model.Name,
                     Surname = model.Surname,
                     Gender = model.Gender,
@@ -356,13 +360,17 @@ namespace WIRKDEVELOPER.Controllers
                     UserId = model.UserId // Set the correct foreign key
                 };
 
-                // Add selected TreatmentCodes
-                foreach (var treatmentCodeID in model.TreatmentCodeIDs)
+                // Ensure that TreatmentCodeIDs is not null and has values
+                if (model.TreatmentCodeIDs != null && model.TreatmentCodeIDs.Count > 0)
                 {
-                    booking.BookingTreatmentCodes.Add(new BookingTreatmentCode
+                    // Add selected TreatmentCodes
+                    foreach (var treatmentCodeID in model.TreatmentCodeIDs)
                     {
-                        TreatmentCodeID = treatmentCodeID
-                    });
+                        booking.BookingTreatmentCodes.Add(new BookingTreatmentCode
+                        {
+                            TreatmentCodeID = treatmentCodeID
+                        });
+                    }
                 }
 
                 _Context.bookings.Add(booking);
@@ -386,18 +394,21 @@ namespace WIRKDEVELOPER.Controllers
             return View(model);
         }
 
+
         public IActionResult BookingList()
         {
+            // Retrieve all bookings with related TreatmentCodes, Operation Theatre, and Anaesthesiologist
             var bookings = _Context.bookings
-                .Include(b => b.OperationTheatre) // Include Operation Theatre details
-                .Include(b => b.Anaesthesiologist) // Include Anaesthesiologist details
-                .ThenInclude(a => a.ApplicationUser) // Ensure you include the ApplicationUser for names
-                .Include(b => b.BookingTreatmentCodes) // Include treatment codes
-                .ThenInclude(tc => tc.TreatmentCode) // Include TreatmentCode details
+                .Include(b => b.BookingTreatmentCodes)
+                    .ThenInclude(btc => btc.TreatmentCode)
+                .Include(b => b.OperationTheatre)
+                .Include(b => b.Anaesthesiologist)
+                    .ThenInclude(a => a.ApplicationUser) // Ensure ApplicationUser is included if applicable
                 .ToList();
 
             return View(bookings);
         }
+
 
 
         public IActionResult DeleteBooking(int? ID)

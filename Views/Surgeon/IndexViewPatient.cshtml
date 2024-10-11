@@ -96,6 +96,7 @@
                             <td>
                                 <form asp-controller="Surgeon" asp-action="CreateBooking" method="get">
                                     <input type="hidden" name="AddmID" value="@patient.AddmID" />
+                                    <input type="hidden" name="IDNumber" value="@patient.Patient.PatientIDNO" />
                                     <input type="hidden" name="name" value="@patient.Patient.PatientName" />
                                     <input type="hidden" name="surname" value="@patient.Patient.PatientSurname" />
                                     <input type="hidden" name="gender" value="@patient.Patient.Gender" /> 

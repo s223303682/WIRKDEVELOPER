@@ -30,6 +30,11 @@
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group col-md-3">
+                        <label for="IDNumber">Patient ID Number</label>
+                        <input asp-for="IDNumber" type="text" class="form-control" readonly />
+                    </div>
+
+                    <div class="form-group col-md-3">
                         <label for="Name">Patient Name</label>
                         <input asp-for="Name" type="text" id="Name" name="Name" class="form-control" readonly />
                     </div>
@@ -94,6 +99,7 @@
         <!-- Treatment Codes Section -->
         <div class="row">
             <div class="col" id="treatmentCodesContainer">
+                <!-- This is a template for the treatment code select -->
                 <div class="form-group treatmentCodeItem">
                     <label asp-for="TreatmentCodeIDs">Treatment Codes</label>
                     <select class="form-control treatmentCodeSelect" name="TreatmentCodeIDs" required>
@@ -111,7 +117,6 @@
                 <button type="button" id="addTreatmentCode" class="btn btn-success mt-2">+ Add Another Treatment Code</button>
             </div>
         </div>
-
       
         <!-- Submit Section -->
         <div class="row">
@@ -123,57 +128,32 @@
             </div>
         </div>
     </form>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            let treatmentCodeIndex = 1;
-
-            // Function to update the displayed selected treatment codes
-            function updateSelectedCodes() {
-                const selectedCodesContainer = document.getElementById('selectedTreatmentCodes');
-                const selectedCodes = Array.from(document.querySelectorAll('.treatmentCodeSelect'))
-                    .map(select => select.options[select.selectedIndex]?.text || '')
-                    .filter(text => text !== '')
-                    .join(', ');
-
-                selectedCodesContainer.textContent = selectedCodes;
-            }
-
-            // Function to handle adding a new treatment code item
-            document.getElementById('addTreatmentCode').addEventListener('click', function () {
-                const container = document.getElementById('treatmentCodesContainer');
-                const template = container.querySelector('.treatmentCodeItem').cloneNode(true);
-
-                // Clear selection and update the name attribute
-                const select = template.querySelector('select');
-                select.value = '';
-                select.name = `TreatmentCodeIDs[${treatmentCodeIndex}]`; // Update name for model binding
-                treatmentCodeIndex++;
-
-                // Append the new item to the container
-                container.appendChild(template);
-                updateSelectedCodes(); // Update selected codes after adding
-            });
-
-            // Event delegation to handle remove button clicks
-            document.getElementById('treatmentCodesContainer').addEventListener('click', function (event) {
-                if (event.target.classList.contains('removeTreatmentCode')) {
-                    const itemToRemove = event.target.closest('.treatmentCodeItem');
-                    if (itemToRemove) {
-                        itemToRemove.parentNode.removeChild(itemToRemove);
-                        updateSelectedCodes(); // Update selected codes after removing
-                    }
-                }
-            });
-
-            // Update selected codes on change
-            document.getElementById('treatmentCodesContainer').addEventListener('change', function (event) {
-                if (event.target.classList.contains('treatmentCodeSelect')) {
-                    updateSelectedCodes();
-                }
-            });
+        document.getElementById('addTreatmentCode').addEventListener('click', function () {
+            // Create a new treatment code select element
+            var newTreatmentCodeDiv = document.createElement('div');
+            newTreatmentCodeDiv.classList.add('form-group', 'treatmentCodeItem');
+            newTreatmentCodeDiv.innerHTML = `
+                    <label asp-for="TreatmentCodeIDs">Treatment Codes</label>
+                    <select class="form-control treatmentCodeSelect" name="TreatmentCodeIDs" required>
+                        <option value="" disabled selected>--Select Treatment Code--</option>
+        @foreach (var item in ViewBag.getTreatmentCode)
+        {
+                                <option value="@item.Value">@item.Text</option>
+        }
+                    </select>
+                    <span class="text-danger"></span>
+                    <button type="button" class="btn btn-danger removeTreatmentCode mt-2">Remove</button>
+                `;
+            document.getElementById('treatmentCodesContainer').appendChild(newTreatmentCodeDiv);
         });
 
+        // Event delegation to handle remove buttons for dynamic elements
+        document.getElementById('treatmentCodesContainer').addEventListener('click', function (e) {
+            if (e.target.classList.contains('removeTreatmentCode')) {
+                e.target.parentElement.remove(); // Remove the treatment code item
+            }
+        });
     </script>
 
 </body>

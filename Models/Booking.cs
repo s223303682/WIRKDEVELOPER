@@ -11,6 +11,7 @@ namespace WIRKDEVELOPER.Models
 
         public string Name { get; set; }
         public string Surname { get; set; }
+        public string IDNumber { get; set; }
         public string Gender { get; set; }
         public string Email { get; set; }
         public DateTime Date { get; set; }
@@ -54,6 +55,7 @@ namespace WIRKDEVELOPER.Models
 
         public string Name { get; set; }
         public string Surname { get; set; }
+        public string IDNumber { get; set; }
         public string Gender { get; set; }
         public string Email { get; set; }
         public DateTime Date { get; set; }

@@ -1,82 +1,86 @@
-﻿@model List<WIRKDEVELOPER.Models.PrescriptionViewModel>
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Prescription>
+
 @{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
 
-<h2>Prescription List</h2>
-
-@if (!Model.Any())
-{
-    <div class="alert alert-warning">No prescriptions available.</div>
-}
-else
-{
-    <table class="table table-bordered table-responsive">
-        <thead class="thead-light">
-            <tr>
-                <th>Patient Name</th>
-                <th>Surname</th>
-                <th>Gender</th>
-                <th>Email</th>
-                <th>Date</th>
-                <th>Prescriber</th>
-                <th>Urgent</th>
-                <th>Status</th>
-                <th>Medications</th>
-                <th>Reason for Ignoring</th> <!-- New column for reason -->
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var prescription in Model)
-            {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescription List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <table id="dataTable" class="table table-bordered table-striped table-white">
+            <thead class="thead-dark">
                 <tr>
-                    <td>@prescription.Name</td>
-                    <td>@prescription.Surname</td>
-                    <td>@prescription.Gender</td>
-                    <td>@prescription.Email</td>
-                    <td>@prescription.Date.ToShortDateString()</td>
-                    <td>@prescription.Prescriber</td>
-                    <td>@prescription.Urgent</td>
-                    <td>@prescription.Status</td>
-                    <td>
-                        <ul class="list-unstyled">
-                            @foreach (var med in prescription.Medications)
-                            {
-                                <li>
-                                    <strong>Medication:</strong> @med.PharmacyMedicationID
-                                    <br>
-                                    <strong>Quantity:</strong> @med.Quantity
-                                    <br>
-                                    <strong>Instructions:</strong> @med.Instructions
-                                </li>
-                            }
-                        </ul>
-                    </td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(prescription.IgnoreReason))
-                        {
-                            <span>@prescription.IgnoreReason</span> <!-- Display the reason -->
-                        }
-                        else
-                        {
-                            <span>N/A</span>
-                        }
-                    </td>
-                    <td>
-                        <a asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionViewModelID" class="btn btn-primary btn-sm">Edit</a>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@prescription.PrescriptionViewModelID')">Delete</button>
-                    </td>
+                    <th>ID Number</th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Gender</th>
+                    <th>Email</th>
+                    <th>Date</th>
+                    <th>Prescriber</th>
+                    <th>Urgent</th>
+                    <th>Status</th>
+                    <th>Ignore Reason</th>
+                    <th>Medications</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var prescription in Model)
+                {
+                    <tr>
+                        <td>@prescription.IDNumber</td>
+                        <td>@prescription.Name</td>
+                        <td>@prescription.Surname</td>
+                        <td>@prescription.Gender</td>
+                        <td>@prescription.Email</td>
+                        <td>@prescription.Date.ToShortDateString()</td>
+                        <td>@prescription.Prescriber</td>
+                        <td>@prescription.Urgent</td>
+                        <td>@prescription.Status</td>
+                        <td>@prescription.IgnoreReason</td>
+                        <td>
+                            <ul>
+                                @if (prescription.PrescriptionMedications != null && prescription.PrescriptionMedications.Any())
+                                {
+                                    foreach (var medication in prescription.PrescriptionMedications)
+                                    {
+                                        <li>
+                                            Medication ID: @medication.PharmacyMedicationID -
+                                            Name: @medication.PrescriptionMedicationID -
+                                            Quantity: @medication.Quantity -
+                                            Instructions: @medication.Instructions
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li>No medications prescribed.</li>
+                                }
+                            </ul>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("UpdatePrescription", "Prescription", new { id = prescription.PrescriptionID })" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="@Url.Action("DeletePrescription", "Prescription", new { id = prescription.PrescriptionID })" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a href="@Url.Action("CreatePrescription", "Prescription")" class="btn btn-primary">Create New Prescription</a>
+    </div>
 
-<script>
-    function confirmDelete(id) {
-        if (confirm("Are you sure you want to delete this prescription?")) {
-            window.location.href = '@Url.Action("DeletePrescription", "Surgeon")/' + id;
-        }
-    }
-</script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
+

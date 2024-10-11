@@ -27,6 +27,10 @@
                 <div class="card-header bg-secondary text-white">Patient Information</div>
                 <div class="card-body">
                     <div class="form-row">
+                          <div class="form-group col-md-3">
+                            <label asp-for="IDNumber">Patient ID Number</label>
+                            <input asp-for="IDNumber" class="form-control" readonly />
+                        </div>
                         <div class="form-group col-md-3">
                             <label asp-for="Name">Patient Name</label>
                             <input asp-for="Name" class="form-control" readonly />
