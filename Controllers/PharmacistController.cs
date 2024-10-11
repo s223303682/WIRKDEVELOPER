@@ -27,27 +27,29 @@ namespace WIRKDEVELOPER.Controllers
         }
         // GET: UpdatePrescription
         // GET: UpdatePrescription
-        public IActionResult UpdatePrescription(int? ID)
+        public IActionResult UpdatePrescription(int id)
         {
-            if (ID == null || ID == 0)
-            {
-                return NotFound();
-            }
-            var objList = _Context.prescriptions.Find(ID);
-            if (objList == null)
-            {
-                return NotFound();
-            }
-            
-            return View(objList);
+            var prescription = _Context.prescriptions
+                .Include(p => p.PrescriptionMedications) // Ensure medications are included
+                .FirstOrDefault(p => p.PrescriptionID == id);
 
+            if (prescription == null)
+            {
+                return NotFound(); // Handle case where the prescription does not exist
+            }
+
+            ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList(); // Make sure this is populated
+            return View(prescription);
         }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult UpdatePrescription(Prescription prescription)
         {
             
             _Context.prescriptions.Update(prescription);
+            ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList();
             _Context.SaveChanges();
             return RedirectToAction("PharmPrescriptionList");
         }

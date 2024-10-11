@@ -73,6 +73,51 @@
             </div>
         </div>
     </div>
+    <!-- Medications Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">Medications</div>
+        <div class="card-body">
+            <div id="medicationsContainer">
+                @if (Model.PrescriptionMedications != null && Model.PrescriptionMedications.Count > 0)
+                {
+                    <div id="medicationsContainer">
+                        @for (int i = 0; i < Model.PrescriptionMedications.Count; i++)
+                        {
+                            <div class="form-row medication-row mb-3" data-index="@i">
+                                <div class="form-group col-md-4">
+                                    <label>Medication</label>
+                                    <select asp-for="PrescriptionMedications[@i].PharmacyMedicationID" class="form-control">
+                                        <option value="">Select Medication</option>
+                                        @foreach (var medication in ViewBag.PharmacyMedications)
+                                        {
+                                            <option value="@medication.PharmacyMedicationID">@medication.PharmacyMedicationName</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="PrescriptionMedications[@i].PharmacyMedicationID" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Quantity</label>
+                                    <input asp-for="PrescriptionMedications[@i].Quantity" type="number" min="1" class="form-control" placeholder="Quantity"  />
+                                    <span asp-validation-for="PrescriptionMedications[@i].Quantity" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Instructions</label>
+                                    <input asp-for="PrescriptionMedications[@i].Instructions" type="text" class="form-control" placeholder="Instructions" />
+                                    <span asp-validation-for="PrescriptionMedications[@i].Instructions" class="text-danger"></span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>No medications found.</p>
+                }
+
+            </div>
+   
+        </div>
+    </div>
     <button type="submit" class="btn btn-primary">Update Status</button>
     <a asp-action="PharmPrescriptionList" class="btn btn-primary">Cancel</a>
     <br />
