@@ -11,7 +11,7 @@ using WIRKDEVELOPER.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WIRKDEVELOPER.Models.sendemail;  // Check if this is the correct namespace
-
+using Rotativa.AspNetCore;
 using Newtonsoft.Json;
 using WIRKDEVELOPER.Models.sendemail;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -32,6 +32,47 @@ namespace WIRKDEVELOPER.Controllers
             _emailService = emailService;
 
         }
+        // GET: Report (Default View)
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        // POST: Generate the report based on the selected date range
+        [HttpPost]
+        public ActionResult Index(DateTime startDate, DateTime endDate)
+        {
+            // Get data from database for the selected date range
+            var bookings = _Context.bookings
+                             .Where(b => b.Date >= startDate && b.Date <= endDate)
+                             .ToList();
+
+            // Pass the date range to the view
+            ViewBag.StartDate = startDate.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate.ToString("yyyy-MM-dd");
+
+            // Return the view with the report data
+            return View(bookings);
+        }
+
+        // GET: Download the report as PDF
+        public ActionResult DownloadReportAsPdf(DateTime startDate, DateTime endDate)
+        {
+            // Get the data you want to display in the PDF
+            var bookings = _Context.bookings
+                             .Where(b => b.Date >= startDate && b.Date <= endDate)
+                             .ToList();
+
+            // Generate the PDF using Rotativa
+            return new ViewAsPdf("Index", bookings)
+            {
+                FileName = "SurgeryReport.pdf",
+                PageMargins = { Left = 10, Right = 10, Top = 20, Bottom = 20 },
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                CustomSwitches = "--footer-center \"Page: [page] of [toPage]\" --footer-right \"Generated: [date]\""
+            };
+        }
+
         public IActionResult ToDoList()
         {
             return View();
