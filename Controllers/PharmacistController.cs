@@ -656,11 +656,72 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
+		public ActionResult DispensaryReport(DateTime? startDate, DateTime? endDate)
+		{
+			// Initialize a default view model
+			var viewModel = new PharmacistReportViewModel
+			{
+				PharmacistName = "Dorothy Daniels",
+				StartDate = startDate ?? DateTime.Now,  // Use current date as default
+				EndDate = endDate ?? DateTime.Now,      // Use current date as default
+				ReportGeneratedDate = DateTime.Now,
+				PrescriptionItems = new List<PrescriptionReportItem>(),
+				MedicationSummaries = new List<MedicationSummary>()
+			};
+
+			// Check if date range is invalid
+			if (!startDate.HasValue || !endDate.HasValue)
+			{
+				ViewBag.ErrorMessage = "Please select a valid date range.";
+				return View(viewModel);  // Pass the initialized view model
+			}
+
+			// Fetch prescription medications based on the date range
+			var prescriptionMedications = _Context.prescriptionMedications
+				.Include(pm => pm.Prescription)
+				.Include(pm => pm.PharmacyMedication)
+				.Where(pm => pm.Prescription.Date >= startDate.Value && pm.Prescription.Date <= endDate.Value)
+				.ToList();
+
+			// Populate the report items
+			var reportItems = prescriptionMedications.Select(pm => new PrescriptionReportItem
+			{
+				Date = pm.Prescription.Date,
+				PatientName = $"{pm.Prescription.Name} {pm.Prescription.Surname}",
+				Prescriber = pm.Prescription.Prescriber,
+				Medication = pm.PharmacyMedication.PharmacyMedicationName,
+				Quantity = pm.Quantity,
+				Status = pm.Prescription.Status
+			}).ToList();
+
+			// Calculate totals for the report
+			var totalDispensed = reportItems.Count(ri => ri.Status == "Dispensed");
+			var totalRejected = reportItems.Count(ri => ri.Status == "Rejected");
+
+			// Create medication summary
+			var medicationSummaries = prescriptionMedications
+				.Where(pm => pm.Prescription.Status == "Dispensed")
+				.GroupBy(pm => pm.PharmacyMedication.PharmacyMedicationName)
+				.Select(group => new MedicationSummary
+				{
+					MedicationName = group.Key,
+					TotalQuantityDispensed = group.Sum(pm => pm.Quantity)
+				}).ToList();
+
+			// Update the view model with the data
+			viewModel.PrescriptionItems = reportItems;
+			viewModel.TotalScriptsDispensed = totalDispensed;
+			viewModel.TotalScriptsRejected = totalRejected;
+			viewModel.MedicationSummaries = medicationSummaries;
+
+			return View(viewModel);
+		}
 
 
 
 
 
 
-    }
+
+	}
 }

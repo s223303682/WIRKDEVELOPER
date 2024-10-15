@@ -1,0 +1,76 @@
+﻿@model WIRKDEVELOPER.Models.PharmacistReportViewModel
+@{
+
+    Layout = "~/Views/Shared/Pharmacy.cshtml";
+}
+
+<form asp-action="DispensaryReport" method="get">
+    <label for="startDate">Start Date:</label>
+    <input type="date" name="startDate" required />
+
+    <label for="endDate">End Date:</label>
+    <input type="date" name="endDate" required />
+
+    <input type="submit" value="Generate Report" />
+</form>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style="color:red;">@ViewBag.ErrorMessage</p>
+}
+<h2>PHARMACIST REPORT (Sorted by date or patient)</h2>
+<h3>DISPENSARY REPORT</h3>
+<p>Pharmacist: @Model.PharmacistName</p>
+<p>Date Range: @Model.StartDate.ToString("dd MMMM yyyy") – @Model.EndDate.ToString("dd MMMM yyyy")</p>
+<p>Report Generated: @Model.ReportGeneratedDate.ToString("dd MMMM yyyy")</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Patient</th>
+            <th>Script By</th>
+            <th>Medication</th>
+            <th>Quantity</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.PrescriptionItems)
+        {
+            <tr>
+                <td>@item.Date.ToString("yyyy-MM-dd")</td>
+                <td>@item.PatientName</td>
+                <td>@item.Prescriber</td>
+                <td>@item.Medication</td>
+                <td>@item.Quantity</td>
+                <td>@item.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><strong>Total Scripts Dispensed:</strong> @Model.TotalScriptsDispensed</p>
+<p><strong>Total Scripts Rejected:</strong> @Model.TotalScriptsRejected</p>
+
+<h3>SUMMARY PER MEDICINE:</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Medicine</th>
+            <th>Quantity Dispensed</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var summary in Model.MedicationSummaries)
+        {
+            <tr>
+                <td>@summary.MedicationName</td>
+                <td>@summary.TotalQuantityDispensed</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
