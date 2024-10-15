@@ -123,9 +123,9 @@ namespace WIRKDEVELOPER.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreatePrescription(PrescriptionViewModel model, string ignoreReason)
+        public IActionResult CreatePrescription(PrescriptionViewModel model)
         {
-            // Get patient allergies and conditions from the database
+            // Fetch patient allergies and conditions
             var patientAllergies = _Context.addm
                 .Include(a => a.AnAllergies)
                 .Where(a => a.Patient.PatientName == model.Name && a.Patient.PatientSurname == model.Surname)
@@ -137,8 +137,16 @@ namespace WIRKDEVELOPER.Controllers
                 .Select(a => a.ConditionID)
                 .ToList();
 
+            // Fetch current medications for the patient from the Addm table
+            var currentMedicationNames = _Context.addm
+                .Include(a => a.CurrentMedication)
+                .Where(a => a.Patient.PatientName == model.Name && a.Patient.PatientSurname == model.Surname)
+                .Select(cm => cm.CurrentMedication.Medication.MedicationName)
+                .ToList();
+
             var allergyAlerts = new List<string>();
             var contraindicationAlerts = new List<string>();
+            var interactionAlerts = new List<string>();
 
             // Check each medication against patient allergies and contraindications
             foreach (var medication in model.Medications)
@@ -162,65 +170,97 @@ namespace WIRKDEVELOPER.Controllers
                     foreach (var conditionID in patientConditions)
                     {
                         if (_Context.contra_Indications
-                            .Any(ci => ci.ConditionDiagnosisID == conditionID && ci.MedicationID == medicationID.Value))
+                            .Any(ci => ci.ConditionDiagnosisID == conditionID && ci.ActiveIngredientID == medicationID.Value))
                         {
                             contraindicationAlerts.Add(medication.PharmacyMedicationName);
                             break; // Exit loop if any contraindication is found
                         }
                     }
                 }
+
+                // Check for interactions
+                if (CheckForInteractions(pharmacyMedication, currentMedicationNames))
+                {
+                    interactionAlerts.Add(medication.PharmacyMedicationName);
+                }
             }
 
             // Handle alerts
-            if (allergyAlerts.Any() || contraindicationAlerts.Any())
+            if (allergyAlerts.Any() || contraindicationAlerts.Any() || interactionAlerts.Any())
             {
                 ModelState.AddModelError("", "One or more alerts found.");
                 ViewBag.ShowAllergyAlert = true;
                 ViewBag.AllergyAlerts = allergyAlerts;
                 ViewBag.ContraindicationAlerts = contraindicationAlerts;
+                ViewBag.InteractionAlerts = interactionAlerts;
                 ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList();
                 return View(model); // Return view with alerts
             }
 
-            // Proceed if model state is valid and no alerts
-            if (ModelState.IsValid)
+            // Validate IgnoreReason if there are alerts
+            if ((allergyAlerts.Any() || contraindicationAlerts.Any() || interactionAlerts.Any()) && string.IsNullOrWhiteSpace(model.IgnoreReason))
             {
-                var prescription = new Prescription
-                {
-                    IDNumber = model.IDNumber,
-                    Name = model.Name,
-                    Surname = model.Surname,
-                    Gender = model.Gender,
-                    Email = model.Email,
-                    Date = model.Date,
-                    Prescriber = model.Prescriber,
-                    Urgent = model.Urgent,
-                    Status = model.Status,
-                    IgnoreReason = ignoreReason,
-                    PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
-                    {
-                        PharmacyMedicationID = _Context.pharmacyMedications
-                            .FirstOrDefault(pm => pm.PharmacyMedicationName == m.PharmacyMedicationName)?.PharmacyMedicationID ?? 0,
-                        Quantity = m.Quantity,
-                        Instructions = m.Instructions
-                    }).ToList()
-                };
-
-                // Add the prescription and save
-                _Context.prescriptions.Add(prescription);
-                _Context.SaveChanges();
-
-                // Redirect to PrescriptionList after success
-                return RedirectToAction("PrescriptionList");
+                ModelState.AddModelError("IgnoreReason", "You must provide a reason for ignoring the alerts.");
             }
 
-            // If model state is not valid
-            ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList();
-            return View(model);
+            // Check for validation errors
+            if (!ModelState.IsValid)
+            {
+                ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList();
+                return View(model);
+            }
+
+            // Proceed to save the prescription
+            var prescription = new Prescription
+            {
+                IDNumber = model.IDNumber,
+                Name = model.Name,
+                Surname = model.Surname,
+                Gender = model.Gender,
+                Email = model.Email,
+                Date = model.Date,
+                Prescriber = model.Prescriber,
+                Urgent = model.Urgent,
+                Status = model.Status,
+                IgnoreReason = string.IsNullOrWhiteSpace(model.IgnoreReason) ? "none" : model.IgnoreReason, // Use IgnoreReason
+                PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
+                {
+                    PharmacyMedicationID = _Context.pharmacyMedications
+                        .FirstOrDefault(pm => pm.PharmacyMedicationName == m.PharmacyMedicationName)?.PharmacyMedicationID ?? 0,
+                    Quantity = m.Quantity,
+                    Instructions = m.Instructions
+                }).ToList()
+            };
+
+            // Add the prescription and save
+            _Context.prescriptions.Add(prescription);
+            _Context.SaveChanges();
+
+            // Redirect to PrescriptionList after success
+            return RedirectToAction("PrescriptionList");
         }
 
+        private bool CheckForInteractions(PharmacyMedication pharmacyMedication, List<string> currentMedicationNames)
+        {
+            // Example interaction logic based on known interactions
+            var interactions = new Dictionary<string, List<string>>
+            {
+                { "Carbimazole", new List<string> { "Doxazosin" } },
+                { "Doxazosin", new List<string> { "Doxylamine Succinate" } }
+            };
 
+            // Check if the pharmacy medication is null
+            if (pharmacyMedication == null)
+            {
+                return false; // No medication to check against
+            }
 
+            // Check for known interactions
+            return interactions.TryGetValue(pharmacyMedication.PharmacyMedicationName, out var interactingMedications) &&
+                   currentMedicationNames.Any(cm => interactingMedications.Contains(cm));
+        }
+
+      
 
 
         // GET: Prescription/List

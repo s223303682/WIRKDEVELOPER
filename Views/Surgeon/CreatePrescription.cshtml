@@ -1,4 +1,5 @@
 ﻿@model WIRKDEVELOPER.Models.PrescriptionViewModel
+
 @{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
@@ -19,7 +20,7 @@
 <body>
     <div class="container mt-4">
         <h2>Create Prescription</h2>
-        <form asp-controller="Surgeon" asp-action="CreatePrescription" method="post">
+        <form asp-controller="Surgeon" asp-action="CreatePrescription" method="post" id="prescriptionForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <!-- Patient Details -->
@@ -27,7 +28,7 @@
                 <div class="card-header bg-secondary text-white">Patient Information</div>
                 <div class="card-body">
                     <div class="form-row">
-                          <div class="form-group col-md-3">
+                        <div class="form-group col-md-3">
                             <label asp-for="IDNumber">Patient ID Number</label>
                             <input asp-for="IDNumber" class="form-control" readonly />
                         </div>
@@ -72,16 +73,13 @@
                                 <option value="">Select Urgency</option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
-                               
                             </select>
                             <span asp-validation-for="Urgent" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-3">
                             <label asp-for="Status">Status</label>
                             <select asp-for="Status" class="form-control" required>
-                                
                                 <option value="Pending">Pending</option>
-                               
                             </select>
                             <span asp-validation-for="Status" class="text-danger"></span>
                         </div>
@@ -128,6 +126,46 @@
                 </div>
             </div>
 
+            <!-- Alerts Section -->
+            @if (ViewBag.ShowAllergyAlert != null && ViewBag.ShowAllergyAlert == true)
+            {
+                <div class="alert alert-warning">
+                    <strong>Warning!</strong> One or more alerts found:
+                    <ul>
+                        @if (ViewBag.AllergyAlerts != null && ViewBag.AllergyAlerts.Any())
+                        {
+                            <li>Allergy Alerts:</li>
+                            <ul>
+                                @foreach (var alert in ViewBag.AllergyAlerts)
+                                {
+                                    <li>@alert</li>
+                                }
+                            </ul>
+                        }
+                        @if (ViewBag.ContraindicationAlerts != null && ViewBag.ContraindicationAlerts.Any())
+                        {
+                            <li>Contraindication Alerts:</li>
+                            <ul>
+                                @foreach (var alert in ViewBag.ContraindicationAlerts)
+                                {
+                                    <li>@alert</li>
+                                }
+                            </ul>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <!-- Ignore Reason -->
+            @if (ViewBag.ShowIgnoreReasonField != null && ViewBag.ShowIgnoreReasonField == true)
+            {
+                <div class="form-group">
+                    <label for="IgnoreReason">Reason for Ignoring Alerts</label>
+                    <textarea asp-for="IgnoreReason" id="ignoreReason" class="form-control" rows="3" placeholder="Enter your reason here..."></textarea>
+                    <span asp-validation-for="IgnoreReason" class="text-danger"></span>
+                </div>
+            }
+
             <!-- Submit Button -->
             <button type="submit" class="btn btn-success">Create Prescription</button>
             <br />
@@ -141,14 +179,14 @@
         <div class="form-row medication-row mb-3" data-index="__index__">
             <div class="form-group col-md-4">
                 <label>Medication</label>
-                <select name="Medications[__index__].PharmacyMedicationID" class="form-control" required>
+                <select name="Medications[__index__].PharmacyMedicationName" class="form-control" required>
                     <option value="">Select Medication</option>
                     @foreach (var medication in ViewBag.PharmacyMedications)
                     {
                         <option value="@medication.PharmacyMedicationID">@medication.PharmacyMedicationName</option>
                     }
                 </select>
-                <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].PharmacyMedicationID" data-valmsg-replace="true"></span>
+                <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].PharmacyMedicationName" data-valmsg-replace="true"></span>
             </div>
             <div class="form-group col-md-3">
                 <label>Quantity</label>
@@ -166,113 +204,31 @@
         </div>
     </div>
 
-    <!-- Ignore Alert Modal -->
-    <div class="modal fade" id="ignoreAlertModal" tabindex="-1" role="dialog" aria-labelledby="ignoreAlertModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ignoreAlertModalLabel">Medication Allergy Alert</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>The following medications may cause an allergy:</p>
-                    <ul id="allergyMedicationList">
-                        @if (ViewBag.AllergyAlerts != null)
-                        {
-                            foreach (var alert in ViewBag.AllergyAlerts)
-                            {
-                                <li>@alert</li>
-                            }
-                        }
-                        else
-                        {
-                            <li>No allergy alerts found.</li>
-                        }
-                    </ul>
-                    <div class="form-group">
-                        <label for="ignoreReason">Reason for Ignoring:</label>
-                        <input type="text" class="form-control" id="ignoreReason" />
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Back to Form</button>
-                    <button type="button" class="btn btn-primary" id="confirmIgnore">Ignore and Proceed</button>
-                    <button type="button" class="btn btn-success" id="continueButton">Continue</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
-            var medicationIndex = @Model.Medications.Count;
+            var index = @Model.Medications.Count;
 
             $('#addMedication').click(function () {
-                var newMedication = $('#medicationTemplate').html().replace(/__index__/g, medicationIndex);
-                $('#medicationsContainer').append(newMedication);
-                medicationIndex++;
+                var newRow = $('#medicationTemplate').html().replace(/__index__/g, index);
+                $('#medicationsContainer').append(newRow);
+                index++;
             });
 
             $(document).on('click', '.remove-medication', function () {
                 $(this).closest('.medication-row').remove();
             });
 
-            $('#confirmIgnore').click(function () {
-                var reason = $('#ignoreReason').val().trim();
-                if (!reason) {
-                    alert("Please provide a reason for ignoring the alert.");
-                    return;
-                }
-
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: 'IgnoreReason',
-                    value: reason
-                }).appendTo('form');
-
-                $('#ignoreAlertModal').modal('hide');
-
-                // Validate and submit the form
-                if ($('form').valid()) {
-                    $('form').submit();
+            $('#prescriptionForm').on('submit', function (e) {
+                var allergyAlerts = @Html.Raw(Json.Serialize(ViewBag.AllergyAlerts));
+                if (allergyAlerts.length > 0) {
+                    e.preventDefault(); // Prevent the form from submitting
+                    $('#ignoreReasonModal').modal('show'); // Show modal for ignore reason
                 }
             });
-
-            $('#continueButton').click(function () {
-                var reason = $('#ignoreReason').val().trim();
-                if (reason) {
-                    $('<input>').attr({
-                        type: 'hidden',
-                        name: 'IgnoreReason',
-                        value: reason
-                    }).appendTo('form');
-                }
-
-                $('#ignoreAlertModal').modal('hide');
-                $('form').submit(); // Directly submit the form
-            });
-
-            $('.close, .btn-secondary').click(function () {
-                $('#ignoreAlertModal').modal('hide');
-            });
-
-            // Show the modal if there are allergy alerts
-        @if (ViewBag.ShowAllergyAlert != null && ViewBag.ShowAllergyAlert == true)
-        {
-            <text>
-                        $('#ignoreAlertModal').modal('show');
-            </text>
-        }
         });
-
     </script>
-
-
 </body>
 </html>
