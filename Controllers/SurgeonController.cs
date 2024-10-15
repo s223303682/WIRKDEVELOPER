@@ -103,7 +103,7 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-        public IActionResult CreatePrescription(int bookingId, string name, string surname,string IDNumber, string gender, string email)
+        public IActionResult CreatePrescription(int bookingId, string name, string surname, string IDNumber, string gender, string email)
         {
             var viewModel = new PrescriptionViewModel
             {
@@ -125,40 +125,64 @@ namespace WIRKDEVELOPER.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreatePrescription(PrescriptionViewModel model, string ignoreReason)
         {
-            // Get patient allergies from the database
+            // Get patient allergies and conditions from the database
             var patientAllergies = _Context.addm
                 .Include(a => a.AnAllergies)
                 .Where(a => a.Patient.PatientName == model.Name && a.Patient.PatientSurname == model.Surname)
                 .Select(a => a.AnAllergies.ActiveID)
                 .ToList();
 
-            var allergyAlerts = new List<string>();
+            var patientConditions = _Context.addm
+                .Where(a => a.Patient.PatientName == model.Name && a.Patient.PatientSurname == model.Surname)
+                .Select(a => a.ConditionID)
+                .ToList();
 
-            // Check each medication against patient allergies
+            var allergyAlerts = new List<string>();
+            var contraindicationAlerts = new List<string>();
+
+            // Check each medication against patient allergies and contraindications
             foreach (var medication in model.Medications)
             {
-                var medicationIngredients = _Context.pharmacyMedications
+                var pharmacyMedication = _Context.pharmacyMedications
                     .Include(pm => pm.Ingredients)
-                    .FirstOrDefault(pm => pm.PharmacyMedicationID == medication.PharmacyMedicationID)?.Ingredients;
+                    .FirstOrDefault(pm => pm.PharmacyMedicationName == medication.PharmacyMedicationName);
 
                 // Check for allergies
-                if (medicationIngredients != null && medicationIngredients.Any(ing => patientAllergies.Contains(ing.ActiveID)))
+                if (pharmacyMedication != null && pharmacyMedication.Ingredients
+                    .Any(ing => patientAllergies.Contains(ing.ActiveID)))
                 {
-                    allergyAlerts.Add(medicationIngredients.First().PharmacyMedication.PharmacyMedicationName);
+                    allergyAlerts.Add(medication.PharmacyMedicationName);
+                }
+
+                // Check for contraindications
+                var medicationID = pharmacyMedication?.PharmacyMedicationID;
+
+                if (medicationID.HasValue)
+                {
+                    foreach (var conditionID in patientConditions)
+                    {
+                        if (_Context.contra_Indications
+                            .Any(ci => ci.ConditionDiagnosisID == conditionID && ci.MedicationID == medicationID.Value))
+                        {
+                            contraindicationAlerts.Add(medication.PharmacyMedicationName);
+                            break; // Exit loop if any contraindication is found
+                        }
+                    }
                 }
             }
 
-            // Handle allergy alerts
-            if (allergyAlerts.Any())
+            // Handle alerts
+            if (allergyAlerts.Any() || contraindicationAlerts.Any())
             {
-                ModelState.AddModelError("", "One or more medications may cause an allergy.");
+                ModelState.AddModelError("", "One or more alerts found.");
                 ViewBag.ShowAllergyAlert = true;
                 ViewBag.AllergyAlerts = allergyAlerts;
+                ViewBag.ContraindicationAlerts = contraindicationAlerts;
                 ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList();
                 return View(model); // Return view with alerts
             }
 
-            // Proceed if model state is valid and no allergy alerts
+            // Proceed if model state is valid and no alerts
             if (ModelState.IsValid)
             {
                 var prescription = new Prescription
@@ -175,7 +199,8 @@ namespace WIRKDEVELOPER.Controllers
                     IgnoreReason = ignoreReason,
                     PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
                     {
-                        PharmacyMedicationID = m.PharmacyMedicationID,
+                        PharmacyMedicationID = _Context.pharmacyMedications
+                            .FirstOrDefault(pm => pm.PharmacyMedicationName == m.PharmacyMedicationName)?.PharmacyMedicationID ?? 0,
                         Quantity = m.Quantity,
                         Instructions = m.Instructions
                     }).ToList()
@@ -195,17 +220,20 @@ namespace WIRKDEVELOPER.Controllers
         }
 
 
+
+
+
         // GET: Prescription/List
         public IActionResult PrescriptionList()
         {
             var prescriptions = _Context.prescriptions
                 .Include(p => p.PrescriptionMedications)
-                    .ThenInclude(pm => pm.PharmacyMedication) // Include related PharmacyMedication data
+                    .ThenInclude(pm => pm.PharmacyMedication)
                 .Select(p => new Prescription
                 {
                     PrescriptionID = p.PrescriptionID,
                     Name = p.Name,
-                    Surname = p.Surname, // Ensure this property is included
+                    Surname = p.Surname,
                     Gender = p.Gender,
                     Email = p.Email,
                     Date = p.Date,
@@ -216,12 +244,14 @@ namespace WIRKDEVELOPER.Controllers
                     {
                         PharmacyMedicationID = m.PharmacyMedicationID,
                         Quantity = m.Quantity,
-                        Instructions = m.Instructions
+                        Instructions = m.Instructions,
+                        PharmacyMedication = m.PharmacyMedication // Make sure you include this
                     }).ToList()
                 }).ToList();
 
             return View(prescriptions);
         }
+
 
 
         // GET: Prescription/Delete/{id}

@@ -62,7 +62,7 @@
             <div class="form-row">
                 <div class="col-md-4">
                     <label>Medication</label>
-                    <select asp-for="@Model.Medications[i].PharmacyMedicationID" class="form-control" asp-items="@(new SelectList(ViewBag.PharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName"))">
+                    <select asp-for="@Model.Medications[i].PharmacyMedicationName" class="form-control" asp-items="@(new SelectList(ViewBag.PharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName"))">
                         <option value="">-- Select Medication --</option>
                     </select>
                 </div>
