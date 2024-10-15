@@ -7,6 +7,9 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int CurrentMedicationID { get; set; } 
-        public string CurrentMedicationName { get; set; }
+        public int  MedicationID { get; set; }
+        [ForeignKey("MedicationID")]
+        [DisplayName("Current Medication")]
+        public virtual Medication?Medication { get; set; }
     }
 }
