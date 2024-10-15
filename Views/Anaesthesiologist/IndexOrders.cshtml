@@ -59,7 +59,7 @@
                                     @foreach (var medication in order.OrderItems)
                                     {
                                         <li>
-                                            @medication.PharmacyMedicationID - Quantity: @medication.Quantity, Instructions: @medication.Instructions
+                                            @medication.PharmacyMedication.PharmacyMedicationName - Quantity: @medication.Quantity, Instructions: @medication.Instructions
                                         </li>
                                     }
                                 </ul>

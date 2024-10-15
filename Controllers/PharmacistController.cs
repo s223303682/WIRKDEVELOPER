@@ -163,7 +163,7 @@ namespace WIRKDEVELOPER.Controllers
                    Status = p.Status,
                    Medications = p.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
                    {
-                       PharmacyMedicationID = m.PharmacyMedicationID,
+                       PharmacyMedicationName = m.PharmacyMedication.PharmacyMedicationName,
                        Quantity = m.Quantity,
                        Instructions = m.Instructions
                    }).ToList()

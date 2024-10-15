@@ -99,14 +99,14 @@
                             <div class="form-row medication-row mb-3" data-index="@i">
                                 <div class="form-group col-md-4">
                                     <label>Medication</label>
-                                    <select asp-for="Medications[@i].PharmacyMedicationID" class="form-control" required>
+                                    <select asp-for="Medications[@i].PharmacyMedicationName" class="form-control" required>
                                         <option value="">Select Medication</option>
                                         @foreach (var medication in ViewBag.PharmacyMedications)
                                         {
                                             <option value="@medication.PharmacyMedicationID">@medication.PharmacyMedicationName</option>
                                         }
                                     </select>
-                                    <span asp-validation-for="Medications[@i].PharmacyMedicationID" class="text-danger"></span>
+                                    <span asp-validation-for="Medications[@i].PharmacyMedicationName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label>Quantity</label>
@@ -238,30 +238,24 @@
 
                 $('#ignoreAlertModal').modal('hide');
 
-                // Validate the form before submitting
-                if ($('form').data('validator').form()) {
+                // Validate and submit the form
+                if ($('form').valid()) {
                     $('form').submit();
                 }
             });
 
-            // Continue button logic
             $('#continueButton').click(function () {
                 var reason = $('#ignoreReason').val().trim();
-                if (!reason) {
-                    alert("Please provide a reason for ignoring the alert.");
-                    return;
+                if (reason) {
+                    $('<input>').attr({
+                        type: 'hidden',
+                        name: 'IgnoreReason',
+                        value: reason
+                    }).appendTo('form');
                 }
 
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: 'IgnoreReason',
-                    value: reason
-                }).appendTo('form');
-
                 $('#ignoreAlertModal').modal('hide');
-
-                // Validate and submit the form when "Continue" is clicked
-                $('form').submit();
+                $('form').submit(); // Directly submit the form
             });
 
             $('.close, .btn-secondary').click(function () {
@@ -272,10 +266,11 @@
         @if (ViewBag.ShowAllergyAlert != null && ViewBag.ShowAllergyAlert == true)
         {
             <text>
-                    $('#ignoreAlertModal').modal('show');
+                        $('#ignoreAlertModal').modal('show');
             </text>
         }
-            });
+        });
+
     </script>
 
 

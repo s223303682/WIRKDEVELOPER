@@ -81,10 +81,11 @@ namespace WIRKDEVELOPER.Models
         [Key]
         public int PrescriptionMedicationViewModelID { get; set; }
         [Required]
-        public int PharmacyMedicationID { get; set; }
+        public string PharmacyMedicationName { get; set; } // Change from ID to Name
         [Required, Range(1, int.MaxValue)]
         public int Quantity { get; set; }
         public string Instructions { get; set; }
     }
+
 }
 
