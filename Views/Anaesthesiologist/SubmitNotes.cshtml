@@ -4,12 +4,12 @@
     Layout = "AnaesthesiologistLayout";
 }
 
-<h2>Create Notes for Medications in Order @Model.AnOrderID</h2>
+<h2>Submit Notes for Medications in Order @Model.AnOrderID</h2>
 
-<form asp-action="CreateNoteForOrder" method="post">
+<form asp-action="SubmitNotes" method="post">
     <input type="hidden" asp-for="AnOrderID" />
 
-    <table class="table table-sm table-hover">
+    <table class="table table-bordered">
         <thead class="table-secondary">
             <tr>
                 <th>Medication</th>
@@ -32,15 +32,22 @@
                         @Model.OrderItems[i].Instructions
                     </td>
                     <td>
-                        <textarea asp-for="OrderItems[@i].Notes" class="form-control"></textarea>
+                        <textarea asp-for="OrderItems[@i].Notes" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="OrderItems[@i].Notes" class="text-danger"></span>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 
-    <div>
+    <div class="form-group mt-3">
         <input type="submit" value="Save Notes" class="btn btn-primary" />
+        <a asp-action="IndexOrders" class="btn btn-secondary">Cancel</a>
     </div>
 </form>
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
