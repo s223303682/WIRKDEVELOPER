@@ -28,6 +28,9 @@ namespace WIRKDEVELOPER.Models
 
         [Required]
         public string Instructions { get; set; }
+
+        [DisplayName("Notes")]
+        public string? Notes { get; set; }
     }
 }
 

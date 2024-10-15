@@ -106,11 +106,13 @@ namespace WIRKDEVELOPER.Controllers
                  Patient = item.Addm,
                  Urgent = item.Urgent,
                  Status = item.Status,
+                 Notes = item.Notes,
                  OrderItems = item.OrderMedications.Select(m => new OrderItems
                  {
-                      PharmacyMedicationID = m.PharmacyMedicationID,
+                      PharmacyMedication = m.PharmacyMedication,
                       Quantity = m.Quantity,
-                      Instructions = m.Instructions
+                      Instructions = m.Instructions,
+                      Notes = m.Notes
                   }).ToList()
               }).ToList();
 
@@ -542,11 +544,13 @@ namespace WIRKDEVELOPER.Controllers
                  Patient = item.Addm,
                  Urgent = item.Urgent,
                  Status = item.Status,
+                 Notes = item.Notes,
                  OrderItems = item.OrderMedications.Select(m => new OrderItems
                  {
-                     PharmacyMedicationID = m.PharmacyMedicationID,
+                     PharmacyMedication = m.PharmacyMedication,
                      Quantity = m.Quantity,
-                     Instructions = m.Instructions
+                     Instructions = m.Instructions,
+                     Notes = m.Notes
                  }).ToList()
              }).ToList();
 
@@ -555,124 +559,63 @@ namespace WIRKDEVELOPER.Controllers
             return View(orders);
 
 
-    //        var orders = _Context.order
-    //    .Include(o => o.Addm)                   // Include related Patient entity
-    //    .Include(o => o.OrderMedications)        // Include related OrderItems
-    //    .ThenInclude(o => o.PharmacyMedication)  // Include related PharmacyMedication entity
-    //    .Where(o => o.Addm.PatientName.Contains(patientName)) // Filter by patient name
-    //    .Select(item => new OrderCreate
-    //    {
-    //        AnOrderID = item.AnOrderID,
-    //        Date = item.Date,
-    //        AddmID = item.AddmID,
-    //        Patient = item.Addm,
-    //        Urgent = item.Urgent,
-    //        Status = item.Status,
-    //        Notes = item.Notes, // Include Notes
-    //        OrderItems = item.OrderMedications.Select(m => new OrderItems
-    //        {
-    //            PharmacyMedicationID = m.PharmacyMedicationID,
-    //            Quantity = m.Quantity,
-    //            Instructions = m.Instructions
-    //        }).ToList()
-    //    }).ToList();
-
-    //return View(orders);
+   
         }
        
         public IActionResult CreateNoteForOrder(int ID)
         {
             // Retrieve the order by ID, including related patient data
             var order =  _Context.order
-                .Include(o => o.Addm)
-                .Include(o => o.OrderMedications)          // Include the related medications for display
+                //.Include(o => o.Addm)
+                .Include(o => o.OrderMedications)          
             .ThenInclude(om => om.PharmacyMedication)
                 .FirstOrDefault(o => o.AnOrderID == ID);
 
-            if (ID == null || ID == 0)
+            if (order == null)
             {
                 return NotFound();
             }
-            var objList = _Context.order.Find(ID);
-            if (objList == null)
+            // Prepare model with medications for the order
+            var model = new OrderCreate
             {
-                return NotFound();
-            }
-            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-            return View(objList);
-            //var order = _Context.order.Find(orderId);
-            //if (order == null)
-            //{
-            //    return NotFound();
-            //}
-            //ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+                AnOrderID = order.AnOrderID,
+                OrderItems = order.OrderMedications.Select(m => new OrderItems
+                {
+                    PharmacyMedicationID = m.PharmacyMedicationID,
+                    PharmacyMedication = m.PharmacyMedication,
+                    Quantity = m.Quantity,
+                    Instructions = m.Instructions,
+                    Notes = m.Notes // Include existing notes if any
+                }).ToList()
+            };
 
-            //ViewBag.getPatient = order.AddmID;
-
-            //var note = new Order
-            //{
-            //    AnOrderID = orderId
-            //};
-
-            //    return View(note);
+            return View(model);
         }
 
 
         [HttpPost]
-        public IActionResult CreateNoteForOrder(Order note, int id)
+        public IActionResult CreateNoteForOrder(OrderCreate viewModel)
         {
-            //_Context.order.Update(note);
-            //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            //ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-            //_Context.SaveChanges();
-            //return RedirectToAction("SearchPatient");
+            if (ModelState.IsValid)
+            {
+                foreach (var medication in viewModel.OrderItems)
+                {
+                    // Find the OrderMedication entry by order ID and medication ID
+                    var orderMedication = _Context.ordermedication
+                        .FirstOrDefault(m => m.AnOrderID == viewModel.AnOrderID && m.PharmacyMedicationID == medication.PharmacyMedicationID);
 
-            // Retrieve the order along with its related medications
-            //var order =  _Context.order
-            //    .Include(o => o.OrderMedications)
-            //    .FirstOrDefault(o => o.AnOrderID == id);
+                    if (orderMedication != null)
+                    {
+                        // Update the notes for the medication
+                        orderMedication.Notes = medication.Notes;
+                    }
+                }
 
-            //if (ModelState.IsValid)
+                _Context.SaveChanges();
+                return RedirectToAction("IndexOrders");
+            }
 
-            _Context.order.Add(note);
-                 _Context.SaveChanges();
-                   return RedirectToAction("SearchPatient");
-            
-
-             ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-             ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-             return View(note); // Return the view with validation errors if any
-
-            //note.Date = DateTime.Now;
-            //_Context.order.Add(note);
-            //ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-            //_Context.SaveChanges();
-
-            //var order = _Context.order.Find(note.AnOrderID);
-            //return RedirectToAction("SearchPatient", new { patientName = order.AddmID });
-
-
-
-
-            //if (ModelState.IsValid)
-            //{
-            //    // If creating a new note, you might want to find the existing order
-            //    var existingOrder = _Context.order.Find(id);
-            //    if (existingOrder != null)
-            //    {
-            //        existingOrder.Notes = note.Notes; // Save notes to the existing order
-            //        _Context.SaveChanges();
-            //    }
-            //    return RedirectToAction("SearchPatient");
-            //}
-
-            //// If the model is invalid, return the same view with validation errors
-            //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            //ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-            //return View(note);
-
-
+            return View(viewModel); // Return with validation errors if any
         }
 
         public IActionResult IndexVitalHistory()
