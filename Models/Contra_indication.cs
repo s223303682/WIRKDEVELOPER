@@ -9,7 +9,7 @@ namespace WIRKDEVELOPER.Models
 		public int ContraIndication { get; set; }
 		[Required]
 		public int ActiveIngredientID { get; set; }
-		[ForeignKey("ActiveID")]
+		[ForeignKey("ActiveIngredientID")]
 		public virtual ActiveIngredient? ActiveIngredient {  get; set; }
 		[Required]
 		public int ConditionDiagnosisID { get; set; }

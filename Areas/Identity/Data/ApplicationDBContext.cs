@@ -6,6 +6,7 @@ using System.Reflection.Emit;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
 using WIRKDEVELOPER.Models.Account;
+using Microsoft.EntityFrameworkCore;
 
 namespace WIRKDEVELOPER.Areas.Identity.Data;
 
@@ -18,14 +19,32 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        // Configuring Booking-TreatmentCode relationship
-        //builder.Entity<Booking>()
-        //    .HasOne(b => b.TreatmentCode)
-        //    .WithMany()  // Assuming TreatmentCode does not have a collection of Bookings
-        //    .HasForeignKey(b => b.TreatmentCodeID)
-        //    .OnDelete(DeleteBehavior.Restrict); // Prevent cascading deletes
+        base.OnModelCreating(builder);
 
-        // Configuring Booking-OperationTheatre relationship
+        builder.Entity<Addm>()
+      .HasOne(a => a.AnAllergies)
+      .WithMany() // Assuming AnAllergies can have multiple related Addms
+      .HasForeignKey(a => a.AllergiesID)
+      .OnDelete(DeleteBehavior.Cascade); // Set delete behavior according to your needs
+
+        builder.Entity<AnAllergies>()
+            .HasOne(a => a.Active) // Assuming you have a navigation property for Active
+            .WithMany() // Adjust accordingly if Active has multiple Allergies
+            .HasForeignKey(a => a.ActiveID);
+        builder.Entity<Addm>()
+         .HasOne(a => a.Patient)
+         .WithMany() // Specify if the reverse navigation exists
+         .HasForeignKey(a => a.PatientID);
+
+        builder.Entity<Addm>()
+            .HasOne(a => a.CurrentMedication)
+            .WithMany() // Specify if the reverse navigation exists
+            .HasForeignKey(a => a.CurrentMedicationID);
+
+        builder.Entity<Addm>()
+            .HasOne(a => a.TreatmentCode)
+            .WithMany() // Specify if the reverse navigation exists
+            .HasForeignKey(a => a.TreatmentCodeID);
         builder.Entity<Booking>()
             .HasOne(b => b.OperationTheatre)
             .WithMany()  // Assuming OperationTheatre does not have a collection of Bookings
@@ -68,7 +87,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
 		
 
 
-		base.OnModelCreating(builder);
+		//base.OnModelCreating(builder);
 
         // Apply additional configurations if needed
         builder.ApplyConfiguration(new applicationUserEntityConfiguration());

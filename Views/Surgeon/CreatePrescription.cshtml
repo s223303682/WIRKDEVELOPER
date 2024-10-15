@@ -1,4 +1,4 @@
-﻿@model WIRKDEVELOPER.Models.PrescriptionViewModel
+﻿@* @model WIRKDEVELOPER.Models.PrescriptionViewModel
 
 @{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
@@ -21,6 +21,18 @@
     <div class="container mt-4">
         <h2>Create Prescription</h2>
         <form asp-controller="Surgeon" asp-action="CreatePrescription" method="post" id="prescriptionForm">
+            @Html.AntiForgeryToken()
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    </ul>
+                </div>
+            }
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <!-- Patient Details -->
@@ -80,6 +92,7 @@
                             <label asp-for="Status">Status</label>
                             <select asp-for="Status" class="form-control" required>
                                 <option value="Pending">Pending</option>
+                                <!-- Add other status options if necessary -->
                             </select>
                             <span asp-validation-for="Status" class="text-danger"></span>
                         </div>
@@ -99,9 +112,9 @@
                                     <label>Medication</label>
                                     <select asp-for="Medications[@i].PharmacyMedicationName" class="form-control" required>
                                         <option value="">Select Medication</option>
-                                        @foreach (var medication in ViewBag.PharmacyMedications)
+                                        @foreach (var medication in ViewBag.PharmacyMedications as List<WIRKDEVELOPER.Models.PharmacyMedication>)
                                         {
-                                            <option value="@medication.PharmacyMedicationID">@medication.PharmacyMedicationName</option>
+                                            <option value="@medication.PharmacyMedicationName">@medication.PharmacyMedicationName</option>
                                         }
                                     </select>
                                     <span asp-validation-for="Medications[@i].PharmacyMedicationName" class="text-danger"></span>
@@ -126,109 +139,177 @@
                 </div>
             </div>
 
-            <!-- Alerts Section -->
-            @if (ViewBag.ShowAllergyAlert != null && ViewBag.ShowAllergyAlert == true)
-            {
-                <div class="alert alert-warning">
-                    <strong>Warning!</strong> One or more alerts found:
-                    <ul>
-                        @if (ViewBag.AllergyAlerts != null && ViewBag.AllergyAlerts.Any())
-                        {
-                            <li>Allergy Alerts:</li>
-                            <ul>
-                                @foreach (var alert in ViewBag.AllergyAlerts)
-                                {
-                                    <li>@alert</li>
-                                }
-                            </ul>
-                        }
-                        @if (ViewBag.ContraindicationAlerts != null && ViewBag.ContraindicationAlerts.Any())
-                        {
-                            <li>Contraindication Alerts:</li>
-                            <ul>
-                                @foreach (var alert in ViewBag.ContraindicationAlerts)
-                                {
-                                    <li>@alert</li>
-                                }
-                            </ul>
-                        }
-                    </ul>
+            <!-- Hidden Template for Medication Rows -->
+            <div id="medicationTemplate" style="display: none;">
+                <div class="form-row medication-row mb-3" data-index="__index__">
+                    <div class="form-group col-md-4">
+                        <label>Medication</label>
+                        <select name="Medications[__index__].PharmacyMedicationName" class="form-control" required>
+                            <option value="">Select Medication</option>
+                            @foreach (var medication in ViewBag.PharmacyMedications as List<WIRKDEVELOPER.Models.PharmacyMedication>)
+                            {
+                                <option value="@medication.PharmacyMedicationName">@medication.PharmacyMedicationName</option>
+                            }
+                        </select>
+                        <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].PharmacyMedicationName" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Quantity</label>
+                        <input name="Medications[__index__].Quantity" type="number" min="1" class="form-control" placeholder="Quantity" required />
+                        <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].Quantity" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Instructions</label>
+                        <input name="Medications[__index__].Instructions" type="text" class="form-control" placeholder="Instructions" />
+                        <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].Instructions" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group col-md-1 d-flex align-items-end">
+                        <button type="button" class="btn btn-danger remove-medication">Remove</button>
+                    </div>
                 </div>
-            }
-
-            <!-- Ignore Reason -->
-            @if (ViewBag.ShowIgnoreReasonField != null && ViewBag.ShowIgnoreReasonField == true)
-            {
-                <div class="form-group">
-                    <label for="IgnoreReason">Reason for Ignoring Alerts</label>
-                    <textarea asp-for="IgnoreReason" id="ignoreReason" class="form-control" rows="3" placeholder="Enter your reason here..."></textarea>
-                    <span asp-validation-for="IgnoreReason" class="text-danger"></span>
-                </div>
-            }
+            </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-success">Create Prescription</button>
-            <br />
-            <br />
-            <br />
+            <button type="submit" class="btn btn-success" onclick="console.log('Form submitted');">Create Prescription</button>
+
+            <br /><br /><br />
         </form>
     </div>
 
-    <!-- Hidden Template for Medication Rows -->
-    <div id="medicationTemplate" style="display: none;">
-        <div class="form-row medication-row mb-3" data-index="__index__">
-            <div class="form-group col-md-4">
-                <label>Medication</label>
-                <select name="Medications[__index__].PharmacyMedicationName" class="form-control" required>
-                    <option value="">Select Medication</option>
-                    @foreach (var medication in ViewBag.PharmacyMedications)
-                    {
-                        <option value="@medication.PharmacyMedicationID">@medication.PharmacyMedicationName</option>
-                    }
-                </select>
-                <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].PharmacyMedicationName" data-valmsg-replace="true"></span>
-            </div>
-            <div class="form-group col-md-3">
-                <label>Quantity</label>
-                <input name="Medications[__index__].Quantity" type="number" min="1" class="form-control" placeholder="Quantity" required />
-                <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].Quantity" data-valmsg-replace="true"></span>
-            </div>
-            <div class="form-group col-md-4">
-                <label>Instructions</label>
-                <input name="Medications[__index__].Instructions" type="text" class="form-control" placeholder="Instructions" />
-                <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].Instructions" data-valmsg-replace="true"></span>
-            </div>
-            <div class="form-group col-md-1 d-flex align-items-end">
-                <button type="button" class="btn btn-danger remove-medication">Remove</button>
+    <!-- Alerts Modal -->
+    @if (Model.HasAlerts)
+    {
+        <div class="modal fade" id="alertsModal" tabindex="-1" role="dialog" aria-labelledby="alertsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Alerts Detected</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetForm();">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @if (Model.AllergyAlerts.Any())
+                        {
+                            <p><strong>Allergy Alerts:</strong></p>
+                            <ul>
+                                @foreach (var alert in Model.AllergyAlerts)
+                                {
+                                    <li>@alert</li>
+                                }
+                            </ul>
+                        }
+
+                        @if (Model.ContraindicationAlerts.Any())
+                        {
+                            <p><strong>Contraindication Alerts:</strong></p>
+                            <ul>
+                                @foreach (var alert in Model.ContraindicationAlerts)
+                                {
+                                    <li>@alert</li>
+                                }
+                            </ul>
+                        }
+
+                        @if (Model.InteractionAlerts.Any())
+                        {
+                            <p><strong>Interaction Alerts:</strong></p>
+                            <ul>
+                                @foreach (var alert in Model.InteractionAlerts)
+                                {
+                                    <li>@alert</li>
+                                }
+                            </ul>
+                        }
+
+                        <p>Do you want to proceed with these medications?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetForm();">Back</button>
+                        <button type="button" class="btn btn-primary" id="ignoreAlertsButton">Ignore and Proceed</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+
+        <!-- Ignore Reason Modal -->
+        <div class="modal fade" id="ignoreReasonModal" tabindex="-1" role="dialog" aria-labelledby="ignoreReasonModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form id="ignoreReasonForm" method="post" action="@Url.Action("CreatePrescription", "Surgeon")">
+                        @Html.AntiForgeryToken()
+                        <!-- Preserve all form data by serializing the existing form -->
+                        <!-- Hidden fields for all existing form data -->
+                        @Html.HiddenFor(m => m.IDNumber)
+                        @Html.HiddenFor(m => m.Name)
+                        @Html.HiddenFor(m => m.Surname)
+                        @Html.HiddenFor(m => m.Gender)
+                        @Html.HiddenFor(m => m.Email)
+                        @Html.HiddenFor(m => m.Date)
+                        @Html.HiddenFor(m => m.Prescriber)
+                        @Html.HiddenFor(m => m.Urgent)
+                        @Html.HiddenFor(m => m.Status)
+
+                        @for (int i = 0; i < Model.Medications.Count; i++)
+                        {
+                            @Html.HiddenFor(m => m.Medications[i].PharmacyMedicationName)
+                            @Html.HiddenFor(m => m.Medications[i].Quantity)
+                            @Html.HiddenFor(m => m.Medications[i].Instructions)
+                        }
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Provide Reason to Ignore Alerts</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetForm();">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="IgnoreReason">Reason for Ignoring Alerts</label>
+                                <textarea asp-for="IgnoreReason" id="ignoreReason" class="form-control" rows="3" placeholder="Enter your reason here..." required></textarea>
+                                <span asp-validation-for="IgnoreReason" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetForm();">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Ignore and Proceed</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
-            var index = @Model.Medications.Count;
+            let medicationIndex = @Model.Medications.Count;
 
             $('#addMedication').click(function () {
-                var newRow = $('#medicationTemplate').html().replace(/__index__/g, index);
-                $('#medicationsContainer').append(newRow);
-                index++;
+                const newMedicationRow = $('#medicationTemplate').html().replace(/__index__/g, medicationIndex);
+                $('#medicationsContainer').append(newMedicationRow);
+                medicationIndex++;
             });
 
             $(document).on('click', '.remove-medication', function () {
                 $(this).closest('.medication-row').remove();
             });
 
-            $('#prescriptionForm').on('submit', function (e) {
-                var allergyAlerts = @Html.Raw(Json.Serialize(ViewBag.AllergyAlerts));
-                if (allergyAlerts.length > 0) {
-                    e.preventDefault(); // Prevent the form from submitting
-                    $('#ignoreReasonModal').modal('show'); // Show modal for ignore reason
-                }
+            // Handle modal alerts
+            $('#ignoreAlertsButton').click(function () {
+                $('#ignoreReasonModal').modal('show');
             });
         });
+
+        function resetForm() {
+            // Logic to reset or clear the form if necessary
+            $('#prescriptionForm')[0].reset();
+        }
     </script>
+
 </body>
-</html>
+</html> *@
+
+

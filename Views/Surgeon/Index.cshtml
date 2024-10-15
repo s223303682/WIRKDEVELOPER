@@ -53,7 +53,6 @@
 
     <h1>Surgery Report</h1>
 
-    <!-- Form to select the date range -->
     @using (Html.BeginForm("Index", "Surgeon", FormMethod.Post))
     {
         <div class="form-group">
@@ -69,8 +68,6 @@
         </div>
     }
 
-
-    <!-- Conditionally display the report if there is data -->
     @if (Model != null && Model.Any())
     {
         <h2>For the period: @ViewBag.StartDate to @ViewBag.EndDate</h2>
@@ -116,12 +113,39 @@
             </ul>
         </div>
 
-        <!-- Add a button to download the report as PDF -->
+        <div class="summary">
+            <h3>SUMMARY PER TREATMENT CODE:</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Treatment Code</th>
+                        <th>Total Surgeries</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var treatmentCodeSummary = Model
+                        .SelectMany(b => b.BookingTreatmentCodes)
+                        .GroupBy(tc => tc.TreatmentCode?.ICDCODE)
+                        .Select(g => new { TreatmentCode = g.Key, TotalSurgeries = g.Count() })
+                        .ToList();
+
+                        foreach (var item in treatmentCodeSummary)
+                        {
+                            <tr>
+                                <td>@item.TreatmentCode ?? "N/A"</td>
+                                <td>@item.TotalSurgeries</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
         <div>
             @Html.ActionLink("Download PDF", "DownloadReportAsPdf", new { startDate = ViewBag.StartDate, endDate = ViewBag.EndDate }, new { @class = "btn btn-success" })
         </div>
     }
-
 </body>
 </html>
 
