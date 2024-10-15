@@ -1,0 +1,78 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.OrderMedication>
+
+@{
+    Layout = "AnaesthesiologistLayout";
+}
+
+<h1>Received Medications</h1>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Patient Name</th>
+                <th>Medication(s)</th>
+                <th>Notes</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var medication in Model)
+            {
+                <tr>
+                    <td>@medication.Order.Addm.PatientName</td> <!-- Display Patient Name -->
+
+                    <!-- Medication(s) -->
+                    <td>
+                        @if (medication.Order.OrderMedications != null && medication.Order.OrderMedications.Any())
+                        {
+                            <ul>
+                                @foreach (var med in medication.Order.OrderMedications)
+                                {
+                                    <li>
+                                        @med.PharmacyMedication.PharmacyMedicationName - Quantity: @med.Quantity, Instructions: @med.Instructions
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p>No medications found for this order</p>
+                        }
+                    </td>
+
+                    <!-- Notes for the medication -->
+                    <td>
+                        @if (medication.notes != null && medication.notes.Any()) 
+                        {
+                            <ul>
+                                @foreach (var note in medication.notes)
+                                {
+                                    <li>@note.NoteText (Added on @note.CreatedAt.ToString("MM/dd/yyyy"))</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p>No notes available</p>
+                        }
+                    </td>
+
+                    <!-- Action to add a note -->
+                    <td>
+                        <a asp-controller="Anaesthesiologist" asp-action="CreateNote" asp-route-orderMedicationID="@medication.OrderMedicationID" class="btn btn-primary">Add Note</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No medications with status 'Received' found</p>
+}
+
+
+
+

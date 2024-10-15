@@ -13,10 +13,9 @@ namespace WIRKDEVELOPER.Models
         public int NotesOfOrdersID { get; set; }
 
 
-        [Required]
-        [DisplayName("Patient")]
-        public int? AddmID { get; set; }
-        [ForeignKey("AddmID")]
-        public virtual Patient Addm { get; set; }
+        public int OrderMedicationID { get; set; }
+        public string PharmacyMedicationName { get; set; }
+        public string PatientName { get; set; }
+        public string NoteText { get; set; }
     }
 }

@@ -9,21 +9,12 @@ namespace WIRKDEVELOPER.Models
 {
 	public class Notes
 	{
-		[Required]
-		[DisplayName(" Date")]
-		public DateTime? Date { get; set; } = DateTime.Now;
-
-		[Required]
-		[DisplayName("Patient")]
-		public int? AnOrderID { get; set; }
-		[ForeignKey("AnOrderID")]
-        public virtual Order Order { get; set; }
-
-		[Required]
-		[DisplayName("Notes")]
-		public string? notes { get; set; }
-
-		[Key]
-		public int NotesID { get; set; }
-	}
+        [Key]
+        public int NotesID{ get; set; }
+        public int MedicationNoteID { get; set; }
+        public int OrderMedicationID { get; set; }
+        public string NoteText { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public OrderMedication OrderMedication { get; set; }
+    }
 }

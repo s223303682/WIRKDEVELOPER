@@ -146,5 +146,6 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<OrderItems> orderItems { get; set; }
     public DbSet<OrderMedication> ordermedication { get; set; }
     public DbSet<OrderCreate> ordercreate { get; set; }
+    public DbSet<NotesOfOrders> notesoforders { get; set; }
 
 }

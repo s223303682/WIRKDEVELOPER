@@ -31,6 +31,8 @@ namespace WIRKDEVELOPER.Models
 
         [DisplayName("Notes")]
         public string? Notes { get; set; }
+
+        public ICollection<Notes> notes { get; set; }
     }
 }
 

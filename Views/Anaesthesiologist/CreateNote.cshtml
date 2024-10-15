@@ -1,0 +1,34 @@
+﻿@model WIRKDEVELOPER.Models.NotesOfOrders
+
+<h1>Add Note for Medication</h1>
+
+<div>
+    <h4>Medication Information</h4>
+    <div>
+        <strong>Patient:</strong> @Model.PatientName <br />
+        <strong>Medication:</strong> @Model.PharmacyMedicationName
+    </div>
+</div>
+
+<hr />
+
+<form asp-action="CreateNote" method="post">
+    <div class="form-group">
+        <label asp-for="NoteText" class="control-label">Note</label>
+        <textarea asp-for="NoteText" class="form-control"></textarea>
+        <span asp-validation-for="NoteText" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="OrderMedicationID" />
+    <div class="form-group">
+        <input type="submit" value="Add Note" class="btn btn-primary" />
+        <a asp-action="ListNotes" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

@@ -627,6 +627,74 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
+
+        // GET: Notes/List
+        public async Task<IActionResult> ListNotes()
+        {
+            // Fetch orders with medications that have been marked as "received"
+            var receivedMedications = await _Context.ordermedication
+                .Include(om => om.PharmacyMedication)
+                .Include(o => o.Order)
+                .ThenInclude(om => om.Addm)
+                //.Include(om => om.Notes)
+                .Where(om => om.Order.Status == "Received")
+                .ToListAsync();
+
+            return View(receivedMedications);
+        }
+
+        // GET: Notes/Create
+        public IActionResult CreateNote(int orderMedicationID)
+        {
+            var medication = _Context.ordermedication
+                .Include(om => om.PharmacyMedication)
+                 .Include(om => om.Order)
+                .ThenInclude(o => o.Addm)
+                .FirstOrDefault(om => om.OrderMedicationID == orderMedicationID);
+
+            if (medication == null)
+            {
+                return NotFound();
+            }
+
+            // Populate the view model with relevant information
+            var viewModel = new NotesOfOrders
+            {
+                OrderMedicationID = medication.OrderMedicationID,
+                PharmacyMedicationName = medication.PharmacyMedication.PharmacyMedicationName,
+                PatientName = medication.Order.Addm.PatientName,
+                NoteText = "" // Initialize as empty
+            };
+
+            return View(viewModel);
+        }
+
+        // POST: Notes/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateNote(NotesOfOrders viewModel)
+        {
+            //if (ModelState.IsValid)
+            
+                var note = new Notes
+                {
+                    OrderMedicationID = viewModel.OrderMedicationID,
+                    NoteText = viewModel.NoteText,
+                    CreatedAt = DateTime.Now
+                };
+
+                _Context.notes.Add(note);
+                await _Context.SaveChangesAsync();
+
+                return RedirectToAction("ListNotes");
+            
+
+            // If the model is invalid, return the same view
+            return View(viewModel);
+        }
+
+
+
         //public IActionResult Indexclassadd()
         //{
         //    IEnumerable<ClassAdd> objList = _Context.classadd;
@@ -687,6 +755,7 @@ namespace WIRKDEVELOPER.Controllers
         //    _Context.SaveChanges();
         //    return RedirectToAction("Indexclassadd");
     }
+
 }               //}
 
 
