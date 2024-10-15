@@ -30,7 +30,7 @@ namespace WIRKDEVELOPER.Models
         public string Status { get; set; }
         public string? IgnoreReason { get; set; } = "none";
         // Navigation propertiesnine
-        public virtual ICollection<PrescriptionMedication> PrescriptionMedications { get; set; } = new List<PrescriptionMedication>();
+        public virtual List<PrescriptionMedication> PrescriptionMedications { get; set; } = new List<PrescriptionMedication>();
      
     }
 

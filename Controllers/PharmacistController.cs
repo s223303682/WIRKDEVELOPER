@@ -25,33 +25,34 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-        // GET: UpdatePrescription
-        // GET: UpdatePrescription
+        // GET: Pharmacist/UpdatePrescription/5
         public IActionResult UpdatePrescription(int id)
         {
             var prescription = _Context.prescriptions
-                .Include(p => p.PrescriptionMedications) // Ensure medications are included
+                .Include(p => p.PrescriptionMedications)
+                .ThenInclude(pm => pm.PharmacyMedication) // Include medication details if needed
                 .FirstOrDefault(p => p.PrescriptionID == id);
 
             if (prescription == null)
             {
-                return NotFound(); // Handle case where the prescription does not exist
+                return NotFound();
             }
 
-            ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList(); // Make sure this is populated
             return View(prescription);
         }
 
-
+        // POST: Pharmacist/UpdatePrescription/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult UpdatePrescription(Prescription prescription)
         {
+          
             
-            _Context.prescriptions.Update(prescription);
-            ViewBag.PharmacyMedications = _Context.pharmacyMedications.ToList();
-            _Context.SaveChanges();
-            return RedirectToAction("PharmPrescriptionList");
+                _Context.Update(prescription);
+                _Context.SaveChanges();
+                return RedirectToAction("PharmPrescriptionList"); // Or wherever you want to redirect
+            
+            return View(prescription);
         }
         public IActionResult RejectPrescription(int? ID)
         {
