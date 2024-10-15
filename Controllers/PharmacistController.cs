@@ -46,53 +46,102 @@ namespace WIRKDEVELOPER.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult UpdatePrescription(Prescription prescription)
         {
-          
-            
-                _Context.Update(prescription);
-                _Context.SaveChanges();
-                return RedirectToAction("PharmPrescriptionList"); // Or wherever you want to redirect
-            
+            // Retrieve the original prescription from the database
+            var existingPrescription = _Context.prescriptions
+                .Include(p => p.PrescriptionMedications)
+                .ThenInclude(pm => pm.PharmacyMedication)
+                .FirstOrDefault(p => p.PrescriptionID == prescription.PrescriptionID);
+
+            if (existingPrescription == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the status is being updated to "dispensed"
+            if (prescription.Status.Equals("dispensed", StringComparison.OrdinalIgnoreCase))
+            {
+                foreach (var medication in prescription.PrescriptionMedications)
+                {
+                    var existingMedication = existingPrescription.PrescriptionMedications
+                        .FirstOrDefault(pm => pm.PrescriptionMedicationID == medication.PrescriptionMedicationID);
+
+                    if (existingMedication != null)
+                    {
+                        // Find the corresponding PharmacyMedication
+                        var pharmacyMedication = _Context.pharmacyMedications
+                            .FirstOrDefault(pm => pm.PharmacyMedicationID == existingMedication.PharmacyMedicationID);
+
+                        if (pharmacyMedication != null)
+                        {
+                            // Reduce the quantity on hand
+                            pharmacyMedication.stockhand -= existingMedication.Quantity;
+
+                            // Optionally, you could check to ensure you don't go negative
+                            if (pharmacyMedication.stockhand < 0)
+                            {
+                                pharmacyMedication.stockhand = 0; // or handle the error as needed
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Update the prescription in the database
+            existingPrescription.Name = prescription.Name; // Update other fields as necessary
+            existingPrescription.Surname = prescription.Surname;
+            existingPrescription.Gender = prescription.Gender;
+            existingPrescription.Email = prescription.Email;
+            existingPrescription.Date = prescription.Date;
+            existingPrescription.Prescriber = prescription.Prescriber;
+            existingPrescription.Urgent = prescription.Urgent;
+            existingPrescription.Status = prescription.Status;
+
+            _Context.Update(existingPrescription);
+            _Context.SaveChanges();
+
+            return RedirectToAction("PharmPrescriptionList"); // Redirect after successful update
+        }
+
+        public IActionResult RejectPrescription(int id)
+        {
+            var prescription = _Context.prescriptions
+                .Include(p => p.PrescriptionMedications)
+                .ThenInclude(pm => pm.PharmacyMedication) // Include medication details if needed
+                .FirstOrDefault(p => p.PrescriptionID == id);
+
+            if (prescription == null)
+            {
+                return NotFound();
+            }
+
             return View(prescription);
         }
-        public IActionResult RejectPrescription(int? ID)
-        {
-            if (ID == null || ID == 0)
-            {
-                return NotFound();
-            }
-            var objList = _Context.prescriptions.Find(ID);
-            if (objList == null)
-            {
-                return NotFound();
-            }
 
-            return View(objList);
-
-        }
+        // POST: Pharmacist/UpdatePrescription/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RejectPrescription(Prescription prescription)
         {
-            if (ModelState.IsValid)
-            {
-                // Find the existing prescription in the database
-                var existingPrescription = _Context.prescriptions.Find(prescription.PrescriptionID);
-                if (existingPrescription != null)
-                {
-                    // Update the status and ignore reason
-                    existingPrescription.Status = prescription.Status;
-                    existingPrescription.IgnoreReason = prescription.IgnoreReason; // Assuming this is the rejection reason
+            // Find the existing prescription in the database
+            var existingPrescription = _Context.prescriptions
+                .FirstOrDefault(p => p.PrescriptionID == prescription.PrescriptionID);
 
-                    _Context.SaveChanges();
-                    return RedirectToAction("PharmPrescriptionList");
-                }
-                else
-                {
-                    return NotFound();
-                }
+            if (existingPrescription == null)
+            {
+                return NotFound();
             }
-            return View(prescription); // Return the view with validation errors if the model state is not valid
+
+            // Update the existing prescription's status and ignore reason
+            existingPrescription.Status = "Rejected"; // Explicitly set status to "Rejected"
+            existingPrescription.IgnoreReason = prescription.IgnoreReason; // Store the rejection reason
+
+            // Save the changes to the database
+            _Context.Update(existingPrescription);
+            _Context.SaveChanges();
+
+            return RedirectToAction("PharmPrescriptionList"); // Redirect to the list view
         }
+
 
 
 

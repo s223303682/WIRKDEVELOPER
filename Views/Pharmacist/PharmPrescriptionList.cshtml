@@ -19,8 +19,10 @@
             <th>Prescriber</th>
             <th>Urgent</th>
             <th>Status</th>
+            <th>Rejection Reason</th>
             <th>Update</th>
             <th>Reject</th>
+
         </tr>
     </thead>
     <tbody>
@@ -44,6 +46,7 @@
                             <td>@prescription.Prescriber</td>
                             <td>@prescription.Urgent</td>
                             <td>@prescription.Status</td>
+                            <td>@prescription.IgnoreReason</td>
                             <td>
                                 <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-primary">Update</a>
                             </td>
@@ -66,6 +69,7 @@
                     <td>@prescription.Gender</td>
                     <td>@prescription.Email</td>
                     <td>@prescription.Date.ToString("d")</td>
+
                     @if (prescription.PrescriptionMedications != null && prescription.PrescriptionMedications.Any())
                     {
                         foreach (var medication in prescription.PrescriptionMedications)
@@ -76,6 +80,7 @@
                             <td>@prescription.Prescriber</td>
                             <td>@prescription.Urgent</td>
                             <td>@prescription.Status</td>
+                            <td>@prescription.IgnoreReason</td>
                             <td>
                                 <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-primary">Update</a>
                             </td>
