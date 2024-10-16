@@ -82,12 +82,17 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
 			.HasForeignKey(o => o.PharmacyMedicationID)
 			.OnDelete(DeleteBehavior.Restrict);
 
-		// Add similar configurations for other relationships if needed
+        builder.Entity<OrderMedication>()
+            .HasMany(om => om.notes)
+            .WithOne(n => n.OrderMedication)
+            .HasForeignKey(n => n.OrderMedicationID);
 
-		
+        // Add similar configurations for other relationships if needed
 
 
-		//base.OnModelCreating(builder);
+
+
+        //base.OnModelCreating(builder);
 
         // Apply additional configurations if needed
         builder.ApplyConfiguration(new applicationUserEntityConfiguration());

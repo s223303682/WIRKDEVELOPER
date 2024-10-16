@@ -351,85 +351,81 @@ namespace WIRKDEVELOPER.Controllers
             return RedirectToAction("IndexOrders"); // Redirect to the order list after deletion
         }
 
+		
 
 
+		//public IActionResult IndexOrder()
+		//{
+		//    IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Addm);
+		//    return View(objList);
+
+		//}
+		//public IActionResult Order()
+		//{
+
+		//    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+		//    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+
+		//    return View();
+		//}
+		//[HttpPost]
+		//[ValidateAntiForgeryToken]
+		//public IActionResult Order(Order order)
+		//{
+
+		//    _Context.order.Add(order);
+		//    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+		//    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+
+		//    _Context.SaveChanges();
 
 
+		//    return RedirectToAction("IndexOrder");
 
 
-
-        //public IActionResult IndexOrder()
-        //{
-        //    IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Addm);
-        //    return View(objList);
-
-        //}
-        //public IActionResult Order()
-        //{
-
-        //    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-        //    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-
-        //    return View();
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Order(Order order)
-        //{
-
-        //    _Context.order.Add(order);
-        //    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-        //    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-
-        //    _Context.SaveChanges();
+		//}
+		//public IActionResult NewUpdateOrder(int? ID)
+		//{
 
 
-        //    return RedirectToAction("IndexOrder");
+		//    if (ID == null || ID == 0)
+		//    {
+		//        return NotFound();
+		//    }
+		//    var objList = _Context.order.Find(ID);
+		//    if (objList == null)
+		//    {
+		//        return NotFound();
+		//    }
+		//    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+		//    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+		//    return View(objList);
 
+		//}
+		//[HttpPost]
+		//[ValidateAntiForgeryToken]
+		//public IActionResult NewUpdateOrder(Order order)
+		//{
+		//    _Context.order.Update(order);
+		//    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+		//    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
+		//    _Context.SaveChanges();
+		//    return RedirectToAction("IndexOrder");
 
-        //}
-        //public IActionResult NewUpdateOrder(int? ID)
-        //{
+		//}
+		//public IActionResult DeleteOrder(int? ID)
+		//{
+		//    var obj = _Context.order.Find(ID);
 
-
-        //    if (ID == null || ID == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var objList = _Context.order.Find(ID);
-        //    if (objList == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-        //    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-        //    return View(objList);
-
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult NewUpdateOrder(Order order)
-        //{
-        //    _Context.order.Update(order);
-        //    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-        //    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-        //    _Context.SaveChanges();
-        //    return RedirectToAction("IndexOrder");
-
-        //}
-        //public IActionResult DeleteOrder(int? ID)
-        //{
-        //    var obj = _Context.order.Find(ID);
-
-        //    if (obj == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    _Context.order.Remove(obj);
-        //    _Context.SaveChanges();
-        //    return RedirectToAction("IndexOrder");
-        //}
-        public IActionResult IndexVitalRanges()
+		//    if (obj == null)
+		//    {
+		//        return NotFound();
+		//    }
+		//    _Context.order.Remove(obj);
+		//    _Context.SaveChanges();
+		//    return RedirectToAction("IndexOrder");
+		//}
+		public IActionResult IndexVitalRanges()
         {
             IEnumerable<VitalRanges> objList = _Context.vitalranges;
             return View(objList);
@@ -533,8 +529,8 @@ namespace WIRKDEVELOPER.Controllers
                 .Include(o => o.Addm)                   // Include related Patient entity
                 /*.Include(o => o.OrderItems) */                 // Include related OrderItems
                 .Include(o => o.OrderMedications)                  // Include related OrderItems
-                .ThenInclude(o => o.PharmacyMedication)         // Include related PharmacyMedication entity
-                                                                //.ToListAsync()
+                .ThenInclude(o => o.PharmacyMedication)
+                  .Where(o => o.Status == "Received")                                                                //.ToListAsync()
 
              .Select(item => new OrderCreate
              {
@@ -608,16 +604,34 @@ namespace WIRKDEVELOPER.Controllers
                     {
                         // Update the notes for the medication
                         orderMedication.Notes = medication.Notes;
+                        orderMedication.Date = DateTime.Now;
                     }
                 }
 
                 _Context.SaveChanges();
-                return RedirectToAction("IndexOrders");
+                return RedirectToAction("ListNot");
             }
 
             return View(viewModel); // Return with validation errors if any
         }
+        // ListNotes method to display all notes for received medications
+        public IActionResult ListNot()
+        {
+            var notes = _Context.ordermedication
+                .Include(om => om.PharmacyMedication)
+                .Include(om => om.Order.Addm) // Include patient details
+                .Where(om => om.Notes != null)
+                .Select(om => new MedicationNotesViewModel
+                {
+                    PatientName = om.Order.Addm.PatientName,
+                    MedicationName = om.PharmacyMedication.PharmacyMedicationName,
+                    Notes = om.Notes,
+                    Date = om.Date, // Display the date when notes were created
+                    AnOrderID = om.AnOrderID
+                }).ToList();
 
+            return View(notes);
+        }
         public IActionResult IndexVitalHistory()
         {
             IEnumerable<AnVitals> objList = _Context.anvitals;
@@ -631,12 +645,12 @@ namespace WIRKDEVELOPER.Controllers
         // GET: Notes/List
         public async Task<IActionResult> ListNotes()
         {
-            // Fetch orders with medications that have been marked as "received"
+            // Fetch orders with medications that have been marked as "received" and include notes
             var receivedMedications = await _Context.ordermedication
                 .Include(om => om.PharmacyMedication)
                 .Include(o => o.Order)
                 .ThenInclude(om => om.Addm)
-                //.Include(om => om.Notes)
+                .Include(om => om.notes) // Include notes here
                 .Where(om => om.Order.Status == "Received")
                 .ToListAsync();
 

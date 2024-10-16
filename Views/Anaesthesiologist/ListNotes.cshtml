@@ -6,7 +6,11 @@
 
 <h1>Received Medications</h1>
 
-@if (Model.Any())
+@if (Model == null || !Model.Any())
+{
+    <p>No medications with status 'Received' found</p>
+}
+else
 {
     <table class="table table-striped">
         <thead>
@@ -22,7 +26,6 @@
             {
                 <tr>
                     <td>@medication.Order.Addm.PatientName</td> <!-- Display Patient Name -->
-
                     <!-- Medication(s) -->
                     <td>
                         @if (medication.Order.OrderMedications != null && medication.Order.OrderMedications.Any())
@@ -31,7 +34,7 @@
                                 @foreach (var med in medication.Order.OrderMedications)
                                 {
                                     <li>
-                                        @med.PharmacyMedication.PharmacyMedicationName - Quantity: @med.Quantity, Instructions: @med.Instructions
+                                        @med.PharmacyMedication?.PharmacyMedicationName - Quantity: @med.Quantity, Instructions: @med.Instructions
                                     </li>
                                 }
                             </ul>
@@ -44,7 +47,7 @@
 
                     <!-- Notes for the medication -->
                     <td>
-                        @if (medication.notes != null && medication.notes.Any()) 
+                        @if (medication.notes != null && medication.notes.Any())
                         {
                             <ul>
                                 @foreach (var note in medication.notes)
@@ -68,11 +71,3 @@
         </tbody>
     </table>
 }
-else
-{
-    <p>No medications with status 'Received' found</p>
-}
-
-
-
-

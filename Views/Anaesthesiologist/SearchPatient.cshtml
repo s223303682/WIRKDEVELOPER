@@ -4,22 +4,11 @@
     Layout = "AnaesthesiologistLayout";
 }
 
-<head>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap4.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" />
-</head>
-<div id="Header" class="bg-info container">
-    <h2 class="m-1 pt-4 text-center text-white">Post-Surgery Notes</h2>
-</div>
-
 <h2>Search Results</h2>
-<br />
 <form asp-action="SearchPatient" method="get">
     <input type="text" name="patientName" placeholder="Search Patient" />
     <button type="submit" class="btn btn-primary">Search</button>
 </form>
-<br />
 
 @if (Model.Any())
 {
@@ -38,52 +27,48 @@
         <tbody>
             @foreach (var order in Model)
             {
-                @if (order.Status == "Received")
-                {
-                    <tr scope="row">
-                        <td width="20%">@order.Date</td>
-                        <td width="20%">@order.Patient.PatientName</td>
-                        <td>
-                            @if (order.OrderItems != null && order.OrderItems.Any())
-                            {
-                                <ul>
-                                    @foreach (var medication in order.OrderItems)
-                                    {
-                                        <li>
-                                            @medication.PharmacyMedication.PharmacyMedicationName - Quantity: @medication.Quantity, Instructions: @medication.Instructions
-                                        </li>
-                                    }
-                                </ul>
-                            }
-                        </td>
-                        <td width="10%">@order.Urgent</td>
-                        <td width="10%">@order.Status</td>
-                        <td width="20%">
-                            @if (order.OrderItems != null && order.OrderItems.Any())
-                            {
-                                <ul>
-                                    @foreach (var medication in order.OrderItems)
-                                    {
-                                        <li>@medication.Notes</li>
-                                    }
-                                </ul>
-                            }
-                        </td>
-                        <td>
-                            <a asp-controller="Anaesthesiologist" asp-action="CreateNoteForOrder" asp-route-ID="@order.AnOrderID" class="btn btn-primary">
-                                <i class="bi bi-arrow-repeat"></i> Note
-                            </a>
-                        </td>
-                    </tr>
-                }
+                <tr scope="row">
+                    <td>@order.Date</td>
+                    <td>@order.Patient.PatientName</td>
+                    <td>
+                        @if (order.OrderItems != null && order.OrderItems.Any())
+                        {
+                            <ul>
+                                @foreach (var medication in order.OrderItems)
+                                {
+                                    <li>
+                                        @medication.PharmacyMedication.PharmacyMedicationName - Quantity: @medication.Quantity, Instructions: @medication.Instructions
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </td>
+                    <td>@order.Urgent</td>
+                    <td>@order.Status</td>
+                    <td>
+                        @if (order.OrderItems != null && order.OrderItems.Any())
+                        {
+                            <ul>
+                                @foreach (var medication in order.OrderItems)
+                                {
+                                    <li>@medication.Notes</li>
+                                }
+                            </ul>
+                        }
+                    </td>
+                    <td>
+                        <a asp-controller="Anaesthesiologist" asp-action="CreateNoteForOrder" asp-route-ID="@order.AnOrderID" class="btn btn-primary">Note</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
 }
 else
 {
-    <p>No Orders received yet</p>
+    <p>No orders found.</p>
 }
+
 <br />
 
 @* <h2>Submit Notes for Medications in Order @Model.AnOrderID</h2>

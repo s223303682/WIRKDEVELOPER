@@ -31,7 +31,7 @@ namespace WIRKDEVELOPER.Models
 
         [DisplayName("Notes")]
         public string? Notes { get; set; }
-
+        public DateTime? Date { get; set; } = DateTime.Now;
         public ICollection<Notes> notes { get; set; }
     }
 }

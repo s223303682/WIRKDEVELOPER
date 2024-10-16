@@ -1,0 +1,26 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.MedicationNotesViewModel>
+
+<h2>Medication Notes</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Patient Name</th>
+            <th>Medication</th>
+            <th>Notes</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var note in Model)
+        {
+            <tr>
+                <td>@note.PatientName</td>
+                <td>@note.MedicationName</td>
+                <td>@note.Notes</td>
+                <td>@note.Date</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

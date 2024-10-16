@@ -16,5 +16,6 @@ namespace WIRKDEVELOPER.Models
         public string NoteText { get; set; }
         public DateTime CreatedAt { get; set; }
         public OrderMedication OrderMedication { get; set; }
+
     }
 }
