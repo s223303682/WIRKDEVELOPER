@@ -92,6 +92,7 @@ namespace WIRKDEVELOPER.Controllers
 
 
 
+        // GET: Pharmacist/RejectPrescription/5
         public IActionResult RejectPrescription(int id)
         {
             var prescription = _Context.prescriptions
@@ -107,7 +108,7 @@ namespace WIRKDEVELOPER.Controllers
             return View(prescription);
         }
 
-        // POST: Pharmacist/UpdatePrescription/5
+        // POST: Pharmacist/RejectPrescription/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RejectPrescription(Prescription prescription)
@@ -176,6 +177,7 @@ namespace WIRKDEVELOPER.Controllers
                     Prescriber = p.Prescriber,
                     Urgent = p.Urgent,
                     Status = p.Status,
+                    IgnoreReason = p.IgnoreReason,
                     PrescriptionMedications = p.PrescriptionMedications.Select(m => new PrescriptionMedication
                     {
                         PharmacyMedicationID = m.PharmacyMedicationID,
