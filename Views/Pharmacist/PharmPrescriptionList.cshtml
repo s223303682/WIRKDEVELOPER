@@ -46,7 +46,16 @@
                             <td>@prescription.Prescriber</td>
                             <td>@prescription.Urgent</td>
                             <td>@prescription.Status</td>
-                            <td>@prescription.IgnoreReason</td>
+                           
+                            @if(prescription.IgnoreReason == null)
+                            {
+                                <td>None</td>
+                            }
+                            else
+                            {
+                                <td>@prescription.IgnoreReason</td>
+
+                            }
                             <td>
                                 <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-primary">Update</a>
                             </td>
@@ -80,7 +89,15 @@
                             <td>@prescription.Prescriber</td>
                             <td>@prescription.Urgent</td>
                             <td>@prescription.Status</td>
-                            <td>@prescription.IgnoreReason</td>
+                            @if (prescription.IgnoreReason != null)
+                            {
+                                <td>@prescription.IgnoreReason</td>
+                            }
+                            else
+                            {
+                                <td>None med</td>
+
+                            }
                             <td>
                                 <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-primary">Update</a>
                             </td>

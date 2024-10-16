@@ -3,31 +3,25 @@
 @{
     Layout = "~/Views/Shared/Pharmacy.cshtml";
 }
+
 <h1>Update Prescription</h1>
 
-<form asp-action ="UpdatePrescription" method="post">
-
+<form asp-action="UpdatePrescription" method="post">
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="PrescriptionID" />
+
     <div class="card mb-4">
         <div class="form-row">
-            <div div class="form-group col-md-3">
+            <div class="form-group col-md-3">
                 <label asp-for="Name"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group col-md-3">
-                <label asp-for="IDNumber"></label>
-                <input asp-for="IDNumber" class="form-control" />
-                <span asp-validation-for="IDNumber" class="text-danger"></span>
-            </div>
-
-            <div class="form-group col-md-3">
                 <label asp-for="Surname"></label>
                 <input asp-for="Surname" class="form-control" />
                 <span asp-validation-for="Surname" class="text-danger"></span>
             </div>
-
             <div class="form-group col-md-3">
                 <label asp-for="Gender"></label>
                 <input asp-for="Gender" class="form-control" />
@@ -39,39 +33,36 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
         </div>
-        
     </div>
-    <div class="card mb-4">
-       <div class="form-row">
 
+    <div class="card mb-4">
+        <div class="form-row">
             <div class="form-group col-md-3">
                 <label asp-for="Date"></label>
                 <input asp-for="Date" class="form-control" type="date" />
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
-
             <div class="form-group col-md-3">
                 <label asp-for="Prescriber"></label>
                 <input asp-for="Prescriber" class="form-control" />
                 <span asp-validation-for="Prescriber" class="text-danger"></span>
             </div>
-
             <div class="form-group col-md-3">
                 <label asp-for="Urgent"></label>
                 <input asp-for="Urgent" class="form-control" />
                 <span asp-validation-for="Urgent" class="text-danger"></span>
             </div>
-
             <div class="form-group col-md-3">
                 <label asp-for="Status"></label>
                 <select asp-for="Status" class="form-control">
-                    <option value="Dispensed">Dispense</option>
-                    <option value="Rejected">Reject</option>
+                    <option value="Dispensed">Dispensed</option>
+                    <option value="Rejected">Rejected</option>
                 </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
             </div>
-       </div>
-
+        </div>
     </div>
+
     <div class="card mb-4">
         <h3>Medications</h3>
         @for (int i = 0; i < Model.PrescriptionMedications.Count; i++)
@@ -85,9 +76,7 @@
                 <input type="text" name="PrescriptionMedications[@i].Instructions" class="form-control" value="@Model.PrescriptionMedications[i].Instructions" readonly />
             </div>
         }
-
     </div>
 
-    
     <button type="submit" class="btn btn-primary">Update Prescription</button>
 </form>
