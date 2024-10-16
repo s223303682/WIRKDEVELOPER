@@ -15,6 +15,7 @@ namespace WIRKDEVELOPER.Models
         public string Name { get; set; }
         [Required]
         public string Surname { get; set; }
+        [Required]
         public string IDNumber { get; set; }
         [Required]
         public string Gender { get; set; }
@@ -28,7 +29,7 @@ namespace WIRKDEVELOPER.Models
         public string Urgent { get; set; }
         [Required]
         public string Status { get; set; }
-        public string? IgnoreReason { get; set; } = "none";
+        public string? IgnoreReason { get; set; }
         // Navigation propertiesnine
         public virtual List<PrescriptionMedication> PrescriptionMedications { get; set; } = new List<PrescriptionMedication>();
      
@@ -42,6 +43,7 @@ namespace WIRKDEVELOPER.Models
         public string Name { get; set; }
         [Required]
         public string Surname { get; set; }
+        [Required]
         public string IDNumber { get; set; }
         [Required]
         public string Gender { get; set; }

@@ -15,11 +15,13 @@ namespace WIRKDEVELOPER.Controllers
     {
         private readonly ApplicationDBContext _Context;
         private readonly EmailService _emailService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public PharmacistController(ApplicationDBContext applicationDBContext, EmailService emailService)
+        public PharmacistController(ApplicationDBContext applicationDBContext, EmailService emailService, UserManager<ApplicationUser> userManager)
         {
             _Context = applicationDBContext;
             _emailService = emailService;
+            _userManager = userManager;
         }
         public IActionResult Dashboard()
         {
@@ -46,61 +48,49 @@ namespace WIRKDEVELOPER.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult UpdatePrescription(Prescription prescription)
         {
-            // Retrieve the original prescription from the database
-            var existingPrescription = _Context.prescriptions
-                .Include(p => p.PrescriptionMedications)
-                .ThenInclude(pm => pm.PharmacyMedication)
-                .FirstOrDefault(p => p.PrescriptionID == prescription.PrescriptionID);
+           
+                var existingPrescription = _Context.prescriptions
+                    .Include(pm => pm.PrescriptionMedications)
+                    .ThenInclude(pm => pm.PharmacyMedication)
+                    .FirstOrDefault(p => p.PrescriptionID == prescription.PrescriptionID);
 
-            if (existingPrescription == null)
-            {
-                return NotFound();
-            }
-
-            // Check if the status is being updated to "dispensed"
-            if (prescription.Status.Equals("dispensed", StringComparison.OrdinalIgnoreCase))
-            {
-                foreach (var medication in prescription.PrescriptionMedications)
+                if (existingPrescription == null)
                 {
-                    var existingMedication = existingPrescription.PrescriptionMedications
-                        .FirstOrDefault(pm => pm.PrescriptionMedicationID == medication.PrescriptionMedicationID);
+                    return NotFound();
+                }
 
-                    if (existingMedication != null)
+                // Update fields
+                existingPrescription.Name = prescription.Name;
+                existingPrescription.Surname = prescription.Surname;
+                existingPrescription.Gender = prescription.Gender;
+                existingPrescription.Email = prescription.Email;
+                existingPrescription.Date = prescription.Date;
+                existingPrescription.Prescriber = prescription.Prescriber;
+                existingPrescription.Urgent = prescription.Urgent;
+                existingPrescription.Status = prescription.Status;
+
+                // Adjust stock based on the status
+                if (existingPrescription.Status == "Dispensed")
+                {
+                    foreach (var prescriptionMed in existingPrescription.PrescriptionMedications)
                     {
-                        // Find the corresponding PharmacyMedication
-                        var pharmacyMedication = _Context.pharmacyMedications
-                            .FirstOrDefault(pm => pm.PharmacyMedicationID == existingMedication.PharmacyMedicationID);
-
-                        if (pharmacyMedication != null)
+                        var pharmacyMed = _Context.pharmacyMedications.Find(prescriptionMed.PharmacyMedicationID);
+                        if (pharmacyMed != null)
                         {
-                            // Reduce the quantity on hand
-                            pharmacyMedication.stockhand -= existingMedication.Quantity;
-
-                            // Optionally, you could check to ensure you don't go negative
-                            if (pharmacyMedication.stockhand < 0)
-                            {
-                                pharmacyMedication.stockhand = 0; // or handle the error as needed
-                            }
+                            pharmacyMed.stockhand -= prescriptionMed.Quantity;
                         }
                     }
                 }
-            }
 
-            // Update the prescription in the database
-            existingPrescription.Name = prescription.Name; // Update other fields as necessary
-            existingPrescription.Surname = prescription.Surname;
-            existingPrescription.Gender = prescription.Gender;
-            existingPrescription.Email = prescription.Email;
-            existingPrescription.Date = prescription.Date;
-            existingPrescription.Prescriber = prescription.Prescriber;
-            existingPrescription.Urgent = prescription.Urgent;
-            existingPrescription.Status = prescription.Status;
-
-            _Context.Update(existingPrescription);
-            _Context.SaveChanges();
+                // Save changes to the database
+                _Context.SaveChanges();
 
             return RedirectToAction("PharmPrescriptionList"); // Redirect after successful update
+           
+
         }
+
+
 
         public IActionResult RejectPrescription(int id)
         {
@@ -708,10 +698,12 @@ namespace WIRKDEVELOPER.Controllers
         }
 		public ActionResult DispensaryReport(DateTime? startDate, DateTime? endDate)
 		{
+
+            
 			// Initialize a default view model
 			var viewModel = new PharmacistReportViewModel
 			{
-				PharmacistName = "Dorothy Daniels",
+				PharmacistName = "Dororo",
 				StartDate = startDate ?? DateTime.Now,  // Use current date as default
 				EndDate = endDate ?? DateTime.Now,      // Use current date as default
 				ReportGeneratedDate = DateTime.Now,
@@ -773,5 +765,5 @@ namespace WIRKDEVELOPER.Controllers
 
 
 
-	}
+    }
 }
