@@ -216,7 +216,6 @@ namespace WIRKDEVELOPER.Controllers
      
         public IActionResult PharmIndexOrder()
         {
-            // Retrieve the list of orders from the database, including related entities if needed
             var orders = _Context.order
                 .Include(o => o.Addm)                   // Include related Patient entity
                 /*.Include(o => o.OrderItems) */                 // Include related OrderItems
@@ -226,16 +225,19 @@ namespace WIRKDEVELOPER.Controllers
 
              .Select(item => new OrderCreate
              {
+                 AnOrderID = item.AnOrderID,
                  Date = item.Date,
                  AddmID = item.AddmID,
                  Patient = item.Addm,
                  Urgent = item.Urgent,
-                 Status = "Ordered",
+                 Status = item.Status,
+                 Notes = item.Notes,
                  OrderItems = item.OrderMedications.Select(m => new OrderItems
                  {
-                     PharmacyMedicationID = m.PharmacyMedicationID,
+                     PharmacyMedication = m.PharmacyMedication,
                      Quantity = m.Quantity,
-                     Instructions = m.Instructions
+                     Instructions = m.Instructions,
+                     Notes = m.Notes
                  }).ToList()
              }).ToList();
 
@@ -760,10 +762,110 @@ namespace WIRKDEVELOPER.Controllers
 
 			return View(viewModel);
 		}
+        public async Task<IActionResult> UpdateOrder(int id)
+        {
+            // Retrieve the order along with related medications and patient data
+            var order = await _Context.order
+                .Include(o => o.Addm)                      // Include the related patient
+                .Include(o => o.OrderMedications)          // Include the related medications
+                .ThenInclude(om => om.PharmacyMedication)  // Include the PharmacyMedication for each OrderMedication
+                .FirstOrDefaultAsync(o => o.AnOrderID == id);
+
+            if (order == null)
+            {
+                return NotFound(); // If the order does not exist
+            }
+
+            // Populate the ViewBag with dropdown data for medications and patients
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", order.AddmID);
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
+
+            // Prepare the view model
+            var model = new OrderCreate
+            {
+                AnOrderID = order.AnOrderID,
+                Date = order.Date,
+                AddmID = order.AddmID,
+                Urgent = order.Urgent,
+                Status = order.Status,
+                OrderItems = order.OrderMedications.Select(m => new OrderItems
+                {
+                    PharmacyMedicationID = m.PharmacyMedicationID,
+                    Quantity = m.Quantity,
+                    Instructions = m.Instructions
+                }).ToList()
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateOrder(int id, OrderCreate viewModel)
+        {
+            if (id != viewModel.AnOrderID)
+            {
+                return NotFound(); // Ensure the ID matches the viewModel
+            }
+
+            //if (ModelState.IsValid)
+
+            try
+            {
+                // Retrieve the existing order
+                var order = await _Context.order
+                    .Include(o => o.OrderMedications)  // Include medications to update them
+                    .FirstOrDefaultAsync(o => o.AnOrderID == id);
+
+                if (order == null)
+                {
+                    return NotFound();
+                }
+
+                // Update the order details
+                order.Date = viewModel.Date;
+                order.AddmID = viewModel.AddmID;
+                order.Urgent = viewModel.Urgent;
+                order.Status = viewModel.Status;
+
+                // Clear existing medications
+                _Context.ordermedication.RemoveRange(order.OrderMedications);
+
+                // Add updated medications
+                foreach (var medication in viewModel.OrderItems)
+                {
+                    var ordermedication = new OrderMedication
+                    {
+                        AnOrderID = order.AnOrderID,
+                        PharmacyMedicationID = medication.PharmacyMedicationID,
+                        Quantity = medication.Quantity,
+                        Instructions = medication.Instructions
+                    };
+                    _Context.ordermedication.Add(ordermedication);
+                }
+
+                // Save changes to the database
+                await _Context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_Context.order.Any(e => e.AnOrderID == id))
+                {
+                    return NotFound(); // Handle concurrency issues
+                }
+                else
+                {
+                    throw; // Re-throw if there’s another issue
+                }
+            }
+            return RedirectToAction("PharmIndexOrder");
 
 
+            // Repopulate the dropdowns if validation fails
+            ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName", viewModel.AddmID);
+            ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
 
-
+            return View(viewModel); // Return the view with validation errors
+        }
 
 
 
