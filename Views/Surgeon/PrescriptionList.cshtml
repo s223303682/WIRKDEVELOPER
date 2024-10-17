@@ -1,118 +1,48 @@
-﻿@model IEnumerable<Prescription>
-@{
-    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
-}
+﻿@model IEnumerable<WIRKDEVELOPER.Models.PrescriptionViewModel>
 
-    <h1><div class="bg-info bg-opacity-50 text-center text-white rounded-1">PRESCRIPTIONS</div></h1>
-    <table class="table">
-        <thead>
+<h2>Prescription List</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>ID number</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Prescriber</th>
+            <th>Status</th>
+            <th>Urgent</th>
+            <th>Date</th>
+            <th>Medications</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prescription in Model)
+        {
             <tr>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>IDNUmber</th>
-                <th>Gender</th>
-                <th>Email</th>
-                <th>Date</th>
-                <th>Medication Name</th> <!-- Separate column for Medication Name -->
-                <th>Quantity</th> <!-- Separate column for Quantity -->
-                <th>Instructions</th> <!-- Separate column for Instructions -->
-                <th>Prescriber</th>
-                <th>Urgent</th>
-                <th>Status</th>
-                <th>Rejection Reason</th>
-                <th>Update</th>
-                <th>Reject</th>
-
+                <td>@prescription.Name</td>
+                <td>@prescription.Surname</td>
+                <td>@prescription.IDNumber</td>
+                <td>@prescription.Email</td>
+                <td>@prescription.Gender</td>
+                <td>@prescription.Prescriber</td>
+                <td>@prescription.Status</td>
+                <td>@prescription.Urgent</td>
+                <td>@prescription.Date.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <ul>
+                        @foreach (var medication in prescription.Medications)
+                        {
+                            <li>
+                                Medication ID: @medication.PharmacyMedicationName - Quantity: @medication.Quantity
+                                <br />
+                                Instructions: @medication.Instructions
+                            </li>
+                        }
+                    </ul>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var prescription in Model)
-            {
-                if (prescription.Urgent.ToLower() == "yes")
-                {
-                    <tr scope="row" style="background-color:red;">
-                        <td>@prescription.Name</td>
-                        <td>@prescription.Surname</td>
-                        <td>@prescription.IDNumber</td>
-                        <td>@prescription.Gender</td>
-                        <td>@prescription.Email</td>
-                        <td>@prescription.Date.ToString("d")</td>
-                        @if (prescription.PrescriptionMedications != null && prescription.PrescriptionMedications.Any())
-                        {
-                            foreach (var medication in prescription.PrescriptionMedications)
-                            {
-                                <td>@medication.PharmacyMedicationID</td>
-                                <td>@medication.Quantity</td>
-                                <td>@medication.Instructions</td>
-                                <td>@prescription.Prescriber</td>
-                                <td>@prescription.Urgent</td>
-                                <td>@prescription.Status</td>
-
-                                @if (prescription.IgnoreReason == null)
-                                {
-                                    <td>None</td>
-                                }
-                                else
-                                {
-                                    <td>@prescription.IgnoreReason</td>
-
-                                }
-                                <td>
-                                    <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-primary">Update</a>
-                                </td>
-                                <td>
-                                    <a asp-controller="Pharmacist" asp-action="RejectPrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-primary">Reject</a>
-                                </td>
-                            }
-                        }
-                        else
-                        {
-                            <td colspan="7">No Medications</td> <!-- Handle case with no medications -->
-                        }
-                    </tr>
-                }
-                else
-                {
-                    <tr scope="row">
-                        <td>@prescription.Name</td>
-                        <td>@prescription.Surname</td>
-                        <td>@prescription.Gender</td>
-                        <td>@prescription.Email</td>
-                        <td>@prescription.Date.ToString("d")</td>
-
-                        @if (prescription.PrescriptionMedications != null && prescription.PrescriptionMedications.Any())
-                        {
-                            foreach (var medication in prescription.PrescriptionMedications)
-                            {
-                                <td>@medication.PharmacyMedicationID</td>
-                                <td>@medication.Quantity</td>
-                                <td>@medication.Instructions</td>
-                                <td>@prescription.Prescriber</td>
-                                <td>@prescription.Urgent</td>
-                                <td>@prescription.Status</td>
-                                @if (prescription.IgnoreReason != null)
-                                {
-                                    <td>@prescription.IgnoreReason</td>
-                                }
-                                else
-                                {
-                                    <td>None med</td>
-
-                                }
-                                <td>
-                                    <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-primary">Update</a>
-                                </td>
-                                <td>
-                                    <a asp-controller="Pharmacist" asp-action="RejectPrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-primary">Reject</a>
-                                </td>
-                            }
-                        }
-                        else
-                        {
-                            <td colspan="7">No Medications</td> <!-- Handle case with no medications -->
-                        }
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>

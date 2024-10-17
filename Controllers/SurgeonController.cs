@@ -148,8 +148,9 @@ namespace WIRKDEVELOPER.Controllers
                 Date = model.Date ,
                 Prescriber = model.Prescriber ,
                 Status = model.Status ,
-                Urgent = model.Urgent 
-                //Medications = new List<AlertMedication>()
+                Urgent = model.Urgent ,
+                Medications = model.Medications // 
+
             };
 
             // Fetch current medication and allergy for the patient
@@ -264,31 +265,34 @@ namespace WIRKDEVELOPER.Controllers
 
         public IActionResult PrescriptionList()
         {
+            // Fetch the prescriptions from the database
             var prescriptions = _Context.prescriptions
-                .Include(p => p.PrescriptionMedications)
-                    .ThenInclude(pm => pm.PharmacyMedication) // Include related PharmacyMedication data
-                .Select(p => new Prescription
-                {
-                    PrescriptionID = p.PrescriptionID,
-                    Name = p.Name,
-                    Surname = p.Surname, // Ensure this property is included
-                    Gender = p.Gender,
-                    Email = p.Email,
-                    Date = p.Date,
-                    Prescriber = p.Prescriber,
-                    Urgent = p.Urgent,
-                    Status = p.Status,
-                    IgnoreReason = p.IgnoreReason,
-                    PrescriptionMedications = p.PrescriptionMedications.Select(m => new PrescriptionMedication
-                    {
-                        PharmacyMedicationID = m.PharmacyMedicationID,
-                        Quantity = m.Quantity,
-                        Instructions = m.Instructions
-                    }).ToList()
-                }).ToList();
+                                        .Include(p => p.PrescriptionMedications)
+                                        .ToList();
 
-            return View(prescriptions);
+            // Map to a view model if necessary
+            var prescriptionList = prescriptions.Select(p => new PrescriptionViewModel
+            {
+                //PrescriptionID = p.PrescriptionID,
+                Name = p.Name,
+                Surname = p.Surname,
+                Gender = p.Gender,
+                Email = p.Email,
+                Date = p.Date,
+                Prescriber = p.Prescriber,
+                Urgent = p.Urgent,
+                Status = p.Status,
+                Medications = p.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
+                {
+                    PharmacyMedicationName = m.PharmacyMedication.PharmacyMedicationName,
+                    Quantity = m.Quantity,
+                    Instructions = m.Instructions
+                }).ToList()
+            }).ToList();
+
+            return View(prescriptionList);
         }
+
 
         // GET: Prescription/Delete/{id}
         public IActionResult DeletePrescription(int id)
