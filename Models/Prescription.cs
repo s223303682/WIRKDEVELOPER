@@ -102,8 +102,11 @@ namespace WIRKDEVELOPER.Models
         public string Prescriber { get; set; }
         public string Status { get; set; }
         public string Urgent { get; set; }
-        public List<AlertMedication> Medications { get; set; } // New property
+
+        // Add the Medications property here
+        public List<PrescriptionMedicationViewModel> Medications { get; set; }
     }
+
 
     public class AlertMedication
     {
