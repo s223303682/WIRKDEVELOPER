@@ -1,5 +1,16 @@
 ﻿@model WIRKDEVELOPER.Models.NotesOfOrders
 
+@{
+    Layout = "AnaesthesiologistLayout";
+}
+
+<div class="mx-0 mx-sm-auto">
+    <div class="card w-75">
+        <div class="card-body ">
+            <div class="card-header bg-primary">
+
+                <h3 class="card-title text-white mt-2" id="exampleModalLabel">MEDICATION NOTES</h3>
+            </div>
 <h1>Add Note for Medication</h1>
 
 <div>
@@ -24,6 +35,9 @@
         <a asp-action="ListNotes" class="btn btn-secondary">Back to List</a>
     </div>
 </form>
+</div>
+</div>
+</div>
 
 @section Scripts {
     @{

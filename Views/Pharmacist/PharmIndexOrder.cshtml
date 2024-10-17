@@ -23,7 +23,7 @@
                     </th>
                     <th>
                         Medication
-                        @* @Html.DisplayNameFor(model => model.PharmacyMedication) *@
+                       
                     </th>
 
                     <th>
@@ -35,15 +35,15 @@
                     <th>
                         Action
                     </th>
-                    @*  <th>
-            @Html.DisplayNameFor(model => model.Notes)
-            </th> *@
+                
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var order in Model)
                 {
+                  if (order.Urgent.ToLower() == "yes")
+                  {
                     <tr>
                         <td>
                             @order.Date
@@ -65,31 +65,57 @@
                             }
                         </td>
 
-                        @* <td>
-
-            @order.PharmacyMedication?.PharmacyMedicationName
-            </td>
-            <td>
-            @order.Quantity
-            </td>
-            <td>
-            @order.Instructions
-            </td> *@
+                       
                         <td>
                             @order.Urgent
                         </td>
                         <td>
                             @order.Status
                         </td>
-                        @* <td>
-            @order.Notes
-            </td> *@
+                       
                         <td>
-                            <a asp-controller="Pharmacist" asp-action="UpdateOrder" asp-route-id="@order.AnOrderID" class="btn btn-warning">Edit</a>
-                            <a asp-controller="Anaesthesiologist" asp-action="Details" asp-route-id="@order.AnOrderID" class="btn btn-info">Details</a>
-                            <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-id="@order.AnOrderID" class="btn btn-danger">Delete</a>
+                            <a asp-controller="Pharmacist" asp-action="UpdateOrder" asp-route-id="@order.AnOrderID" class="btn btn-primary">Despense</a>
+                           
                         </td>
                     </tr>
+                  }
+                  else
+                  {
+                    <tr>
+                        <td>
+                            @order.Date
+                        </td>
+                        <td>
+                            @order.Patient.PatientName
+                        </td>
+                        <td>
+                            @if (order.OrderItems != null && order.OrderItems.Any())
+                            {
+                                <ul>
+                                    @foreach (var medication in order.OrderItems)
+                                    {
+                                        <li>
+                                            @medication.PharmacyMedication.PharmacyMedicationName - Quantity: @medication.Quantity, Instructions: @medication.Instructions
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </td>
+
+              
+                        <td>
+                            @order.Urgent
+                        </td>
+                        <td>
+                            @order.Status
+                 
+                        <td>
+                            <a asp-controller="Pharmacist" asp-action="UpdateOrder" asp-route-id="@order.AnOrderID" class="btn btn-primary">Dispense</a>
+                          >
+                        </td>
+                    </tr>
+                  }
+                
                 }
 
             </tbody>

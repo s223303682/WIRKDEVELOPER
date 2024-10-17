@@ -12,12 +12,13 @@
 }
 else
 {
-    <table class="table table-striped">
+    <table class="table table-sm table-hover" >
         <thead>
             <tr>
                 <th>Patient Name</th>
                 <th>Medication(s)</th>
                 <th>Notes</th>
+                <th>Date</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -28,7 +29,8 @@ else
                     <td>@medication.Order.Addm.PatientName</td> <!-- Display Patient Name -->
                     <!-- Medication(s) -->
                     <td>
-                        @if (medication.Order.OrderMedications != null && medication.Order.OrderMedications.Any())
+                        @medication.PharmacyMedication.PharmacyMedicationName
+                        @* @if (medication.Order.OrderMedications != null && medication.Order.OrderMedications.Any())
                         {
                             <ul>
                                 @foreach (var med in medication.Order.OrderMedications)
@@ -42,7 +44,7 @@ else
                         else
                         {
                             <p>No medications found for this order</p>
-                        }
+                        } *@
                     </td>
 
                     <!-- Notes for the medication -->
@@ -53,18 +55,36 @@ else
                                 @foreach (var note in medication.notes)
                                 {
                                     <li>@note.NoteText (Added on @note.CreatedAt.ToString("MM/dd/yyyy"))</li>
+
                                 }
                             </ul>
+
                         }
                         else
                         {
                             <p>No notes available</p>
                         }
                     </td>
+                    <td>
+                        @if (medication.notes != null && medication.notes.Any())
+                        {
+                            <ul>
+                                @foreach (var note in medication.notes)
+                                {
+                                    <li>@note.CreatedAt.ToString("MM/dd/yyyy")</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p>No date available</p>
+                        }
+                    </td>
 
                     <!-- Action to add a note -->
                     <td>
                         <a asp-controller="Anaesthesiologist" asp-action="CreateNote" asp-route-orderMedicationID="@medication.OrderMedicationID" class="btn btn-primary">Add Note</a>
+                        <a asp-controller="Anaesthesiologist" asp-action="CreateNote" asp-route-orderMedicationID="@medication.OrderMedicationID" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             }

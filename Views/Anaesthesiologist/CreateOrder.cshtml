@@ -4,17 +4,29 @@
     Layout = "AnaesthesiologistLayout";
 }
 
+<div class="mx-0 mx-sm-auto">
+    <div class="card w-75">
+        <div class="card-body ">
+            <div class="card-header bg-primary">
+
+                <h3 class="card-title text-white mt-2" id="exampleModalLabel">MEDICATION NOTES</h3>
+            </div>
 <h1>Create Order</h1>
 
 <form asp-action="CreateOrder" method="post">
     @Html.AntiForgeryToken()
 
-    <!-- Date -->
     <div class="form-group">
+       <label> Date:</label>
+        <input type="date"  name="date" required />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+    <!-- Date -->
+    @* <div class="form-group">
         <label asp-for="Date" class="control-label"></label>
         <input asp-for="Date" class="form-control" />
         <span asp-validation-for="Date" class="text-danger"></span>
-    </div>
+    </div> *@
 
     <!-- Patient Selection -->
     <div class="form-group">
@@ -77,6 +89,9 @@
         <input type="submit" value="Create Order" class="btn btn-primary" />
     </div>
 </form>
+</div>
+</div>
+</div>
 
 @section Scripts {
     <script>

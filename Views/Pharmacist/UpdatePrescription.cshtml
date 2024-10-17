@@ -79,4 +79,353 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Update Prescription</button>
+    <br />
+    <br />
+    <div class=" row-2">
+        <div class="col-8  row">
+            <div class="col">
+                @*  <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="Vital History" /> *@
+                @* <a asp-action="AnVitals" class="btn btn-info w-75"><i class="bi bi-arrow-left-circle"></i>Vital History</a> *@
+
+                <!-- Button trigger modal -->
+                <button asp-controller="Pharmacist" asp-action="IndexAnVitals" class="btn btn-primary">Vitals</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">VITAL HISTORY</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mx-0 mx-sm-auto">
+                                    <div class="card w-75">
+                                        <div class="card-body ">
+                                            <div class="card-header bg-primary">
+
+                                                <h1 class="card-title text-white mt-2" id="exampleModalLabel"> PATIENT RECORDS</h1>
+                                            </div>
+                                            @* <form method="post" asp-action="IndexViewPatient"> *@
+                                            <div class="border p-3 #FBD603">
+                                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+
+                                                <div class="row">
+
+                                                    <div class="form-group">
+
+
+                                                        <div class="col-12">
+                                                            <div class="row">
+
+                                                                <div class="col-12">
+                                                                    <div class="row">
+
+                                                                        <div class="row">
+                                                                            <div class="col-8">
+                                                                                <h4>PATIENT INFORMATION</h4>
+                                                                                <p>Patient Name:@ViewBag.PatientID</p>
+                                                                                <p>Date Of Birth:@ViewBag.PatientID</p>
+                                                                                <p>Gender:@ViewBag.PatientID</p>
+                                                                                @* <p>Last Name: @UserManager.GetUserAsync(User).Result.LastName</p>
+                                                                                <p>Email Address: @UserManager.GetUserAsync(User).Result.Email</p> *@
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="text-center">
+                                                                    <h1>VITALS</h1>
+                                                                </div>
+
+
+
+
+
+                                                                @*  </div> *@
+                                                                @*  <div class="col">
+                                                                <a asp-action="IndexScree" class="btn btn-danger w-75"><i class="bi bi-arrow-left-circle"></i>BACK</a>
+                                                                </div> *@
+                                                                @*  </div>
+                                                                </div> *@
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*    </form> *@
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                @* <a asp-action="IndexScree" class="btn btn-info w-75"><i class="bi bi-arrow-left-circle"></i>Medical History</a> *@
+
+
+                <!-- Button trigger modal -->
+                <button type="button" class=" btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                    Medical History
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">MEDICAL HISTORY</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <button asp-controller="Pharmacist" asp-action="IndexAnAllergies" class="btn btn-primary">Allegies</button>
+
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">PATIENT ALLERGIES</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mx-0 mx-sm-auto">
+                                                <div class="card w-75">
+                                                    <div class="card-body ">
+                                                        <div class="card-header bg-primary">
+
+                                                            <h1 class="card-title text-white mt-2"> PATIENT RECORDS</h1>
+                                                        </div>
+                                                        @* <form method="post" asp-action="IndexViewPatient"> *@
+                                                        <div class="border p-3 #FBD603">
+                                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+
+                                                            <div class="row">
+
+                                                                <div class="form-group">
+
+
+                                                                    <div class="col-12">
+                                                                        <div class="row">
+
+                                                                            <div class="col-12">
+                                                                                <div class="row">
+
+                                                                                    <div class="row">
+                                                                                        <div class="col-8">
+                                                                                            <h4>PATIENT INFORMATION</h4>
+                                                                                            <p>Patient Name:@ViewBag.PatientID</p>
+                                                                                            <p>Date Of Birth:@ViewBag.PatientID</p>
+                                                                                            <p>Gender:@ViewBag.PatientID</p>
+                                                                                            @* <p>Last Name: @UserManager.GetUserAsync(User).Result.LastName</p>
+                                                                                            <p>Email Address: @UserManager.GetUserAsync(User).Result.Email</p> *@
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <div class="text-center">
+                                                                                <h1> ALLERGIES</h1>
+                                                                            </div>
+
+
+
+
+
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <button asp-controller="Pharmacist" asp-action="IndexCurrentMedication" class="btn btn btn-primary">Current Medication</button>
+
+                            <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">PATIENT CURRENT MEDICATION</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mx-0 mx-sm-auto">
+                                                <div class="card w-75">
+                                                    <div class="card-body ">
+                                                        <div class="card-header bg-primary">
+
+                                                            <h1 class="card-title text-white mt-2"> PATIENT RECORDS</h1>
+                                                        </div>
+                                                        @* <form method="post" asp-action="IndexViewPatient"> *@
+                                                        <div class="border p-3 #FBD603">
+                                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+
+                                                            <div class="row">
+
+                                                                <div class="form-group">
+
+
+                                                                    <div class="col-12">
+                                                                        <div class="row">
+
+                                                                            <div class="col-12">
+                                                                                <div class="row">
+
+                                                                                    <div class="row">
+                                                                                        <div class="col-8">
+                                                                                            <h4>PATIENT INFORMATION</h4>
+                                                                                            <p>Patient Name:@ViewBag.PatientID</p>
+                                                                                            <p>Date Of Birth:@ViewBag.PatientID</p>
+                                                                                            <p>Gender:@ViewBag.PatientID</p>
+                                                                                            @* <p>Last Name: @UserManager.GetUserAsync(User).Result.LastName</p>
+                                                                                            <p>Email Address: @UserManager.GetUserAsync(User).Result.Email</p> *@
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <div class="text-center">
+                                                                                <h1> CURRENT MEDICATION</h1>
+                                                                            </div>
+
+
+
+
+
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <button asp-controller="Pharmacist" asp-action="IndexConditions" class="btn btn-primary">Current Condition</button>
+                            <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel5">PATIENT CONDITIONS</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mx-0 mx-sm-auto">
+                                                <div class="card w-75">
+                                                    <div class="card-body ">
+                                                        <div class="card-header bg-primary">
+
+                                                            <h1 class="card-title text-white mt-2"> PATIENT RECORDS</h1>
+                                                        </div>
+                                                        @* <form method="post" asp-action="IndexViewPatient"> *@
+                                                        <div class="border p-3 #FBD603">
+                                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+
+                                                            <div class="row">
+
+                                                                <div class="form-group">
+
+
+                                                                    <div class="col-12">
+                                                                        <div class="row">
+
+                                                                            <div class="col-12">
+                                                                                <div class="row">
+
+                                                                                    <div class="row">
+                                                                                        <div class="col-8">
+                                                                                            <h4>PATIENT INFORMATION</h4>
+                                                                                            <p>Patient Name:@ViewBag.PatientID</p>
+                                                                                            <p>Date Of Birth:@ViewBag.PatientID</p>
+                                                                                            <p>Gender:@ViewBag.PatientID</p>
+                                                                                            @* <p>Last Name: @UserManager.GetUserAsync(User).Result.LastName</p>
+                                                                                            <p>Email Address: @UserManager.GetUserAsync(User).Result.Email</p> *@
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <div class="text-center">
+                                                                                <h1> CONDITIONS</h1>
+                                                                            </div>
+
+
+
+
+
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            @* <div class="modal-body">
+                            ...
+                            </div> *@
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+    </div>
+
+    </div>
 </form>
