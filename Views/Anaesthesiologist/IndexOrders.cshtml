@@ -1,4 +1,9 @@
-﻿@model IEnumerable<WIRKDEVELOPER.Models.OrderCreate>
+﻿@using Microsoft.AspNetCore.Identity
+@using WIRKDEVELOPER.Areas.Identity.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model IEnumerable<WIRKDEVELOPER.Models.OrderCreate>
 
 @{
     Layout = "AnaesthesiologistLayout";
@@ -34,6 +39,9 @@
                         @Html.DisplayNameFor(model => model.Status)
                     </th>
                     <th>
+                        Anaesthesiologist
+                    </th>
+                    <th>
                         Action
                     </th>
                     @*  <th>
@@ -66,25 +74,16 @@
                             }
                         </td>
 
-                        @* <td>
-
-            @order.PharmacyMedication?.PharmacyMedicationName
-            </td>
-            <td>
-            @order.Quantity
-            </td>
-            <td>
-            @order.Instructions
-            </td> *@
                         <td>
                             @order.Urgent
                         </td>
                         <td>
                             @order.Status
                         </td>
-                        @* <td>
-            @order.Notes
-            </td> *@
+                         <td>
+                            Dr <span class="text-dark">@UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName</span>
+                         </td>
+            
                         <td>
                             <a asp-controller="Anaesthesiologist" asp-action="EditOrder" asp-route-id="@order.AnOrderID" class="btn btn-warning">Edit</a>
                             <a asp-controller="Anaesthesiologist" asp-action="Details" asp-route-id="@order.AnOrderID" class="btn btn-info">Details</a>

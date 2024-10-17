@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using System.Web.Helpers;
 using System.Xml.Linq;
 using WIRKDEVELOPER.Models.Account;
+using System.Diagnostics;
+using System.Web.WebPages;
 
 namespace WIRKDEVELOPER.Controllers
 {
@@ -88,15 +90,16 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-        public IActionResult IndexOrders()
+        public IActionResult IndexOrders( DateTime date)
         {
             // Retrieve the list of orders from the database, including related entities if needed
             var orders = _Context.order
                 .Include(o => o.Addm)                   // Include related Patient entity
                 /*.Include(o => o.OrderItems) */                 // Include related OrderItems
                 .Include(o => o.OrderMedications)                  // Include related OrderItems
-                .ThenInclude(o => o.PharmacyMedication)         // Include related PharmacyMedication entity
-                //.ToListAsync()
+                .ThenInclude(o => o.PharmacyMedication)
+                        .Where(o => o.Date >= date)// Include related PharmacyMedication entity
+                                                                 //.ToListAsync()
 
              .Select(item => new OrderCreate
               {
@@ -141,14 +144,7 @@ namespace WIRKDEVELOPER.Controllers
 
             return View(model);
 
-            //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-            //ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-
-            //var model = new OrderCreate
-            //{
-            //    Medications = _Context.pharmacyMedications.ToList()
-            //};
-            //return View(model);
+            
         }
 
         // POST: Order/Create
@@ -354,77 +350,7 @@ namespace WIRKDEVELOPER.Controllers
 		
 
 
-		//public IActionResult IndexOrder()
-		//{
-		//    IEnumerable<Order> objList = _Context.order.Include(a => a.PharmacyMedication).Include(a => a.Addm);
-		//    return View(objList);
-
-		//}
-		//public IActionResult Order()
-		//{
-
-		//    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-		//    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-
-		//    return View();
-		//}
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public IActionResult Order(Order order)
-		//{
-
-		//    _Context.order.Add(order);
-		//    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-		//    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-
-		//    _Context.SaveChanges();
-
-
-		//    return RedirectToAction("IndexOrder");
-
-
-		//}
-		//public IActionResult NewUpdateOrder(int? ID)
-		//{
-
-
-		//    if (ID == null || ID == 0)
-		//    {
-		//        return NotFound();
-		//    }
-		//    var objList = _Context.order.Find(ID);
-		//    if (objList == null)
-		//    {
-		//        return NotFound();
-		//    }
-		//    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-		//    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-		//    return View(objList);
-
-		//}
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public IActionResult NewUpdateOrder(Order order)
-		//{
-		//    _Context.order.Update(order);
-		//    ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
-		//    ViewBag.getPatient = new SelectList(_Context.patients, "PatientID", "PatientName");
-		//    _Context.SaveChanges();
-		//    return RedirectToAction("IndexOrder");
-
-		//}
-		//public IActionResult DeleteOrder(int? ID)
-		//{
-		//    var obj = _Context.order.Find(ID);
-
-		//    if (obj == null)
-		//    {
-		//        return NotFound();
-		//    }
-		//    _Context.order.Remove(obj);
-		//    _Context.SaveChanges();
-		//    return RedirectToAction("IndexOrder");
-		//}
+		
 		public IActionResult IndexVitalRanges()
         {
             IEnumerable<VitalRanges> objList = _Context.vitalranges;
@@ -463,17 +389,7 @@ namespace WIRKDEVELOPER.Controllers
             //ViewBag.getMedication = new SelectList(_Context.pharmacyMedications, "PharmacyMedicationID", "PharmacyMedicationName");
             return View(objList);
 
-            //if (VitalRangeID == null || VitalRangeID == 0)
-            //{
-            //    return NotFound();
-            //}
-            //var obj = _Context.vitalranges.Find(VitalRangeID);
-
-            //if (VitalRangeID == null)
-            //{
-            //    return NotFound();
-            //}
-            //return View(obj);
+            
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -485,13 +401,6 @@ namespace WIRKDEVELOPER.Controllers
             _Context.SaveChanges();
             return RedirectToAction("IndexVitalRanges");
 
-            //if (ModelState.IsValid)
-            //{
-            //    _Context.vitalranges.Update(vitalRanges);
-            //    _Context.SaveChanges();
-            //    return RedirectToAction("IndexVitalRanges");
-            //}
-            //return View(vitalRanges);
         }
         public IActionResult DeleteVitalRanges(int? ID)
         {
@@ -506,21 +415,9 @@ namespace WIRKDEVELOPER.Controllers
             _Context.SaveChanges();
             return RedirectToAction("IndexVitalRanges");
 
-            //var obj = _Context.vitalranges.Find(VitalRangeID);
-
-            //if (obj == null)
-            //{
-            //    return NotFound();
-            //}
-            //_Context.vitalranges.Remove(obj);
-            //_Context.SaveChanges();
-            //return RedirectToAction("IndexVitalRanges");
+            
         }
 
-        //public PatientController(ApplicationDbContext context)
-        //{
-        //    _context = context;
-        //}
 
         public IActionResult SearchPatient(string patientName)
         {
@@ -706,71 +603,69 @@ namespace WIRKDEVELOPER.Controllers
             // If the model is invalid, return the same view
             return View(viewModel);
         }
+        public async Task<IActionResult> GenerateReport(DateTime startDate, DateTime endDate)
+        {
+            var orders = await _Context.order
+        .Include(o => o.OrderMedications)
+            .ThenInclude(om => om.PharmacyMedication)
+        .Include(o => o.Addm) // Ensure patient data is included
+        .Where(o => o.Date >= startDate && o.Date <= endDate)
+        .ToListAsync();
+
+            var reportData = new List<AnestheticReportViewModel>();
+            var medicineSummary = new Dictionary<string, int>();
+
+            foreach (var order in orders)
+            {
+                foreach (var medication in order.OrderMedications)
+                {
+                    // Log for debugging
+                    Debug.WriteLine($"Patient: {order.Addm?.PatientName}, Medication: {medication.PharmacyMedication?.PharmacyMedicationName}, Quantity: {medication.Quantity}");
+
+                    reportData.Add(new AnestheticReportViewModel
+                    {
+                        Date = order.Date?.ToString("d"),
+                        PatientName = order.Addm?.PatientName,
+                        MedicationName = medication.PharmacyMedication?.PharmacyMedicationName,
+                        Quantity = medication.Quantity
+                    });
+
+                    var medicationName = medication.PharmacyMedication?.PharmacyMedicationName;
+                    if (medicationName != null)
+                    {
+                        if (medicineSummary.ContainsKey(medicationName))
+                        {
+                            medicineSummary[medicationName] += medication.Quantity;
+                        }
+                        else
+                        {
+                            medicineSummary[medicationName] = medication.Quantity;
+                        }
+                    }
+                }
+            }
+
+            var medicineSummaryList = medicineSummary.Select(ms => new MedicineSummaryViewModel
+            {
+                MedicationName = ms.Key,
+                QuantityOrdered = ms.Value
+            }).ToList();
+
+            ViewBag.StartDate = startDate;
+            ViewBag.EndDate = endDate;
+            ViewBag.MedicineSummary = medicineSummaryList;
+
+            return View(reportData);
+        }
 
 
 
-        //public IActionResult Indexclassadd()
-        //{
-        //    IEnumerable<ClassAdd> objList = _Context.classadd;
-        //    return View(objList);
-        //}
-        //public IActionResult ClassAdd()
-        //{
-        //    return View();
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult ClassAdd(ClassAdd classAdd)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _Context.classadd.Add(classAdd);
-        //        _Context.SaveChanges();
-        //        return RedirectToAction("Indexclassadd");
-        //    }
-        //    return View(classAdd);
 
-        //}
-        //public IActionResult Updateclassadd(int? AdmissionID)
-        //{
-        //    if (AdmissionID == null || AdmissionID == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var obj = _Context.classadd.Find(AdmissionID);
 
-        //    if (AdmissionID == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(obj);
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Updateclassadd(ClassAdd classAdd)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _Context.classadd.Update(classAdd);
-        //        _Context.SaveChanges();
-        //        return RedirectToAction("Indexclassadd");
-        //    }
-        //    return View(classAdd);
-        //}
-        //public IActionResult DeleteClassAdd(int? AdmissionID)
-        //{
-        //    var obj = _Context.classadd.Find(AdmissionID);
 
-        //    if (obj == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    _Context.classadd.Remove(obj);
-        //    _Context.SaveChanges();
-        //    return RedirectToAction("Indexclassadd");
     }
 
-}               //}
+}             
 
 
 
