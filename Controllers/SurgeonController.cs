@@ -155,7 +155,7 @@ namespace WIRKDEVELOPER.Controllers
             // Fetch current medication and allergy for the patient
             var currentMedications = _Context.addm
                 .Where(a => a.Patient.PatientIDNO == model.IDNumber)
-                .Select(a => a.CurrentMedication.Medication.ActiveIngredient.ActiveIngredientName)
+                .Select(a => a.AnCurrentMedication.ChronicMedication.Active.ActiveName)
                 .ToList();
 
             var patientAllergies = _Context.addm

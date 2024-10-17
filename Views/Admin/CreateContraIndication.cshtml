@@ -1,0 +1,72 @@
+﻿@model WIRKDEVELOPER.Models.Admin.ContraIndication
+
+@{
+    Layout = "AdminLayout";
+}
+<div class="mx-0 mx-sm-auto">
+    <div class="card w-75">
+        <div class="card-body ">
+            <div class="card-header bg-primary">
+
+                <h3 class="card-title text-white mt-2" id="exampleModalLabel">Contra-Indication</h3>
+            </div>
+            <form method="post" asp-action="CreateContraIndication">
+                <div class="border p-3 #FBD603">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+
+                    <div class="row">
+
+                        <div class="form-group">
+
+                            <div class="col-12">
+
+                                <div class="row">
+
+
+                              
+                                    <div class="row">
+                                        <div class="col-md-4">
+
+                                            <label asp-for="ActiveID" class="control-label">Schedule</label>
+                                            <select asp-for="ActiveID" class="form-control" asp-items="ViewBag.getActive">
+                                                <option selected disabled>--Select schedule--</option>
+                                            </select>
+                                            <span asp-validation-for="ActiveID" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+
+                                            <label asp-for="AnConditionsID" class="control-label">Schedule</label>
+                                            <select asp-for="AnConditionsID" class="form-control" asp-items="ViewBag.getCondition">
+                                                <option selected disabled>--Select schedule--</option>
+                                            </select>
+                                            <span asp-validation-for="AnConditionsID" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div>
+                                    <div class="form-group row">
+                                        <div class="col-4 offset-9 row">
+                                            <div class="col">
+                                                <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="SAVE" />
+                                                <a asp-controller="Admin" asp-action="ContraIndicationList" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Contra-Indication</a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>

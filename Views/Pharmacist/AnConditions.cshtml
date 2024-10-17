@@ -1,11 +1,11 @@
-﻿@model WIRKDEVELOPER.Models.AnConditions
+﻿@model WIRKDEVELOPER.Models.Admin.AnConditions
 
-@using WIRKDEVELOPER.Models
-@using Microsoft.AspNetCore.Identity
-@using WIRKDEVELOPER.Areas.Identity.Data
+@* @    using WIRKDEVELOPER.Models
+@    using Microsoft.AspNetCore.Identity
+@    using WIRKDEVELOPER.Areas.Identity.Data
 
 @inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@inject UserManager<ApplicationUser> UserManager *@
 @{
 
     Layout = "~/Views/Shared/Pharmacy.cshtml";
@@ -17,7 +17,7 @@
 
                 <h1 class="card-title text-white mt-2" id="exampleModalLabel"> PATIENT RECORDS</h1>
             </div>
-            @* <form method="post" asp-action="IndexViewPatient"> *@
+            
             <div class="border p-3 #FBD603">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
 

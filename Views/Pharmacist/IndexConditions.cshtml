@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WIRKDEVELOPER.Models.AnConditions>
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Admin.AnConditions>
 @{
 
     Layout = "~/Views/Shared/Pharmacy.cshtml";
@@ -33,7 +33,7 @@
                     @foreach (var condi in Model)
                     {
                         <tr>
-                            <td width="20%">@condi.Condition</td>
+                            <td width="20%">@condi.Diagnose</td>
 
 
 

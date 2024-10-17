@@ -7,6 +7,7 @@ using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
 using WIRKDEVELOPER.Models.Account;
 using Microsoft.EntityFrameworkCore;
+using WIRKDEVELOPER.Models.Admin;
 
 namespace WIRKDEVELOPER.Areas.Identity.Data;
 
@@ -24,7 +25,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
         builder.Entity<Addm>()
       .HasOne(a => a.AnAllergies)
       .WithMany() // Assuming AnAllergies can have multiple related Addms
-      .HasForeignKey(a => a.AllergiesID)
+      .HasForeignKey(a => a.AnAllergiesID)
       .OnDelete(DeleteBehavior.Cascade); // Set delete behavior according to your needs
 
         builder.Entity<AnAllergies>()
@@ -37,9 +38,9 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
          .HasForeignKey(a => a.PatientID);
 
         builder.Entity<Addm>()
-            .HasOne(a => a.CurrentMedication)
+            .HasOne(a => a.AnCurrentMedication)
             .WithMany() // Specify if the reverse navigation exists
-            .HasForeignKey(a => a.CurrentMedicationID);
+            .HasForeignKey(a => a.AnCurrentMedicationID);
 
         builder.Entity<Addm>()
             .HasOne(a => a.TreatmentCode)
@@ -171,5 +172,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<OrderMedication> ordermedication { get; set; }
     public DbSet<OrderCreate> ordercreate { get; set; }
     public DbSet<NotesOfOrders> notesoforders { get; set; }
+    public DbSet<ChronicMedication> chronicmedication { get; set; }
+    public DbSet<ContraIndication> contraindication{ get; set; }
 
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
+using WIRKDEVELOPER.Models.Admin;
 
 namespace WIRKDEVELOPER.Controllers
 {
@@ -502,6 +504,127 @@ namespace WIRKDEVELOPER.Controllers
             _Context.SaveChanges();
             return RedirectToAction("ViewWard");
         }
+        public IActionResult AllergyList()
+        {
+            IEnumerable<AnAllergies> list = _Context.anallergies;
+            return View(list);
+        }
+        public IActionResult CreateAllergy()
+        {
+			ViewBag.getActive = new SelectList(_Context.active, "ActiveID", "ActiveName");
+			return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateAllergy(AnAllergies allergies)
+        {
+            //if (ModelState.IsValid)
+            
+                _Context.anallergies.Add(allergies);
+				ViewBag.getActive = new SelectList(_Context.active, "ActiveID", "ActiveName");
+				_Context.SaveChanges();
+                return RedirectToAction("AllergyList");
+            
+            return View(allergies);
+        }
+        public IActionResult AnCurrentMedicationList()
+        {
+            IEnumerable<AnCurrentMedication> list = _Context.ancurrentmedication;
+            return View(list);
+        }
+        public IActionResult CreateAnCurrentMedication()
+        {
+            ViewBag.getChroniMedication = new SelectList(_Context.chronicmedication, "ChronicMedicationID", "ChronicName");
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateAnCurrentMedication(AnCurrentMedication ancurrentmedication)
+        {
+            //if (ModelState.IsValid)
+            
+                _Context.ancurrentmedication.Add(ancurrentmedication);
+                ViewBag.getChroniMedication = new SelectList(_Context.chronicmedication, "ChronicMedicationID", "ChronicName");
+                _Context.SaveChanges();
+                return RedirectToAction("AnCurrentMedicationList");
+            
+            return View(ancurrentmedication);
+        }
+        public IActionResult AnConditionsList()
+        {
+            IEnumerable<AnConditions> list = _Context.anconditions;
+            return View(list);
+        }
+        public IActionResult CreateAnConditions()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateAnConditions(AnConditions anconditions)
+        {
+            //if (ModelState.IsValid)
+            
+                _Context.anconditions.Add(anconditions);
+                _Context.SaveChanges();
+                return RedirectToAction("AnConditionsList");
+            
+            return View(anconditions);
+        }
+        public IActionResult ChronicMedicationList()
+        {
+            IEnumerable<ChronicMedication> list = _Context.chronicmedication;
+            return View(list);
+        }
+        public IActionResult CreateChronicMedication()
+        {
+            ViewBag.getDosage = new SelectList(_Context.dosageForms, "DosageFormID", "DosageFormName");
+            ViewBag.getActive = new SelectList(_Context.active, "ActiveID", "ActiveName");
+            ViewBag.getSchedule = new SelectList(_Context.schedules, "ScheduleId", "ScheduleName");
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateChronicMedication(ChronicMedication chronicmedication)
+        {
+            //if (ModelState.IsValid)
+            
+                _Context.chronicmedication.Add(chronicmedication);
+                ViewBag.getDosage = new SelectList(_Context.dosageForms, "DosageFormID", "DosageFormName");
+                ViewBag.getActive = new SelectList(_Context.active, "ActiveID", "ActiveName");
+                ViewBag.getSchedule = new SelectList(_Context.schedules, "ScheduleId", "ScheduleName");
+                _Context.SaveChanges();
+                return RedirectToAction("ChronicMedicationList");
+            
+            return View(chronicmedication);
+        }
+        public IActionResult ContraIndicationList()
+        {
+            IEnumerable<ContraIndication> list = _Context.contraindication;
+            return View(list);
+        }
+        public IActionResult CreateContraIndication()
+        {
+            ViewBag.getCondition = new SelectList(_Context.anconditions, "AnConditionsID", "Diagnose");
+            ViewBag.getActive = new SelectList(_Context.active, "ActiveID", "ActiveName");
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateContraIndication(ContraIndication contraindication)
+        {
+            //if (ModelState.IsValid)
+            
+                _Context.contraindication.Add(contraindication);
+            ViewBag.getCondition = new SelectList(_Context.anconditions, "AnConditionsID", "Diagnose");
+            ViewBag.getActive = new SelectList(_Context.active, "ActiveID", "ActiveName");
+            _Context.SaveChanges();
+                return RedirectToAction("ContraIndicationList");
+            
+            return View(contraindication);
+        }
+
+
 
     }
 }

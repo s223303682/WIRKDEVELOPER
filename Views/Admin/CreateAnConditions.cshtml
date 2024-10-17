@@ -1,0 +1,68 @@
+﻿@model WIRKDEVELOPER.Models.Admin.AnConditions
+
+@{
+    Layout = "AdminLayout";
+}
+<div class="mx-0 mx-sm-auto">
+    <div class="card w-75">
+        <div class="card-body ">
+            <div class="card-header bg-primary">
+
+                <h3 class="card-title text-white mt-2" id="exampleModalLabel">Conditions</h3>
+            </div>
+            <form method="post" asp-action="CreateAnConditions">
+                <div class="border p-3 #FBD603">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>@*validation*@
+
+                    <div class="row">
+
+                        <div class="form-group">
+
+                            <div class="col-12">
+
+                                <div class="row">
+
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h4><label asp-for="Diagnose"></label></h4>@*These names come from our properties in the model *@
+                                            <input asp-for="Diagnose" class="form-control box mb-2" type="text" placeholder="select" />
+                                            <span asp-validation-for=" Diagnose" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h4><label asp-for="chroniccode"></label></h4>@*These names come from our properties in the model *@
+                                            <input asp-for="chroniccode" class="form-control box mb-2" type="text" placeholder="select" />
+                                            <span asp-validation-for=" chroniccode" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div>
+                                    <div class="form-group row">
+                                        <div class="col-4 offset-9 row">
+                                            <div class="col">
+                                                <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="SAVE" />
+                                                <a asp-controller="Admin" asp-action="AnConditionsList" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Current Medication</a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>

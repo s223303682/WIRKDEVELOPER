@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WIRKDEVELOPER.Models.AnAllergies>
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Admin.AnAllergies>
 @{
     Layout = "AnaesthesiologistLayout";
 }
@@ -40,7 +40,7 @@
                     @foreach (var allergy in Model)
                     {
                         <tr>
-                            <td width="20%">@allergy.AllergiesID</td>
+                            <td width="20%">@allergy.AnAllergiesID</td>
                             <td width="20%">@allergy.Active.ActiveName</td>
                            
                            @*  <td width="20%">@allergy.Status</td> *@

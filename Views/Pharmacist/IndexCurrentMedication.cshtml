@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WIRKDEVELOPER.Models.AnCurrentMedication>
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Admin.AnCurrentMedication>
 @{
 
     Layout = "~/Views/Shared/Pharmacy.cshtml";
@@ -37,7 +37,7 @@
                     @foreach (var currentMedication in Model)
                     {
                         <tr>
-                            <td width="20%">@currentMedication.Medication.MedicationName
+                            <td width="20%">@currentMedication.ChronicMedication.ChronicName
 
 
                         </tr>
