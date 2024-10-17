@@ -1,315 +1,128 @@
-﻿@* @model WIRKDEVELOPER.Models.PrescriptionViewModel
+﻿@model WIRKDEVELOPER.Models.PrescriptionViewModel
 
 @{
-    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
+    ViewData["Title"] = "Create Prescription";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Prescription</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .remove-medication {
-            margin-top: 32px;
+<h2>Create Prescription</h2>
+
+<form asp-action="CreatePrescription" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="Surname"></label>
+        <input asp-for="Surname" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="IDNumber"></label>
+        <input asp-for="IDNumber" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="Gender"></label>
+        <input asp-for="Gender" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label asp-for="Date"></label>
+        <input type="date" asp-for="Date" class="form-control" required />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Prescriber"></label>
+        <input type="text" asp-for="Prescriber" class="form-control" required />
+        <span asp-validation-for="Prescriber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <input type="text" asp-for="Status" class="form-control" required />
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Urgent"></label>
+        <input type="text" asp-for="Urgent" class="form-control" required />
+        <span asp-validation-for="Urgent" class="text-danger"></span>
+    </div>
+    <h3>Medications</h3>
+    <div id="medicationContainer">
+        @for (int i = 0; i < Model.Medications.Count; i++)
+        {
+            <div class="medication-item">
+                <div class="form-group">
+                    <label asp-for="Medications[@i].PharmacyMedicationName"></label>
+                    <select asp-for="Medications[@i].PharmacyMedicationName" class="form-control" required>
+                        <!-- Populate this dropdown with your medications -->
+                        @foreach (var medication in ViewBag.Medications as List<SelectListItem>)
+                        {
+                            <option value="@medication.Text">@medication.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Medications[@i].Quantity"></label>
+                    <input asp-for="Medications[@i].Quantity" class="form-control" type="number" min="1" required />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Medications[@i].Instructions"></label>
+                    <input asp-for="Medications[@i].Instructions" class="form-control" required />
+                </div>
+                <button type="button" class="btn btn-danger remove-medication">Remove</button>
+            </div>
         }
-    </style>
-</head>
-<body>
-    <div class="container mt-4">
-        <h2>Create Prescription</h2>
-        <form asp-controller="Surgeon" asp-action="CreatePrescription" method="post" id="prescriptionForm">
-            @Html.AntiForgeryToken()
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                        {
-                            <li>@error.ErrorMessage</li>
-                        }
-                    </ul>
-                </div>
-            }
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    </div>
+    <button type="button" id="addMedication" class="btn btn-primary">Add Medication</button>
 
-            <!-- Patient Details -->
-            <div class="card mb-4">
-                <div class="card-header bg-secondary text-white">Patient Information</div>
-                <div class="card-body">
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label asp-for="IDNumber">Patient ID Number</label>
-                            <input asp-for="IDNumber" class="form-control" readonly />
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label asp-for="Name">Patient Name</label>
-                            <input asp-for="Name" class="form-control" readonly />
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label asp-for="Surname">Patient Surname</label>
-                            <input asp-for="Surname" class="form-control" readonly />
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label asp-for="Gender">Gender</label>
-                            <input asp-for="Gender" class="form-control" readonly />
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label asp-for="Email">Email Address</label>
-                            <input asp-for="Email" class="form-control" readonly />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Prescription Details -->
-            <div class="card mb-4">
-                <div class="card-header bg-secondary text-white">Prescription Details</div>
-                <div class="card-body">
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label asp-for="Date">Date</label>
-                            <input asp-for="Date" type="date" class="form-control" required />
-                            <span asp-validation-for="Date" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label asp-for="Prescriber">Prescriber</label>
-                            <input asp-for="Prescriber" type="text" class="form-control" required />
-                            <span asp-validation-for="Prescriber" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label asp-for="Urgent">Urgency</label>
-                            <select asp-for="Urgent" class="form-control" required>
-                                <option value="">Select Urgency</option>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                            </select>
-                            <span asp-validation-for="Urgent" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label asp-for="Status">Status</label>
-                            <select asp-for="Status" class="form-control" required>
-                                <option value="Pending">Pending</option>
-                                <!-- Add other status options if necessary -->
-                            </select>
-                            <span asp-validation-for="Status" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Medications Section -->
-            <div class="card mb-4">
-                <div class="card-header bg-secondary text-white">Medications</div>
-                <div class="card-body">
-                    <div id="medicationsContainer">
-                        @for (int i = 0; i < Model.Medications.Count; i++)
-                        {
-                            <div class="form-row medication-row mb-3" data-index="@i">
-                                <div class="form-group col-md-4">
-                                    <label>Medication</label>
-                                    <select asp-for="Medications[@i].PharmacyMedicationName" class="form-control" required>
-                                        <option value="">Select Medication</option>
-                                        @foreach (var medication in ViewBag.PharmacyMedications as List<WIRKDEVELOPER.Models.PharmacyMedication>)
-                                        {
-                                            <option value="@medication.PharmacyMedicationName">@medication.PharmacyMedicationName</option>
-                                        }
-                                    </select>
-                                    <span asp-validation-for="Medications[@i].PharmacyMedicationName" class="text-danger"></span>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label>Quantity</label>
-                                    <input asp-for="Medications[@i].Quantity" type="number" min="1" class="form-control" placeholder="Quantity" required />
-                                    <span asp-validation-for="Medications[@i].Quantity" class="text-danger"></span>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Instructions</label>
-                                    <input asp-for="Medications[@i].Instructions" type="text" class="form-control" placeholder="Instructions" />
-                                    <span asp-validation-for="Medications[@i].Instructions" class="text-danger"></span>
-                                </div>
-                                <div class="form-group col-md-1 d-flex align-items-end">
-                                    <button type="button" class="btn btn-danger remove-medication">Remove</button>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                    <button type="button" class="btn btn-primary" id="addMedication">Add Medication</button>
-                </div>
-            </div>
-
-            <!-- Hidden Template for Medication Rows -->
-            <div id="medicationTemplate" style="display: none;">
-                <div class="form-row medication-row mb-3" data-index="__index__">
-                    <div class="form-group col-md-4">
-                        <label>Medication</label>
-                        <select name="Medications[__index__].PharmacyMedicationName" class="form-control" required>
-                            <option value="">Select Medication</option>
-                            @foreach (var medication in ViewBag.PharmacyMedications as List<WIRKDEVELOPER.Models.PharmacyMedication>)
-                            {
-                                <option value="@medication.PharmacyMedicationName">@medication.PharmacyMedicationName</option>
-                            }
-                        </select>
-                        <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].PharmacyMedicationName" data-valmsg-replace="true"></span>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Quantity</label>
-                        <input name="Medications[__index__].Quantity" type="number" min="1" class="form-control" placeholder="Quantity" required />
-                        <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].Quantity" data-valmsg-replace="true"></span>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label>Instructions</label>
-                        <input name="Medications[__index__].Instructions" type="text" class="form-control" placeholder="Instructions" />
-                        <span class="text-danger field-validation-valid" data-valmsg-for="Medications[__index__].Instructions" data-valmsg-replace="true"></span>
-                    </div>
-                    <div class="form-group col-md-1 d-flex align-items-end">
-                        <button type="button" class="btn btn-danger remove-medication">Remove</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-success" onclick="console.log('Form submitted');">Create Prescription</button>
-
-            <br /><br /><br />
-        </form>
+    <div id="alertContainer" class="alert alert-warning" style="display: @(Model.HasAlerts ? "block" : "none")">
+        <strong>Alert!</strong> Please review the alert details below:
+        <textarea id="ignoreReason" name="IgnoreReason" rows="4" placeholder="Enter reason to ignore alert..." class="form-control"></textarea>
     </div>
 
-    <!-- Alerts Modal -->
-    @if (Model.HasAlerts)
-    {
-        <div class="modal fade" id="alertsModal" tabindex="-1" role="dialog" aria-labelledby="alertsModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Alerts Detected</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetForm();">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        @if (Model.AllergyAlerts.Any())
-                        {
-                            <p><strong>Allergy Alerts:</strong></p>
-                            <ul>
-                                @foreach (var alert in Model.AllergyAlerts)
-                                {
-                                    <li>@alert</li>
-                                }
-                            </ul>
-                        }
+    <button type="submit" class="btn btn-success">Submit Prescription</button>
+    <br >
+    <br >
+    <br >
+</form>
 
-                        @if (Model.ContraindicationAlerts.Any())
-                        {
-                            <p><strong>Contraindication Alerts:</strong></p>
-                            <ul>
-                                @foreach (var alert in Model.ContraindicationAlerts)
-                                {
-                                    <li>@alert</li>
-                                }
-                            </ul>
-                        }
-
-                        @if (Model.InteractionAlerts.Any())
-                        {
-                            <p><strong>Interaction Alerts:</strong></p>
-                            <ul>
-                                @foreach (var alert in Model.InteractionAlerts)
-                                {
-                                    <li>@alert</li>
-                                }
-                            </ul>
-                        }
-
-                        <p>Do you want to proceed with these medications?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetForm();">Back</button>
-                        <button type="button" class="btn btn-primary" id="ignoreAlertsButton">Ignore and Proceed</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Ignore Reason Modal -->
-        <div class="modal fade" id="ignoreReasonModal" tabindex="-1" role="dialog" aria-labelledby="ignoreReasonModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form id="ignoreReasonForm" method="post" action="@Url.Action("CreatePrescription", "Surgeon")">
-                        @Html.AntiForgeryToken()
-                        <!-- Preserve all form data by serializing the existing form -->
-                        <!-- Hidden fields for all existing form data -->
-                        @Html.HiddenFor(m => m.IDNumber)
-                        @Html.HiddenFor(m => m.Name)
-                        @Html.HiddenFor(m => m.Surname)
-                        @Html.HiddenFor(m => m.Gender)
-                        @Html.HiddenFor(m => m.Email)
-                        @Html.HiddenFor(m => m.Date)
-                        @Html.HiddenFor(m => m.Prescriber)
-                        @Html.HiddenFor(m => m.Urgent)
-                        @Html.HiddenFor(m => m.Status)
-
-                        @for (int i = 0; i < Model.Medications.Count; i++)
-                        {
-                            @Html.HiddenFor(m => m.Medications[i].PharmacyMedicationName)
-                            @Html.HiddenFor(m => m.Medications[i].Quantity)
-                            @Html.HiddenFor(m => m.Medications[i].Instructions)
-                        }
-
-                        <div class="modal-header">
-                            <h5 class="modal-title">Provide Reason to Ignore Alerts</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetForm();">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="IgnoreReason">Reason for Ignoring Alerts</label>
-                                <textarea asp-for="IgnoreReason" id="ignoreReason" class="form-control" rows="3" placeholder="Enter your reason here..." required></textarea>
-                                <span asp-validation-for="IgnoreReason" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="resetForm();">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Ignore and Proceed</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    }
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+@section Scripts {
     <script>
-        $(document).ready(function () {
-            let medicationIndex = @Model.Medications.Count;
+        document.getElementById('addMedication').addEventListener('click', function () {
+            const medicationContainer = document.getElementById('medicationContainer');
+            const index = medicationContainer.children.length; // Get the current number of medication items
 
-            $('#addMedication').click(function () {
-                const newMedicationRow = $('#medicationTemplate').html().replace(/__index__/g, medicationIndex);
-                $('#medicationsContainer').append(newMedicationRow);
-                medicationIndex++;
-            });
-
-            $(document).on('click', '.remove-medication', function () {
-                $(this).closest('.medication-row').remove();
-            });
-
-            // Handle modal alerts
-            $('#ignoreAlertsButton').click(function () {
-                $('#ignoreReasonModal').modal('show');
-            });
+            const medicationItem = `
+                        <div class="medication-item">
+                            <div class="form-group">
+                                <label for="Medications_${index}__PharmacyMedicationName">Medication Name</label>
+                                <select name="Medications[${index}].PharmacyMedicationName" class="form-control" required>
+        @foreach (var medication in ViewBag.Medications as List<SelectListItem>)
+        {
+                                            <option value="@medication.Text">@medication.Text</option>
+        }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Medications_${index}__Quantity">Quantity</label>
+                                <input name="Medications[${index}].Quantity" class="form-control" type="number" min="1" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="Medications_${index}__Instructions">Instructions</label>
+                                <input name="Medications[${index}].Instructions" class="form-control" required />
+                            </div>
+                            <button type="button" class="btn btn-danger remove-medication">Remove</button>
+                        </div>
+                    `;
+            medicationContainer.insertAdjacentHTML('beforeend', medicationItem);
         });
 
-        function resetForm() {
-            // Logic to reset or clear the form if necessary
-            $('#prescriptionForm')[0].reset();
-        }
+        // Remove medication item
+        document.getElementById('medicationContainer').addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-medication')) {
+                e.target.closest('.medication-item').remove();
+            }
+        });
     </script>
-
-</body>
-</html> *@
-
-
+}

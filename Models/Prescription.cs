@@ -29,7 +29,7 @@ namespace WIRKDEVELOPER.Models
         public string Urgent { get; set; }
         [Required]
         public string Status { get; set; }
-        public string? IgnoreReason { get; set; }
+        public string? IgnoreReason { get; set; } = "none";
         // Navigation propertiesnine
         public virtual List<PrescriptionMedication> PrescriptionMedications { get; set; } = new List<PrescriptionMedication>();
      
@@ -61,6 +61,7 @@ namespace WIRKDEVELOPER.Models
 
         // List of medications to be added dynamically
         public List<PrescriptionMedicationViewModel> Medications { get; set; } = new List<PrescriptionMedicationViewModel>();
+        public bool HasAlerts { get; set; } // Add this property
     }
 
     public class PrescriptionMedication
@@ -88,6 +89,29 @@ namespace WIRKDEVELOPER.Models
         public int Quantity { get; set; }
         public string Instructions { get; set; }
     }
+    public class AlertViewModel
+    {
+        public bool HasAlerts { get; set; }
+        public string IgnoreReason { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Email { get; set; }
+        public string Gender { get; set; }
+        public string IDNumber { get; set; }
+        public DateTime Date { get; set; }
+        public string Prescriber { get; set; }
+        public string Status { get; set; }
+        public string Urgent { get; set; }
+        public List<AlertMedication> Medications { get; set; } // New property
+    }
+
+    public class AlertMedication
+    {
+        public string PharmacyMedicationName { get; set; }
+        public int Quantity { get; set; }
+        public string Instructions { get; set; }
+    }
+
 
 }
 

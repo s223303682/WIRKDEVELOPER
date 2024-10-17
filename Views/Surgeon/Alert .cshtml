@@ -1,0 +1,39 @@
+﻿@model bool // or create a specific view model for alerts if needed
+
+@{
+    ViewBag.Title = "Medication Alerts";
+}
+
+<h2>Medication Alerts</h2>
+
+@if (Model)
+{
+    <div class="alert alert-danger">
+        <h4>Alert!</h4>
+        <p>There are potential issues with the medications you have selected:</p>
+        <ul>
+            <li>Some medications may interact with your current medications.</li>
+            <li>You may be allergic to some active ingredients.</li>
+        </ul>
+        <p>Please consult with your healthcare provider before proceeding.</p>
+    </div>
+
+    <form asp-action="CreatePrescription" method="post">
+        <input type="hidden" name="IgnoreReason" />
+        <div class="form-group">
+            <label for="IgnoreReason">Reason for ignoring the alert (optional):</label>
+            <input type="text" class="form-control" name="IgnoreReason" />
+        </div>
+        <button type="submit" class="btn btn-warning">Proceed Anyway</button>
+        <a asp-action="CreatePrescription" class="btn btn-secondary">Go Back</a>
+    </form>
+}
+else
+{
+    <div class="alert alert-success">
+        <h4>No Alerts</h4>
+        <p>You can proceed with creating the prescription.</p>
+        <a asp-action="CreatePrescription" class="btn btn-primary">Create Prescription</a>
+    </div>
+}
+

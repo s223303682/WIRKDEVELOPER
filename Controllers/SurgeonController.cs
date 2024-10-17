@@ -19,6 +19,7 @@ using System.Web.Helpers;
 using System.Xml.Linq;
 using System.Diagnostics;
 using SelectListItem = Microsoft.AspNetCore.Mvc.Rendering.SelectListItem;
+using System.Linq;
 
 namespace WIRKDEVELOPER.Controllers
 {
@@ -104,151 +105,190 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
+       
+        // GET: CreatePrescription
+        public IActionResult CreatePrescription(int bookingID, string name, string surname, string idNumber, string email, string gender)
+        {
+            var viewModel = new PrescriptionViewModel
+            {
+                Name = name,
+                Surname = surname,
+                IDNumber = idNumber,
+                Email = email,
+                Gender = gender,
+                Date = DateTime.Now,
+                Medications = new List<PrescriptionMedicationViewModel>(),
+                HasAlerts = false // Initialize to false
+            };
+            var medications = _Context.pharmacyMedications
+        .Select(pm => new SelectListItem
+        {
+            Value = pm.PharmacyMedicationName, // Assuming this is the value you want to use
+            Text = pm.PharmacyMedicationName
+        }).ToList();
 
-        //[HttpGet]
-        //public IActionResult CreatePrescription(int bookingID, string idNumber, string name, string surname, string gender, string email)
-        //{
-        //    var viewModel = new PrescriptionViewModel
-        //    {
-        //        IDNumber = idNumber,
-        //        Name = name,
-        //        Surname = surname,
-        //        Gender = gender,
-        //        Email = email,
-        //        Date = DateTime.Now,
-        //        Prescriber = "Prescriber Name", // Set this as per your logic
-        //        Urgent = "No", // Adjust based on your requirements
-        //        Status = "Pending"
-        //    };
+            ViewBag.Medications = medications; // Popula
+            return View(viewModel);
+        }
 
-        //    return View(viewModel);
-        //}
+        // POST: CreatePrescription
+        [HttpPost]
+        public async Task<IActionResult> CreatePrescription(PrescriptionViewModel model)
+        {
+            // Initialize alerts
+            var alertViewModel = new AlertViewModel
+            {
+                HasAlerts = false,
+                IgnoreReason = model.IgnoreReason,
+                Name = model.Name,
+                Surname = model.Surname,
+                Email = model.Email, 
+                Gender = model.Gender ,
+                IDNumber = model.IDNumber ,
+                Date = model.Date ,
+                Prescriber = model.Prescriber ,
+                Status = model.Status ,
+                Urgent = model.Urgent 
+                //Medications = new List<AlertMedication>()
+            };
 
-        //// POST: Prescription/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> CreatePrescription(PrescriptionViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // Check for alerts
-        //        var alerts = CheckAlerts(model);
+            // Fetch current medication and allergy for the patient
+            var currentMedications = _Context.addm
+                .Where(a => a.Patient.PatientIDNO == model.IDNumber)
+                .Select(a => a.CurrentMedication.Medication.ActiveIngredient.ActiveIngredientName)
+                .ToList();
 
-        //        if (alerts.Any())
-        //        {
-        //            // Return the alerts to the view
-        //            ViewBag.Alerts = alerts;
-        //            return View(model); // Show the prescription form with alerts
-        //        }
+            var patientAllergies = _Context.addm
+                .Where(a => a.Patient.PatientIDNO == model.IDNumber)
+                .Select(a => a.AnAllergies.Active.ActiveName)
+                .ToList();
 
-        //        // Create the prescription object
-        //        var prescription = new Prescription
-        //        {
-        //            Name = model.Name,
-        //            Surname = model.Surname,
-        //            IDNumber = model.IDNumber,
-        //            Gender = model.Gender,
-        //            Email = model.Email,
-        //            Date = DateTime.Now,
-        //            Prescriber = model.Prescriber,
-        //            Urgent = model.Urgent,
-        //            Status = model.Status,
-        //            IgnoreReason = model.IgnoreReason,
-        //            PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
-        //            {
-        //                PharmacyMedicationID = _Context.pharmacyMedications // Assuming this table has the PharmacyMedicationID and Name
-        //                    .Where(pm => pm.PharmacyMedicationName == m.PharmacyMedicationName) // You can adjust this logic based on how you want to match
-        //                    .Select(pm => pm.PharmacyMedicationID)
-        //                    .FirstOrDefault(),
-        //                Quantity = m.Quantity,
-        //                Instructions = m.Instructions
-        //            }).ToList()
-        //        };
+            // Check for allergy alerts and interactions
+            foreach (var medication in model.Medications)
+            {
+                var prescribedActiveIngredients = _Context.PharmacyMedicationIngredients
+                    .Where(pm => pm.PharmacyMedication.PharmacyMedicationName == medication.PharmacyMedicationName)
+                    .Select(pm => pm.Active.ActiveName)
+                    .ToList();
 
-        //        // Save to the database
-        //        _Context.prescriptions.Add(prescription);
-        //        await _Context.SaveChangesAsync();
+                // Check for allergy matches
+                if (patientAllergies != null && prescribedActiveIngredients.Any(ai => patientAllergies.Contains(ai)))
+                {
+                    alertViewModel.HasAlerts = true;
+                    break;
+                }
 
-        //        return RedirectToAction("Index"); // Redirect to the prescription list or another appropriate action
-        //    }
+                // Check for drug interactions
+                if (currentMedications.Any(cm =>
+                    (cm == "Carbimazole" && prescribedActiveIngredients.Contains("Doxazosin")) ||
+                    (cm == "Doxazosin" && prescribedActiveIngredients.Contains("Doxylamine Succinate")))
+                )
+                {
+                    alertViewModel.HasAlerts = true;
+                    break;
+                }
+            }
 
-        //    return View(model); // Return the model to the view if validation fails
-        //}
+            // If there are alerts, check if IgnoreReason is provided
+            if (alertViewModel.HasAlerts)
+            {
+                if (string.IsNullOrWhiteSpace(model.IgnoreReason))
+                {
+                    ModelState.AddModelError("IgnoreReason", "You must provide a reason for ignoring the alert.");
+                    return View("Alert", alertViewModel); // Return to Alert view with model errors
+                }
 
-        //// Method to check alerts for allergies, contraindications, and interactions
-        //// Assuming AnAllergies has a property called ActiveIngredientID
-        //// or a similar property to represent allergy active ingredients
+                // Proceed with creating the prescription
+                var prescription = new Prescription
+                {
+                    Name = model.Name,
+                    Surname = model.Surname,
+                    IDNumber = model.IDNumber,
+                    Email = model.Email,
+                    Gender = model.Gender,
+                    Date = DateTime.Now,
+                    Prescriber = "Your Prescriber Name",
+                    Urgent = "No",
+                    Status = "Pending",
+                    IgnoreReason = model.IgnoreReason,
+                    PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
+                    {
+                        PharmacyMedicationID = GetPharmacyMedicationId(m.PharmacyMedicationName),
+                        Quantity = m.Quantity,
+                        Instructions = m.Instructions
+                    }).ToList()
+                };
 
-        //private List<string> CheckAlerts(PrescriptionViewModel model)
-        //{
-        //    var alerts = new List<string>();
+                _Context.prescriptions.Add(prescription);
+                await _Context.SaveChangesAsync();
 
-        //    // Check for allergy alerts
-        //    var patientAllergies = _Context.addm
-        //        .Where(a => a.PatientID == model.Name) // Ensure IDNumber relates correctly to PatientID in Addm
-        //        .Select(a => a.AnAllergies.ActiveIngredientID) // Access the allergy's active ingredient
-        //        .ToList();
+                return RedirectToAction("PrescriptionList");
+            }
 
-        //    foreach (var medication in model.Medications)
-        //    {
-        //        // Assuming PharmacyMedication has a property that stores ActiveIngredientID
-        //        var medicationIngredients = _Context.pharmacyMedications
-        //            .Where(pm => pm.PharmacyMedicationName == medication.PharmacyMedicationName)
-        //            .Select(pm => pm.Ingredients) // Assuming this property exists
-        //            .ToList();
+            // Continue with normal processing if no alerts
+            var prescriptionWithoutAlerts = new Prescription
+            {
+                Name = model.Name,
+                Surname = model.Surname,
+                IDNumber = model.IDNumber,
+                Email = model.Email,
+                Gender = model.Gender,
+                Date = DateTime.Now,
+                Prescriber = "Your Prescriber Name",
+                Urgent = "No",
+                Status = "Pending",
+                IgnoreReason = null, // No ignore reason since there are no alerts
+                PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
+                {
+                    PharmacyMedicationID = GetPharmacyMedicationId(m.PharmacyMedicationName),
+                    Quantity = m.Quantity,
+                    Instructions = m.Instructions
+                }).ToList()
+            };
 
-        //        if (medicationIngredients.Any(ingredient => patientAllergies.Contains(ingredient)))
-        //        {
-        //            alerts.Add($"Alert: Patient is allergic to one of the active ingredients in {medication.PharmacyMedicationName}.");
-        //        }
-        //    }
+            _Context.prescriptions.Add(prescriptionWithoutAlerts);
+            await _Context.SaveChangesAsync();
 
-        //    // Check for contraindications and interactions here...
+            return RedirectToAction("PrescriptionList");
+        }
 
-        //    return alerts;
-        //}
+
+        private int GetPharmacyMedicationId(string medicationName)
+        {
+            // Logic to get medication ID from the name
+            var medication = _Context.pharmacyMedications
+                .FirstOrDefault(pm => pm.PharmacyMedicationName == medicationName);
+            return medication?.PharmacyMedicationID ?? 0;
+        }
 
 
         public IActionResult PrescriptionList()
         {
             var prescriptions = _Context.prescriptions
                 .Include(p => p.PrescriptionMedications)
-                .ThenInclude(pm => pm.PharmacyMedication)
-                .ToList();
+                    .ThenInclude(pm => pm.PharmacyMedication) // Include related PharmacyMedication data
+                .Select(p => new Prescription
+                {
+                    PrescriptionID = p.PrescriptionID,
+                    Name = p.Name,
+                    Surname = p.Surname, // Ensure this property is included
+                    Gender = p.Gender,
+                    Email = p.Email,
+                    Date = p.Date,
+                    Prescriber = p.Prescriber,
+                    Urgent = p.Urgent,
+                    Status = p.Status,
+                    IgnoreReason = p.IgnoreReason,
+                    PrescriptionMedications = p.PrescriptionMedications.Select(m => new PrescriptionMedication
+                    {
+                        PharmacyMedicationID = m.PharmacyMedicationID,
+                        Quantity = m.Quantity,
+                        Instructions = m.Instructions
+                    }).ToList()
+                }).ToList();
 
             return View(prescriptions);
         }
-
-        // GET: Prescription/List
-        //public IActionResult PrescriptionList()
-        //{
-        //    var prescriptions = _Context.prescriptions
-        //        .Include(p => p.PrescriptionMedications)
-        //            .ThenInclude(pm => pm.PharmacyMedication)
-        //        .Select(p => new Prescription
-        //        {
-        //            PrescriptionID = p.PrescriptionID,
-        //            Name = p.Name,
-        //            Surname = p.Surname,
-        //            Gender = p.Gender,
-        //            Email = p.Email,
-        //            Date = p.Date,
-        //            Prescriber = p.Prescriber,
-        //            Urgent = p.Urgent,
-        //            Status = p.Status,
-        //            PrescriptionMedications = p.PrescriptionMedications.Select(m => new PrescriptionMedication
-        //            {
-        //                PharmacyMedicationID = m.PharmacyMedicationID,
-        //                Quantity = m.Quantity,
-        //                Instructions = m.Instructions,
-        //                PharmacyMedication = m.PharmacyMedication // Make sure you include this
-        //            }).ToList()
-        //        }).ToList();
-
-        //    return View(prescriptions);
-        //}
-
-
 
         // GET: Prescription/Delete/{id}
         public IActionResult DeletePrescription(int id)
