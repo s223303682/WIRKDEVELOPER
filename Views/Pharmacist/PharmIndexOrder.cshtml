@@ -44,7 +44,7 @@
                 {
                   if (order.Urgent.ToLower() == "yes")
                   {
-                    <tr>
+                    <tr scope="row" style="background-color:red;">
                         <td>
                             @order.Date
                         </td>
@@ -111,7 +111,7 @@
                  
                         <td>
                             <a asp-controller="Pharmacist" asp-action="UpdateOrder" asp-route-id="@order.AnOrderID" class="btn btn-primary">Dispense</a>
-                          >
+                          
                         </td>
                     </tr>
                   }

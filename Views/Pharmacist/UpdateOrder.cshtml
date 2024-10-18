@@ -14,15 +14,15 @@
 
     <!-- Date -->
     <div class="form-group">
-        <label asp-for="Date" class="control-label"></label>
+        <label asp-for="Date" class="control-label" readonly></label>
         <input asp-for="Date" class="form-control" />
         <span asp-validation-for="Date" class="text-danger"></span>
     </div>
 
     <!-- Patient Selection -->
     <div class="form-group">
-        <label asp-for="AddmID" class="control-label"></label>
-        <select asp-for="AddmID" class="form-control" asp-items="ViewBag.getPatient"></select>
+        <label asp-for="AddmID" class="control-label" readonly></label>
+        <select asp-for="AddmID" class="form-control" asp-items="ViewBag.getPatient" readonly></select>
         <span asp-validation-for="AddmID" class="text-danger"></span>
     </div>
 
