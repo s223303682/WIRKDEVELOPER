@@ -1,0 +1,66 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Addm>
+
+<h2>Patient History</h2>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var admission in Model)
+    {
+        <h3>Patient Name: @admission.Patient.PatientName</h3>
+        <p>Admission Date: @admission.Date</p>
+
+        <!-- Allergies Section -->
+        <h4>Allergies</h4>
+        @if (admission.Patient.PatientAllergies != null && admission.Patient.PatientAllergies.Any())
+        {
+            <ul>
+                @foreach (var allergy in admission.Patient.PatientAllergies)
+                {
+                    <li>@allergy.Active.ActiveName</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No allergies recorded.</p>
+        }
+
+        <!-- Chronic Conditions Section -->
+        <h4>Chronic Conditions</h4>
+        @if (admission.Patient.PatientChronicCondition != null && admission.Patient.PatientChronicCondition.Any())
+        {
+            <ul>
+                @foreach (var condition in admission.Patient.PatientChronicCondition)
+                {
+                    <li>@condition.AnConditions.Diagnose</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No chronic conditions recorded.</p>
+        }
+
+        <!-- Medications Section -->
+        <h4>Medications</h4>
+        @if (admission.Patient.PatientMedication != null && admission.Patient.PatientMedication.Any())
+        {
+            <ul>
+                @foreach (var medication in admission.Patient.PatientMedication)
+                {
+                    <li>@medication.ChronicMedication.ChronicName</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No medications recorded.</p>
+        }
+    }
+}
+else
+{
+    <p>No patient history found for the given admission.</p>
+}
+
+<a asp-controller="Pharmacist" asp-action="Index" class="btn btn-secondary">Back to Orders</a>

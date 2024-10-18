@@ -1,0 +1,54 @@
+﻿@model WIRKDEVELOPER.Models.PatientHistory.PatientHistoryViewModel
+
+<h2>Patient History for @Model.PatientName</h2>
+
+<div>
+    <h3>Allergies</h3>
+    @if (Model.Allergies.Any())
+    {
+        <ul>
+            @foreach (var allergy in Model.Allergies)
+            {
+                <li>@allergy.ActiveName</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No allergies recorded.</p>
+    }
+</div>
+
+<div>
+    <h3>Chronic Conditions</h3>
+    @if (Model.AnConditions.Any())
+    {
+        <ul>
+            @foreach (var condition in Model.AnConditions)
+            {
+                <li>@condition.Diagnose</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No chronic conditions recorded.</p>
+    }
+</div>
+
+<div>
+    <h3>Chronic Medications</h3>
+    @if (Model.ChronicMedication.Any())
+    {
+        <ul>
+            @foreach (var medication in Model.ChronicMedication)
+            {
+                <li>@medication.ChronicName</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No chronic medications recorded.</p>
+    }
+</div>

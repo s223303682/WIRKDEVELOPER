@@ -8,6 +8,7 @@ using WIRKDEVELOPER.Models;
 using WIRKDEVELOPER.Models.Account;
 using Microsoft.EntityFrameworkCore;
 using WIRKDEVELOPER.Models.Admin;
+using WIRKDEVELOPER.Models.PatientHistory;
 
 namespace WIRKDEVELOPER.Areas.Identity.Data;
 
@@ -174,5 +175,9 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<NotesOfOrders> notesoforders { get; set; }
     public DbSet<ChronicMedication> chronicmedication { get; set; }
     public DbSet<ContraIndication> contraindication{ get; set; }
+    public DbSet<PatientAllergies> PatientAllergies{ get; set; }
+    public DbSet<PatientChronicCondition> PatientChronicConditions{ get; set; }
+    public DbSet<PatientMedication> PatientMedications{ get; set; }
+    public DbSet<MedicationActive> MedicationActive { get; set; }
 
 }

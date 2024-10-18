@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WIRKDEVELOPER.Models.PatientHistory;
 
 
 namespace WIRKDEVELOPER.Models
@@ -71,6 +72,12 @@ namespace WIRKDEVELOPER.Models
         public DateTime? DateOfBirth { get; set; }
         [Required]
         public string? Gender { get; set; }
+
+        public virtual List<PatientAllergies> PatientAllergies { get; set; } = new List<PatientAllergies>();
+
+        public virtual List<PatientChronicCondition> PatientChronicCondition { get; set; } = new List<PatientChronicCondition>();
+
+        public virtual List<PatientMedication> PatientMedication { get; set; } = new List<PatientMedication>();
 
 
 

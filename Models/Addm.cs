@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using WIRKDEVELOPER.Models.Admin;
+using WIRKDEVELOPER.Models.PatientHistory;
 
 namespace WIRKDEVELOPER.Models
 {
@@ -53,5 +54,7 @@ namespace WIRKDEVELOPER.Models
 
         [DisplayName("Status")]
         public string? Status { get; set; } = "Admitted";
+        public virtual MedicationActive MedicationActive { get; set; }
+
     }       
 }

@@ -7,6 +7,7 @@ using System.Web.Helpers;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
 using WIRKDEVELOPER.Models.Admin;
+using WIRKDEVELOPER.Models.PatientHistory;
 using WIRKDEVELOPER.Models.sendemail;
 
 
@@ -867,8 +868,66 @@ namespace WIRKDEVELOPER.Controllers
 
             return View(viewModel); // Return the view with validation errors
         }
+        public async Task<IActionResult> ViewPatientHistory(int id) // id is the AddmID
+        {
+            // Fetch the admission based on AddmID
+            var admission = await _Context.addm
+                .Include(a => a.Patient)
+                .ThenInclude(p => p.PatientAllergies)
+                .ThenInclude(pa => pa.Active)
+                .Include(a => a.Patient)
+                .Include(pc => pc.Patient.PatientChronicCondition)
+                .ThenInclude(pc => pc.AnConditions)
+                .Include(a => a.Patient.PatientMedication)
+                .ThenInclude(pm => pm.ChronicMedication)
+                .FirstOrDefaultAsync(a => a.AddmID == id);
 
+            if (admission == null)
+            {
+                return NotFound($"No admission found for AddmID: {id}");
+            }
 
+            var patient = admission.Patient;
+
+            if (patient == null)
+            {
+                return NotFound($"No patient associated with the AddmID: {id}");
+            }
+
+            // You can now pass the admission to the view
+            return View(new List<Addm> { admission });
+        }
+        // GET: Pharmacist/ViewPatientHistoryByDetails
+        //public IActionResult ViewPatientHistoryByDetails(string name, string surname, string idNumber)
+        //{
+        //    // Find the patient by their details
+        //    var patient = _Context.addm
+        //        .Include(p => p.AnAllergies)
+        //            .ThenInclude(a => a.Active) // Include Active allergens details
+        //        .Include(p => p.ChronicConditions)
+        //            .ThenInclude(cc => cc.AnConditions) // Include chronic conditions
+        //        .Include(p => p.Medications)
+        //            .ThenInclude(pm => pm.ChronicMedication) // Include chronic medications
+        //        .FirstOrDefault(p => p.Name == name && p.Surname == surname && p.IDNumber == idNumber);
+
+        //    if (patient == null)
+        //    {
+        //        return NotFound("Patient not found.");
+        //    }
+
+        //    // Prepare the ViewModel
+        //    var viewModel = new PatientHistoryViewModel
+        //    {
+        //        PatientID = patient.PatientID,
+        //        PatientName = $"{patient.Name} {patient.Surname}",
+        //        Allergies = patient.Allergies.Select(a => a.Active).ToList(),
+        //        AnConditions = patient.ChronicConditions.Select(cc => cc.AnConditions).ToList(),
+        //        ChronicMedication = patient.Medications.Select(m => m.ChronicMedication).ToList()
+        //    };
+
+        //    // Pass ViewModel to the view
+        //    return View(viewModel);
+        //}
 
     }
 }
