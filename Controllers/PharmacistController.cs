@@ -702,7 +702,11 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-       
+        public IActionResult Report()
+        {
+            return View();
+        }
+
         public ActionResult DispensaryReport(DateTime? startDate, DateTime? endDate)
 		{
 
