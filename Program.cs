@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models.sendemail;
-
+using DinkToPdf;
+using DinkToPdf.Contracts;
 
 
 
@@ -29,7 +30,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             options.LoginPath = "/Account/Login";
         });
 
-
+// Register DinkToPdf
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 // Add Razor Pages support
 builder.Services.AddRazorPages();

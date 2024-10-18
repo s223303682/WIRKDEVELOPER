@@ -1,66 +1,99 @@
 ﻿@model IEnumerable<WIRKDEVELOPER.Models.Addm>
 
-<h2>Patient History</h2>
+@{
+    Layout = "AnaesthesiologistLayout";
+}
 
-@if (Model != null && Model.Any())
-{
-    foreach (var admission in Model)
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Patient History</h2>
+
+    @if (Model != null && Model.Any())
     {
-        <h3>Patient Name: @admission.Patient.PatientName</h3>
-        <p>Admission Date: @admission.Date</p>
+        @foreach (var admission in Model)
+        {
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card mb-4 shadow-sm">
+                        <!-- Patient Information -->
+                        <div class="card-header bg-primary text-white">
+                            Patient Name: @admission.Patient.PatientName
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Admission Date: @admission.Date</h5>
 
-        <!-- Allergies Section -->
-        <h4>Allergies</h4>
-        @if (admission.Patient.PatientAllergies != null && admission.Patient.PatientAllergies.Any())
-        {
-            <ul>
-                @foreach (var allergy in admission.Patient.PatientAllergies)
-                {
-                    <li>@allergy.Active.ActiveName</li>
-                }
-            </ul>
-        }
-        else
-        {
-            <p>No allergies recorded.</p>
-        }
+                            <!-- Allergies Section -->
+                            <h4 class="mt-3">Allergies</h4>
+                            @if (admission.Patient.PatientAllergies != null && admission.Patient.PatientAllergies.Any())
+                            {
+                                <ul class="list-group">
+                                    @foreach (var allergy in admission.Patient.PatientAllergies)
+                                    {
+                                        <li class="list-group-item">
+                                            <strong>Allergy:</strong> @allergy.Active.ActiveName
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p>No allergies recorded.</p>
+                            }
 
-        <!-- Chronic Conditions Section -->
-        <h4>Chronic Conditions</h4>
-        @if (admission.Patient.PatientChronicCondition != null && admission.Patient.PatientChronicCondition.Any())
-        {
-            <ul>
-                @foreach (var condition in admission.Patient.PatientChronicCondition)
-                {
-                    <li>@condition.AnConditions.Diagnose</li>
-                }
-            </ul>
-        }
-        else
-        {
-            <p>No chronic conditions recorded.</p>
-        }
+                            <!-- Chronic Conditions Section -->
+                            <h4 class="mt-3">Chronic Conditions</h4>
+                            @if (admission.Patient.PatientChronicCondition != null && admission.Patient.PatientChronicCondition.Any())
+                            {
+                                <ul class="list-group">
+                                    @foreach (var condition in admission.Patient.PatientChronicCondition)
+                                    {
+                                        <li class="list-group-item">
+                                            <strong>Condition:</strong> @condition.AnConditions.Diagnose
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p>No chronic conditions recorded.</p>
+                            }
 
-        <!-- Medications Section -->
-        <h4>Medications</h4>
-        @if (admission.Patient.PatientMedication != null && admission.Patient.PatientMedication.Any())
-        {
-            <ul>
-                @foreach (var medication in admission.Patient.PatientMedication)
-                {
-                    <li>@medication.ChronicMedication.ChronicName</li>
-                }
-            </ul>
-        }
-        else
-        {
-            <p>No medications recorded.</p>
+                            <!-- Medications Section -->
+                            <h4 class="mt-3">Medications</h4>
+                            @if (admission.Patient.PatientMedication != null && admission.Patient.PatientMedication.Any())
+                            {
+                                <ul class="list-group">
+                                    @foreach (var medication in admission.Patient.PatientMedication)
+                                    {
+                                        <li class="list-group-item">
+                                            <strong>Medication:</strong> @medication.ChronicMedication.ChronicName
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p>No medications recorded.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
     }
-}
-else
-{
-    <p>No patient history found for the given admission.</p>
-}
+    else
+    {
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="alert alert-info" role="alert">
+                    No patient history found for the given admission.
+                </div>
+            </div>
+        </div>
+    }
 
-<a asp-controller="Pharmacist" asp-action="Index" class="btn btn-secondary">Back to Orders</a>
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <a asp-controller="Anaesthesiologist" asp-action="CreateOrder" class="btn btn-secondary">Back to Orders</a>
+        </div>
+    </div>
+</div>

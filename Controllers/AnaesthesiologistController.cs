@@ -662,17 +662,16 @@ namespace WIRKDEVELOPER.Controllers
 
         public async Task<IActionResult> ViewPatientHistory(int id) // id is the AddmID
         {
-            // Fetch the admission based on AddmID
             var admission = await _Context.addm
-                .Include(a => a.Patient)
-                .ThenInclude(p => p.PatientAllergies)
-                .ThenInclude(pa => pa.Active)
-                .Include(a => a.Patient)
-                .Include(pc => pc.Patient.PatientChronicCondition)
-                .ThenInclude(pc => pc.AnConditions)
-                .Include(a => a.Patient.PatientMedication)
-                .ThenInclude(pm => pm.ChronicMedication)
-                .FirstOrDefaultAsync(a => a.AddmID == id);
+        .Include(a => a.Patient)
+        .ThenInclude(p => p.PatientAllergies)
+        .ThenInclude(pa => pa.Active)
+        .Include(a => a.Patient)
+        .Include(pc => pc.Patient.PatientChronicCondition)
+        .ThenInclude(pc => pc.AnConditions)
+        .Include(a => a.Patient.PatientMedication)
+        .ThenInclude(pm => pm.ChronicMedication)
+        .FirstOrDefaultAsync(a => a.AddmID == id);
 
             if (admission == null)
             {
@@ -680,13 +679,11 @@ namespace WIRKDEVELOPER.Controllers
             }
 
             var patient = admission.Patient;
-
             if (patient == null)
             {
                 return NotFound($"No patient associated with the AddmID: {id}");
             }
 
-            // You can now pass the admission to the view
             return View(new List<Addm> { admission });
         }
 
@@ -695,14 +692,3 @@ namespace WIRKDEVELOPER.Controllers
     }
 
 }             
-
-
-
-
-
-
-
-
-
-
-
