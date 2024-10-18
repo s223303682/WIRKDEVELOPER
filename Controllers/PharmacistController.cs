@@ -709,7 +709,7 @@ namespace WIRKDEVELOPER.Controllers
 			// Initialize a default view model
 			var viewModel = new PharmacistReportViewModel
 			{
-				PharmacistName = "Dororo",
+				//PharmacistName = "Dororo",
 				StartDate = startDate ?? DateTime.Now,  // Use current date as default
 				EndDate = endDate ?? DateTime.Now,      // Use current date as default
 				ReportGeneratedDate = DateTime.Now,
