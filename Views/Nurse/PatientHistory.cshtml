@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Patient Medical History";
+    Layout = "~/Views/Shared/_NurseLayout.cshtml";
+}
+@model SubReport
+<div class="row justify-content-center">
+    <h3>Patient Details</h3>
+    <div class="card">
+        <div class="card-body">
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="Patient.PatientName"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="Patient.PatientName" value="@Model.Patient.PatientName">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="Patient.EmailAddress"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="Patient.EmailAddress" value="@Model.Patient.EmailAddress">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="Patient.PatientSurname"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="Patient.PatientSurname" value="@Model.Patient.PatientSurname">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="Patient.PatientIDNO"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="Patient.PatientIDNO" value="@Model.Patient.PatientIDNO">
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="text-center">Allergies</h5>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var item in Model.Allergies)
+                        {
+                            <li class="list-group-item">@item.Active.ActiveIngredientName</li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-center">Current Medications</h5>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var item in Model.CurrentMedications)
+                        {
+                            <li class="list-group-item">@item.Medication.MedicationName</li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-center">Conditions</h5>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var item in Model.PatientConditions)
+                        {
+                            <li class="list-group-item">@item.Condition.ConditionDiagnosisName</li>
+                        }
+                    </ul>
+                </div>
+
+            </div>
+            <br />
+            <h4>Patient Vitals</h4>
+            <table id="myTable" table class="table table-hover  table-sm" style="width:100%">
+
+                <thead class="table-secondary">
+                    <tr>
+                        <th>
+                            Vital Name
+                        </th>
+                        <th>
+                            Reading
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Time
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var sche in Model.PatientVitals)
+                    {
+                        <tr>
+
+                            <td width="20%">@sche.Vitals.VitalType</td>
+                            <td width="20%">@sche.Reading</td>
+                            <td width="20%">@(sche.Reading2 == 0 ? "" : sche.Reading2)</td>
+                            <td width="20%">@sche.Time.Value.ToShortDateString()</td>
+                            <td width="20%">@sche.Time.Value.ToShortTimeString()</td>
+
+                        </tr>
+
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -13,7 +13,6 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link rel="shortcut icon" href="~/Si" />
 	<link rel="icon" href="~/_Images/favicon.ico" type="image/png" />
-	@* https://feathericons.dev/?search=check-square&iconset=feather *@
 
 	<link rel="canonical" href="https://demo-basic.adminkit.io/" />
 
@@ -45,6 +44,7 @@
 	<link rel="stylesheet" href="~/css/css/css/css/css/style.css" />
 	@* <!-- scrollbar css -->
 	<link rel="stylesheet" href="~/css/css/css/css/perfect-scrollbar.css" /> *@
+	<script src="https://kit.fontawesome.com/c7f32021bc.js" crossorigin="anonymous"></script>
 </head>
 @if (User.IsInRole("Nurse"))
 {
@@ -57,10 +57,10 @@
 
 					<div class="sidebar_blog_1">
 						<div class="sidebar-header">
-					<div class="logo_section">
-					<a href="index.html"><img class="logo_icon img-responsive" src="~/_Images/3.png" alt="#" /></a>
-					</div>
-					</div>
+							<div class="logo_section">
+								<a href="index.html"><img class="logo_icon img-responsive" src="~/_Images/3.png" alt="#" /></a>
+							</div>
+						</div>
 						<div>
 							<div class="icon_setting"></div>
 							<div class="user_profle_side">
@@ -99,152 +99,86 @@
 
 
 						<li class="sidebar-item">
-							<a asp-controller="Home" asp-action="Index" class="sidebar-link">
+							<a asp-controller="Nurse" asp-action="Dashboard" class="sidebar-link">
 								<i class="align-middle" data-feather="home"></i> <span class="align-middle">Home</span>
 							</a>
 						</li>
+
 						<li class="sidebar-item">
-							<a asp-controller="Nurse" asp-action="DashBoard" class="sidebar-link">
-								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Dashboard</span>
+							<a asp-controller="Nurse" asp-action="Bookings" class="sidebar-link">
+								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Bookings</span>
 							</a>
 						</li>
 						<li class="sidebar-item">
-							<a class="dropdown-toggle" data-toggle="dropdown">
-								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Booked Patients</span>
+							<a asp-controller="Nurse" asp-action="AdmittedPatients" class="sidebar-link">
+								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Admitted Patients</span>
 							</a>
-							<div class="dropdown-menu">
-								@* <a class="dropdown-item" asp-controller="Nurse" asp-action="AddVitals">
-									<i class="align-middle" data-feather="menu"></i><span class="align-middle">Add Vitals</span>
-								</a> *@
-								<a class="dropdown-item" asp-controller="Surgeon" asp-action="BookingList">
-									<i class="align-middle" data-feather="menu"></i><span class="align-middle">Patients</span>
-								</a>
-								@* <a class="dropdown-item" asp-controller="Nurse" asp-action="updateVitals">
-									<i class="align-middle" data-feather="menu"></i><span class="align-middle">Retake Vitals</span>
-								</a> *@
-							</div>
+						</li>
+
 						<li class="sidebar-item">
-							<a class="dropdown-toggle" data-toggle="dropdown">
-								<i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Admissions</span>
+							<a asp-controller="Nurse" asp-action="PrescribedPrescriptions" class="sidebar-link">
+								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Prescribed Prescriptions</span>
 							</a>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="AddAdmission">
-									<i class="align-middle" data-feather="plus-square"></i><span class="align-middle">Admit</span>
-								</a>
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="ViewAdmission">
-									<i class="align-middle" data-feather="file-text"></i><span class="align-middle">View Patients</span>
-								</a>
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="updateAdmission">
-									<i class="align-middle" data-feather="edit"></i><span class="align-middle">Update Details</span>
-								</a>
-							</div>
+						</li>
+						<li class="sidebar-item">
+							<a href="#" onclick="OpenModal()" class="sidebar-link">
+								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Report</span>
+							</a>
+						</li>
+
 						@* <li class="sidebar-item">
-							<a asp-controller="Nurse" asp-action="AddVitals" class="sidebar-link">
-								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Vitals</span>
-							</a>
-						</li *@>
-						<li class="sidebar-item">
-							<a class="dropdown-toggle" data-toggle="dropdown">
-								<i class="align-middle" data-feather="wind"></i> <span class="align-middle">Vitals</span>
-							</a>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="AddVitals">
-									<i class="align-middle" data-feather="menu"></i><span class="align-middle">Add Vitals</span>
-								</a>
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="ViewVitals">
-									<i class="align-middle" data-feather="menu"></i><span class="align-middle">View Vitals</span>
-								</a>
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="updateVitals">
-									<i class="align-middle" data-feather="menu"></i><span class="align-middle">Retake Vitals</span>
-								</a>
-							</div>
-						<li class="sidebar-item">
-							<a class="dropdown-toggle" data-toggle="dropdown">
-								<i class="align-middle" data-feather="shopping-bag"></i> <span class="align-middle">Administer Med</span>
-							</a>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="AddmedAdmin">
-									<i class="align-middle" data-feather="menu"></i><span class="align-middle">Dispense Medication</span>
-								</a>
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="ViewmedAdmin">
-									<i class="align-middle" data-feather="menu"></i><span class="align-middle">Dispensed Medication</span>
-								</a>
-								@* <a class="dropdown-item" asp-controller="Nurse" asp-action="updateVitals">
-									<i class="align-middle" data-feather="menu"></i><span class="align-middle">Retake Vitals</span>
-								</a *@>
-							</div>
-							@* <a asp-controller="Nurse" asp-action="AddmedAdmin" class="sidebar-link">
-								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Administer Med</span>
-							</a> *@
-						</li>
-						<li class="sidebar-item">
-							<a class="dropdown-toggle" data-toggle="dropdown">
-								<i class="align-middle" data-feather="shopping-cart"></i> <span class="align-middle">Discharging</span>
-							</a>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="AddDischargedPatient">
-									<i class="align-middle" data-feather="menu"></i><span class="align-middle">Discharge</span>
-								</a>
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="ViewDischargedPatient">
-									<i class="align-middle" data-feather="menu"></i><span class="align-middle">View Patient</span>
-								</a>
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="updateDischarged">
-									<i class="align-middle" data-feather="menu"></i><span class="align-middle">Update Details</span>
-								</a>
-							</div>
-						@* <li class="sidebar-item">
-							<a class="dropdown-toggle" data-toggle="dropdown">
-								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Vitals</span>
-							</a>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="SearchPatient">
-									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Admissions</span>
-								</a>
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="CreateBookingPatient">
-									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Add</span>
-								</a>
-							</div>
-						</li>
-						<li class="sidebar-item">
-							<a class="dropdown-toggle" data-toggle="dropdown">
-								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Vitals</span>
-							</a>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" asp-controller="Surgeon" asp-action="CreateBooking">
-									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Create</span>
-								</a>
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="BookingList">
-									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">View</span>
-								</a>
-							</div>
-						</li>
+					<a class="dropdown-toggle" data-toggle="dropdown">
+					<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Vitals</span>
+					</a>
+					<div class="dropdown-menu">
+					<a class="dropdown-item" asp-controller="Nurse" asp-action="SearchPatient">
+					<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Admissions</span>
+					</a>
+					<a class="dropdown-item" asp-controller="Nurse" asp-action="CreateBookingPatient">
+					<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Add</span>
+					</a>
+					</div>
+					</li>
+					<li class="sidebar-item">
+					<a class="dropdown-toggle" data-toggle="dropdown">
+					<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Vitals</span>
+					</a>
+					<div class="dropdown-menu">
+					<a class="dropdown-item" asp-controller="Surgeon" asp-action="CreateBooking">
+					<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Create</span>
+					</a>
+					<a class="dropdown-item" asp-controller="Nurse" asp-action="BookingList">
+					<i class="align-middle" data-feather="edit"></i> <span class="align-middle">View</span>
+					</a>
+					</div>
+					</li>
 
-						<li class="sidebar-item">
-							<a class="dropdown-toggle" data-toggle="dropdown">
-								<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Prescription</span>
-							</a>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" asp-controller="Nurse" asp-action="CreatePrescription">
-									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Create</span>
-								</a>
-								<a class="dropdown-item" asp-controller="Surgeon" asp-action="PrescriptionList">
-									<i class="align-middle" data-feather="edit"></i> <span class="align-middle">View</span>
-								</a>
-							</div>
-						</li>
+					<li class="sidebar-item">
+					<a class="dropdown-toggle" data-toggle="dropdown">
+					<i class="align-middle" data-feather="menu"></i> <span class="align-middle">Prescription</span>
+					</a>
+					<div class="dropdown-menu">
+					<a class="dropdown-item" asp-controller="Nurse" asp-action="CreatePrescription">
+					<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Create</span>
+					</a>
+					<a class="dropdown-item" asp-controller="Surgeon" asp-action="PrescriptionList">
+					<i class="align-middle" data-feather="edit"></i> <span class="align-middle">View</span>
+					</a>
+					</div>
+					</li>
 
 
-						<li class="sidebar-item">
-							<a asp-controller="Nurse" asp-action="AddmedAdmin" class="sidebar-link">
-								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Alerts</span>
-							</a>
-						</li>
+					<li class="sidebar-item">
+					<a asp-controller="Nurse" asp-action="AddmedAdmin" class="sidebar-link">
+					<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Alerts</span>
+					</a>
+					</li>
 
-						<li class="sidebar-item">
-							<a asp-controller="Nurse" asp-action="AddDischargePatient" class="sidebar-link">
-								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Notes </span>
-							</a>
-						</li> *@
+					<li class="sidebar-item">
+					<a asp-controller="Nurse" asp-action="AddDischargePatient" class="sidebar-link">
+					<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Notes </span>
+					</a>
+					</li> *@
 
 					</ul>
 
@@ -336,10 +270,50 @@
 			*@
 			</div>
 		</div>
-		<main role="main" class="pb-3">
-			@RenderBody()
-		</main>
+		<div class="modal fade" id="n-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">Report</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form asp-action="Report" method="post">
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-6">
+									<div class="mb-3 row">
+										<label class="col-sm-2 col-form-label">From:</label>
+										<div class="col-sm-10">
+											<input name="from" type="date" class="form-control">
+										</div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="mb-3 row">
+										<label class="col-sm-2 col-form-label">To:</label>
+										<div class="col-sm-10">
+											<input name="to" type="date" class="form-control">
+										</div>
+									</div>
+								</div>
+							</div>
 
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Generate</button>
+						</div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+		@* <main role="main" class="pb-3">
+	@RenderBody()
+	</main>
+	*@
 		<script src="~/Sidebar/js/app.js"></script>
 
 		<script src="~/js/site.js"></script>
@@ -367,7 +341,19 @@
 		<!-- custom js -->
 		<script src="~/js/js/custom.js"></script>
 		<script src="~/js/js/chart_custom_style1.js"></script>
-
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
+		<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+		<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js"></script>
+		@await RenderSectionAsync("Scripts", required: false)
+		<script>
+			function OpenModal() {
+				$("#n-modal").modal('show')
+			}
+		</script>
 		<script>
 			document.addEventListener("DOMContentLoaded", function () {
 				var ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");

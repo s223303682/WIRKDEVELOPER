@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Discharge Patient";
+    Layout = "~/Views/Shared/_NurseLayout.cshtml";
+}
+@model Discharge
+<br />
+<div class="row justify-content-center">
+    <h3>Discharge Patient</h3>
+    <div class="card">
+        <div class="card-body">
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="Admission.Booking.Patient.PatientName"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="Admission.Booking.Patient.PatientName" value="@Model.Admission.Booking.Patient.PatientName">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="Admission.Booking.Patient.PatientSurname"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="Admission.Booking.Patient.PatientSurname" value="@Model.Admission.Booking.Patient.PatientSurname">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="Admission.Booking.Patient.EmailAddress"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="Admission.Booking.Patient.EmailAddress" value="@Model.Admission.Booking.Patient.EmailAddress">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="Admission.Booking.Patient.PatientIDNO"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="Admission.Booking.Patient.PatientIDNO" value="@Model.Admission.Booking.Patient.PatientIDNO">
+                </div>
+            </div>
+            <form asp-action="Discharge" method="post">
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" asp-for="Date"></label>
+                    <div class="col-sm-10">
+                        <input class="form-control" asp-for="Date">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" asp-for="NurseNotes"></label>
+                    <div class="col-sm-10">
+                        <input class="form-control" asp-for="NurseNotes">
+                    </div>
+                </div>
+                <input hidden value="@Model.Admission.AdmissionID" asp-for="AdmissionId">
+
+                <button type="submit" class="btn btn-outline-success">Discharge</button>
+            </form>
+        </div>
+    </div>
+</div>

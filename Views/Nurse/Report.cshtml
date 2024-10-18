@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Report";
+    Layout = "~/Views/Shared/_NurseLayout.cshtml";
+}
+@model ReportList
+<br />
+<h2 class="text-center">MEDICATION REPORT</h2>
+<br />
+<h5 class="text-center">@Model.Nurse</h5>
+<div class="row">
+    <div>Date Range: @Model.from -- @Model.to</div>
+    <div>Report Generated: @DateTime.Now.ToShortDateString()</div>
+</div>
+<br />
+<br />
+<table class="table table-hover table-sm" style="width:100%">
+    <caption>Total Patients: @Model.Reports.DistinctBy(c => c.PatientID).Count()</caption>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Patient</th>
+            <th>Medication</th>
+            <th>Quantity</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Reports)
+        {
+            <tr>
+                <td>@item.Date</td>
+                <td>@item.PatientName</td>
+                <td>@item.Medication</td>
+                <td>@item.QTY</td>
+                <td>@item.Time</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<h3>Summary per Medicine</h3>
+<table class="table table-hover table-sm" style="width:100%">
+    <thead>
+        <tr>
+            <th>Medication</th>
+            <th>Quantity Administered</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Reports.GroupBy(x => x.Medication).Select(c => new { n = c.Key, i = c.Sum(c => c.QTY) }).AsEnumerable())
+        {
+            <tr>
+                <td>@item.n</td>
+                <td>@item.i</td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<br />
+<br />

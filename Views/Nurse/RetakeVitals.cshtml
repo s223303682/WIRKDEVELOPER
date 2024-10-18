@@ -1,0 +1,185 @@
+﻿@{
+    ViewData["Title"] = "Retake Vitals";
+    Layout = "~/Views/Shared/_NurseLayout.cshtml";
+}
+ @model WIRKDEVELOPER.Models.Admission
+<div class="row justify-content-center">
+    <h3>Discharge Patient</h3>
+    <div class="card">
+        <div class="card-body">
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="Booking.Patient.PatientName"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="Booking.Patient.PatientName" value="@Model.Booking.Patient.PatientName">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="Booking.Patient.EmailAddress"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="Booking.Patient.EmailAddress" value="@Model.Booking.Patient.EmailAddress">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="Booking.Patient.PatientSurname"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="Booking.Patient.PatientSurname" value="@Model.Booking.Patient.PatientSurname">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="Booking.Patient.PatientIDNO"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="Booking.Patient.PatientIDNO" value="@Model.Booking.Patient.PatientIDNO">
+                </div>
+            </div>
+            <h5>Patient Vitals</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="mb-3 row">
+                                <label class="col-sm-4 col-form-label">Date and Time Captured</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="datetime-local" id="v-date">
+                                </div>
+                            </div>
+                            <br />
+                            <div class="mb-3 row">
+                                <label class="col-sm-4 col-form-label">Note</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" id="v-t">
+                                </div>
+                            </div>
+                            <select asp-items="ViewBag.Vitals" id="v-s" class="form-select"></select>
+                            <br />
+                            <input type="number" class="form-control" id="v-1" />
+                            <br />
+                            <input type="number" style="display:none" value="0" class="form-control" id="v-2" />
+
+                        </div>
+                        <div class="col-4">
+                            <a class="btn btn-primary" onclick="AddVital()">Add</a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <h5 class="text-center">Vitals Captured</h5>
+                    <ul class="row justify-content-center" id="v-list">
+                    </ul>
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-center"><a onclick="PatientVitals()" class="btn btn-primary w-50">Submit Vitals</a></div>
+            <br />
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="n-modal-v" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Loading</h5>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        var vitals = []
+        const PatientID = "@Model.Booking.PatientID"
+        const BookingID = "@Model.Booking.BookingID"
+        function OpenModal() {
+
+        }
+        $('#v-s').on("change", function () {
+            let x = $('#v-s option:selected').text().toLowerCase()
+            if (x.includes("pressure")) {
+                $("#v-2").show()
+                $("#v-2").val("-1")
+            } else {
+                $("#v-2").hide()
+                $("#v-2").val("0")
+            }
+
+        });
+        const Ranges = @Html.Raw(Json.Serialize((List<Vitals>)ViewBag.Vit))
+            function AddVital() {
+                if ($("#v-s").val() == 0 || $("#v-date").val() == '' || $("#v-t").val() == '') {
+                    alert("Please enter a value and date")
+                    return null
+                }
+                for (let i = 0; i < Ranges.length; i++) {
+                    var o = Ranges[i]
+                    if ($("#v-s").val() == o.vitalID) {
+                        if ($("#v-1").val() < o.minimumrange || $("#v-1").val() > o.maximumrange) {
+                            alert("Warning: Vital is out range")
+                            break
+                        }
+                    }
+                }
+                var x = { PatientId: PatientID, Reading: $("#v-1").val(), Reading2: $("#v-2").val(), name: $("#v-s option:selected").text(), VitalID: $("#v-s").val(), Time: $("#v-date").val(), Note: $("#v-t").val(), BookingId: BookingID }
+                vitals.push(x)
+                $("#v-1").val("0")
+                $("#v-2").val("0")
+
+                LoadV()
+            }
+        function LoadV() {
+            x = ''
+            for (let i = 0; i < vitals.length; i++) {
+                o = vitals[i]
+                x += '<li style="display: flex;justify-content: space-around;"  onclick="RemoveV(' + o.VitalID + ')" >' + o.name + '  ' + o.Reading + ' <i class="fa-regular fa-circle-xmark text-danger" style="font-size: larger;"></i ></li> '
+            }
+            $("#v-list").empty()
+            $("#v-list").append(x)
+        }
+        function RemoveV(a) {
+            for (let i = 0; i < vitals.length; i++) {
+                var o = vitals[i];
+                if (o.VitalID == a) {
+                    let splice = vitals.splice(i, 1);
+                    break;
+                }
+            }
+            LoadV()
+        }
+        function PatientVitals() {
+            data = vitals
+            if(vitals.length == 0){
+                alert("Please Add viatls")
+                return null
+            }
+            $("#n-modal-v").modal('show')
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdatePatientVitalsE", "Nurse")",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                success: function (response) {
+
+                    if (response != null) {
+                        $("#n-modal-v").modal('hide')
+
+                        alert("Patient Vitals has been submitted")
+                        window.location.href = '@Url.Action("AdmittedPatients")'
+                    }
+                    else {
+                        $("#n-modal-v").modal('hide')
+
+                        $("#n-modal-v").modal('hide')
+
+                    }
+
+                }
+
+            });
+        }
+    </script>
+}
