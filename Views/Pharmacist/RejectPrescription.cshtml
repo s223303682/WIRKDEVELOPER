@@ -86,6 +86,7 @@
     }
 
     <button type="submit" class="btn btn-primary">Reject Prescription</button>
+    <a asp-controller="PatientHistory" asp-action="Index" asp-route-name="@Model.Name" asp-route-surname="@Model.Surname" asp-route-idNumber="@Model.IDNumber" class="btn btn-info">View Patient History</a>
 </form>
 
 @section Scripts {

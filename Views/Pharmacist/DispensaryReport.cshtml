@@ -1,4 +1,10 @@
-﻿@model WIRKDEVELOPER.Models.PharmacistReportViewModel
+﻿@using WIRKDEVELOPER.Models
+@using Microsoft.AspNetCore.Identity
+@using WIRKDEVELOPER.Areas.Identity.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model WIRKDEVELOPER.Models.PharmacistReportViewModel
 
 @{
     Layout = "~/Views/Shared/Pharmacy.cshtml";
@@ -7,7 +13,7 @@
 <div class="container">
     <br />
     <br />
-   @*  <h2 class="mt-4">Pharmacist Report (Sorted by date or patient)</h2> *@
+    @* <h2 class="mt-4">Pharmacist Report (Sorted by date or patient)</h2> *@
 
     <h3 class="mb-3">Dispensary Report</h3>
 
@@ -36,7 +42,7 @@
         <h3 class="mb-3">Dispensary Report</h3>
         <br />
         <br />
-        <p><strong>Pharmacist:</strong> @Model.PharmacistName</p>
+        <p><strong>Pharmacist:</strong>  <h1> Dr <span class="text-dark">@UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName</span> </h1></p>
         <p><strong>Date Range:</strong> @Model.StartDate.ToString("dd MMMM yyyy") – @Model.EndDate.ToString("dd MMMM yyyy")</p>
         <p><strong>Report Generated:</strong> @Model.ReportGeneratedDate.ToString("dd MMMM yyyy")</p>
 
