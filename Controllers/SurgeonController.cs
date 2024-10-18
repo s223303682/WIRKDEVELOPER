@@ -19,8 +19,10 @@ using System.Web.Helpers;
 using System.Xml.Linq;
 using System.Diagnostics;
 using SelectListItem = Microsoft.AspNetCore.Mvc.Rendering.SelectListItem;
-using System.Linq;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using WIRKDEVELOPER.Models.PatientHistory;
+using System.Text;
 
 namespace WIRKDEVELOPER.Controllers
 {
@@ -28,91 +30,156 @@ namespace WIRKDEVELOPER.Controllers
     {
         private readonly ApplicationDBContext _Context;
         private readonly EmailService _emailService;
-        public SurgeonController(ApplicationDBContext applicationDBContext, EmailService emailService)
+        private readonly IConverter _converter;
+        public SurgeonController(ApplicationDBContext applicationDBContext, EmailService emailService, IConverter converter)
         {
             _Context = applicationDBContext;
             _emailService = emailService;
-
+            _converter = converter;
         }
-        public IActionResult Index(string name, string surname, string idNumber)
-        {
-            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(surname) || string.IsNullOrWhiteSpace(idNumber))
-            {
-                return NotFound();
-            }
-
-            // Find the patient by ID number
-            var patient = _Context.patients.FirstOrDefault(p => p.PatientIDNO == idNumber);
-            if (patient == null)
-            {
-                return NotFound();
-            }
-
-            // Retrieve patient history
-            var patientHistoryViewModel = new PatientHistoryViewModel
-            {
-                PatientID = patient.PatientID,
-                Patient = patient,
-                Allergies = _Context.PatientAllergies
-                    .Where(pa => pa.PatientID == patient.PatientID)
-                    .Select(pa => pa.Active)
-                    .ToList(),
-                AnConditions = _Context.PatientChronicConditions
-                    .Where(pcc => pcc.PatientID == patient.PatientID)
-                    .Select(pcc => pcc.AnConditions)
-                    .ToList(),
-                ChronicMedication = _Context.PatientMedications
-                    .Where(pm => pm.PatientID == patient.PatientID)
-                    .Select(pm => pm.ChronicMedication)
-                    .ToList(),
-            };
-
-            return View(patientHistoryViewModel);
-        }
-        public ActionResult ViewHistory()
+        public IActionResult GenerateReport()
         {
             return View();
         }
-        // GET: Report (Default View)
-        public ActionResult Index()
+        public IActionResult ReportView()
         {
             return View();
         }
 
-        // POST: Generate the report based on the selected date range
+        // Action to generate the report view
         [HttpPost]
-        public ActionResult Index(DateTime startDate, DateTime endDate)
+        public IActionResult GenerateSurgeryReport(DateTime startDate, DateTime endDate)
         {
             var bookings = _Context.bookings
-         .Include(b => b.BookingTreatmentCodes) // Include the BookingTreatmentCodes
-             .ThenInclude(btc => btc.TreatmentCode) // Then include the TreatmentCode
-         .Where(b => b.Date >= startDate && b.Date <= endDate)
-         .ToList();
+                .Where(b => b.Date >= startDate && b.Date <= endDate)
+                .Include(b => b.BookingTreatmentCodes)
+                .ThenInclude(tc => tc.TreatmentCode)
+                .ToList();
 
-            // Pass the date range to the view
-            ViewBag.StartDate = startDate.ToString("yyyy-MM-dd");
-            ViewBag.EndDate = endDate.ToString("yyyy-MM-dd");
+            var treatmentCodeSummary = bookings
+                .SelectMany(b => b.BookingTreatmentCodes)
+                .GroupBy(tc => tc.TreatmentCode.ICDCODE)
+                .Select(g => new TreatmentCodeSummary
+                {
+                    TreatmentCode = g.Key,
+                    TotalSurgeries = g.Count()
+                })
+                .ToList();
 
-            // Return the view with the report data
-            return View(bookings);
+            // Create a ViewModel to pass the data to the view
+            var reportViewModel = new SurgeryReportViewModel
+            {
+                Bookings = bookings,
+                TreatmentCodeSummary = treatmentCodeSummary,
+                StartDate = startDate,
+                EndDate = endDate,
+                ReportGeneratedDate = DateTime.Now
+            };
+
+            return View("ReportView", reportViewModel);
         }
 
-        // GET: Download the report as PDF
-        public ActionResult DownloadReportAsPdf(DateTime startDate, DateTime endDate)
+        // Action to generate the PDF report
+        public IActionResult DownloadSurgeryReport(DateTime startDate, DateTime endDate)
         {
-            // Get the data you want to display in the PDF
+            // Logic to generate PDF similar to the GenerateSurgeryReport action
             var bookings = _Context.bookings
-                             .Where(b => b.Date >= startDate && b.Date <= endDate)
-                             .ToList();
+                .Where(b => b.Date >= startDate && b.Date <= endDate)
+                .Include(b => b.BookingTreatmentCodes)
+                .ThenInclude(tc => tc.TreatmentCode)
+                .ToList();
 
-            // Generate the PDF using Rotativa
-            return new ViewAsPdf("Index", bookings)
+            var treatmentCodeSummary = bookings
+                .SelectMany(b => b.BookingTreatmentCodes)
+                .GroupBy(tc => tc.TreatmentCode.ICDCODE)
+                .Select(g => new TreatmentCodeSummary
+                {
+                    TreatmentCode = g.Key,
+                    TotalSurgeries = g.Count()
+                })
+                .ToList();
+
+            var pdfDoc = new HtmlToPdfDocument
             {
-                FileName = "SurgeryReport.pdf",
-                PageMargins = { Left = 10, Right = 10, Top = 20, Bottom = 20 },
-                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
-                CustomSwitches = "--footer-center \"Page: [page] of [toPage]\" --footer-right \"Generated: [date]\""
+                GlobalSettings =
+        {
+            ColorMode = ColorMode.Color,
+            Orientation = Orientation.Portrait,
+            PaperSize = PaperKind.A4,
+        },
+                Objects =
+        {
+            new ObjectSettings()
+            {
+                HtmlContent = GenerateHtmlContent(bookings, treatmentCodeSummary, startDate, endDate),
+            }
+        }
             };
+
+            var pdf = _converter.Convert(pdfDoc);
+            return File(pdf, "application/pdf", "SurgeryReport.pdf");
+        }
+
+
+        private string GenerateHtmlContent(List<Booking> bookings, List<TreatmentCodeSummary> treatmentCodeSummary, DateTime startDate, DateTime endDate)
+        {
+            var htmlContent = new StringBuilder();
+            var reportGeneratedDate = DateTime.Now.ToString("d MMMM yyyy");
+
+            // Add report header
+            htmlContent.Append($@"
+        <h1>SURGERY REPORT</h1>
+        <h2>Dr Jacob Moloi</h2>
+        <h3>Date Range: {startDate.ToString("d MMMM yyyy")} – {endDate.ToString("d MMMM yyyy")} | Report Generated: {reportGeneratedDate}</h3>
+        <table style='width:100%; border-collapse: collapse;'>
+            <thead>
+                <tr>
+                    <th style='border: 1px solid black; padding: 8px;'>DATE</th>
+                    <th style='border: 1px solid black; padding: 8px;'>PATIENT</th>
+                    <th style='border: 1px solid black; padding: 8px;'>TREATMENT CODE(S)</th>
+                </tr>
+            </thead>
+            <tbody>");
+
+            foreach (var booking in bookings)
+            {
+                var treatmentCodes = booking.BookingTreatmentCodes.Select(tc => tc.TreatmentCode.ICDCODE).ToArray();
+                htmlContent.Append($@"
+            <tr>
+                <td style='border: 1px solid black; padding: 8px;'>{booking.Date.ToShortDateString()}</td>
+                <td style='border: 1px solid black; padding: 8px;'>{booking.Name} {booking.Surname}</td>
+                <td style='border: 1px solid black; padding: 8px;'>{string.Join(", ", treatmentCodes)}</td>
+            </tr>");
+            }
+
+            htmlContent.Append($@"
+            </tbody>
+        </table>
+        <h3 style='margin-top: 20px;'>TOTAL PATIENTS: {bookings.Count}</h3>
+        <h2>SUMMARY PER TREATMENT CODE:</h2>
+        <table style='width:100%; border-collapse: collapse;'>
+            <thead>
+                <tr>
+                    <th style='border: 1px solid black; padding: 8px;'>TREATMENT CODE</th>
+                    <th style='border: 1px solid black; padding: 8px;'>TOTAL SURGERIES</th>
+                </tr>
+            </thead>
+            <tbody>");
+
+            foreach (var summary in treatmentCodeSummary)
+            {
+                htmlContent.Append($@"
+            <tr>
+                <td style='border: 1px solid black; padding: 8px;'>{summary.TreatmentCode}</td>
+                <td style='border: 1px solid black; padding: 8px;'>{summary.TotalSurgeries}</td>
+            </tr>");
+            }
+
+            htmlContent.Append($@"
+            </tbody>
+        </table>");
+
+            return htmlContent.ToString();
         }
 
         public IActionResult ToDoList()

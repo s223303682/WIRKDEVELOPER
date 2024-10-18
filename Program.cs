@@ -4,45 +4,56 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models.sendemail;
-
-
-
+using DinkToPdf;
+using DinkToPdf.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddTransient<EmailService>();  // Register EmailService
-var connectionString = builder.Configuration.GetConnectionString("ApplicationDBContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDBContextConnection' not found.");
+// Register DinkToPdf service
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
+// Register EmailService
+builder.Services.AddTransient<EmailService>();
+
+// Get the connection string
+var connectionString = builder.Configuration.GetConnectionString("ApplicationDBContextConnection")
+    ?? throw new InvalidOperationException("Connection string 'ApplicationDBContextConnection' not found.");
+
+// Add DbContext with SQL Server
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(connectionString));
 
+// Configure Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
 })
-    .AddEntityFrameworkStores<ApplicationDBContext>()
-    .AddDefaultTokenProviders();
+.AddEntityFrameworkStores<ApplicationDBContext>()
+.AddDefaultTokenProviders();
 
+// Configure Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-        .AddCookie(options =>
-        {
-            options.LoginPath = "/Account/Login";
-        });
-
-
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+    });
 
 // Add Razor Pages support
 builder.Services.AddRazorPages();
-// Add services to the container.
+
+// Add MVC support
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
+var app = builder.Build(); // Build the app after all services are registered
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+// Configure the HTTP request pipeline
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -50,8 +61,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();;
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
@@ -59,12 +69,11 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
 });
 
 app.MapRazorPages();
-app.Run();
+app.Run(); // Run the app
+
 //using (var scope = app.Services.CreateScope())
 //{
 //    var roleManager =
