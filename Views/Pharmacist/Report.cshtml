@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "~/Views/Shared/Pharmacy.cshtml";
+}
+<h3 class="mb-3">Dispensary Report</h3>
+
+<form asp-action="DispensaryReport" method="get" class="mb-4">
+    <div class="form-group row">
+        <label for="startDate" class="col-sm-2 col-form-label">Start Date:</label>
+        <div class="col-sm-4">
+            <input type="date" name="startDate" class="form-control" required />
+        </div>
+
+        <label for="endDate" class="col-sm-2 col-form-label">End Date:</label>
+        <div class="col-sm-4">
+            <input type="date" name="endDate" class="form-control" required />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Generate Report</button>
+</form>
+

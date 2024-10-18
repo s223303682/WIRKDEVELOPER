@@ -702,14 +702,19 @@ namespace WIRKDEVELOPER.Controllers
         {
             return View();
         }
-		public ActionResult DispensaryReport(DateTime? startDate, DateTime? endDate)
+        public IActionResult Report()
+        {
+            return View();
+        }
+
+        public ActionResult DispensaryReport(DateTime? startDate, DateTime? endDate)
 		{
 
             
 			// Initialize a default view model
 			var viewModel = new PharmacistReportViewModel
 			{
-				PharmacistName = "Dororo",
+				//PharmacistName = "Dororo",
 				StartDate = startDate ?? DateTime.Now,  // Use current date as default
 				EndDate = endDate ?? DateTime.Now,      // Use current date as default
 				ReportGeneratedDate = DateTime.Now,

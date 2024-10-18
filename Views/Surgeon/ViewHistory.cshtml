@@ -1,0 +1,39 @@
+﻿@model WIRKDEVELOPER.Models.PatientHistory.PatientHistoryViewModel
+
+@{
+    ViewData["Title"] = "Patient History";
+}
+
+<h2>Patient History for @Model.PatientName</h2>
+
+<div>
+    <h4>Allergies</h4>
+    <ul>
+        @foreach (var allergy in Model.Allergies)
+        {
+            <li>@allergy.ActiveName</li>
+        }
+    </ul>
+</div>
+
+<div>
+    <h4>Chronic Conditions</h4>
+    <ul>
+        @foreach (var condition in Model.AnConditions)
+        {
+            <li>@condition.Diagnose</li>
+        }
+    </ul>
+</div>
+
+<div>
+    <h4>Chronic Medications</h4>
+    <ul>
+        @foreach (var medication in Model.ChronicMedication)
+        {
+            <li>@medication.ChronicName</li>
+        }
+    </ul>
+</div>
+
+<a asp-action="CreatePrescription" class="btn btn-primary">Back to Create Prescription</a>

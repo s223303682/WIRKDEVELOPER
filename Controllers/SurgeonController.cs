@@ -19,7 +19,10 @@ using System.Web.Helpers;
 using System.Xml.Linq;
 using System.Diagnostics;
 using SelectListItem = Microsoft.AspNetCore.Mvc.Rendering.SelectListItem;
-using System.Linq;
+using DinkToPdf;
+using DinkToPdf.Contracts;
+using WIRKDEVELOPER.Models.PatientHistory;
+using System.Text;
 
 namespace WIRKDEVELOPER.Controllers
 {
@@ -27,52 +30,156 @@ namespace WIRKDEVELOPER.Controllers
     {
         private readonly ApplicationDBContext _Context;
         private readonly EmailService _emailService;
-        public SurgeonController(ApplicationDBContext applicationDBContext, EmailService emailService)
+        private readonly IConverter _converter;
+        public SurgeonController(ApplicationDBContext applicationDBContext, EmailService emailService, IConverter converter)
         {
             _Context = applicationDBContext;
             _emailService = emailService;
-
+            _converter = converter;
         }
-        // GET: Report (Default View)
-        public ActionResult Index()
+        public IActionResult GenerateReport()
+        {
+            return View();
+        }
+        public IActionResult ReportView()
         {
             return View();
         }
 
-        // POST: Generate the report based on the selected date range
+        // Action to generate the report view
         [HttpPost]
-        public ActionResult Index(DateTime startDate, DateTime endDate)
+        public IActionResult GenerateSurgeryReport(DateTime startDate, DateTime endDate)
         {
             var bookings = _Context.bookings
-         .Include(b => b.BookingTreatmentCodes) // Include the BookingTreatmentCodes
-             .ThenInclude(btc => btc.TreatmentCode) // Then include the TreatmentCode
-         .Where(b => b.Date >= startDate && b.Date <= endDate)
-         .ToList();
+                .Where(b => b.Date >= startDate && b.Date <= endDate)
+                .Include(b => b.BookingTreatmentCodes)
+                .ThenInclude(tc => tc.TreatmentCode)
+                .ToList();
 
-            // Pass the date range to the view
-            ViewBag.StartDate = startDate.ToString("yyyy-MM-dd");
-            ViewBag.EndDate = endDate.ToString("yyyy-MM-dd");
+            var treatmentCodeSummary = bookings
+                .SelectMany(b => b.BookingTreatmentCodes)
+                .GroupBy(tc => tc.TreatmentCode.ICDCODE)
+                .Select(g => new TreatmentCodeSummary
+                {
+                    TreatmentCode = g.Key,
+                    TotalSurgeries = g.Count()
+                })
+                .ToList();
 
-            // Return the view with the report data
-            return View(bookings);
+            // Create a ViewModel to pass the data to the view
+            var reportViewModel = new SurgeryReportViewModel
+            {
+                Bookings = bookings,
+                TreatmentCodeSummary = treatmentCodeSummary,
+                StartDate = startDate,
+                EndDate = endDate,
+                ReportGeneratedDate = DateTime.Now
+            };
+
+            return View("ReportView", reportViewModel);
         }
 
-        // GET: Download the report as PDF
-        public ActionResult DownloadReportAsPdf(DateTime startDate, DateTime endDate)
+        // Action to generate the PDF report
+        public IActionResult DownloadSurgeryReport(DateTime startDate, DateTime endDate)
         {
-            // Get the data you want to display in the PDF
+            // Logic to generate PDF similar to the GenerateSurgeryReport action
             var bookings = _Context.bookings
-                             .Where(b => b.Date >= startDate && b.Date <= endDate)
-                             .ToList();
+                .Where(b => b.Date >= startDate && b.Date <= endDate)
+                .Include(b => b.BookingTreatmentCodes)
+                .ThenInclude(tc => tc.TreatmentCode)
+                .ToList();
 
-            // Generate the PDF using Rotativa
-            return new ViewAsPdf("Index", bookings)
+            var treatmentCodeSummary = bookings
+                .SelectMany(b => b.BookingTreatmentCodes)
+                .GroupBy(tc => tc.TreatmentCode.ICDCODE)
+                .Select(g => new TreatmentCodeSummary
+                {
+                    TreatmentCode = g.Key,
+                    TotalSurgeries = g.Count()
+                })
+                .ToList();
+
+            var pdfDoc = new HtmlToPdfDocument
             {
-                FileName = "SurgeryReport.pdf",
-                PageMargins = { Left = 10, Right = 10, Top = 20, Bottom = 20 },
-                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
-                CustomSwitches = "--footer-center \"Page: [page] of [toPage]\" --footer-right \"Generated: [date]\""
+                GlobalSettings =
+        {
+            ColorMode = ColorMode.Color,
+            Orientation = Orientation.Portrait,
+            PaperSize = PaperKind.A4,
+        },
+                Objects =
+        {
+            new ObjectSettings()
+            {
+                HtmlContent = GenerateHtmlContent(bookings, treatmentCodeSummary, startDate, endDate),
+            }
+        }
             };
+
+            var pdf = _converter.Convert(pdfDoc);
+            return File(pdf, "application/pdf", "SurgeryReport.pdf");
+        }
+
+
+        private string GenerateHtmlContent(List<Booking> bookings, List<TreatmentCodeSummary> treatmentCodeSummary, DateTime startDate, DateTime endDate)
+        {
+            var htmlContent = new StringBuilder();
+            var reportGeneratedDate = DateTime.Now.ToString("d MMMM yyyy");
+
+            // Add report header
+            htmlContent.Append($@"
+        <h1>SURGERY REPORT</h1>
+        <h2>Dr Jacob Moloi</h2>
+        <h3>Date Range: {startDate.ToString("d MMMM yyyy")} – {endDate.ToString("d MMMM yyyy")} | Report Generated: {reportGeneratedDate}</h3>
+        <table style='width:100%; border-collapse: collapse;'>
+            <thead>
+                <tr>
+                    <th style='border: 1px solid black; padding: 8px;'>DATE</th>
+                    <th style='border: 1px solid black; padding: 8px;'>PATIENT</th>
+                    <th style='border: 1px solid black; padding: 8px;'>TREATMENT CODE(S)</th>
+                </tr>
+            </thead>
+            <tbody>");
+
+            foreach (var booking in bookings)
+            {
+                var treatmentCodes = booking.BookingTreatmentCodes.Select(tc => tc.TreatmentCode.ICDCODE).ToArray();
+                htmlContent.Append($@"
+            <tr>
+                <td style='border: 1px solid black; padding: 8px;'>{booking.Date.ToShortDateString()}</td>
+                <td style='border: 1px solid black; padding: 8px;'>{booking.Name} {booking.Surname}</td>
+                <td style='border: 1px solid black; padding: 8px;'>{string.Join(", ", treatmentCodes)}</td>
+            </tr>");
+            }
+
+            htmlContent.Append($@"
+            </tbody>
+        </table>
+        <h3 style='margin-top: 20px;'>TOTAL PATIENTS: {bookings.Count}</h3>
+        <h2>SUMMARY PER TREATMENT CODE:</h2>
+        <table style='width:100%; border-collapse: collapse;'>
+            <thead>
+                <tr>
+                    <th style='border: 1px solid black; padding: 8px;'>TREATMENT CODE</th>
+                    <th style='border: 1px solid black; padding: 8px;'>TOTAL SURGERIES</th>
+                </tr>
+            </thead>
+            <tbody>");
+
+            foreach (var summary in treatmentCodeSummary)
+            {
+                htmlContent.Append($@"
+            <tr>
+                <td style='border: 1px solid black; padding: 8px;'>{summary.TreatmentCode}</td>
+                <td style='border: 1px solid black; padding: 8px;'>{summary.TotalSurgeries}</td>
+            </tr>");
+            }
+
+            htmlContent.Append($@"
+            </tbody>
+        </table>");
+
+            return htmlContent.ToString();
         }
 
         public IActionResult ToDoList()
@@ -135,25 +242,24 @@ namespace WIRKDEVELOPER.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePrescription(PrescriptionViewModel model)
         {
-            // Initialize alerts
+            // Initialize alert view model to check for alerts
             var alertViewModel = new AlertViewModel
             {
                 HasAlerts = false,
                 IgnoreReason = model.IgnoreReason,
                 Name = model.Name,
                 Surname = model.Surname,
-                Email = model.Email, 
-                Gender = model.Gender ,
-                IDNumber = model.IDNumber ,
-                Date = model.Date ,
-                Prescriber = model.Prescriber ,
-                Status = model.Status ,
-                Urgent = model.Urgent ,
-                Medications = model.Medications // 
-
+                Email = model.Email,
+                Gender = model.Gender,
+                IDNumber = model.IDNumber,
+                Date = model.Date,
+                Prescriber = model.Prescriber,
+                Status = model.Status,
+                Urgent = model.Urgent,
+                Medications = model.Medications
             };
 
-            // Fetch current medication and allergy for the patient
+            // Fetch current medications and allergies for the patient
             var currentMedications = _Context.addm
                 .Where(a => a.Patient.PatientIDNO == model.IDNumber)
                 .Select(a => a.AnCurrentMedication.ChronicMedication.MedicationActive.Active.ActiveName)
@@ -182,25 +288,24 @@ namespace WIRKDEVELOPER.Controllers
                 // Check for drug interactions
                 if (currentMedications.Any(cm =>
                     (cm == "Carbimazole" && prescribedActiveIngredients.Contains("Doxazosin")) ||
-                    (cm == "Doxazosin" && prescribedActiveIngredients.Contains("Doxylamine Succinate")))
-                )
+                    (cm == "Doxazosin" && prescribedActiveIngredients.Contains("Doxylamine Succinate"))))
                 {
                     alertViewModel.HasAlerts = true;
                     break;
                 }
             }
 
-            // If there are alerts, check if IgnoreReason is provided
+            // If there are alerts, ensure IgnoreReason is provided
             if (alertViewModel.HasAlerts)
             {
                 if (string.IsNullOrWhiteSpace(model.IgnoreReason))
                 {
                     ModelState.AddModelError("IgnoreReason", "You must provide a reason for ignoring the alert.");
-                    return View("Alert", alertViewModel); // Return to Alert view with model errors
+                    return View("Alert", alertViewModel);
                 }
 
-                // Proceed with creating the prescription
-                var prescription = new Prescription
+                // Proceed with creating prescription with the alert and reason
+                var prescriptionWithAlert = new Prescription
                 {
                     Name = model.Name,
                     Surname = model.Surname,
@@ -208,10 +313,10 @@ namespace WIRKDEVELOPER.Controllers
                     Email = model.Email,
                     Gender = model.Gender,
                     Date = DateTime.Now,
-                    Prescriber = "Your Prescriber Name",
-                    Urgent = "No",
+                    Prescriber = model.Prescriber,
+                    Urgent = model.Urgent,
                     Status = "Pending",
-                    IgnoreReason = model.IgnoreReason,
+                    IgnoreReason = model.IgnoreReason, // Save the ignore reason
                     PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
                     {
                         PharmacyMedicationID = GetPharmacyMedicationId(m.PharmacyMedicationName),
@@ -220,13 +325,13 @@ namespace WIRKDEVELOPER.Controllers
                     }).ToList()
                 };
 
-                _Context.prescriptions.Add(prescription);
+                _Context.prescriptions.Add(prescriptionWithAlert);
                 await _Context.SaveChangesAsync();
 
                 return RedirectToAction("PrescriptionList");
             }
 
-            // Continue with normal processing if no alerts
+            // If no alerts, proceed with normal prescription creation
             var prescriptionWithoutAlerts = new Prescription
             {
                 Name = model.Name,
@@ -235,8 +340,8 @@ namespace WIRKDEVELOPER.Controllers
                 Email = model.Email,
                 Gender = model.Gender,
                 Date = DateTime.Now,
-                Prescriber = "Your Prescriber Name",
-                Urgent = "No",
+                Prescriber = model.Prescriber,
+                Urgent = model.Urgent,
                 Status = "Pending",
                 IgnoreReason = null, // No ignore reason since there are no alerts
                 PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
@@ -253,7 +358,6 @@ namespace WIRKDEVELOPER.Controllers
             return RedirectToAction("PrescriptionList");
         }
 
-
         private int GetPharmacyMedicationId(string medicationName)
         {
             // Logic to get medication ID from the name
@@ -263,35 +367,33 @@ namespace WIRKDEVELOPER.Controllers
         }
 
 
-        public IActionResult PrescriptionList()
+        public async Task<IActionResult> PrescriptionList()
         {
-            // Fetch the prescriptions from the database
-            var prescriptions = _Context.prescriptions
-                                        .Include(p => p.PrescriptionMedications)
-                                        .ToList();
-
-            // Map to a view model if necessary
-            var prescriptionList = prescriptions.Select(p => new PrescriptionViewModel
-            {
-                //PrescriptionID = p.PrescriptionID,
-                Name = p.Name,
-                Surname = p.Surname,
-                Gender = p.Gender,
-                Email = p.Email,
-                Date = p.Date,
-                Prescriber = p.Prescriber,
-                Urgent = p.Urgent,
-                Status = p.Status,
-                Medications = p.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
+            var prescriptions = await _Context.prescriptions
+                .Include(p => p.PrescriptionMedications)
+                .ThenInclude(pm => pm.PharmacyMedication)
+                .Select(p => new PrescriptionViewModel
                 {
-                    PharmacyMedicationName = m.PharmacyMedication.PharmacyMedicationName,
-                    Quantity = m.Quantity,
-                    Instructions = m.Instructions
-                }).ToList()
-            }).ToList();
+                    Name = p.Name,
+                    Surname = p.Surname,
+                    IDNumber = p.IDNumber,
+                    Email = p.Email,
+                    Date = p.Date,
+                    Status = p.Status,
+                    Prescriber = p.Prescriber,
+                    Urgent = p.Urgent,
+                    IgnoreReason = p.IgnoreReason, // Include the IgnoreReason
+                    Medications = p.PrescriptionMedications.Select(pm => new PrescriptionMedicationViewModel
+                    {
+                        PharmacyMedicationName = pm.PharmacyMedication.PharmacyMedicationName,
+                        Quantity = pm.Quantity,
+                        Instructions = pm.Instructions
+                    }).ToList()
+                }).ToListAsync();
 
-            return View(prescriptionList);
+            return View(prescriptions);
         }
+
 
 
         // GET: Prescription/Delete/{id}

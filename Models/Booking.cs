@@ -75,5 +75,19 @@ namespace WIRKDEVELOPER.Models
         public string? Status { get; set; } = "Admitted ";
     }
 
+    public class SurgeryReportViewModel
+    {
+        public List<Booking> Bookings { get; set; }
+        public List<TreatmentCodeSummary> TreatmentCodeSummary { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public DateTime ReportGeneratedDate { get; set; }
+    }
+
+    public class TreatmentCodeSummary
+    {
+        public string TreatmentCode { get; set; }
+        public int TotalSurgeries { get; set; }
+    }
 
 }

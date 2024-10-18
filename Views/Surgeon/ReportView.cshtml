@@ -1,0 +1,93 @@
+﻿@model WIRKDEVELOPER.Models.SurgeryReportViewModel
+
+@{
+    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surgery Report</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div  class="form-card" id="card-content">
+    <div class="container mt-4">
+        <h1>SURGERY REPORT</h1>
+        <h2>Dr Jacob Moloi</h2>
+        <h3>Date Range: @Model.StartDate.ToString("d MMMM yyyy") – @Model.EndDate.ToString("d MMMM yyyy")</h3>
+        <h4>Report Generated: @Model.ReportGeneratedDate.ToString("d MMMM yyyy")</h4>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>DATE</th>
+                    <th>PATIENT</th>
+                    <th>TREATMENT CODE(S)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model.Bookings)
+                {
+                    var treatmentCodes = string.Join(", ", booking.BookingTreatmentCodes.Select(tc => tc.TreatmentCode.ICDCODE));
+                    <tr>
+                        <td>@booking.Date.ToShortDateString()</td>
+                        <td>@booking.Name @booking.Surname</td>
+                        <td>@treatmentCodes</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h3>TOTAL PATIENTS: @Model.Bookings.Count</h3>
+
+        <h2>SUMMARY PER TREATMENT CODE:</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>TREATMENT CODE</th>
+                    <th>TOTAL SURGERIES</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var summary in Model.TreatmentCodeSummary)
+                {
+                    <tr>
+                        <td>@summary.TreatmentCode</td>
+                        <td>@summary.TotalSurgeries</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-end">
+            <button onclick="downloadPDF()" class="btn btn-primary btn-sm">
+                <i class="fas fa-download"></i> Download PDF
+            </button>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+    </div>
+    </div>
+</body>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        function downloadPDF() {
+            const element = document.getElementById('card-content');
+            html2pdf()
+                .from(element)
+                .save('ReportView.pdf')
+                .catch(err => {
+                    console.error("Error generating PDF:", err);
+                });
+        }
+    </script>
+}
+</html>

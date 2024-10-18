@@ -3,7 +3,7 @@
     public class PharmacistReportViewModel
     {
 
-        public string PharmacistName { get; set; } = "Dorothy Daniels";
+        //public string PharmacistName { get; set; } = "Dorothy Daniels";
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime ReportGeneratedDate { get; set; } = DateTime.Now;

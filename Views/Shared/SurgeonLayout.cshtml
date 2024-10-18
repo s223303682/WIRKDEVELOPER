@@ -127,11 +127,8 @@
 								<i class="align-middle" data-feather="activity"></i> <span class="align-middle">Prescription</span>
 							</a>
 						</li>
-						<li class="sidebar-item">
-							<a asp-controller="Surgeon" asp-action="Index" class="sidebar-link">
-								<i class="align-middle" data-feather="list"></i> <span class="align-middle">Report</span>
-							</a>
-						</li>
+						<a asp-controller="Surgeon" asp-action="GenerateReport" class="btn btn-info">Generate Surgery Report</a>
+
 						<li class="sidebar-item">
 							<a asp-controller="Surgeon" asp-action="ToDoList" class="sidebar-link">
 								<i class="align-middle" data-feather="list"></i> <span class="align-middle">To-to list</span>

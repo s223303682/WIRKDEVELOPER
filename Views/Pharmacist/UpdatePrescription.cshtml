@@ -80,9 +80,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Update Prescription</button>
-    <a asp-controller="Pharmacist" asp-action="ViewPatientHistoryByDetails" asp-route-name="@Model.Name" asp-route-surname="@Model.Surname" asp-route-email="@Model.Email" asp-route-idNumber="@Model.IDNumber" class="btn btn-primary">
-        View History
-    </a>
+    <a asp-controller="PatientHistory" asp-action="Index" asp-route-name="@Model.Name" asp-route-surname="@Model.Surname" asp-route-idNumber="@Model.IDNumber" class="btn btn-info">View Patient History</a>
 
     <br />
     <br />
