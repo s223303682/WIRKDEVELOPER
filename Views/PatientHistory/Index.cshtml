@@ -1,0 +1,38 @@
+﻿@model WIRKDEVELOPER.Models.PatientHistory.PatientHistoryViewModel
+ 
+
+    <h2>Patient History for @Model.PatientName</h2>
+
+    <div>
+        <h4>Allergies</h4>
+        <ul>
+            @foreach (var allergy in Model.Allergies)
+            {
+                <li>@allergy.ActiveName</li>
+            }
+        </ul>
+    </div>
+
+    <div>
+        <h4>Chronic Conditions</h4>
+        <ul>
+            @foreach (var condition in Model.AnConditions)
+            {
+                <li>@condition.Diagnose</li>
+            }
+        </ul>
+    </div>
+
+    <div>
+        <h4>Chronic Medications</h4>
+        <ul>
+            @foreach (var medication in Model.ChronicMedication)
+            {
+                <li>@medication.ChronicName</li>
+            }
+        </ul>
+    </div>
+
+<a onclick="history.back()" class="btn btn-primary"><i class="bi bi-plus-circle"></i>BACK</a>
+
+
