@@ -8,128 +8,134 @@
     <div class="card w-75">
         <div class="card-body ">
             <div class="card-header bg-primary">
-
-                <h3 class="card-title text-white mt-2" id="exampleModalLabel">MEDICATION NOTES</h3>
+                <h3 class="card-title text-white mt-2" id="exampleModalLabel">ORDER ANAESTHETICS</h3>
             </div>
-<h1>Create Order</h1>
+            <h1>Create Order</h1>
 
-<form asp-action="CreateOrder" method="post">
-    @Html.AntiForgeryToken()
+            <form asp-action="CreateOrder" method="post">
+                @Html.AntiForgeryToken()
 
-    <div class="form-group">
-       <label> Date:</label>
-        <input type="date"  name="date" required />
-        <span asp-validation-for="Date" class="text-danger"></span>
-    </div>
-    <!-- Date -->
-    @* <div class="form-group">
-        <label asp-for="Date" class="control-label"></label>
-        <input asp-for="Date" class="form-control" />
-        <span asp-validation-for="Date" class="text-danger"></span>
-    </div> *@
-
-    <!-- Patient Selection -->
-    <div class="form-group">
-        <label asp-for="AddmID" class="control-label"></label>
-        <select asp-for="AddmID" class="form-control" asp-items="ViewBag.getPatient"></select>
-        <span asp-validation-for="AddmID" class="text-danger"></span>
-    </div>
-
-    <!-- Order Items (Medications) -->
-    <h3>Medications</h3>
-    <div id="order-items">
-        @for (int i = 0; i < Model.OrderItems.Count; i++)
-        {
-            <div class="order-item row">
-                <!-- Medication -->
-                <div class="form-group col-md-4">
-                    <label asp-for="@Model.OrderItems[i].PharmacyMedicationID" class="control-label"></label>
-                    <select asp-for="@Model.OrderItems[i].PharmacyMedicationID" class="form-control" asp-items="ViewBag.getMedication"></select>
-                    <span asp-validation-for="@Model.OrderItems[i].PharmacyMedicationID" class="text-danger"></span>
+                <div class="form-group">
+                    <label>Date:</label>
+                    <input type="date" name="date" required />
+                    <span asp-validation-for="Date" class="text-danger"></span>
                 </div>
 
-                <!-- Quantity -->
-                <div class="form-group col-md-2">
-                    <label asp-for="@Model.OrderItems[i].Quantity" class="control-label"></label>
-                    <input asp-for="@Model.OrderItems[i].Quantity" class="form-control" />
-                    <span asp-validation-for="@Model.OrderItems[i].Quantity" class="text-danger"></span>
+                <!-- Patient Selection -->
+                <div class="form-group">
+                    <label asp-for="AddmID" class="control-label"></label>
+                    <select asp-for="AddmID" class="form-control" asp-items="ViewBag.getPatient" id="patient-dropdown">
+                        <!-- Patient options populated by ViewBag -->
+                    </select>
+                    <span asp-validation-for="AddmID" class="text-danger"></span>
                 </div>
 
-                <!-- Instructions -->
-                <div class="form-group col-md-4">
-                    <label asp-for="@Model.OrderItems[i].Instructions" class="control-label"></label>
-                    <input asp-for="@Model.OrderItems[i].Instructions" class="form-control" />
-                    <span asp-validation-for="@Model.OrderItems[i].Instructions" class="text-danger"></span>
+                <!-- Order Items (Medications) -->
+                <h3>Medications</h3>
+                <div id="order-items">
+                    @for (int i = 0; i < Model.OrderItems.Count; i++)
+                    {
+                        <div class="order-item row">
+                            <!-- Medication -->
+                            <div class="form-group col-md-4">
+                                <label asp-for="@Model.OrderItems[i].PharmacyMedicationID" class="control-label"></label>
+                                <select asp-for="@Model.OrderItems[i].PharmacyMedicationID" class="form-control" asp-items="ViewBag.getMedication"></select>
+                                <span asp-validation-for="@Model.OrderItems[i].PharmacyMedicationID" class="text-danger"></span>
+                            </div>
+
+                            <!-- Quantity -->
+                            <div class="form-group col-md-2">
+                                <label asp-for="@Model.OrderItems[i].Quantity" class="control-label"></label>
+                                <input asp-for="@Model.OrderItems[i].Quantity" class="form-control" />
+                                <span asp-validation-for="@Model.OrderItems[i].Quantity" class="text-danger"></span>
+                            </div>
+
+                            <!-- Instructions -->
+                            <div class="form-group col-md-4">
+                                <label asp-for="@Model.OrderItems[i].Instructions" class="control-label"></label>
+                                <input asp-for="@Model.OrderItems[i].Instructions" class="form-control" />
+                                <span asp-validation-for="@Model.OrderItems[i].Instructions" class="text-danger"></span>
+                            </div>
+
+                            <!-- Remove Button -->
+                            <div class="form-group col-md-2">
+                                <button type="button" class="btn btn-danger remove-item">Remove</button>
+                            </div>
+                        </div>
+                    }
                 </div>
 
-                <!-- Remove Button -->
-                <div class="form-group col-md-2">
-                    <button type="button" class="btn btn-danger remove-item">Remove</button>
+                <!-- Add Item Button -->
+                <button type="button" id="add-item" class="btn btn-secondary">Add another item</button>
+
+                <!-- Urgent Selection -->
+                <div class="form-group">
+                    <label asp-for="Urgent" class="control-label"></label>
+                    <select asp-for="Urgent" class="form-control">
+                        <option value="Select">Select</option>
+                        <option value="YES">YES</option>
+                        <option value="NO">NO</option>
+                    </select>
+                    <span asp-validation-for="Urgent" class="text-danger"></span>
                 </div>
-            </div>
-        }
-    </div>
 
-    <!-- Add Item Button -->
-    <button type="button" id="add-item" class="btn btn-secondary">Add another item</button>
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <input type="submit" value="Create Order" class="btn btn-primary" />
+                </div>
 
-    <!-- Urgent Selection -->
-    <div class="form-group">
-        <label asp-for="Urgent" class="control-label"></label>
-        <select asp-for="Urgent" class="form-control">
-            <option value="Select">Select</option>
-            <option value="YES">YES</option>
-            <option value="NO">NO</option>
-        </select>
-        <span asp-validation-for="Urgent" class="text-danger"></span>
-    </div>
-
-    <!-- Submit Button -->
-    <div class="form-group">
-        <input type="submit" value="Create Order" class="btn btn-primary" />
-    </div>
-                <a asp-controller="Anaesthesiologist" asp-action="ViewPatientHistory" asp-route-id="@Model.AddmID" class="btn btn-primary">
+                <!-- History Button -->
+                <a id="view-history-btn" href="#" class="btn btn-primary">
                     <i class="bi bi-plus-circle"></i> History
                 </a>
-</form>
-</div>
-</div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
     <script>
+        // Dynamically update the "View Patient History" button when a patient is selected
+        document.getElementById('patient-dropdown').addEventListener('change', function () {
+            var selectedAddmID = this.value;
+            var historyButton = document.getElementById('view-history-btn');
+
+            // Update the href of the history button with the selected AddmID
+            historyButton.href = '/Anaesthesiologist/ViewPatientHistory/' + selectedAddmID;
+        });
+
         // Add new item dynamically
         document.getElementById('add-item').addEventListener('click', function () {
             var index = document.querySelectorAll('.order-item').length;
             var newItem = `
-                        <div class="order-item row">
-                            <div class="form-group col-md-4">
-                                <label for="OrderItems_${index}__PharmacyMedicationID" class="control-label">Medication Ordered</label>
-                                <select name="OrderItems[${index}].PharmacyMedicationID" class="form-control">
+                                <div class="order-item row">
+                                    <div class="form-group col-md-4">
+                                        <label for="OrderItems_${index}__PharmacyMedicationID" class="control-label">Medication Ordered</label>
+                                        <select name="OrderItems[${index}].PharmacyMedicationID" class="form-control">
         @foreach (var medication in ViewBag.getMedication as SelectList)
         {
-                                            <option value="@medication.Value">@medication.Text</option>
+                                                        <option value="@medication.Value">@medication.Text</option>
         }
-                                </select>
-                                <span class="text-danger"></span>
-                            </div>
+                                        </select>
+                                        <span class="text-danger"></span>
+                                    </div>
 
-                            <div class="form-group col-md-2">
-                                <label for="OrderItems_${index}__Quantity" class="control-label">Quantity</label>
-                                <input name="OrderItems[${index}].Quantity" class="form-control" />
-                                <span class="text-danger"></span>
-                            </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="OrderItems_${index}__Quantity" class="control-label">Quantity</label>
+                                        <input name="OrderItems[${index}].Quantity" class="form-control" />
+                                        <span class="text-danger"></span>
+                                    </div>
 
-                            <div class="form-group col-md-4">
-                                <label for="OrderItems_${index}__Instructions" class="control-label">Instructions</label>
-                                <input name="OrderItems[${index}].Instructions" class="form-control" />
-                                <span class="text-danger"></span>
-                            </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="OrderItems_${index}__Instructions" class="control-label">Instructions</label>
+                                        <input name="OrderItems[${index}].Instructions" class="form-control" />
+                                        <span class="text-danger"></span>
+                                    </div>
 
-                            <div class="form-group col-md-2">
-                                <button type="button" class="btn btn-danger remove-item">Remove</button>
-                            </div>
-                        </div>`;
+                                    <div class="form-group col-md-2">
+                                        <button type="button" class="btn btn-danger remove-item">Remove</button>
+                                    </div>
+                                </div>`;
 
             document.getElementById('order-items').insertAdjacentHTML('beforeend', newItem);
         });
@@ -142,6 +148,7 @@
         });
     </script>
 }
+
 
 
 
