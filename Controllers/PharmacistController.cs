@@ -476,7 +476,7 @@ namespace WIRKDEVELOPER.Controllers
                     .Select(m => new PharmacyMedicationViewModel
                     {
                         PharmacyMedicationId = m.PharmacyMedicationID,
-                        MedicationName = m.PharmacyMedicationName,
+                        PharmacyMedicationName = m.PharmacyMedicationName,
                         QuantityOnHand = m.stockhand,
                         ReorderLevel = m.stocklevel
                     }).ToList(),
@@ -522,7 +522,7 @@ namespace WIRKDEVELOPER.Controllers
                 // Optionally, add to StockOrders if needed for email or other purposes
                 model.StockOrders.Add(new StockOrderView
                 {
-                    MedicationName = item.MedicationName,
+                    MedicationName = item.PharmacyMedicationName,
                     OrderQuantity = item.OrderQuantity,
                     Status = stockOrder.Status,
                     Date = stockOrder.Date,
@@ -538,21 +538,31 @@ namespace WIRKDEVELOPER.Controllers
                 var firstOrder = model.StockOrders.First(); // Take the first order to get email address
                 string subject = "Booking Confirmation";
                 string body = $@"
-                    Dear Customer,
-
-                    Your booking is confirmed with the following details:
-
-                    {string.Join("\n", model.StockOrders.Select(o => $@"
-                        Medication Name: {o.MedicationName}
-                        Quantity Ordered: {o.OrderQuantity}
-                        Status: {o.Status}
-                        Date: {o.Date?.ToString("MMMM dd, yyyy")}
-                    "))}
-
-                    Thank you for your order!
-
-                    Best regards,
-                    Your Pharmacy";
+                        <p>Dear Purchase Manager,</p>
+                        <p>Your booking is confirmed with the following details:</p>
+                        <table border='1' cellpadding='5' cellspacing='0'>
+                            <thead>
+                                <tr>
+                                    <th>Medication Name</th>
+                                    <th>Quantity Ordered</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {string.Join("", model.StockOrders.Select(o => $@"
+                                    <tr>
+                                        <td>{o.MedicationName}</td>
+                                        <td>{o.OrderQuantity}</td>
+                                        <td>{o.Status}</td>
+                                        <td>{o.Date?.ToString("MMMM dd, yyyy")}</td>
+                                    </tr>
+                                "))}
+                            </tbody>
+                        </table>
+                        <p>Thank you for your order!</p>
+                        <p>Best regards,</p>
+                        <p>Your Pharmacy</p>";
 
                 try
                 {
