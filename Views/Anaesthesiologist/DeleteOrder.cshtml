@@ -44,15 +44,14 @@
                 }
             </ul>
         </dd>
-
-
     </dl>
 </div>
 
 <form asp-action="DeleteConfirmed" method="post">
     <input type="hidden" asp-for="AnOrderID" />
-    @* <input type="submit" value="Delete" class="btn btn-danger"/> *@
-     <button type="submit" class="btn btn-danger">Delete</button>
-     <a asp-action="IndexOrders" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="IndexOrders" class="btn btn-secondary">Cancel</a>
 </form>
+
+
 

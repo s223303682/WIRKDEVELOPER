@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
@@ -322,18 +325,18 @@ namespace WIRKDEVELOPER.Controllers
 
             return View(order); // Display the order details on the delete confirmation page
         }
-        [HttpPost, ActionName("DeleteOrder")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int AnOrderID) // Make sure the parameter name matches your hidden input
         {
             // Retrieve the order along with its related medications
             var order = await _Context.order
                 .Include(o => o.OrderMedications)
-                .FirstOrDefaultAsync(o => o.AnOrderID == id);
+                .FirstOrDefaultAsync(o => o.AnOrderID == AnOrderID);
 
             if (order == null)
             {
-                return NotFound();
+                return NotFound(); // Return 404 if the order is not found
             }
 
             // Remove related medications first
@@ -348,14 +351,11 @@ namespace WIRKDEVELOPER.Controllers
             return RedirectToAction("IndexOrders"); // Redirect to the order list after deletion
         }
 
-		
-
-
-		
-		public IActionResult IndexVitalRanges()
+        public IActionResult IndexVitalRanges()
         {
             IEnumerable<VitalRanges> objList = _Context.vitalranges;
             return View(objList);
+
 
         }
         public IActionResult VitalRanges()
@@ -607,11 +607,11 @@ namespace WIRKDEVELOPER.Controllers
         public async Task<IActionResult> GenerateReport(DateTime startDate, DateTime endDate)
         {
             var orders = await _Context.order
-        .Include(o => o.OrderMedications)
-            .ThenInclude(om => om.PharmacyMedication)
-        .Include(o => o.Addm) // Ensure patient data is included
-        .Where(o => o.Date >= startDate && o.Date <= endDate)
-        .ToListAsync();
+                .Include(o => o.OrderMedications)
+                .ThenInclude(om => om.PharmacyMedication)
+                .Include(o => o.Addm)
+                .Where(o => o.Date >= startDate && o.Date <= endDate)
+                .ToListAsync();
 
             var reportData = new List<AnestheticReportViewModel>();
             var medicineSummary = new Dictionary<string, int>();
@@ -620,9 +620,6 @@ namespace WIRKDEVELOPER.Controllers
             {
                 foreach (var medication in order.OrderMedications)
                 {
-                    // Log for debugging
-                    Debug.WriteLine($"Patient: {order.Addm?.PatientName}, Medication: {medication.PharmacyMedication?.PharmacyMedicationName}, Quantity: {medication.Quantity}");
-
                     reportData.Add(new AnestheticReportViewModel
                     {
                         Date = order.Date?.ToString("d"),
@@ -658,6 +655,56 @@ namespace WIRKDEVELOPER.Controllers
 
             return View(reportData);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DownloadReport(DateTime startDate, DateTime endDate)
+        {
+            var orders = await _Context.order
+                .Include(o => o.OrderMedications)
+                .ThenInclude(om => om.PharmacyMedication)
+                .Include(o => o.Addm)
+                .Where(o => o.Date >= startDate && o.Date <= endDate)
+                .ToListAsync();
+
+            using (var stream = new MemoryStream())
+            {
+                // Initialize iTextSharp 5 Document and PdfWriter
+                var document = new iTextSharp.text.Document();
+                iTextSharp.text.pdf.PdfWriter.GetInstance(document, stream);
+                document.Open();
+
+                // Add content to the PDF
+                document.Add(new iTextSharp.text.Paragraph("Anesthetic Report"));
+                document.Add(new iTextSharp.text.Paragraph($"Date Range: {startDate:yyyy-MM-dd} - {endDate:yyyy-MM-dd}"));
+                document.Add(new iTextSharp.text.Paragraph($"Report Generated: {DateTime.Now:yyyy-MM-dd}"));
+
+                // Create a table for report data
+                var table = new iTextSharp.text.pdf.PdfPTable(4);
+                table.AddCell("Date");
+                table.AddCell("Patient");
+                table.AddCell("Medication");
+                table.AddCell("Quantity");
+
+                foreach (var order in orders)
+                {
+                    foreach (var medication in order.OrderMedications)
+                    {
+                        table.AddCell(order.Date?.ToString("d"));
+                        table.AddCell(order.Addm?.PatientName);
+                        table.AddCell(medication.PharmacyMedication?.PharmacyMedicationName);
+                        table.AddCell(medication.Quantity.ToString());
+                    }
+                }
+
+                document.Add(table);
+                document.Close();
+
+                // Return the PDF file as a download
+                return File(stream.ToArray(), "application/pdf", "AnestheticReport.pdf");
+            }
+        }
+
+
 
 
         public async Task<IActionResult> ViewPatientHistory(int id) // id is the AddmID

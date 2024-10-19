@@ -5,103 +5,94 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @model IEnumerable<WIRKDEVELOPER.Models.AnestheticReportViewModel>
+
 @{
     ViewBag.Title = "Anesthetic Report";
     Layout = "AnaesthesiologistLayout";
     var totalPatients = Model.Select(r => r.PatientName).Distinct().Count();
 }
+
 <div class="mx-0 mx-sm-auto">
     <div class="card w-75">
-        <div class="card-body ">
+        <div class="card-body">
             <div class="card-header bg-primary">
-
                 <h3 class="card-title text-white mt-2" id="exampleModalLabel">ANESTHETIC REPORT</h3>
             </div>
 
-<form asp-action="GenerateReport" method="post">
-    <h1><label>Start Date:</label></h1> 
-    <input type="date" name="startDate" required />
-    <h1><label>End Date:</label> </h1>
-    <input type="date" name="endDate" required />
-    <button type="submit">Generate Report</button>
-</form>
-<br />
-<h2>ANESTHETIC REPORT</h2>
-<br />
-<div class="user_info">
-    <a>
-         <h1> Dr <span class="text-dark">@UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName</span> </h1>
-       
-    </a>
-</div> 
-<br />
-@* <p>Dr Karien Momberg</p> *@
-<p><h1>Date Range: @ViewBag.StartDate.ToShortDateString() – @ViewBag.EndDate.ToShortDateString()</h1></p>
-<p><h1>Report Generated: @DateTime.Now.ToShortDateString()</h1></p>
+            <form asp-action="GenerateReport" method="post">
+                <h1><label>Start Date:</label></h1>
+                <input type="date" name="startDate" required />
+                <h1><label>End Date:</label> </h1>
+                <input type="date" name="endDate" required />
+                <button type="submit">Generate Report</button>
+            </form>
 
-<table class="table table-sm table-hover">
-    <thead class="table-secondary">
-        <tr>
-            <th>
-                DATE
-            </th>
-            <th>
-                PATIENT
-            </th>
-            <th>
-                MEDICATION
-            </th>
-            <th>
-                QTY
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model) // Use the model instead of ViewBag
-        {
-            <tr>
-                <td>
-                    @item.Date
-                </td>
-                <td>
-                    @item.PatientName
-                </td>
-                <td>
-                    @item.MedicationName
-                </td>
-                <td>
-                    @item.Quantity
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<br />
-<h3>TOTAL PATIENTS: @totalPatients</h3>
-<br />
-<h2>SUMMARY PER MEDICINE:</h2>
-<table class="table table-sm table-hover">
-    <thead class="table-secondary">
-        <tr>
-            <th>MEDICINE</th>
-            <th>QTY ORDERED</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var summary in ViewBag.MedicineSummary)
-        {
-            <tr>
-                <td>
-                    @summary.MedicationName
-                </td>
-                <td>
-                    @summary.QuantityOrdered
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            <br />
+            <h2>ANESTHETIC REPORT</h2>
+            <br />
+
+            <div class="user_info">
+                <a>
+                    <h1>Dr <span class="text-dark">@UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName</span></h1>
+                </a>
+            </div>
+            <br />
+
+            <p><h1>Date Range: @ViewBag.StartDate.ToShortDateString() – @ViewBag.EndDate.ToShortDateString()</h1></p>
+            <p><h1>Report Generated: @DateTime.Now.ToShortDateString()</h1></p>
+
+            <table class="table table-sm table-hover">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>DATE</th>
+                        <th>PATIENT</th>
+                        <th>MEDICATION</th>
+                        <th>QTY</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Date</td>
+                            <td>@item.PatientName</td>
+                            <td>@item.MedicationName</td>
+                            <td>@item.Quantity</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <br />
+            <h3>TOTAL PATIENTS: @totalPatients</h3>
+            <br />
+            <h2>SUMMARY PER MEDICINE:</h2>
+
+            <table class="table table-sm table-hover">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>MEDICINE</th>
+                        <th>QTY ORDERED</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var summary in ViewBag.MedicineSummary)
+                    {
+                        <tr>
+                            <td>@summary.MedicationName</td>
+                            <td>@summary.QuantityOrdered</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <form asp-action="DownloadReport" method="post">
+                <input type="hidden" name="startDate" value="@ViewBag.StartDate" />
+                <input type="hidden" name="endDate" value="@ViewBag.EndDate" />
+                <button type="submit" class="btn btn-danger">Download PDF</button>
+            </form>
+        </div>
+    </div>
 </div>
-</div>
-</div>
+
 
