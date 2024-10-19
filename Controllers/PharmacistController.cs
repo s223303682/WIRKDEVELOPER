@@ -486,7 +486,7 @@ namespace WIRKDEVELOPER.Controllers
                     .Select(o => new StockOrderView
                     {
                         StockOrderId = o.PharmStockId,
-                        MedicationName = o.PharmacyMedication.PharmacyMedicationName,
+                        PharmacyMedicationName = o.PharmacyMedication.PharmacyMedicationName,
                         OrderQuantity = o.QuantityOrdered,
                         Date = o.Date,
                         Status = o.Status
@@ -522,7 +522,7 @@ namespace WIRKDEVELOPER.Controllers
                 // Optionally, add to StockOrders if needed for email or other purposes
                 model.StockOrders.Add(new StockOrderView
                 {
-                    MedicationName = item.PharmacyMedicationName,
+                    PharmacyMedicationName = item.PharmacyMedicationName,
                     OrderQuantity = item.OrderQuantity,
                     Status = stockOrder.Status,
                     Date = stockOrder.Date,
@@ -552,7 +552,7 @@ namespace WIRKDEVELOPER.Controllers
                             <tbody>
                                 {string.Join("", model.StockOrders.Select(o => $@"
                                     <tr>
-                                        <td>{o.MedicationName}</td>
+                                        <td>{o.PharmacyMedicationName}</td>
                                         <td>{o.OrderQuantity}</td>
                                         <td>{o.Status}</td>
                                         <td>{o.Date?.ToString("MMMM dd, yyyy")}</td>
