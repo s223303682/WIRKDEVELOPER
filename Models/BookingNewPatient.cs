@@ -18,6 +18,7 @@ namespace WIRKDEVELOPER.Models
         [Required(ErrorMessage = "Contact number is required.")]
         [RegularExpression(@"^\d{10}$", ErrorMessage = "Contact number must be 10 digits.")]
         public string ContactNumber { get; set; }
+        [EmailAddress(ErrorMessage = "Invalid email address format.")]
         public string Email { get; set; }
         public DateTime Date { get; set; }
         public TimeSpan Time { get; set; }

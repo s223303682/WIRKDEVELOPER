@@ -1,9 +1,12 @@
 ﻿@model IEnumerable<WIRKDEVELOPER.Models.PrescriptionViewModel>
+@{
+    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
+}
 
 <h2>Prescription List</h2>
 
-<table class="table table-striped">
-    <thead>
+<table class="table table-bordered table-striped table-white">
+    <thead class="thead-primary">
         <tr>
             <th>Name</th>
             <th>Surname</th>

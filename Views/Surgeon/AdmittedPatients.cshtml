@@ -1,0 +1,66 @@
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Addm>
+
+@{
+
+    Layout = "~/Views/Shared/SurgeonLayout.cshtml";
+}
+
+
+<h2>Admitted Patients</h2>
+<a asp-action="DashBoard" class="btn btn-secondary">Back to Main</a>
+<table class="table table-bordered table-striped table-white">
+    <thead class="thead-primary">
+        <tr>
+            <th>Patient ID No</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Gender</th>
+            <th>Email Address</th>
+            <th>Province</th>
+            <th>City</th>
+            <th>Suburb</th>
+            <th>Ward</th>
+            <th>Bed Number</th>
+            <th>Chronic Medication</th>
+            <th>Allergies</th>
+            <th>Current Medication</th>
+            <th>Condition</th>
+            <th>AddBooking</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var patient in Model)
+        {
+            <tr>
+                <td>@patient.Patient.PatientIDNO</td>
+                <td>@patient.Patient.PatientName</td>
+                <td>@patient.Patient.PatientSurname</td>
+                <td>@patient.Patient.Gender</td>
+                <td>@patient.Patient.EmailAddress</td>
+                <td>@patient.Patient.province</td>
+                <td>@patient.Patient.City</td>
+                <td>@patient.Patient.surbub</td>
+                <td>@patient.Ward.WardName</td>
+                <td>@patient.Bed.BedNumber</td>
+                <td>@patient.ChronicMedication?.ChronicName</td>
+                <td>@patient.AnAllergies?.ActiveID</td>
+                <td>@patient.AnCurrentMedication?.ChronicMedication?.ChronicName</td>
+                <td>@patient.AnConditions?.Diagnose</td>
+                <td>
+                    <form asp-controller="Surgeon" asp-action="CreateBooking" method="get">
+                        <input type="hidden" name="AddmID" value="@patient.AddmID" />
+                        <input type="hidden" name="IDNumber" value="@patient.Patient.PatientIDNO" />
+                        <input type="hidden" name="name" value="@patient.Patient.PatientName" />
+                        <input type="hidden" name="surname" value="@patient.Patient.PatientSurname" />
+                        <input type="hidden" name="gender" value="@patient.Patient.Gender" />
+                        <input type="hidden" name="email" value="@patient.Patient.EmailAddress" />
+                        <button type="submit" class="btn btn-primary mx-1">Add Booking</button>
+
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
