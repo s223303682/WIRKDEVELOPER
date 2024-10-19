@@ -12,6 +12,7 @@
             
             <th>Name</th>
             <th>Surname</th>
+            <th>Id Number</th>
             <th>Email</th>
             <th>Date</th>
             <th>Time</th>
@@ -22,6 +23,7 @@
             <th>Operation Theatre</th>
             <th>Anaesthesiologist</th>
             <th>Treatment Codes</th>
+            <th>Actions</th> <!-- New column for actions -->
             <th>Actions</th> <!-- New column for actions -->
         </tr>
     </thead>
@@ -34,6 +36,7 @@
                     
                     <td>@booking.BookingNewPatientName</td>
                     <td>@booking.BookingNewPatientSurname</td>
+                    <td>@booking.BookingNewPatientIDNUmber</td>
                     <td>@booking.Email</td>
                     <td>@booking.Date.ToString("yyyy-MM-dd")</td>
                     <td>@booking.Time</td>
@@ -55,11 +58,23 @@
                         }
                     </td>
                     <td>
+                        <form asp-controller="Surgeon" asp-action="CreatePrescription" method="get" class="d-inline">
+                            <input type="hidden" name="BookingID" value="@booking.BookingNewPatientID" />
+                            <input type="hidden" name="IDNumber" value="@booking.BookingNewPatientIDNUmber" />
+                            <input type="hidden" name="name" value="@booking.BookingNewPatientName" />
+                            <input type="hidden" name="surname" value="@booking.BookingNewPatientSurname" />
+                            <input type="hidden" name="gender" value="@booking.Gender" />
+                            <input type="hidden" name="email" value="@booking.Email" />
+                            <button type="submit" class="btn btn-secondary btn-sm">Add Prescription</button>
+                        </form>
+                    </td>
+                    <td>
                         <form asp-action="DeleteBooking" method="post" style="display:inline;">
                             <input type="hidden" name="id" value="@booking.BookingNewPatientID" />
                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this booking?');">Delete</button>
                         </form>
                     </td>
+                   
                 </tr>
             }
         }

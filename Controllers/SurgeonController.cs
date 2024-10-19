@@ -428,6 +428,7 @@ namespace WIRKDEVELOPER.Controllers
                     BookingNewPatientID = b.BookingNewPatientID,
                     BookingNewPatientName = b.BookingNewPatientName,
                     BookingNewPatientSurname = b.BookingNewPatientSurname,
+                    BookingNewPatientIDNUmber = b.BookingNewPatientIDNUmber,
                     Email = b.Email,
                     Date = b.Date,
                     Province = b.Province,

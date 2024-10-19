@@ -59,6 +59,8 @@ namespace WIRKDEVELOPER.Models
         public int BookingNewPatientID { get; set; }
         public string BookingNewPatientName { get; set; }
         public string BookingNewPatientSurname { get; set; }
+        public string BookingNewPatientIDNUmber { get; set; }
+        public string Gender { get; set; }
         public string Email { get; set; }
         public DateTime Date { get; set; }
         public TimeSpan Time { get; set; }
