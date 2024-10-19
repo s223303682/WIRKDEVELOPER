@@ -1,4 +1,9 @@
-﻿@model WIRKDEVELOPER.Models.SurgeryReportViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@using WIRKDEVELOPER.Areas.Identity.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model WIRKDEVELOPER.Models.SurgeryReportViewModel
 
 @{
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
@@ -14,8 +19,8 @@
 <body>
     <div  class="form-card" id="card-content">
     <div class="container mt-4">
-        <h1>SURGERY REPORT</h1>
-        <h2>Dr Jacob Moloi</h2>
+        <h1 >SURGERY REPORT</h1>
+            <h2>	@UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName</h2>
         <h3>Date Range: @Model.StartDate.ToString("d MMMM yyyy") – @Model.EndDate.ToString("d MMMM yyyy")</h3>
         <h4>Report Generated: @Model.ReportGeneratedDate.ToString("d MMMM yyyy")</h4>
 

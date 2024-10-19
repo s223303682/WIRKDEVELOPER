@@ -23,6 +23,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(builder);
 
+
         builder.Entity<Addm>()
       .HasOne(a => a.AnAllergies)
       .WithMany() // Assuming AnAllergies can have multiple related Addms
@@ -128,6 +129,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Prescription> prescriptions { get; set; }
     public DbSet<Medication> medications { get; set; }
     public DbSet<TreatmentCode> treatmentCodes { get; set; }
+    public DbSet<BookingTreatmentCode> BookingTreatmentCode { get; set; }
     
     public DbSet<Admission> admission { get; set; } 
     public DbSet<Bed> bed { get; set; }

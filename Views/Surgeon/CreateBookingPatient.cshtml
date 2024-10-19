@@ -24,68 +24,85 @@
     </div>
     <form method="post" asp-action="CreateBookingPatient" class="bg-white bg-opacity-60 border border-3 border-dark">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-        <div class="row">
-            <div class="col border-2">
-                <div class="form-group border-2">
-                    <label asp-for="BookingNewPatientName"></label>
-                    <input type="text" asp-for="BookingNewPatientName" class="form-control" required />
-                    <span asp-validation-for="BookingNewPatientName" class="text-danger"></span>
-                </div>
+        <div class="card">
+            <div class="card-header  bg-primary">
+                Patients Details
             </div>
-            <div class="col">
-                <div class="form-group border-1">
-                    <label asp-for="BookingNewPatientSurname"></label>
-                    <input type="text" asp-for="BookingNewPatientSurname" class="form-control" required />
-                    <span asp-validation-for="BookingNewPatientSurname" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group border-1">
-                    <label asp-for="BookingNewPatientIDNUmber"></label>
-                    <input type="text" asp-for="BookingNewPatientIDNUmber" class="form-control" required />
-                    <span asp-validation-for="BookingNewPatientIDNUmber" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group border-1">
-                    <label asp-for="Gender"></label>
-                    <select asp-for="Gender" class="form-control" required>
-                        <option value="" disabled selected>--select gender</option>
-                        <option value="Female">Female</option>
-                        <option value="Male">Male</option>
-                    </select>
-                    <span asp-validation-for="Gender" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-
-            <div class="col">
-                <div class="form-group border-1">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" type="email" class="form-control" required />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="Date"></label>
-                    <input type="date" asp-for="Date" class="form-control" required />
-                    <span asp-validation-for="Date" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="Time"></label>
-                    <input type="time" asp-for="Time" class="form-control" required />
-                    <span asp-validation-for="Time" class="text-danger"></span>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col border-2">
+                        <div class="form-group border-2">
+                            <label asp-for="BookingNewPatientName"></label>
+                            <input type="text" asp-for="BookingNewPatientName" class="form-control" required />
+                            <span asp-validation-for="BookingNewPatientName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group border-1">
+                            <label asp-for="BookingNewPatientSurname"></label>
+                            <input type="text" asp-for="BookingNewPatientSurname" class="form-control" required />
+                            <span asp-validation-for="BookingNewPatientSurname" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group border-1">
+                            <label asp-for="BookingNewPatientIDNUmber"></label>
+                            <input type="text" asp-for="BookingNewPatientIDNUmber" class="form-control" required />
+                            <span asp-validation-for="BookingNewPatientIDNUmber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group border-1">
+                            <label asp-for="Gender"></label>
+                            <select asp-for="Gender" class="form-control" required>
+                                <option value="" disabled selected>--select gender</option>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+     <div class="card">
+            <div class="card-header  bg-primary">
+              Patient Detail
+         </div>
+         <div class="card-body">
+                <div class="row">
 
-        <div class="row">
+                    <div class="col">
+                        <div class="form-group border-1">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" type="email" class="form-control" required />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Date"></label>
+                            <input type="date" asp-for="Date" class="form-control" required />
+                            <span asp-validation-for="Date" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Time"></label>
+                            <input type="time" asp-for="Time" class="form-control" required />
+                            <span asp-validation-for="Time" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+         </div>
+     </div>
+
+    <div class="card"
+        <div class="card-header  bg-primary">
+            Address
+        </div>
+        <div class="card-body">
+             <div class="row">
             <div class="col">
                 <div class="form-group border-1">
                     <label asp-for="Province"></label>
@@ -124,59 +141,67 @@
                 </div>
             </div>
         </div>
-
-        <div class="row">
-
-            <div class="col">
-                <div class="form-group border-1">
-                    <label asp-for="ContactNumber"></label>
-                    <input asp-for="ContactNumber" type="text" class="form-control" required />
-                    <span asp-validation-for="ContactNumber" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group border-1">
-                    <label asp-for="OperationTheatreID"></label>
-                    <select asp-for="OperationTheatreID" class="form-control" asp-items="@ViewBag.getOperationTheatre" required>
-                        <option value="" disabled selected>--Select Theatre</option>
-                    </select>
-                    <span asp-validation-for="OperationTheatreID" class="text-danger"></span>
-                </div>
-            </div>
-            <!-- Treatment Codes Section -->
-            <div class="row">
-                <d <div class="col" id="treatmentCodesContainer">
-        <!-- Template for treatment code items -->
-        <div class="form-group treatmentCodeItem">
-            <label asp-for="TreatmentCodeID">Treatment Codes</label>
-            <select class="form-control" asp-for="TreatmentCodeID" required>
-                <option selected disabled>--Select Treatment Code</option>
-                                @foreach (var item in ViewBag.getTreatmentCode as SelectList)
-                                {
-                            <option value="@item.Value">@item.Text</option>
-                                }
-            </select>
-            <span class="text-danger"></span>
-            <!-- Add a Remove button -->
-            <button type="button" class="btn btn-danger removeTreatmentCode mt-2">Remove</button>
         </div>
     </div>
-    <div class="col-12">
-        <button type="button" id="addTreatmentCode" class="btn btn-success mt-2">+ Add Another Treatment Code</button>
-    </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="UserId"></label>
-                    <select asp-for="UserId" class="form-control" asp-items="ViewBag.getAnaesthesiologist" required>
-                        <option value="" disabled selected>Select Anaesthesiologist</option>
-                    </select>
-                    <span asp-validation-for="UserId" class="text-danger"></span>
-                </div>
-
-            </div>
+    <div class="card">
+            <div class="header  bg-primary">
+            Other Details
         </div>
+        <div  class="card-body">
+                <div class="row">
 
+                    <div class="col">
+                        <div class="form-group border-1">
+                            <label asp-for="ContactNumber"></label>
+                            <input asp-for="ContactNumber" type="text" class="form-control" required />
+                            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group border-1">
+                            <label asp-for="OperationTheatreID"></label>
+                            <select asp-for="OperationTheatreID" class="form-control" asp-items="@ViewBag.getOperationTheatre" required>
+                                <option value="" disabled selected>--Select Theatre</option>
+                            </select>
+                            <span asp-validation-for="OperationTheatreID" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <!-- Treatment Codes Section -->
+                    <div class="col">
+                        <div class="col" id="treatmentCodesContainer">
+                            <!-- This is a template for the treatment code select -->
+                            <div class="form-group treatmentCodeItem">
+                                <label asp-for="TreatmentCodes">Treatment Codes</label>
+                                <select class="form-control treatmentCodeSelect" name="TreatmentCodeIDs" required>
+                                    <option value="" disabled selected>--Select Treatment Code--</option>
+                                    @foreach (var item in ViewBag.getTreatmentCode)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </select>
+                                <span class="text-danger"></span>
+                                <button type="button" class="btn btn-danger removeTreatmentCode mt-2">Remove</button>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="button" id="addTreatmentCode" class="btn btn-success mt-2">+Add </button>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="UserId"></label>
+                            <select asp-for="UserId" class="form-control" asp-items="ViewBag.getAnaesthesiologist" required>
+                                <option value="" disabled selected>Select Anaesthesiologist</option>
+                            </select>
+                            <span asp-validation-for="UserId" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                </div>
+        </div>
+    </div>
+      
         <div class="row">
             <div class="col">
                 <a asp-controller="Surgeon" asp-action="Dashboard" class="btn btn-secondary">Back</a>
@@ -186,102 +211,99 @@
             </div>
         </div>
     </form>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const provinces = ['Eastern Cape', 'Western Cape', 'North West', 'Gauteng', 'Free State', 'Limpopo', 'Northern Cape', 'Kwazulu-Natal'];
-            const cities = {
-                'Eastern Cape': ['Gqeberha', 'Bisho'],
-                'Western Cape': ['Cape Town'],
-                'Northern Cape': ['Kimberley'],
-                'North West': ['Mahikeng', 'Stella'],
-                'Gauteng': ['Johannesburg', 'Pretoria'],
-                'Free State': ['Bloemfontein'],
-                'Limpopo': ['Polokwane'],
-                'Mpumalanga': ['Mbombela'],
-                'Kwazulu-Natal': ['Durban', 'Richards Bay', 'Port Shepstone', 'Newcastle', 'Estcourt', 'Ladysmith', 'Richmond']
-            };
-            const suburbs = {
-                'Gqeberha': ['Bridgemead', 'Homewood', 'Algoa Park', 'Cotswold', 'Lorraine', 'Struandale', 'Malabar', 'Summerstrand'],
-                'Johannesburg': ['Houston', 'Dallas', 'Austin'],
-                'Mbombela': ['Kamagugu', 'Barberton', 'San Diego', 'Riverside', 'Valencia Park'],
-                'Durban': ['Essenwood', 'Kenville', 'Cato Manor', 'Musgrave', 'Bluff', 'Glenmore', 'Kwamashu', 'Inanda', 'Tongaat', 'Greyville']
-            };
-
-            const provinceSelect = document.getElementById('province');
-            const citySelect = document.getElementById('city');
-            const suburbSelect = document.getElementById('suburb');
-
-            // Populate provinces
-            provinces.forEach(province => {
-                const option = document.createElement('option');
-                option.value = province;
-                option.textContent = province;
-                provinceSelect.appendChild(option);
-            });
-
-            // Update cities based on selected province
-            provinceSelect.addEventListener('change', function () {
-                const selectedProvince = this.value;
-                citySelect.innerHTML = '<option value="">Select City</option>'; // Reset cities
-                suburbSelect.innerHTML = '<option value="">Select Suburb</option>'; // Reset suburbs
-
-                if (selectedProvince) {
-                    (cities[selectedProvince] || []).forEach(city => {
-                        const option = document.createElement('option');
-                        option.value = city;
-                        option.textContent = city;
-                        citySelect.appendChild(option);
-                    });
-                }
-            });
-
-            // Update suburbs based on selected city
-            citySelect.addEventListener('change', function () {
-                const selectedCity = this.value;
-                suburbSelect.innerHTML = '<option value="">Select Suburb</option>'; // Reset suburbs
-
-                if (selectedCity) {
-                    (suburbs[selectedCity] || []).forEach(suburb => {
-                        const option = document.createElement('option');
-                        option.value = suburb;
-                        option.textContent = suburb;
-                        suburbSelect.appendChild(option);
-                    });
-                }
-            });
-        });
-        document.addEventListener('DOMContentLoaded', function () {
-            // Function to handle adding a new treatment code item
-            document.getElementById('addTreatmentCode').addEventListener('click', function () {
-                var container = document.getElementById('treatmentCodesContainer');
-                var template = container.querySelector('.treatmentCodeItem').cloneNode(true);
-
-                // Clear or reset any values as needed
-                template.querySelector('select').value = ''; // Optional: clear selection
-                template.querySelector('select').name = "TreatmentCodeIDs";
-
-                // Attach event listener to the new "Remove" button
-                template.querySelector('.removeTreatmentCode').addEventListener('click', function () {
-                    container.removeChild(template);
-                });
-
-                // Append the new item to the container
-                container.appendChild(template);
-            });
-
-            // Event delegation to handle remove button clicks
-            document.getElementById('treatmentCodesContainer').addEventListener('click', function (event) {
-                if (event.target.classList.contains('removeTreatmentCode')) {
-                    var itemToRemove = event.target.closest('.treatmentCodeItem');
-                    if (itemToRemove) {
-                        itemToRemove.parentNode.removeChild(itemToRemove);
-                    }
-                }
-            });
-        });
-    </script>
+  
 </body>
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const provinces = ['Eastern Cape', 'Western Cape', 'North West', 'Gauteng', 'Free State', 'Limpopo', 'Northern Cape', 'Kwazulu-Natal'];
+        const cities = {
+            'Eastern Cape': ['Gqeberha', 'Bisho'],
+            'Western Cape': ['Cape Town'],
+            'Northern Cape': ['Kimberley'],
+            'North West': ['Mahikeng', 'Stella'],
+            'Gauteng': ['Johannesburg', 'Pretoria'],
+            'Free State': ['Bloemfontein'],
+            'Limpopo': ['Polokwane'],
+            'Mpumalanga': ['Mbombela'],
+            'Kwazulu-Natal': ['Durban', 'Richards Bay', 'Port Shepstone', 'Newcastle', 'Estcourt', 'Ladysmith', 'Richmond']
+        };
+        const suburbs = {
+            'Gqeberha': ['Bridgemead', 'Homewood', 'Algoa Park', 'Cotswold', 'Lorraine', 'Struandale', 'Malabar', 'Summerstrand'],
+            'Johannesburg': ['Houston', 'Dallas', 'Austin'],
+            'Mbombela': ['Kamagugu', 'Barberton', 'San Diego', 'Riverside', 'Valencia Park'],
+            'Durban': ['Essenwood', 'Kenville', 'Cato Manor', 'Musgrave', 'Bluff', 'Glenmore', 'Kwamashu', 'Inanda', 'Tongaat', 'Greyville']
+        };
+
+        const provinceSelect = document.getElementById('province');
+        const citySelect = document.getElementById('city');
+        const suburbSelect = document.getElementById('suburb');
+
+        // Populate provinces
+        provinces.forEach(province => {
+            const option = document.createElement('option');
+            option.value = province;
+            option.textContent = province;
+            provinceSelect.appendChild(option);
+        });
+
+        // Update cities based on selected province
+        provinceSelect.addEventListener('change', function () {
+            const selectedProvince = this.value;
+            citySelect.innerHTML = '<option value="">Select City</option>'; // Reset cities
+            suburbSelect.innerHTML = '<option value="">Select Suburb</option>'; // Reset suburbs
+
+            if (selectedProvince) {
+                (cities[selectedProvince] || []).forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+            }
+        });
+
+        // Update suburbs based on selected city
+        citySelect.addEventListener('change', function () {
+            const selectedCity = this.value;
+            suburbSelect.innerHTML = '<option value="">Select Suburb</option>'; // Reset suburbs
+
+            if (selectedCity) {
+                (suburbs[selectedCity] || []).forEach(suburb => {
+                    const option = document.createElement('option');
+                    option.value = suburb;
+                    option.textContent = suburb;
+                    suburbSelect.appendChild(option);
+                });
+            }
+        });
+    });
+    document.getElementById('addTreatmentCode').addEventListener('click', function () {
+        // Create a new treatment code select element
+        var newTreatmentCodeDiv = document.createElement('div');
+        newTreatmentCodeDiv.classList.add('form-group', 'treatmentCodeItem');
+        newTreatmentCodeDiv.innerHTML = `
+                                <label asp-for="TreatmentCodeIDs">Treatment Codes</label>
+                                <select class="form-control treatmentCodeSelect" name="TreatmentCodeIDs" required>
+                                    <option value="" disabled selected>--Select Treatment Code--</option>
+    @foreach (var item in ViewBag.getTreatmentCode)
+    {
+                                                    <option value="@item.Value">@item.Text</option>
+    }
+                                </select>
+                                <span class="text-danger"></span>
+                                <button type="button" class="btn btn-danger removeTreatmentCode mt-2">Remove</button>
+                            `;
+        document.getElementById('treatmentCodesContainer').appendChild(newTreatmentCodeDiv);
+    });
+
+    // Event delegation to handle remove buttons for dynamic elements
+    document.getElementById('treatmentCodesContainer').addEventListener('click', function (e) {
+        if (e.target.classList.contains('removeTreatmentCode')) {
+            e.target.parentElement.remove(); // Remove the treatment code item
+        }
+    });
+</script>
 
 
 

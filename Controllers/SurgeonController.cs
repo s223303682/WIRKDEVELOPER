@@ -413,59 +413,106 @@ namespace WIRKDEVELOPER.Controllers
 
             return RedirectToAction("PrescriptionList");
         }
-
-
+        // Action to display the list of bookings
         public IActionResult BookingPatientList()
         {
-            IEnumerable<BookingNewPatient> list = _Context.bookingNewPatients
-                .Include(a => a.OperationTheatre)
-                .Include(a=> a.Anaesthesiologist)
-                .Include(s => s.treatmentCode);
+            // Fetch bookings and include related details
+            var bookings = _Context.bookingNewPatients
+                .Include(b => b.OperationTheatre)
+                .Include(b => b.Anaesthesiologist)
+                    .ThenInclude(a => a.ApplicationUser)
+                .Include(b => b.TreatmentCodes)
+                    .ThenInclude(tc => tc.TreatmentCode)
+                .Select(b => new BookingListViewModel
+                {
+                    BookingNewPatientID = b.BookingNewPatientID,
+                    BookingNewPatientName = b.BookingNewPatientName,
+                    BookingNewPatientSurname = b.BookingNewPatientSurname,
+                    Email = b.Email,
+                    Date = b.Date,
+                    Province = b.Province,
+                    City = b.City,
+                    Suburb = b.Suburb,
+                    Zip = b.Zip,
+                    OperationTheatreName = b.OperationTheatre.OperationTheatreName,
+                    AnaesthesiologistName = b.Anaesthesiologist.ApplicationUser.FirstName + " " + b.Anaesthesiologist.ApplicationUser.LastName,
+                    TreatmentCodes = b.TreatmentCodes.Select(tc => tc.TreatmentCode.ICDCODE).ToList()
+                })
+                .ToList();
 
-
-            return View(list);
+            return View(bookings);
         }
+
+        // Action to create a new booking (GET)
         public IActionResult CreateBookingPatient()
-        {
-            ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
-            ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            var anaesthesiologists = _Context.Anaesthesiologists
-             .Select(a => new SelectListItem
-             {
-                 Value = a.UserId.ToString(),
-                 Text = $"{a.ApplicationUser.FirstName} {a.ApplicationUser.LastName}"
-             }).ToList();
+		{
+			ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
+			ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
 
-            ViewBag.getAnaesthesiologist = anaesthesiologists; // Assign the list directly
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateBookingPatient(BookingNewPatient bookingNewPatient)
-        {
-            _Context.bookingNewPatients.Add(bookingNewPatient);
-            ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
-            ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
-            var anaesthesiologists = _Context.Anaesthesiologists
-             .Select(a => new SelectListItem
-             {
-                 Value = a.UserId.ToString(),
-                 Text = $"{a.ApplicationUser.FirstName} {a.ApplicationUser.LastName}"
-             }).ToList();
+			var anaesthesiologists = _Context.Anaesthesiologists
+				.Select(a => new SelectListItem
+				{
+					Value = a.UserId.ToString(),
+					Text = $"{a.ApplicationUser.FirstName} {a.ApplicationUser.LastName}"
+				}).ToList();
 
-            ViewBag.getAnaesthesiologist = anaesthesiologists; // Assign the list directly
-            _Context.SaveChanges();
-            string subject = "Booking Confirmation";
-            string body = $"Dear {bookingNewPatient.BookingNewPatientName}, your booking is confirmed for {bookingNewPatient.Date}.";
+			ViewBag.getAnaesthesiologist = anaesthesiologists;
+			return View();
+		}
 
-            await _emailService.SendEmailAsync(bookingNewPatient.Email, subject, body);
-            return RedirectToAction("BookingPatientList");
+		// Action to create a new booking (POST)
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> CreateBookingPatient(BookingNewPatient bookingNewPatient, List<int> selectedTreatmentCodeIDs)
+		{
+			if (ModelState.IsValid)
+			{
+				// Add the new booking to the database
+				_Context.bookingNewPatients.Add(bookingNewPatient);
 
-        }
+				// Add selected treatment codes to the booking
+				foreach (var codeID in selectedTreatmentCodeIDs)
+				{
+					var treatmentCode = _Context.treatmentCodes.FirstOrDefault(tc => tc.TreatmentCodeID == codeID);
+					if (treatmentCode != null)
+					{
+						bookingNewPatient.TreatmentCodes.Add(new BookingPatientTreatmentCode
+						{
+							BookingNewPatientID = bookingNewPatient.BookingNewPatientID,
+							TreatmentCodeID = codeID
+						});
+					}
+				}
+
+				// Save changes to the database
+				await _Context.SaveChangesAsync();
+
+				// Send confirmation email
+				string subject = "Booking Confirmation";
+				string body = $"Dear {bookingNewPatient.BookingNewPatientName}, your booking is confirmed for {bookingNewPatient.Date} at {bookingNewPatient.Time}.";
+				await _emailService.SendEmailAsync(bookingNewPatient.Email, subject, body);
+
+				return RedirectToAction("BookingPatientList");
+			}
+
+			// If there are validation errors, re-populate ViewBag data and return to the view
+			ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
+			ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
+
+			var anaesthesiologists = _Context.Anaesthesiologists
+				.Select(a => new SelectListItem
+				{
+					Value = a.UserId.ToString(),
+					Text = $"{a.ApplicationUser.FirstName} {a.ApplicationUser.LastName}"
+				}).ToList();
+
+			ViewBag.getAnaesthesiologist = anaesthesiologists;
+
+			return View(bookingNewPatient);
+		}
 
 
-
-        public IActionResult updateBookingPatient(int? ID)
+		public IActionResult updateBookingPatient(int? ID)
     {
             ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatresID", "OperationTheatreName");
             ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
@@ -510,18 +557,29 @@ namespace WIRKDEVELOPER.Controllers
             _Context.SaveChanges();
         return RedirectToAction("BookingPatientList");
     }
-    public IActionResult DeleteBookingPatient(int? ID)
-    {
-        var list = _Context.bookingNewPatients.Find(ID);
-        if (list == null)
+        // Action to delete a booking (POST)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteBooking(int id)
         {
-            return NotFound();
-        }
-        _Context.bookingNewPatients.Remove(list);
-        _Context.SaveChanges();
-        return RedirectToAction("BookingPatientList");
+            // Find the booking by ID
+            var booking = await _Context.bookingNewPatients
+                .Include(b => b.TreatmentCodes) // Include treatment codes if needed for deletion
+                .FirstOrDefaultAsync(b => b.BookingNewPatientID == id);
 
-    }
+            if (booking != null)
+            {
+                // Remove the booking and any related treatment codes
+                _Context.bookingNewPatients.Remove(booking);
+                await _Context.SaveChangesAsync();
+
+                // Optionally, you can send a confirmation email or handle other logic
+            }
+
+            // Redirect to the booking list after deletion
+            return RedirectToAction("BookingPatientList");
+        }
+
         public IActionResult CreateBooking(int addmId, string name, string surname,string IDNumber, string gender, string email)
         {
             var viewModel = new BookingViewModel

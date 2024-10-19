@@ -30,10 +30,7 @@ namespace WIRKDEVELOPER.Models
         public int? OperationTheatreID { get; set; }
         [ForeignKey("OperationTheatreID")]
         public virtual OperationTheatre? OperationTheatre { get; set; }
-        [Required(ErrorMessage = "Required")]
-        public int TreatmentCodeID { get; set; }
-        [ForeignKey("TreatmentCodeID")]
-        public virtual TreatmentCode? treatmentCode { get; set; }
+        public virtual ICollection<BookingPatientTreatmentCode> TreatmentCodes { get; set; } = new List<BookingPatientTreatmentCode>();
         public int? UserId { get; set; } // Change this to string
         [ForeignKey("UserId")]
         public virtual Anaesthesiologist? Anaesthesiologist { get; set; }
@@ -43,6 +40,35 @@ namespace WIRKDEVELOPER.Models
         public string? Bed { get; set; } = " - ";
         [DisplayName("Status")]
         public string? Status { get; set; } = "Not Admitted ";
+    }
+    public class BookingPatientTreatmentCode
+    {
+        [Key]
+        public int BookingPatientTreatmentCodeID { get; set; }
+
+        public int BookingNewPatientID { get; set; }
+        [ForeignKey("BookingNewPatientID")]
+        public virtual BookingNewPatient BookingNewPatient { get; set; }
+
+        public int TreatmentCodeID { get; set; }
+        [ForeignKey("TreatmentCodeID")]
+        public virtual TreatmentCode TreatmentCode { get; set; }
+    }
+    public class BookingListViewModel
+    {
+        public int BookingNewPatientID { get; set; }
+        public string BookingNewPatientName { get; set; }
+        public string BookingNewPatientSurname { get; set; }
+        public string Email { get; set; }
+        public DateTime Date { get; set; }
+        public TimeSpan Time { get; set; }
+        public string Province { get; set; }
+        public string City { get; set; }
+        public string Suburb { get; set; }
+        public string Zip { get; set; }
+        public string OperationTheatreName { get; set; }
+        public string AnaesthesiologistName { get; set; }
+        public List<string> TreatmentCodes { get; set; }
     }
 
 }
