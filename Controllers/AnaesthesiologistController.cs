@@ -14,16 +14,20 @@ using WIRKDEVELOPER.Models.Account;
 using System.Diagnostics;
 using System.Web.WebPages;
 using WIRKDEVELOPER.Models.Admin;
+using WIRKDEVELOPER.Models.sendemail;
+using System.Threading.Tasks;
 
 namespace WIRKDEVELOPER.Controllers
 {
     public class AnaesthesiologistController : Controller
     {
         private readonly ApplicationDBContext _Context;
+        private readonly EmailService _emailService;
 
-        public AnaesthesiologistController(ApplicationDBContext applicationDBContext)
+        public AnaesthesiologistController(ApplicationDBContext applicationDBContext, EmailService emailService)
         {
             _Context = applicationDBContext;
+            _emailService = emailService;
         }
         public IActionResult Anaesthesiologist()
         {
@@ -364,16 +368,32 @@ namespace WIRKDEVELOPER.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult VitalRanges(VitalRanges vitalranges)
+        public async Task<IActionResult> VitalRanges(VitalRanges vitalranges)
         {
             if (ModelState.IsValid)
             {
                 _Context.vitalranges.Update(vitalranges);
                 _Context.SaveChanges();
+
+                // Prepare email details
+                string subject = "New Vital Range Added";
+                string body = $"A new vital range has been added:\n" +
+                              $"Vital: {vitalranges.Vital}\n" +
+                              $"Minimum Range: {vitalranges.Minimumrange}\n" +
+                              $"Maximum Range: {vitalranges.Maximumrange}\n" +
+                              $"Units: {vitalranges.Units}\n" +
+                              $"Date: {vitalranges.Date?.ToString("g")}";
+
+                // Use the email provided in the VitalRanges form
+                string recipientEmail = vitalranges.Email;
+
+                // Send the email notification
+                await _emailService.SendEmailAsync(recipientEmail, subject, body);
+
                 return RedirectToAction("IndexVitalRanges");
             }
-            return View(vitalranges);
 
+            return View(vitalranges);
         }
         public IActionResult UpdateVitalRanges(int? ID)
         {

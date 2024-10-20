@@ -53,43 +53,47 @@
             <tbody>
                 @foreach (var order in Model)
                 {
-                    <tr>
-                        <td>
-                            @order.Date
-                        </td>
-                        <td>
-                            @order.Patient.PatientName
-                        </td>
-                        <td>
-                            @if (order.OrderItems != null && order.OrderItems.Any())
-                            {
-                                <ul>
-                                    @foreach (var medication in order.OrderItems)
-                                    {
-                                        <li>
-                                            @medication.PharmacyMedication.PharmacyMedicationName - Quantity: @medication.Quantity, Instructions: @medication.Instructions
-                                        </li>
-                                    }
-                                </ul>
-                            }
-                        </td>
+                    if (order.Urgent.ToLower() == "yes")
+                    {
+                        <tr scope="row" style="background-color:red;">
+                            <td>
+                                @order.Date
+                            </td>
+                            <td>
+                                @order.Patient.PatientName
+                            </td>
+                            <td>
+                                @if (order.OrderItems != null && order.OrderItems.Any())
+                                {
+                                    <ul>
+                                        @foreach (var medication in order.OrderItems)
+                                        {
+                                            <li>
+                                                @medication.PharmacyMedication.PharmacyMedicationName - Quantity: @medication.Quantity, Instructions: @medication.Instructions
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            </td>
 
-                        <td>
-                            @order.Urgent
-                        </td>
-                        <td>
-                            @order.Status
-                        </td>
-                         <td>
-                            Dr <span class="text-dark">@UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName</span>
-                         </td>
-            
-                        <td>
-                            <a asp-controller="Anaesthesiologist" asp-action="EditOrder" asp-route-id="@order.AnOrderID" class="btn btn-warning">Edit</a>
-                            <a asp-controller="Anaesthesiologist" asp-action="Details" asp-route-id="@order.AnOrderID" class="btn btn-info">Details</a>
-                            <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-id="@order.AnOrderID" class="btn btn-danger">Delete</a>
-                        </td>
-                    </tr>
+                            <td>
+                                @order.Urgent
+                            </td>
+                            <td>
+                                @order.Status
+                            </td>
+                            <td>
+                                Dr <span class="text-dark">@UserManager.GetUserAsync(User).Result.FirstName  @UserManager.GetUserAsync(User).Result.LastName</span>
+                            </td>
+
+                            <td>
+                                <a asp-controller="Anaesthesiologist" asp-action="EditOrder" asp-route-id="@order.AnOrderID" class="btn btn-warning">Edit</a>
+                                <a asp-controller="Anaesthesiologist" asp-action="Details" asp-route-id="@order.AnOrderID" class="btn btn-info">Details</a>
+                                <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-id="@order.AnOrderID" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                    
                 }
 
             </tbody>

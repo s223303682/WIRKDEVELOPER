@@ -42,5 +42,9 @@ namespace WIRKDEVELOPER.Models
 		[Required]
 		public string? Units { get; set; }
 
-	}
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+    }
 }
