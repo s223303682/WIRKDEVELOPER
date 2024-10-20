@@ -90,8 +90,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
             .WithOne(n => n.OrderMedication)
             .HasForeignKey(n => n.OrderMedicationID);
 
-        // Add similar configurations for other relationships if needed
-
+      
 
 
 
@@ -117,7 +116,9 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<PrescriptionMedication> prescriptionMedications { get; set; }
   
     public DbSet<PrescriptionViewModel> prescriptionViewModels { get; set; }
-  
+   // public DbSet<Alert> Alerts { get; set; }
+    public DbSet<AlertMedication> AlertMedications { get; set; }
+   
     public DbSet<Bed> beds { get; set; }
     public DbSet<Ward> ward { get; set; }
     public DbSet<Condition> conditions { get; set; }
