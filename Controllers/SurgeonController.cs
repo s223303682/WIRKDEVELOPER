@@ -509,7 +509,7 @@ namespace WIRKDEVELOPER.Controllers
     <li><strong>Time:</strong> {bookingNewPatient.Time.Hours:D2}:{bookingNewPatient.Time.Minutes:D2} {(bookingNewPatient.Time.Hours >= 12 ? "PM" : "AM")}</li>
 </ul>
 <p>Please ensure to arrive at least 15 minutes before your scheduled time.</p>
-<p>If you have any questions or need to reschedule, feel free to contact us at hlulelwadudula@gmail.com.</p>
+<p>If you have any questions or need to reschedule, feel free to contact us at qumbucommunityhealth@gmail.com.</p>
 <p>Thank you for choosing us, and we look forward to serving you.</p>
 <p>Best regards,<br/>
 st Marys Health care Team</p>
@@ -681,7 +681,7 @@ st Marys Health care Team</p>
     <li><strong>Time:</strong> {model.Time.Hours:D2}:{model.Time.Minutes:D2} {(model.Time.Hours >= 12 ? "PM" : "AM")}</li>
 </ul>
 <p>Please ensure to arrive at least 15 minutes before your scheduled time.</p>
-<p>If you have any questions or need to reschedule, feel free to contact us hlulelwadudula@gmail.com.</p>
+<p>If you have any questions or need to reschedule, feel free to contact us at qumbucommunityhealth@gmail.com.</p>
 <p>Thank you for choosing us, and we look forward to serving you.</p>
 <p>Best regards,<br/>
 St Marys Health Care Team</p>
