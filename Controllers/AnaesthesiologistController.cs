@@ -16,6 +16,7 @@ using System.Web.WebPages;
 using WIRKDEVELOPER.Models.Admin;
 using WIRKDEVELOPER.Models.sendemail;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace WIRKDEVELOPER.Controllers
 {
@@ -23,11 +24,13 @@ namespace WIRKDEVELOPER.Controllers
     {
         private readonly ApplicationDBContext _Context;
         private readonly EmailService _emailService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AnaesthesiologistController(ApplicationDBContext applicationDBContext, EmailService emailService)
+        public AnaesthesiologistController(ApplicationDBContext applicationDBContext, EmailService emailService, UserManager<ApplicationUser> userManager)
         {
             _Context = applicationDBContext;
             _emailService = emailService;
+            _userManager = userManager;
         }
         public IActionResult Anaesthesiologist()
         {
@@ -675,6 +678,27 @@ namespace WIRKDEVELOPER.Controllers
 
             return View(reportData);
         }
+        public class PageNumberHelper : iTextSharp.text.pdf.PdfPageEventHelper
+        {
+            // This will write the page number at the bottom of each page
+            public override void OnEndPage(iTextSharp.text.pdf.PdfWriter writer, iTextSharp.text.Document document)
+            {
+                // Create a content byte writer
+                var cb = writer.DirectContent;
+                // Create a footer text for the page number
+                var footerText = $"Page {writer.PageNumber}";
+                var font = iTextSharp.text.FontFactory.GetFont(iTextSharp.text.FontFactory.HELVETICA, 10, iTextSharp.text.Font.NORMAL);
+                var footerPhrase = new iTextSharp.text.Phrase(footerText, font);
+
+                // Set up the positioning of the footer (centered at the bottom)
+                var pageSize = document.PageSize;
+                var x = (pageSize.Left + pageSize.Right) / 2;
+                var y = pageSize.GetBottom(30); // 30 units from the bottom
+
+                // Show the page number
+                iTextSharp.text.pdf.ColumnText.ShowTextAligned(cb, iTextSharp.text.Element.ALIGN_CENTER, footerPhrase, x, y, 0);
+            }
+        }
 
         [HttpPost]
         public async Task<IActionResult> DownloadReport(DateTime startDate, DateTime endDate)
@@ -686,17 +710,30 @@ namespace WIRKDEVELOPER.Controllers
                 .Where(o => o.Date >= startDate && o.Date <= endDate)
                 .ToListAsync();
 
+            var user = await _userManager.GetUserAsync(User);
+            var anesthesiologistName = $"{user.FirstName} {user.LastName}";
+
+            var medicineSummary = new Dictionary<string, int>();
+
             using (var stream = new MemoryStream())
             {
                 // Initialize iTextSharp 5 Document and PdfWriter
                 var document = new iTextSharp.text.Document();
-                iTextSharp.text.pdf.PdfWriter.GetInstance(document, stream);
+                var writer = iTextSharp.text.pdf.PdfWriter.GetInstance(document, stream);
+
+                // Add the page number event helper
+                var pageNumberHelper = new PageNumberHelper();
+                writer.PageEvent = pageNumberHelper;
+
                 document.Open();
 
-                // Add content to the PDF
+                // Add report header
                 document.Add(new iTextSharp.text.Paragraph("Anesthetic Report"));
                 document.Add(new iTextSharp.text.Paragraph($"Date Range: {startDate:yyyy-MM-dd} - {endDate:yyyy-MM-dd}"));
                 document.Add(new iTextSharp.text.Paragraph($"Report Generated: {DateTime.Now:yyyy-MM-dd}"));
+                document.Add(new iTextSharp.text.Paragraph($"Prepared by: Dr. {anesthesiologistName}"));
+
+                document.Add(new iTextSharp.text.Paragraph("\n"));
 
                 // Create a table for report data
                 var table = new iTextSharp.text.pdf.PdfPTable(4);
@@ -705,6 +742,7 @@ namespace WIRKDEVELOPER.Controllers
                 table.AddCell("Medication");
                 table.AddCell("Quantity");
 
+                // Add report data to the table
                 foreach (var order in orders)
                 {
                     foreach (var medication in order.OrderMedications)
@@ -713,16 +751,53 @@ namespace WIRKDEVELOPER.Controllers
                         table.AddCell(order.Addm?.PatientName);
                         table.AddCell(medication.PharmacyMedication?.PharmacyMedicationName);
                         table.AddCell(medication.Quantity.ToString());
+
+                        var medicationName = medication.PharmacyMedication?.PharmacyMedicationName;
+                        if (medicationName != null)
+                        {
+                            if (medicineSummary.ContainsKey(medicationName))
+                            {
+                                medicineSummary[medicationName] += medication.Quantity;
+                            }
+                            else
+                            {
+                                medicineSummary[medicationName] = medication.Quantity;
+                            }
+                        }
                     }
                 }
 
+                // Add the table to the document
                 document.Add(table);
+
+                // Add total patients count
+                var totalPatients = orders.Select(o => o.Addm?.PatientName).Distinct().Count();
+                document.Add(new iTextSharp.text.Paragraph($"\nTotal Patients: {totalPatients}\n"));
+
+                // Add medicine summary section
+                document.Add(new iTextSharp.text.Paragraph("Medicine Summary:\n"));
+                var summaryTable = new iTextSharp.text.pdf.PdfPTable(2);
+                summaryTable.AddCell("Medicine");
+                summaryTable.AddCell("Quantity Ordered");
+
+                foreach (var summary in medicineSummary)
+                {
+                    summaryTable.AddCell(summary.Key);
+                    summaryTable.AddCell(summary.Value.ToString());
+                }
+
+                // Add the summary table to the document
+                document.Add(summaryTable);
+
+                // Close the document
                 document.Close();
 
                 // Return the PDF file as a download
                 return File(stream.ToArray(), "application/pdf", "AnestheticReport.pdf");
             }
         }
+
+
 
 
 

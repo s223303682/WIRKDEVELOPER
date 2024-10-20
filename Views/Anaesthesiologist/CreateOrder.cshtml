@@ -26,6 +26,7 @@
                     <label asp-for="AddmID" class="control-label"></label>
                     <select asp-for="AddmID" class="form-control" asp-items="ViewBag.getPatient" id="patient-dropdown">
                         <!-- Patient options populated by ViewBag -->
+                        <option selected disabled>--Select Patient--</option>
                     </select>
                     <span asp-validation-for="AddmID" class="text-danger"></span>
                 </div>
@@ -39,7 +40,11 @@
                             <!-- Medication -->
                             <div class="form-group col-md-4">
                                 <label asp-for="@Model.OrderItems[i].PharmacyMedicationID" class="control-label"></label>
-                                <select asp-for="@Model.OrderItems[i].PharmacyMedicationID" class="form-control" asp-items="ViewBag.getMedication"></select>
+                                <select asp-for="@Model.OrderItems[i].PharmacyMedicationID" class="form-control" asp-items="ViewBag.getMedication" id="medication-dropdown">
+                                    <!-- Patient options populated by ViewBag -->
+                                    <option selected disabled>--Select Medication--</option>
+                                </select>
+                                
                                 <span asp-validation-for="@Model.OrderItems[i].PharmacyMedicationID" class="text-danger"></span>
                             </div>
 
