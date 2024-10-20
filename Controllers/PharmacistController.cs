@@ -536,10 +536,10 @@ namespace WIRKDEVELOPER.Controllers
             if (model.StockOrders.Any())
             {
                 var firstOrder = model.StockOrders.First(); // Take the first order to get email address
-                string subject = "Booking Confirmation";
+                string subject = "Order Confirmation";
                 string body = $@"
                         <p>Dear Purchase Manager,</p>
-                        <p>Your booking is confirmed with the following details:</p>
+                        <p> Order is confirmed with the following details:</p>
                         <table border='1' cellpadding='5' cellspacing='0'>
                             <thead>
                                 <tr>
@@ -560,7 +560,7 @@ namespace WIRKDEVELOPER.Controllers
                                 "))}
                             </tbody>
                         </table>
-                        <p>Thank you for your order!</p>
+                        <p>Thank you !</p>
                         <p>Best regards,</p>
                         <p>Your Pharmacy</p>";
 
