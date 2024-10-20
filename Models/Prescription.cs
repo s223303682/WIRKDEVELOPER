@@ -38,7 +38,9 @@ namespace WIRKDEVELOPER.Models
     public class PrescriptionViewModel
     {
         [Key]
-        public int PrescriptionViewModelID { get; set; } // Consider renaming this to avoid confusion with PrescriptionID
+        public int PrescriptionViewModelID { get; set; }
+
+        public int PrescriptionID { get; set; }// Consider renaming this to avoid confusion with PrescriptionID
         [Required]
         public string Name { get; set; }
         [Required]
@@ -110,6 +112,8 @@ namespace WIRKDEVELOPER.Models
 
     public class AlertMedication
     {
+        [Key]
+        public int AlertMedicationID { get; set; }
         public string PharmacyMedicationName { get; set; }
         public int Quantity { get; set; }
         public string Instructions { get; set; }

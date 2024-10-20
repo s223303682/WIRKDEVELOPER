@@ -253,172 +253,162 @@ namespace WIRKDEVELOPER.Controllers
             return View(viewModel);
         }
 
-     // POST: CreatePrescription
-[HttpPost]
-public async Task<IActionResult> CreatePrescription(PrescriptionViewModel model)
-{
-    // Initialize alert view model to check for alerts
-    var alertViewModel = new AlertViewModel
-    {
-        HasAlerts = false,
-        IgnoreReason = model.IgnoreReason,
-        Name = model.Name,
-        Surname = model.Surname,
-        Email = model.Email,
-        Gender = model.Gender,
-        IDNumber = model.IDNumber,
-        Date = model.Date,
-        Prescriber = model.Prescriber,
-        Status = model.Status,
-        Urgent = model.Urgent,
-        Medications = model.Medications
-    };
-
-    // Fetch current medications and allergies for the patient
-    var currentMedications = _Context.addm
-        .Where(a => a.Patient.PatientIDNO == model.IDNumber)
-        .Select(a => a.AnCurrentMedication.ChronicMedication.MedicationActive.Active.ActiveName)
-        .ToList();
-
-    var patientAllergies = _Context.addm
-        .Where(a => a.Patient.PatientIDNO == model.IDNumber)
-        .Select(a => a.AnAllergies.Active.ActiveName)
-        .ToList();
-
-    // Check for allergy alerts and interactions
-    foreach (var medication in model.Medications)
-    {
-        var prescribedActiveIngredients = _Context.PharmacyMedicationIngredients
-            .Where(pm => pm.PharmacyMedication.PharmacyMedicationName == medication.PharmacyMedicationName)
-            .Select(pm => pm.Active.ActiveName)
-            .ToList();
-
-        // Check for allergy matches
-        if (patientAllergies != null && prescribedActiveIngredients.Any(ai => patientAllergies.Contains(ai)))
+        [HttpPost]
+        public async Task<IActionResult> CreatePrescription(PrescriptionViewModel model)
         {
-            alertViewModel.HasAlerts = true;
-            break;
-        }
-
-        // Check for drug interactions
-        if (currentMedications.Any(cm =>
-            (cm == "Carbimazole" && prescribedActiveIngredients.Contains("Doxazosin")) ||
-            (cm == "Doxazosin" && prescribedActiveIngredients.Contains("Doxylamine Succinate"))))
-        {
-            alertViewModel.HasAlerts = true;
-            break;
-        }
-    }
-
-    // If there are alerts, ensure IgnoreReason is provided
-    if (alertViewModel.HasAlerts)
-    {
-        if (string.IsNullOrWhiteSpace(model.IgnoreReason))
-        {
-            ModelState.AddModelError("IgnoreReason", "You must provide a reason for ignoring the alert.");
-            return View("Alert", alertViewModel); // Return the alert view with medication details and alert info
-        }
-
-        // Proceed with creating prescription with the alert and reason
-        var prescriptionWithAlert = new Prescription
-        {
-            Name = model.Name,
-            Surname = model.Surname,
-            IDNumber = model.IDNumber,
-            Email = model.Email,
-            Gender = model.Gender,
-            Date = DateTime.Now,
-            Prescriber = model.Prescriber,
-            Urgent = model.Urgent,
-            Status = "Pending with Alert", // Clearly mark as pending with alert
-            IgnoreReason = model.IgnoreReason, // Save the ignore reason
-            PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
+            // Check for alerts
+            var alertViewModel = new AlertViewModel
             {
-                PharmacyMedicationID = GetPharmacyMedicationId(m.PharmacyMedicationName),
-                Quantity = m.Quantity,
-                Instructions = m.Instructions
-            }).ToList()
-        };
+                HasAlerts = false,
+                IgnoreReason = model.IgnoreReason,
+                Name = model.Name,
+                Surname = model.Surname,
+                Email = model.Email,
+                Gender = model.Gender,
+                IDNumber = model.IDNumber,
+                Date = model.Date,
+                Prescriber = model.Prescriber,
+                Status = model.Status,
+                Urgent = model.Urgent,
+                Medications = model.Medications
+            };
 
-        // Save the prescription with alert and medication details
-        _Context.prescriptions.Add(prescriptionWithAlert);
-        await _Context.SaveChangesAsync();
+            // Fetch current medications and allergies for the patient
+            var currentMedications = await _Context.addm
+                .Where(a => a.Patient.PatientIDNO == model.IDNumber)
+                .Select(a => a.AnCurrentMedication.ChronicMedication.MedicationActive.Active.ActiveName)
+                .ToListAsync();
 
-        return RedirectToAction("PrescriptionList");
-    }
+            var patientAllergies = await _Context.addm
+                .Where(a => a.Patient.PatientIDNO == model.IDNumber)
+                .Select(a => a.AnAllergies.Active.ActiveName)
+                .ToListAsync();
 
-    // If no alerts, proceed with normal prescription creation
-    var prescriptionWithoutAlerts = new Prescription
-    {
-        Name = model.Name,
-        Surname = model.Surname,
-        IDNumber = model.IDNumber,
-        Email = model.Email,
-        Gender = model.Gender,
-        Date = DateTime.Now,
-        Prescriber = model.Prescriber,
-        Urgent = model.Urgent,
-        Status = "Pending", // Normal pending status
-        IgnoreReason = null, // No ignore reason since there are no alerts
-        PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
-        {
-            PharmacyMedicationID = GetPharmacyMedicationId(m.PharmacyMedicationName),
-            Quantity = m.Quantity,
-            Instructions = m.Instructions
-        }).ToList()
-    };
-
-    // Save the prescription without alert
-    _Context.prescriptions.Add(prescriptionWithoutAlerts);
-    await _Context.SaveChangesAsync();
-
-    return RedirectToAction("PrescriptionList");
-}
-
-        private int GetPharmacyMedicationId(string medicationName)
-        {
-            // Logic to get medication ID from the name
-            var medication = _Context.pharmacyMedications
-                .FirstOrDefault(pm => pm.PharmacyMedicationName == medicationName);
-            return medication?.PharmacyMedicationID ?? 0;
-        }
-
-        public IActionResult PrescriptionList(int id)
-        {
-            var prescription = _Context.prescriptions
-                .Include(p => p.PrescriptionMedications)
-                .FirstOrDefault(p => p.PrescriptionID == id);
-
-            if (prescription == null)
+            // Check for allergy alerts and interactions
+            foreach (var medication in model.Medications)
             {
-                return NotFound();
+                var prescribedActiveIngredients = await _Context.PharmacyMedicationIngredients
+                    .Where(pm => pm.PharmacyMedication.PharmacyMedicationName == medication.PharmacyMedicationName)
+                    .Select(pm => pm.Active.ActiveName)
+                    .ToListAsync();
+
+                // Check for allergy matches
+                if (patientAllergies != null && prescribedActiveIngredients.Any(ai => patientAllergies.Contains(ai)))
+                {
+                    alertViewModel.HasAlerts = true;
+                    break;
+                }
+
+                // Check for drug interactions
+                if (currentMedications.Any(cm =>
+                    (cm == "Carbimazole" && prescribedActiveIngredients.Contains("Doxazosin")) ||
+                    (cm == "Doxazosin" && prescribedActiveIngredients.Contains("Doxylamine Succinate"))))
+                {
+                    alertViewModel.HasAlerts = true;
+                    break;
+                }
             }
 
-            var model = new PrescriptionViewModel
+            // If there are alerts, ensure IgnoreReason is provided
+            if (alertViewModel.HasAlerts)
             {
-                Name = prescription.Name,
-                Surname = prescription.Surname,
-                IDNumber = prescription.IDNumber,
-                Gender = prescription.Gender,
-                Email = prescription.Email,
-                Date = prescription.Date,
-                Prescriber = prescription.Prescriber,
-                Status = prescription.Status,
-                Urgent = prescription.Urgent,
-                IgnoreReason = prescription.IgnoreReason,
-                Medications = prescription.PrescriptionMedications.Select(m => new PrescriptionMedicationViewModel
+                if (string.IsNullOrWhiteSpace(model.IgnoreReason))
                 {
-                    PharmacyMedicationName = m.PharmacyMedication.PharmacyMedicationName,
+                    ModelState.AddModelError("IgnoreReason", "You must provide a reason for ignoring the alert.");
+                    return View("Alert", alertViewModel); // Return the alert view with medication details and alert info
+                }
+
+                // Proceed with creating prescription with the alert and reason
+                var prescriptionWithAlert = new Prescription
+                {
+                    Name = model.Name,
+                    Surname = model.Surname,
+                    IDNumber = model.IDNumber,
+                    Email = model.Email,
+                    Gender = model.Gender,
+                    Date = DateTime.Now,
+                    Prescriber = model.Prescriber,
+                    Urgent = model.Urgent,
+                    Status = "Pending with Alert",
+                    IgnoreReason = model.IgnoreReason,
+                    PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
+                    {
+                        PharmacyMedicationID = GetPharmacyMedicationId(m.PharmacyMedicationName), // Ensure this method returns a valid ID
+                        Quantity = m.Quantity,
+                        Instructions = m.Instructions
+                    }).ToList()
+                };
+
+                _Context.prescriptions.Add(prescriptionWithAlert);
+                await _Context.SaveChangesAsync();
+
+                return RedirectToAction("PrescriptionList");
+            }
+
+            // If no alerts, proceed with normal prescription creation
+            var prescriptionWithoutAlerts = new Prescription
+            {
+                Name = model.Name,
+                Surname = model.Surname,
+                IDNumber = model.IDNumber,
+                Email = model.Email,
+                Gender = model.Gender,
+                Date = DateTime.Now,
+                Prescriber = model.Prescriber,
+                Urgent = model.Urgent,
+                Status = "Created",
+                PrescriptionMedications = model.Medications.Select(m => new PrescriptionMedication
+                {
+                    PharmacyMedicationID = GetPharmacyMedicationId(m.PharmacyMedicationName), // Ensure this method returns a valid ID
                     Quantity = m.Quantity,
                     Instructions = m.Instructions
                 }).ToList()
             };
 
-            return View(model);
+            _Context.prescriptions.Add(prescriptionWithoutAlerts);
+            await _Context.SaveChangesAsync();
+
+            return RedirectToAction("PrescriptionList");
         }
 
+        private int GetPharmacyMedicationId(string pharmacyMedicationName)
+        {
+            var medication = _Context.pharmacyMedications
+                .FirstOrDefault(pm => pm.PharmacyMedicationName == pharmacyMedicationName);
 
-        // GET: Prescription/Delete/{id}
+            if (medication != null)
+            {
+                return medication.PharmacyMedicationID; // Ensure this property exists
+            }
+            throw new ArgumentException("Medication not found");
+        }
+        public async Task<IActionResult> PrescriptionList()
+        {
+            var prescriptions = await _Context.prescriptions
+                .Include(p => p.PrescriptionMedications) // Include medications
+                .Select(p => new PrescriptionViewModel
+                {
+                    PrescriptionID = p.PrescriptionID,
+                    Name = p.Name,
+                    Surname = p.Surname,
+                    IDNumber = p.IDNumber,
+                    Email = p.Email,
+                    Gender = p.Gender,
+                    Date = p.Date,
+                    Status = p.Status,
+                    IgnoreReason = p.IgnoreReason,
+                    Urgent = p.Urgent,
+                    Medications = p.PrescriptionMedications.Select(pm => new PrescriptionMedicationViewModel
+                    {
+                        PharmacyMedicationName = pm.PharmacyMedication.PharmacyMedicationName,
+                        Quantity = pm.Quantity,
+                        Instructions = pm.Instructions
+                    }).ToList()
+                }).ToListAsync();
+
+            return View(prescriptions);
+        }
+
         public IActionResult DeletePrescription(int id)
         {
             var prescription = _Context.prescriptions
@@ -509,17 +499,29 @@ public async Task<IActionResult> CreatePrescription(PrescriptionViewModel model)
 
 				// Save changes to the database
 				await _Context.SaveChangesAsync();
+                // Send confirmation email
+                string subject = "Your Booking Confirmation";
+                string body = $@"
+<p>Dear {bookingNewPatient.BookingNewPatientName} {bookingNewPatient.BookingNewPatientSurname},</p>
+<p>We are pleased to confirm your booking for the following details:</p>
+<ul>
+    <li><strong>Date:</strong> {bookingNewPatient.Date.ToString("dddd, MMMM dd, yyyy")}</li>
+    <li><strong>Time:</strong> {bookingNewPatient.Time.Hours:D2}:{bookingNewPatient.Time.Minutes:D2} {(bookingNewPatient.Time.Hours >= 12 ? "PM" : "AM")}</li>
+</ul>
+<p>Please ensure to arrive at least 15 minutes before your scheduled time.</p>
+<p>If you have any questions or need to reschedule, feel free to contact us at [your contact details].</p>
+<p>Thank you for choosing us, and we look forward to serving you.</p>
+<p>Best regards,<br/>
+[Your Company Name] Team</p>
+";
 
-				// Send confirmation email
-				string subject = "Booking Confirmation";
-				string body = $"Dear {bookingNewPatient.BookingNewPatientName}, your booking is confirmed for {bookingNewPatient.Date} at {bookingNewPatient.Time}.";
-				await _emailService.SendEmailAsync(bookingNewPatient.Email, subject, body);
+                await _emailService.SendEmailAsync(bookingNewPatient.Email, subject, body);
+                return RedirectToAction("BookingPatientList"); // Redirect to the list of bookings
 
-				return RedirectToAction("BookingPatientList");
-			}
+            }
 
-			// If there are validation errors, re-populate ViewBag data and return to the view
-			ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
+            // If there are validation errors, re-populate ViewBag data and return to the view
+            ViewBag.getOperationTheatre = new SelectList(_Context.operationTheatres, "OperationTheatreID", "OperationTheatreName");
 			ViewBag.getTreatmentCode = new SelectList(_Context.treatmentCodes, "TreatmentCodeID", "ICDCODE");
 
 			var anaesthesiologists = _Context.Anaesthesiologists
@@ -636,7 +638,7 @@ public async Task<IActionResult> CreatePrescription(PrescriptionViewModel model)
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateBooking(BookingViewModel model)
+        public async Task<IActionResult> CreateBooking(BookingViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -669,8 +671,25 @@ public async Task<IActionResult> CreatePrescription(PrescriptionViewModel model)
 
                 _Context.bookings.Add(booking);
                 _Context.SaveChanges();
+                // Send confirmation email
+                string subject = "Your Booking Confirmation";
+                string body = $@"
+<p>Dear {model.Name} {model.Surname},</p>
+<p>We are pleased to confirm your booking for the following details:</p>
+<ul>
+    <li><strong>Date:</strong> {model.Date.ToString("dddd, MMMM dd, yyyy")}</li>
+    <li><strong>Time:</strong> {model.Time.Hours:D2}:{model.Time.Minutes:D2} {(model.Time.Hours >= 12 ? "PM" : "AM")}</li>
+</ul>
+<p>Please ensure to arrive at least 15 minutes before your scheduled time.</p>
+<p>If you have any questions or need to reschedule, feel free to contact us at [your contact details].</p>
+<p>Thank you for choosing us, and we look forward to serving you.</p>
+<p>Best regards,<br/>
+[Your Company Name] Team</p>
+";
 
+                await _emailService.SendEmailAsync(model.Email, subject, body);
                 return RedirectToAction("BookingList"); // Redirect to the list of bookings
+
             }
 
             // If model state is invalid, repopulate the dropdowns

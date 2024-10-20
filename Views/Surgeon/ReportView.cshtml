@@ -82,17 +82,45 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
         function downloadPDF() {
             const element = document.getElementById('card-content');
+
+            // Set the options for html2pdf, including jsPDF configuration
+            const opt = {
+                margin: 1,
+                filename: 'ReportView.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+                pagebreak: { mode: ['css', 'legacy'] } // Handle page breaks
+            };
+
             html2pdf()
                 .from(element)
-                .save('ReportView.pdf')
+                .set(opt)
+                .toPdf()
+                .get('pdf')
+                .then(function (pdf) {
+                    const totalPages = pdf.internal.getNumberOfPages(); // Get total number of pages
+
+                    // Add page numbers
+                    for (let i = 1; i <= totalPages; i++) {
+                        pdf.setPage(i);
+                        pdf.setFontSize(10);
+                        // Add page number at bottom-right of the page
+                        pdf.text('Page ' + i + ' of ' + totalPages, pdf.internal.pageSize.getWidth() - 50, pdf.internal.pageSize.getHeight() - 10);
+                    }
+                })
+                .save('GenerateSurgeryReport.pdf') // Save the PDF with page numbers
                 .catch(err => {
-                    console.error("Error generating PDF:", err);
+                    console.error('Error generating PDF:', err);
                 });
         }
     </script>
 }
+
+
 </html>

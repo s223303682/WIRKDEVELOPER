@@ -1,7 +1,10 @@
 ﻿@model IEnumerable<WIRKDEVELOPER.Models.PrescriptionViewModel>
+
 @{
+
     Layout = "~/Views/Shared/SurgeonLayout.cshtml";
 }
+
 
 <h2>Prescription List</h2>
 
@@ -10,13 +13,13 @@
         <tr>
             <th>Name</th>
             <th>Surname</th>
-            <th>ID number</th>
+            <th>ID Number</th>
             <th>Email</th>
             <th>Gender</th>
-            <th>Prescriber</th>
-            <th>Status</th>
-            <th>Urgent</th>
             <th>Date</th>
+            <th>Status</th>
+            <th>Ignore Reason</th>
+            <th>Urgent</th>
             <th>Medications</th>
         </tr>
     </thead>
@@ -29,18 +32,24 @@
                 <td>@prescription.IDNumber</td>
                 <td>@prescription.Email</td>
                 <td>@prescription.Gender</td>
-                <td>@prescription.Prescriber</td>
+                <td>@prescription.Date.ToShortDateString()</td>
                 <td>@prescription.Status</td>
-                <td>@prescription.Urgent</td>
-                <td>@prescription.Date.ToString("dd/MM/yyyy")</td>
+                <td>@prescription.IgnoreReason</td>
+                @if (prescription.Urgent.ToLower() == "yes")
+                {
+                    <td class="text-danger">@prescription.Urgent</td>
+                }
+                else
+                {
+                    <td>@prescription.Urgent</td>
+                }
+               
                 <td>
                     <ul>
                         @foreach (var medication in prescription.Medications)
                         {
                             <li>
-                                Medication ID: @medication.PharmacyMedicationName - Quantity: @medication.Quantity
-                                <br />
-                                Instructions: @medication.Instructions
+                                @medication.PharmacyMedicationName - Qty: @medication.Quantity, Instructions: @medication.Instructions
                             </li>
                         }
                     </ul>
