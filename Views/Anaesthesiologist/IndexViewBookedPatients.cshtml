@@ -78,7 +78,7 @@
 
             <table class="table table-sm table-hover">
 
-                <thead>
+                <thead class="table-secondary">
                     <tr>
                         <th>
                             Date
@@ -118,14 +118,14 @@
                             <td width="20%">@patient.Status</td>
 
 
-                            <td>
+                            @* <td>
                                 <a asp-controller="Anaesthesiologist" asp-action="ViewPatientRec" asp-route-ID="@patient.BookingNewPatientID" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>View Records</a>
 
                                 <a asp-controller="Anaesthesiologist" asp-action="Order" asp-route-ID="@patient.BookingNewPatientID" class="btn btn-danger">
                                     <i class="bi bi-trash3-fill"></i>Order
                                 </a>
 
-                            </td>
+                            </td> *@
 
 
                         </tr>

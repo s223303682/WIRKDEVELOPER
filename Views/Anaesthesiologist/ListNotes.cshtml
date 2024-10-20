@@ -12,8 +12,8 @@
 }
 else
 {
-    <table class="table table-sm table-hover" >
-        <thead>
+    <table class="table table-sm table-hover">
+        <thead class="table-secondary">
             <tr>
                 <th>Patient Name</th>
                 <th>Medication(s)</th>
@@ -26,26 +26,8 @@ else
             @foreach (var medication in Model)
             {
                 <tr>
-                    <td>@medication.Order.Addm.PatientName</td> <!-- Display Patient Name -->
-                    <!-- Medication(s) -->
-                    <td>
-                        @medication.PharmacyMedication.PharmacyMedicationName
-                        @* @if (medication.Order.OrderMedications != null && medication.Order.OrderMedications.Any())
-                        {
-                            <ul>
-                                @foreach (var med in medication.Order.OrderMedications)
-                                {
-                                    <li>
-                                        @med.PharmacyMedication?.PharmacyMedicationName - Quantity: @med.Quantity, Instructions: @med.Instructions
-                                    </li>
-                                }
-                            </ul>
-                        }
-                        else
-                        {
-                            <p>No medications found for this order</p>
-                        } *@
-                    </td>
+                    <td>@medication.Order.Addm.PatientName</td>
+                    <td>@medication.PharmacyMedication.PharmacyMedicationName</td>
 
                     <!-- Notes for the medication -->
                     <td>
@@ -54,24 +36,24 @@ else
                             <ul>
                                 @foreach (var note in medication.notes)
                                 {
-                                    <li>@note.NoteText (Added on @note.CreatedAt.ToString("MM/dd/yyyy"))</li>
-
+                                    <li>@note.NoteText</li>
                                 }
                             </ul>
-
                         }
                         else
                         {
                             <p>No notes available</p>
                         }
                     </td>
+
+                    <!-- Note creation date -->
                     <td>
                         @if (medication.notes != null && medication.notes.Any())
                         {
                             <ul>
                                 @foreach (var note in medication.notes)
                                 {
-                                    <li>@note.CreatedAt.ToString("MM/dd/yyyy")</li>
+                                    <li> @note.CreatedAt.ToString("MM/dd/yyyy")</li>
                                 }
                             </ul>
                         }
@@ -81,13 +63,23 @@ else
                         }
                     </td>
 
-                    <!-- Action to add a note -->
+                    <!-- Action buttons -->
                     <td>
-                        <a asp-controller="Anaesthesiologist" asp-action="CreateNote" asp-route-orderMedicationID="@medication.OrderMedicationID" class="btn btn-primary">Add Note</a>
-                        <a asp-controller="Anaesthesiologist" asp-action="CreateNote" asp-route-orderMedicationID="@medication.OrderMedicationID" class="btn btn-danger">Delete</a>
+                        @if (medication.notes == null || !medication.notes.Any())
+                        {
+                            <!-- Show Add Note button if no notes exist -->
+                            <a asp-controller="Anaesthesiologist" asp-action="CreateNote" asp-route-orderMedicationID="@medication.OrderMedicationID" class="btn btn-primary">Add Note</a>
+                        }
+                        else
+                        {
+                            <!-- Show Update and Delete buttons if notes exist -->
+                            <a asp-controller="Anaesthesiologist" asp-action="UpdateNote" asp-route-orderMedicationID="@medication.OrderMedicationID" class="btn btn-info">Update</a>
+                            <a asp-controller="Anaesthesiologist" asp-action="DeleteNote" asp-route-orderMedicationID="@medication.OrderMedicationID" class="btn btn-danger">Delete</a>
+                        }
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 }
+

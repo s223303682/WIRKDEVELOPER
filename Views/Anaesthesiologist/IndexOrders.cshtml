@@ -10,15 +10,24 @@
 }
 @if (User.IsInRole("Anaesthesiologist"))
 {
-    <h1>Orders List</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Orders List</h1>
+        </div>
+        <div class="col-md-6">
+            <p>
+                <a asp-action="CreateOrder" class="btn btn-primary">Create New Order</a>
+            </p>
+       </div>
 
-    <p>
-        <a asp-action="CreateOrder" class="btn btn-primary">Create New Order</a>
-    </p>
+        
+    </div>
+    
     @if(Model.Count() >0)
     {
-        <table class="table">
-            <thead>
+        <table class="table table-sm table-hover">
+            <thead class="table-secondary">
                 <tr>
                     <th>
                         @Html.DisplayNameFor(model => model.Date)
@@ -88,7 +97,7 @@
                             <td>
                                 @if (order.Status == "Despensed")
                                 {
-                                    <a asp-controller="Anaesthesiologist" asp-action="EditOrder" asp-route-id="@order.AnOrderID" class="btn btn-warning">Receive Order</a>
+                                  <a asp-controller="Anaesthesiologist" asp-action="EditOrder" asp-route-id="@order.AnOrderID" class="btn btn-warning">Receive Order</a>
 
                                 }
                                 else
@@ -97,7 +106,7 @@
 @*                                     <a asp-controller="Anaesthesiologist" asp-action="Details" asp-route-id="@order.AnOrderID" class="btn btn-info">Details</a>
  *@                                    <a asp-controller="Anaesthesiologist" asp-action="DeleteOrder" asp-route-id="@order.AnOrderID" class="btn btn-danger">Delete</a>
                                 }
-                           </td>
+                            </td>
                            
                             
                         </tr>
@@ -137,8 +146,9 @@
 
                             @if (order.Status == "Despensed")
                             {
+                                <td>
                                 <a asp-controller="Anaesthesiologist" asp-action="EditOrder" asp-route-id="@order.AnOrderID" class="btn btn-warning">Receive Order</a>
-
+                                </td>
                             }
                             else
                             {
