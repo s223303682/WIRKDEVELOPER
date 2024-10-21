@@ -112,6 +112,8 @@ namespace WIRKDEVELOPER.Controllers
         [HttpPost]
         //public async Task<IActionResult> Report(DateTime from, DateTime to)
         //{
+        //    var meds = Context.medicationPrescription.();
+
         //    var meds = Context.medicationPrescriptions.Include(c => c.Prescription).Include(c => c.Prescription.Patient).Include(c => c.PharmacyMedication).Where(c => c.Prescription.NurseID == HttpContext.Session.GetInt32("userint") && c.Prescription.Date >= from.Date && c.Prescription.Date <= to.Date).AsEnumerable();
         //    var pat = Context.patients.AsEnumerable();
         //    var v = (from p in pat
