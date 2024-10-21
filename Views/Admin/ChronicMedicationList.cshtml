@@ -18,7 +18,7 @@
             <h2 class="text-primary">List of Chronic Medication</h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="Admin" asp-action="CreateChronicMedication" class="btn btn-primary"><i class="bi bi-plus-circle"></i>Back</a>
+            <a asp-controller="Admin" asp-action="CreateChronicMedication" class="btn btn-primary"><i class="bi bi-plus-circle"></i>create</a>
         </div>
     </div>
     <br />
@@ -50,7 +50,7 @@
                 {
                     <tr>
                         <td width="20%">@conditions.ChronicName</td>
-                        <td width="20%">@conditions.MedicationActive.Active.ActiveID</td>
+                        <td width="20%">@conditions.ActiveID</td>
                         <td width="20%">@conditions.ScheduleId</td>
                         <td width="20%">@conditions.DosageFormID</td>
                
@@ -63,7 +63,7 @@
     }
     else
     {
-        <p>No Schedule added yet</p>
+        <p> Not added yet</p>
     }
 
 </div>

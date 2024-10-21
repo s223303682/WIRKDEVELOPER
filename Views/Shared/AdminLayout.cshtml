@@ -142,17 +142,23 @@
 								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Beds</span>
 							</a>
 						</li>
-						<li class="sidebar-item">
-							<a asp-controller="Admin" asp-action="AddWard" class="sidebar-link">
+						@* <li class="sidebar-item">
+							<a asp-controller="Admin" asp-action="AddWards" class="sidebar-link">
 								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Wards</span>
 							</a>
 							
-						</li>
+						</li> *@
 						<li class="sidebar-item">
 							<a asp-controller="Admin" asp-action="AllergyList" class="sidebar-link">
 								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Allergy</span>
 							</a>
 							
+						</li>
+						<li class="sidebar-item">
+							<a asp-controller="Admin" asp-action="ChronicMedicationList" class="sidebar-link">
+								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Chronic Medication</span>
+							</a>
+
 						</li>
 						<li class="sidebar-item">
 							<a asp-controller="Admin" asp-action="AnCurrentMedicationList" class="sidebar-link">
@@ -166,24 +172,19 @@
 							</a>
 
 						</li>
-						<li class="sidebar-item">
-							<a asp-controller="Admin" asp-action="ChronicMedicationList" class="sidebar-link">
-								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Chronic Medication</span>
-							</a>
-
-						</li>
+						
 						<li class="sidebar-item">
 							<a asp-controller="Admin" asp-action="ContraIndicationList" class="sidebar-link">
 								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Contra-Indication</span>
 							</a>
 
 						</li>
-						<li class="sidebar-item">
+					@* 	<li class="sidebar-item">
 							<a asp-controller="Admin" asp-action="AddWard" class="sidebar-link">
 								<i class="align-middle" data-feather="edit"></i> <span class="align-middle">Patient Profile</span>
 							</a>
 
-						</li>
+						</li> *@
 
 					</ul>
 
@@ -244,33 +245,7 @@
 					</div>
 				</main>
 
-				<footer class="footer">
-					<div class="container-fluid">
-						<div class="row text-muted">
-							<div class="col-6 text-start">
-								<p class="mb-0">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>QCHCC</strong></a> &copy;
-								</p>
-							</div>
-							<div class="col-6 text-end">
-								<ul class="list-inline">
-									<li class="list-inline-item">
-										<a class="text-muted" href="https://adminkit.io/" target="_blank">Support</a>
-									</li>
-									<li class="list-inline-item">
-										<a class="text-muted" href="https://adminkit.io/" target="_blank">Help Center</a>
-									</li>
-									<li class="list-inline-item">
-										<a class="text-muted" href="https://adminkit.io/" target="_blank">Privacy</a>
-									</li>
-									<li class="list-inline-item">
-										<a class="text-muted" href="https://adminkit.io/" target="_blank">Terms</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</footer>
+				
 
 			</div>
 		</div>

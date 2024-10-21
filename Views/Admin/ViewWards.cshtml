@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<WIRKDEVELOPER.Models.Ward>
+
+@{
     ViewData["Title"] = "ViewWards";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
@@ -8,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" />
 </head>
 <div id="Header" class="bg-info">
-    <h2 class="m-1 pt-4 text-center text-white">View Vitals</h2>
+    <h2 class="m-1 pt-4 text-center text-white">View Ward</h2>
 </div>
 <div class="container-fluid bg-white border p-4">
     <table id="myTable" table class="table table-hover  table-sm" style="width:100%">
@@ -20,9 +22,9 @@
                 <th>
                     Number of Beds
                 </th>
-                <th>
+               @*  <th>
                     Action
-                </th>
+                </th> *@
             </tr>
         </thead>
 
@@ -32,13 +34,13 @@
                 <tr>
 
                     <td width="20%">@war.WardName</td>
-                    <td width="20%">@war.NoOfBeds</td>
+                    <td width="20%">@war.Bed.BedNumber</td>
                    
-                    <td>
+                   @*  <td>
                         <div class="w-50 btn-group" role="group">
                             <a asp-controller="Admin" asp-action="ViewWards" asp-route-ID="@war.WardID" class="btn btn-info mx-1">View</a>
                         </div>
-                    </td>
+                    </td> *@
                 </tr>
 
 

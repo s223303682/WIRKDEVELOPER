@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using WIRKDEVELOPER.Models;
 using WIRKDEVELOPER.Models.Admin;
@@ -433,7 +434,7 @@ namespace WIRKDEVELOPER.Controllers
             {
                 _Context.beds.Add(beds);
                 _Context.SaveChanges();
-                return RedirectToAction("AddBed");
+                return RedirectToAction("ViewBeds");
             }
             return View(beds);
         }
@@ -462,23 +463,25 @@ namespace WIRKDEVELOPER.Controllers
         } 
         public IActionResult ViewWards()
         {
-            IEnumerable<Ward> ward = _Context.ward;
+            IEnumerable<Ward> ward = _Context.ward
+                                       .Include(a => a.Bed);
             return View(ward);
         }
-        public IActionResult AddWard()
+        public IActionResult AddWards()
         {
+            ViewBag.getBed = new SelectList(_Context.bed, "BedID", "BedNumber");
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddWards(Ward ward)
         {
-            if (ModelState.IsValid)
-            {
+          
                 _Context.ward.Add(ward);
+                ViewBag.getBed = new SelectList(_Context.bed, "BedID", "BedNumber");
                 _Context.SaveChanges();
                 return RedirectToAction("AddWards");
-            }
+            
             return View(ward);
         }
         public IActionResult updateWards(int? ID)
@@ -506,7 +509,9 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult AllergyList()
         {
-            IEnumerable<AnAllergies> list = _Context.anallergies;
+            IEnumerable<AnAllergies> list = _Context.anallergies
+                                             .Include(a => a.Active);
+
             return View(list);
         }
         public IActionResult CreateAllergy()
@@ -529,7 +534,8 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult AnCurrentMedicationList()
         {
-            IEnumerable<AnCurrentMedication> list = _Context.ancurrentmedication;
+            IEnumerable<AnCurrentMedication> list = _Context.ancurrentmedication
+                                                    .Include(a => a.ChronicMedication);
             return View(list);
         }
         public IActionResult CreateAnCurrentMedication()
@@ -573,7 +579,10 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult ChronicMedicationList()
         {
-            IEnumerable<ChronicMedication> list = _Context.chronicmedication;
+            IEnumerable<ChronicMedication> list = _Context.chronicmedication
+                                                    .Include(a => a.Active)
+                                                    .Include(a => a.Schedule)
+                                                    .Include(a => a.DosageForm);
             return View(list);
         }
         public IActionResult CreateChronicMedication()
@@ -600,7 +609,9 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult ContraIndicationList()
         {
-            IEnumerable<ContraIndication> list = _Context.contraindication;
+            IEnumerable<ContraIndication> list = _Context.contraindication
+                                                    .Include(a => a.AnConditions)
+                                                    .Include(a => a.Active);
             return View(list);
         }
         public IActionResult CreateContraIndication()

@@ -10,9 +10,10 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public string? WardName { get; set; }
         [Required]
-        public int NoOfBeds { get; set; } 
-        public int NurseResponsible { get; set; }
-        
-
+        //public int NoOfBeds { get; set; } 
+        //public int NurseResponsible { get; set; }
+        public virtual Bed Bed { get; set; }
     }
+
 }
+

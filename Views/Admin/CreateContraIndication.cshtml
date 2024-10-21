@@ -27,9 +27,9 @@
                                     <div class="row">
                                         <div class="col-md-4">
 
-                                            <label asp-for="ActiveID" class="control-label">Schedule</label>
+                                            <label asp-for="ActiveID" class="control-label">Active Ingredient</label>
                                             <select asp-for="ActiveID" class="form-control" asp-items="ViewBag.getActive">
-                                                <option selected disabled>--Select schedule--</option>
+                                                <option selected disabled>--Select Active Ingrident--</option>
                                             </select>
                                             <span asp-validation-for="ActiveID" class="text-danger"></span>
                                         </div>
@@ -38,9 +38,9 @@
                                     <div class="row">
                                         <div class="col-md-4">
 
-                                            <label asp-for="AnConditionsID" class="control-label">Schedule</label>
+                                            <label asp-for="AnConditionsID" class="control-label">Chronic Condition</label>
                                             <select asp-for="AnConditionsID" class="form-control" asp-items="ViewBag.getCondition">
-                                                <option selected disabled>--Select schedule--</option>
+                                                <option selected disabled>--Select Chronic Condition--</option>
                                             </select>
                                             <span asp-validation-for="AnConditionsID" class="text-danger"></span>
                                         </div>

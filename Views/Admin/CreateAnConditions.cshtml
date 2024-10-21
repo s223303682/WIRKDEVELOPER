@@ -26,7 +26,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <h4><label asp-for="Diagnose"></label></h4>@*These names come from our properties in the model *@
-                                            <input asp-for="Diagnose" class="form-control box mb-2" type="text" placeholder="select" />
+                                            <input asp-for="Diagnose" class="form-control box mb-2" type="text" placeholder="type" />
                                             <span asp-validation-for=" Diagnose" class="text-danger"></span>
                                         </div>
 
@@ -34,7 +34,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <h4><label asp-for="chroniccode"></label></h4>@*These names come from our properties in the model *@
-                                            <input asp-for="chroniccode" class="form-control box mb-2" type="text" placeholder="select" />
+                                            <input asp-for="chroniccode" class="form-control box mb-2" type="text" placeholder="type" />
                                             <span asp-validation-for=" chroniccode" class="text-danger"></span>
                                         </div>
 
@@ -51,7 +51,7 @@
                                         <div class="col-4 offset-9 row">
                                             <div class="col">
                                                 <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="SAVE" />
-                                                <a asp-controller="Admin" asp-action="AnConditionsList" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Current Medication</a>
+                                                <a asp-controller="Admin" asp-action="AnConditionsList" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>List</a>
                                             </div>
 
                                         </div>

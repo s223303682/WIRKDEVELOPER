@@ -23,13 +23,25 @@
                 <div class="form-group">
                     <label asp-for="WardName"></label>
                     <div>
-                        <input type="email" asp-for="WardName" class="form-control" id="InvalidName" required />
+                        <input type="text" asp-for="WardName" class="form-control" id="InvalidName" required />
                     </div>
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="WardName" class=" text-danger"></span>
                 </div>
             </div>
-            <div class="col">
+
+            <div class="row">
+                <div class="col-md-4">
+
+                    <label asp-for="Bed" class="control-label">Beds</label>
+                    <select asp-for="Bed" class="form-control" asp-items="ViewBag.getBed">
+                        <option selected disabled>--Select Beds--</option>
+                    </select>
+                    <span asp-validation-for="Bed" class="text-danger"></span>
+                </div>
+
+            </div>
+           @*  <div class="col">
                 <div class="form-group">
                     <label asp-for="NoOfBeds"></label>
                     <div>
@@ -48,17 +60,16 @@
                     <div class="invalid-feedback"></div>
                     <span asp-validation-for="NurseResponsible" class=" text-danger"></span>
                 </div>
-            </div>
+            </div> *@
 
         </div>
 
         </div>
-        <div class="row">
-            <div class="col">
-                <a asp-action="AddCondition" class="btn btn-outline-primary">Next</a>
-            </div>
+        <div class="col">
+            <input type="submit" class="btn btn-info w-75 bi bi-arrow-left-circle" value="SAVE" />
+            <a asp-controller="Admin" asp-action="ActiveList" class="btn btn-primary"><i class="bi bi-arrow-repeat"></i>Activelist</a>
         </div>
-    <</form>
+    </form>
    
 </body>
 </html>

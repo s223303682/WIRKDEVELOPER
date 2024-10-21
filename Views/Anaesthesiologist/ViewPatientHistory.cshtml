@@ -29,7 +29,7 @@
                                     @foreach (var allergy in admission.Patient.PatientAllergies)
                                     {
                                         <li class="list-group-item">
-                                            <strong>Allergy:</strong> @allergy.Active.ActiveName
+                                            <strong>Allergy:</strong> @allergy.PatientAllergiesId
                                         </li>
                                     }
                                 </ul>
@@ -47,7 +47,7 @@
                                     @foreach (var condition in admission.Patient.PatientChronicCondition)
                                     {
                                         <li class="list-group-item">
-                                            <strong>Condition:</strong> @condition.AnConditions.Diagnose
+                                            <strong>Condition:</strong> @condition.PatientChronicConditionId
                                         </li>
                                     }
                                 </ul>
@@ -65,7 +65,7 @@
                                     @foreach (var medication in admission.Patient.PatientMedication)
                                     {
                                         <li class="list-group-item">
-                                            <strong>Medication:</strong> @medication.ChronicMedication.ChronicName
+                                            <strong>Medication:</strong> @medication.PatientMedicationId
                                         </li>
                                     }
                                 </ul>

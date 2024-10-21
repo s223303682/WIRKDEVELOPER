@@ -869,7 +869,7 @@ namespace WIRKDEVELOPER.Controllers
         .ThenInclude(pc => pc.AnConditions)
         .Include(a => a.Patient.PatientMedication)
         .ThenInclude(pm => pm.ChronicMedication)
-        .FirstOrDefaultAsync(a => a.AddmID == id);
+        .FirstOrDefaultAsync(a => a.PatientID == id);
 
             if (admission == null)
             {

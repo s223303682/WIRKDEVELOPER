@@ -276,7 +276,7 @@ namespace WIRKDEVELOPER.Controllers
             // Fetch current medications and allergies for the patient
             var currentMedications = await _Context.addm
                 .Where(a => a.Patient.PatientIDNO == model.IDNumber)
-                .Select(a => a.AnCurrentMedication.ChronicMedication.MedicationActive.Active.ActiveName)
+                .Select(a => a.AnCurrentMedication.ChronicMedication.Active.ActiveName)
                 .ToListAsync();
 
             var patientAllergies = await _Context.addm
@@ -441,6 +441,7 @@ namespace WIRKDEVELOPER.Controllers
                     BookingNewPatientName = b.BookingNewPatientName,
                     BookingNewPatientSurname = b.BookingNewPatientSurname,
                     BookingNewPatientIDNUmber = b.BookingNewPatientIDNUmber,
+                    Gender = b.Gender,
                     Email = b.Email,
                     Date = b.Date,
                     Province = b.Province,

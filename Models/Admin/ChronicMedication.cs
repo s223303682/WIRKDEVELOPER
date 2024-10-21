@@ -33,6 +33,10 @@ namespace WIRKDEVELOPER.Models.Admin
         [ForeignKey("DosageFormID")]
         public virtual DosageForm DosageForm { get; set; }
 
-        public virtual MedicationActive MedicationActive { get; set; }
+        [Required]
+        [DisplayName("Active Ingredient")]
+        public int? ActiveID { get; set; }
+        [ForeignKey("ActiveID")]
+        public virtual Active Active { get; set; }
     }
 }

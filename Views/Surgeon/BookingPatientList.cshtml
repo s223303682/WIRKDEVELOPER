@@ -6,6 +6,8 @@
 
 <h1>Booking Patient List</h1>
 
+<a asp-action="CreateBookingPatient" class="btn btn-primary">Create New Booking</a>
+
 <table class="table table-bordered table-striped table-white">
     <thead class="thead-primary">
         <tr>
@@ -37,6 +39,7 @@
                     <td>@booking.BookingNewPatientName</td>
                     <td>@booking.BookingNewPatientSurname</td>
                     <td>@booking.BookingNewPatientIDNUmber</td>
+                    <td>@booking.Gender</td>
                     <td>@booking.Email</td>
                     <td>@booking.Date.ToString("yyyy-MM-dd")</td>
                     <td>@booking.Time</td>
@@ -86,5 +89,3 @@
         }
     </tbody>
 </table>
-
-<a asp-action="CreateBookingPatient" class="btn btn-primary">Create New Booking</a>

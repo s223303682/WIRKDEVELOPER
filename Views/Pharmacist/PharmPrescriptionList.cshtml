@@ -36,38 +36,42 @@
                     <td>@prescription.Gender</td>
                     <td>@prescription.Email</td>
                     <td>@prescription.Date.ToString("d")</td>
-                    @if (prescription.PrescriptionMedications != null && prescription.PrescriptionMedications.Any())
-                    {
-                        foreach (var medication in prescription.PrescriptionMedications)
+                    <td>
+
+                        @if (prescription.PrescriptionMedications != null && prescription.PrescriptionMedications.Any())
                         {
+                            foreach (var medication in prescription.PrescriptionMedications)
+                            {
                             <td>@medication.PharmacyMedicationID</td>
                             <td>@medication.Quantity</td>
                             <td>@medication.Instructions</td>
                             <td>@prescription.Prescriber</td>
                             <td>@prescription.Urgent</td>
                             <td>@prescription.Status</td>
-                           
-                            @if(prescription.IgnoreReason == null)
-                            {
+
+                                @if (prescription.IgnoreReason == null)
+                                {
                                 <td>None</td>
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
                                 <td>@prescription.IgnoreReason</td>
 
-                            }
+                                }
                             <td>
                                 <a asp-controller="Pharmacist" asp-action="UpdatePrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-primary">Update</a>
                             </td>
                             <td>
                                 <a asp-controller="Pharmacist" asp-action="RejectPrescription" asp-route-id="@prescription.PrescriptionID" class="btn btn-primary">Reject</a>
                             </td>
+                            }
                         }
-                    }
-                    else
-                    {
+                        else
+                        {
                         <td colspan="7">No Medications</td> <!-- Handle case with no medications -->
-                    }
+                        }
+                    </td>
+                  
                 </tr>
             }
             else
@@ -78,8 +82,8 @@
                     <td>@prescription.Gender</td>
                     <td>@prescription.Email</td>
                     <td>@prescription.Date.ToString("d")</td>
-
-                    @if (prescription.PrescriptionMedications != null && prescription.PrescriptionMedications.Any())
+                    <td>
+                         @if (prescription.PrescriptionMedications != null && prescription.PrescriptionMedications.Any())
                     {
                         foreach (var medication in prescription.PrescriptionMedications)
                         {
@@ -110,6 +114,8 @@
                     {
                         <td colspan="7">No Medications</td> <!-- Handle case with no medications -->
                     }
+                    </td>
+                   
                 </tr>
             }
         }

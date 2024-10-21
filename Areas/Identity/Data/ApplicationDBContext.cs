@@ -22,7 +22,10 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
+        builder.Entity<ChronicMedication>()
+            .HasOne(a => a.Active) // Assuming you have a navigation property for Active
+            .WithMany() // Adjust accordingly if Active has multiple Allergies
+            .HasForeignKey(a => a.ActiveID);
 
         builder.Entity<Addm>()
       .HasOne(a => a.AnAllergies)

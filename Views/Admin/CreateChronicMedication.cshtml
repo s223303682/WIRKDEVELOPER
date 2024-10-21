@@ -26,7 +26,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <h4><label asp-for="ChronicName"></label></h4>@*These names come from our properties in the model *@
-                                            <input asp-for="ChronicName" class="form-control box mb-2" type="text" placeholder="select" />
+                                            <input asp-for="ChronicName" class="form-control box mb-2" type="text" placeholder="Type" />
                                             <span asp-validation-for="ChronicName" class="text-danger"></span>
                                         </div>
 
@@ -34,11 +34,11 @@
                                     <div class="row">
                                         <div class="col-md-4">
 
-                                            <label asp-for="MedicationActive" class="control-label">Schedule</label>
-                                            <select asp-for="MedicationActive" class="form-control" asp-items="ViewBag.getActive">
-                                                <option selected disabled>--Select schedule--</option>
+                                            <label asp-for="Active" class="control-label">Active ingredients</label>
+                                            <select asp-for="Active" class="form-control" asp-items="ViewBag.getActive">
+                                                <option selected disabled>--Select Active Ingredients--</option>
                                             </select>
-                                            <span asp-validation-for="MedicationActive" class="text-danger"></span>
+                                            <span asp-validation-for="Active" class="text-danger"></span>
                                         </div>
 
                                     </div>
@@ -56,9 +56,9 @@
                                     <div class="row">
                                         <div class="col-md-4">
 
-                                            <label asp-for="DosageFormID" class="control-label">Schedule</label>
+                                            <label asp-for="DosageFormID" class="control-label">DosageForm</label>
                                             <select asp-for="DosageFormID" class="form-control" asp-items="ViewBag.getDosage">
-                                                <option selected disabled>--Select schedule--</option>
+                                                <option selected disabled>--Select DosageForm--</option>
                                             </select>
                                             <span asp-validation-for="DosageFormID" class="text-danger"></span>
                                         </div>
