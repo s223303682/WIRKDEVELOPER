@@ -521,7 +521,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateAllergy(AnAllergies allergies)
+        public IActionResult CreateAllergy(Models.AnAllergies allergies)
         {
             //if (ModelState.IsValid)
             

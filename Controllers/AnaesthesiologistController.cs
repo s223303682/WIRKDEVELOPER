@@ -73,7 +73,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult IndexAnAllergies()
         {
-            IEnumerable<AnAllergies> objList = _Context.anallergies.Include(a => a.Active);
+            IEnumerable<Models.AnAllergies> objList = _Context.anallergies.Include(a => a.Active);
             return View(objList);
 
         }

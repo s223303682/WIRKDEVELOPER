@@ -35,11 +35,16 @@ namespace WIRKDEVELOPER.Models
         public int? UserId { get; set; } // Change this to string
         [ForeignKey("UserId")]
         public virtual Anaesthesiologist? Anaesthesiologist { get; set; }
+        public int? UserID { get; set; } // Change this to string
+        [ForeignKey("UserId")]
+        public virtual Surgeon? Surgeon { get; set; }
         [DisplayName("Ward")]
         public string? Ward { get; set; } = " - ";
         [DisplayName("Bed")]
         public string? Bed { get; set; } = " - ";
         [DisplayName("Status")]
+        public int PatientID { get; set; }
+        public virtual Patient? Patient { get; set; }
         public string? Status { get; set; } = "Not Admitted ";
     }
     public class BookingPatientTreatmentCode

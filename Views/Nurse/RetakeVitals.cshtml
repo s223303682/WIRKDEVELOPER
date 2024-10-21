@@ -1,34 +1,34 @@
-﻿@* @{
+﻿@{
     ViewData["Title"] = "Retake Vitals";
     Layout = "~/Views/Shared/_NurseLayout.cshtml";
 }
  @model WIRKDEVELOPER.Models.Admission
 <div class="row justify-content-center">
-    <h3>Discharge Patient</h3>
+    <h3>Patient Vital Retake</h3>
     <div class="card">
         <div class="card-body">
             <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" asp-for="Booking.Patient.PatientName"></label>
+                <label class="col-sm-2 col-form-label" asp-for="BookingNewPatient.Patient.PatientName"></label>
                 <div class="col-sm-10">
-                    <input readonly class="form-control" asp-for="Booking.Patient.PatientName" value="@Model.Booking.Patient.PatientName">
+                    <input readonly class="form-control" asp-for="BookingNewPatient.Patient.PatientName" value="@Model.BookingNewPatient.Patient.PatientName">
                 </div>
             </div>
             <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" asp-for="Booking.Patient.EmailAddress"></label>
+                <label class="col-sm-2 col-form-label" asp-for="BookingNewPatient.Patient.EmailAddress"></label>
                 <div class="col-sm-10">
-                    <input readonly class="form-control" asp-for="Booking.Patient.EmailAddress" value="@Model.Booking.Patient.EmailAddress">
+                    <input readonly class="form-control" asp-for="BookingNewPatient.Patient.EmailAddress" value="@Model.BookingNewPatient.Patient.EmailAddress">
                 </div>
             </div>
             <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" asp-for="Booking.Patient.PatientSurname"></label>
+                <label class="col-sm-2 col-form-label" asp-for="BookingNewPatient.Patient.PatientSurname"></label>
                 <div class="col-sm-10">
-                    <input readonly class="form-control" asp-for="Booking.Patient.PatientSurname" value="@Model.Booking.Patient.PatientSurname">
+                    <input readonly class="form-control" asp-for="BookingNewPatient.Patient.PatientSurname" value="@Model.BookingNewPatient.Patient.PatientSurname">
                 </div>
             </div>
             <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" asp-for="Booking.Patient.PatientIDNO"></label>
+                <label class="col-sm-2 col-form-label" asp-for="BookingNewPatient.Patient.PatientIDNO"></label>
                 <div class="col-sm-10">
-                    <input readonly class="form-control" asp-for="Booking.Patient.PatientIDNO" value="@Model.Booking.Patient.PatientIDNO">
+                    <input readonly class="form-control" asp-for="BookingNewPatient.Patient.PatientIDNO" value="@Model.BookingNewPatient.Patient.PatientIDNO">
                 </div>
             </div>
             <h5>Patient Vitals</h5>
@@ -93,8 +93,8 @@
 @section Scripts {
     <script>
         var vitals = []
-        const PatientID = "@Model.Booking.PatientID"
-        const BookingID = "@Model.Booking.BookingID"
+        const PatientID = "@Model.BookingNewPatient.PatientID"
+        const BookingID = "@Model.BookingNewPatient.BookingNewPatientID"
         function OpenModal() {
 
         }
@@ -183,4 +183,3 @@
         }
     </script>
 }
- *@

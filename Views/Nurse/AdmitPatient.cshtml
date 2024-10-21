@@ -1,0 +1,443 @@
+﻿ @model WIRKDEVELOPER.Models.Admission
+@{
+    Layout = "~/Views/Shared/_NurseLayout.cshtml";
+}
+@if (TempData["e"] != null)
+{
+    <div class="alert alert-danger">
+        <p>@TempData["e"]</p>
+    </div>
+}
+
+<div class="card-body">
+    <h3 class="text-center">Admit Patient</h3>
+    <br />
+    <h5>Patient Details</h5>
+    <br />
+    <div class="row">
+        <div class="col-md-5">
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="BookingNewPatient.Patient.PatientName"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="BookingNewPatient.Patient.PatientName" value="@Model.BookingNewPatient.Patient.PatientName">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="BookingNewPatient.Patient.PatientIDNO"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="BookingNewPatient.Patient.PatientIDNO" value="@Model.BookingNewPatient.Patient.PatientIDNO">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="BookingNewPatient.Patient.DateOfBirth"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" type="text" name="BookingNewPatient.Patient.DateOfBirth" value="@Model.BookingNewPatient.Patient.DateOfBirth.Value.ToShortDateString()">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="BookingNewPatient.Patient.Gender"></label>
+                <div class="col-sm-10">
+                    <select readonly class="form-select" asp-for="BookingNewPatient.Patient.Gender">
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-5">
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="BookingNewPatient.Patient.PatientSurname"></label>
+                <div class="col-sm-10">
+                    <input readonly class="form-control" asp-for="BookingNewPatient.Patient.PatientSurname" value="@Model.BookingNewPatient.Patient.PatientSurname">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="BookingNewPatient.Patient.EmailAddress"></label>
+                <div class="col-sm-10">
+                    <input id="p-email" required class="form-control" asp-for="BookingNewPatient.Patient.EmailAddress" value="@Model.BookingNewPatient.Patient.EmailAddress">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="BookingNewPatient.Patient.contactNumber"></label>
+                <div class="col-sm-10">
+                    <input id="p-con" class="form-control" asp-for="BookingNewPatient.Patient.contactNumber" value="@Model.BookingNewPatient.Patient.contactNumber">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" asp-for="BookingNewPatient.Patient.surbub"></label>
+                <div class="col-sm-10">
+                    <select id="p-sub" class="form-select" asp-for="BookingNewPatient.Patient.surbub" asp-items="ViewBag.Sub"></select>
+                </div>
+            </div>
+
+        </div>
+        <div class="row justify-content-center"><a onclick="UpdatePatient()" class="btn btn-primary w-50">Update Details</a></div>
+
+    </div>
+    <br />
+    <h5>Patient Medical History</h5>
+    <div class="row">
+        <div class="col-md-6">
+            <h5 class="text-center">Allergies</h5>
+            <div class="row">
+                <div class="col-8">
+                    <select asp-items="ViewBag.Active" class="form-select" id="s-allergy"></select>
+                </div>
+                <div class="col-4">
+                    <a class="btn btn-primary" onclick="AddAllergies()">Add</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <h5 class="text-center">Selected Allergies</h5>
+            <ul class="row justify-content-center" id="a-list">
+            </ul>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            <h5 class="text-center">Conditions</h5>
+            <div class="row">
+                <div class="col-8">
+                    <select asp-items="ViewBag.Condition" class="form-select" id="s-con"></select>
+                </div>
+                <div class="col-4">
+                    <a class="btn btn-primary" onclick="AddCons()">Add</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <h5 class="text-center">Selected Conditions</h5>
+            <ul class="row justify-content-center" id="c-list">
+            </ul>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            <h5 class="text-center">Current Medications</h5>
+            <div class="row">
+                <div class="col-8">
+                    <select asp-items="ViewBag.Meds" class="form-select" id="s-med"></select>
+                </div>
+                <div class="col-4">
+                    <a class="btn btn-primary" onclick="AddMeds()">Add</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <h5 class="text-center">Selected Medications</h5>
+            <ul class="row justify-content-center" id="m-list">
+            </ul>
+        </div>
+    </div>
+    <br />
+    <div class="row justify-content-center"><a onclick="PatientCon()" class="btn btn-primary w-50">Update History</a></div>
+    <br />
+    <h5>Patient Vitals</h5>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-8">
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">Date and Time Captured</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="datetime-local" id="v-date">
+                        </div>
+                    </div>
+                    <select asp-items="ViewBag.Vitals" id="v-s" class="form-select"></select>
+                    <br />
+                    <input type="number" class="form-control" id="v-1" />
+                    <br />
+                    <input type="number" style="display:none" class="form-control" id="v-2" />
+
+                </div>
+                <div class="col-4">
+                    <a class="btn btn-primary" onclick="AddVital()">Add</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <h5 class="text-center">Vitals Captured</h5>
+            <ul class="row justify-content-center" id="v-list">
+            </ul>
+        </div>
+    </div>
+    <br />
+    <div class="row justify-content-center"><a onclick="PatientVitals()" class="btn btn-primary w-50">Submit Vitals</a></div>
+    <br />
+    <h5>Admission Details</h5>
+
+    <form asp-action="AdmitPatient" method="post">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Admission Date</label>
+                    <div class="col-sm-10">
+                        <input asp-for="Date" required class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Bed</label>
+                    <div class="col-sm-10">
+                        <select asp-for=BedId asp-items="ViewBag.Beds" class="form-select"></select>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-5">
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Height</label>
+                    <div class="col-sm-10">
+                        <input required class="form-control" asp-for="Height">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Weight</label>
+                    <div class="col-sm-10">
+                        <input required class="form-control" asp-for="Weight">
+                    </div>
+                </div>
+
+                <input asp-for="Pat" value="@Model.BookingNewPatient.PatientID" hidden />
+                <input asp-for="BookingNewPatientID" value="@Model.BookingNewPatientID" hidden />
+            </div>
+            <div class="row justify-content-center"><button type="submit" class="btn btn-primary w-50">Admit Patient</button></div>
+
+        </div>
+    </form>
+
+</div>
+<br />
+<br />
+<br />
+
+@section Scripts {
+    <script>
+        const BookingId = "@Model.BookingNewPatientID"
+        const PatientID = "@Model.BookingNewPatient.PatientID"
+        const nurseId = "@Model.NurseId"
+        var allergy = []
+        var condition = []
+        var currentMed = []
+        var vitals = []
+        //UpdatePatientCon, UpdatePatient, UpdatePatientVitals
+        $('#v-s').on("change", function () {
+            let x = $('#v-s option:selected').text().toLowerCase()
+            if (x.includes("pressure")) {
+                $("#v-2").show()
+                $("#v-2").val("-1")
+            }else{
+                $("#v-2").hide()
+                $("#v-2").val("0")
+            }
+
+        });
+        const Ranges = @Html.Raw(Json.Serialize((List<Vitals>)ViewBag.Vit))
+        function AddVital() {
+                if ($("#v-s").val() == 0 || $("#v-date").val() == null) {
+                alert("Please enter a value and date")
+                return null
+            }
+                for (let i = 0; i < Ranges.length; i++) {
+                    var o = Ranges[i]
+                    if ($("#v-s").val() == o.vitalID) {
+                        if ($("#v-1").val() < o.minimumrange || $("#v-1").val() > o.maximumrange) {
+                            alert("Warning: Vital is out range")
+                            break
+                        }
+                    }
+                }
+                var x = { PatientId: PatientID, Reading: $("#v-1").val(), Reading2: $("#v-2").val(), name: $("#v-s option:selected").text(), VitalID: $("#v-s").val(), Time: $("#v-date").val() }
+            vitals.push(x)
+            $("#v-1").val("0")
+            LoadV()
+        }
+        function LoadV() {
+            x = ''
+            for (let i = 0; i < vitals.length; i++) {
+                o = vitals[i]
+                x += '<li style="display: flex;justify-content: space-around;"  onclick="RemoveV(' + o.VitalID + ')" >' + o.name + '  ' + o.Reading + ' <i class="fa-regular fa-circle-xmark text-danger" style="font-size: larger;"></i ></li> '
+            }
+            $("#v-list").empty()
+            $("#v-list").append(x)
+        }
+        function RemoveV(a) {
+            for (let i = 0; i < vitals.length; i++) {
+                var o = vitals[i];
+                if (o.VitalID == a) {
+                    let splice = vitals.splice(i, 1);
+                    break;
+                }
+            }
+            LoadV()
+        }
+
+        function PatientCon(){
+            data = { PatConditions: condition, Allergies: allergy, Medications: currentMed }
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdatePatientCon", "Nurse")",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                success: function (response) {
+                    if (response != null) {
+                        alert("Medical History has been submitted")
+                    }
+                    else {
+                        alert("Please try again");
+                    }
+
+                }
+
+            });
+        }
+        function PatientVitals(){
+            data = vitals
+            console.log(data)
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdatePatientVitals", "Nurse")",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                success: function (response) {
+                    if (response != null) {
+                        alert("Patient Vitals has been submitted")
+                    }
+                    else {
+                        alert("Please try again");
+                    }
+
+                }
+
+            });
+        }
+        function UpdatePatient() {
+            data = { EmailAddress: $('#p-email').val(), contactNumber: $('#p-con').val(), surbub: $('#p-sub').val(), PatientID: @Model.BookingNewPatient.PatientID }
+            console.log(data)
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdatePatient", "Nurse")",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                success: function (response) {
+                    if (response != null) {
+                        alert("Patient details have been updated")
+                    }
+                    else {
+                        alert("Please try again");
+                    }
+
+                }
+
+            });
+        }
+
+        function AddAllergies(){
+            for (let i = 0; i < allergy.length; i++) {
+                var o = allergy[i]
+                if (o.ActiveId == $("#s-allergy").val()) {
+                    alert("Allgery has already been added")
+                    return null
+                }
+            }
+            var x = { PatientId: PatientID, ActiveId: $("#s-allergy").val(), name: $("#s-allergy option:selected").text() }
+            allergy.push(x)
+            LoadA()
+        }
+        function LoadA(){
+            x = ''
+            for (let i = 0; i < allergy.length; i++) {
+                o = allergy[i]
+                x += '<li style="display: flex;justify-content: space-around;" onclick="RemoveA(' + o.ActiveId + ')">' + o.name + ' <i class="fa-regular fa-circle-xmark text-danger" style="font-size: larger;"></i></li>'
+            }
+            $("#a-list").empty()
+            $("#a-list").append(x)
+        }
+        function RemoveA(a){
+            for (let i = 0; i < allergy.length; i++) {
+
+                var o = allergy[i];
+                if (o.ActiveId == a) {
+                    let splice = allergy.splice(i, 1);
+                    break;
+                }
+            }
+            LoadA()
+        }
+
+        function AddMeds(){
+            for (let i = 0; i < currentMed.length; i++) {
+                var o = currentMed[i]
+                if (o.MedicationId == $("#s-med").val()) {
+                    alert("Medicine has already been added")
+                    return null
+                }
+            }
+            var x = { PatientId: PatientID, MedicationId: $("#s-med").val(), name: $("#s-med option:selected").text() }
+            currentMed.push(x)
+            LoadM()
+        }
+        function LoadM(){
+            x = ''
+            for (let i = 0; i < currentMed.length; i++) {
+                o = currentMed[i]
+                x += '<li style="display: flex;justify-content: space-around;" onclick="RemoveM(' + o.MedicationId + ')">' + o.name + ' <i class="fa-regular fa-circle-xmark text-danger" style="font-size: larger;" ></i></li>'
+            }
+            $("#m-list").empty()
+            $("#m-list").append(x)
+        }
+        function RemoveM(a){
+            for (let i = 0; i < currentMed.length; i++) {
+                var o = currentMed[i];
+                if (o.MedicationId == a) {
+                    let splice = currentMed.splice(i, 1);
+                    break;
+                }
+            }
+            LoadM()
+        }
+
+        function AddCons(){
+            for (let i = 0; i < condition.length; i++) {
+                var o = condition[i]
+                if (o.ConditionID == $("#s-med").val()) {
+                    alert("Condition has already been added")
+                    return null
+                }
+            }
+            var x = { PatientId: PatientID, ConditionID: $("#s-con").val(), name: $("#s-con option:selected").text() }
+            condition.push(x)
+            LoadC()
+        }
+        function LoadC(){
+            x = ''
+            for (let i = 0; i < condition.length; i++) {
+                o = condition[i]
+                x += '<li style="display: flex;justify-content: space-around;" onclick="RemoveC(' + o.ConditionID + ')">' + o.name + ' <i class="fa-regular fa-circle-xmark text-danger" style="font-size: larger;" ></i></li>'
+            }
+            $("#c-list").empty()
+            $("#c-list").append(x)
+        }
+        function RemoveC(a){
+            for (let i = 0; i < condition.length; i++) {
+                var o = condition[i];
+                if (o.ConditionID == a) {
+                    let splice = condition.splice(i, 1);
+                    break;
+                }
+            }
+            LoadC()
+        }
+
+
+    </script>
+}
