@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WIRKDEVELOPER.Areas.Identity.Data;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using WIRKDEVELOPER.Models.Account;
 
 
 namespace WIRKDEVELOPER.Models
@@ -26,9 +27,20 @@ namespace WIRKDEVELOPER.Models
         [Required]
         public string Prescriber { get; set; }
         [Required]
-        public string Urgent { get; set; }
+        public int PatientID { get; set; }
+        public virtual Patient? Patient { get; set; }
         [Required]
-        public string Status { get; set; }
+        [DisplayName("Prescription Date")]
+        //public DateTime Date { get; set; }
+        [ForeignKey("Surgeon")]
+        public int SurgeonID { get; set; }
+        public virtual Surgeon? Surgeon { get; set; }
+        [ForeignKey("Nurse")]
+        public int? NurseID { get; set; }
+        public virtual Nurse? Nurse { get; set; }
+
+        public string Urgent { get; set; }
+        public string Status { get; set; } = "Prescribed";
         public string? IgnoreReason { get; set; } = "none";
         // Navigation propertiesnine
         public virtual List<PrescriptionMedication> PrescriptionMedications { get; set; } = new List<PrescriptionMedication>();
@@ -73,7 +85,10 @@ namespace WIRKDEVELOPER.Models
         public int PrescriptionID { get; set; }
         public int PharmacyMedicationID { get; set; }
         [Required, Range(1, int.MaxValue)]
+
+        [DisplayName("Quantity")]
         public int Quantity { get; set; }
+        public int QuantityGiven { get; set; } = 0;
         public string Instructions { get; set; }
 
         // Navigation properties
@@ -89,6 +104,7 @@ namespace WIRKDEVELOPER.Models
         public string PharmacyMedicationName { get; set; } // Change from ID to Name
         [Required, Range(1, int.MaxValue)]
         public int Quantity { get; set; }
+        public int QuantityGiven { get; set; } = 0;
         public string Instructions { get; set; }
     }
     public class AlertViewModel

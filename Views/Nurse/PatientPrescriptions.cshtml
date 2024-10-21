@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Prescriptions";
+    Layout = "~/Views/Shared/_NurseLayout.cshtml";
+}
+@model IEnumerable<Prescription>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" />
+</head>
+<div id="Header" class="bg-info">
+    <h2 class="m-1 pt-4 text-center text-white">Patient Prescriptions</h2>
+</div>
+<div class="container-fluid bg-white border p-4">
+    <table id="myTable" table class="table table-hover  table-sm" style="width:100%">
+        <thead class="table-secondary">
+            <tr>
+                <th>
+                    Patient Name
+                </th>
+                <th>
+                    Surgeon
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Priority
+                </th>
+                <th>
+                    Date
+                </th>
+
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var sche in Model)
+            {
+                <tr>
+
+                    <td width="20%">@sche.Patient.PatientName</td>
+                    <td width="20%">@sche.Surgeon.ApplicationUser.FirstName @sche.Surgeon.ApplicationUser.LastName</td>
+                    <td width="20%">@sche.Status</td>
+                    <td width="20%">@sche.Urgent</td>
+                    <td width="20%">@sche.Date.ToShortDateString()</td>
+                    <td>
+                        <div class="w-50 btn-group" role="group">
+                            <a href="@Url.Action("AdministerMedicine","Nurse", new {i = sche.PrescriptionID, p = sche.PatientID})" class="btn btn-info mx-1">Administer</a>
+                        </div>
+                    </td>
+                </tr>
+
+
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js"></script>
+
+
+
+

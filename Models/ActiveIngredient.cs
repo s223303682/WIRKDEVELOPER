@@ -10,7 +10,10 @@ namespace WIRKDEVELOPER.Models
 		public string? ActiveIngredientName { get; set; }
 		[Required]
 		public string? Strength { get; set; }
+        [ForeignKey("Active")]
+        public int ActiveName { get; set; }
+        public virtual Active? Active { get; set; }
 
-	}
+    }
 }
 	

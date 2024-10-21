@@ -23,6 +23,7 @@ using DinkToPdf;
 using DinkToPdf.Contracts;
 using WIRKDEVELOPER.Models.PatientHistory;
 using System.Text;
+using System.Linq;
 
 namespace WIRKDEVELOPER.Controllers
 {
@@ -293,11 +294,11 @@ namespace WIRKDEVELOPER.Controllers
                     .ToListAsync();
 
                 // Check for allergy matches
-                if (patientAllergies != null && prescribedActiveIngredients.Any(ai => patientAllergies.Contains(ai)))
-                {
-                    alertViewModel.HasAlerts = true;
-                    break;
-                }
+                //if (patientAllergies != null && prescribedActiveIngredients.Any(ai => patientAllergies.Contains(ai)))
+                //{
+                //    alertViewModel.HasAlerts = true;
+                //    break;
+                //}
 
                 // Check for drug interactions
                 if (currentMedications.Any(cm =>

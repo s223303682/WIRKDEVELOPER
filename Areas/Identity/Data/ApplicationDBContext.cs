@@ -30,10 +30,10 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
       .HasForeignKey(a => a.AnAllergiesID)
       .OnDelete(DeleteBehavior.Cascade); // Set delete behavior according to your needs
 
-        builder.Entity<AnAllergies>()
+        builder.Entity<Models.AnAllergies>()
             .HasOne(a => a.Active) // Assuming you have a navigation property for Active
             .WithMany() // Adjust accordingly if Active has multiple Allergies
-            .HasForeignKey(a => a.ActiveID);
+            .HasForeignKey(a => a.ActiveId);
         builder.Entity<Addm>()
          .HasOne(a => a.Patient)
          .WithMany() // Specify if the reverse navigation exists
@@ -136,7 +136,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Bed> bed { get; set; }
     public DbSet<MedicationAdministration> medAdmin { get; set; }
     public DbSet<ViewPatient> viewrecords { get; set; }
-    public DbSet<AnAllergies> anallergies { get; set; }
+    public DbSet<Models.AnAllergies> anallergies { get; set; }
     public DbSet<AnVitals> anvitals { get; set; }
     public DbSet<AnConditions> anconditions { get; set; }
     public DbSet<AnCurrentMedication> ancurrentmedication { get; set; }
@@ -182,5 +182,11 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<PatientChronicCondition> PatientChronicConditions{ get; set; }
     public DbSet<PatientMedication> PatientMedications{ get; set; }
     public DbSet<MedicationActive> MedicationActive { get; set; }
-
+    public DbSet<CurrentMedication> CurrentMedications { get; set; }
+    public DbSet<Vitals> Vitals { get; set; }
+    public DbSet<Discharge> Discharges { get; set; }
+    public DbSet<Suburb> Suburbs { get; set; }
+    public DbSet<Province> Provinces { get; set; }
+    public DbSet<City> Cities { get; set; }
+    
 }

@@ -6,10 +6,15 @@ namespace WIRKDEVELOPER.Models
     public class CurrentMedication
     {
         [Key]
-        public int CurrentMedicationID { get; set; } 
-        public int  MedicationID { get; set; }
-        [ForeignKey("MedicationID")]
-        [DisplayName("Current Medication")]
-        public virtual Medication?Medication { get; set; }
+        public int CurrentMedicationID { get; set; }
+        [ForeignKey(nameof(Patient))]
+        public int PatientId { get; set; }
+        public virtual Patient? Patient { get; set; }
+
+        [ForeignKey(nameof(Medication))]
+        public int MedicationId { get; set; }
+        public virtual Medication? Medication { get; set; }
+
+
     }
 }

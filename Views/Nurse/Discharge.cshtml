@@ -1,4 +1,4 @@
-﻿@* @{
+﻿@{
     ViewData["Title"] = "Discharge Patient";
     Layout = "~/Views/Shared/_NurseLayout.cshtml";
 }
@@ -9,27 +9,27 @@
     <div class="card">
         <div class="card-body">
             <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" asp-for="Admission.Booking.Patient.PatientName"></label>
+                <label class="col-sm-2 col-form-label" asp-for="Admission.BookingNewPatient.Patient.PatientName"></label>
                 <div class="col-sm-10">
-                    <input readonly class="form-control" asp-for="Admission.Booking.Patient.PatientName" value="@Model.Admission.Booking.Patient.PatientName">
+                    <input readonly class="form-control" asp-for="Admission.BookingNewPatient.Patient.PatientName" value="@Model.Admission.BookingNewPatient.Patient.PatientName">
                 </div>
             </div>
             <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" asp-for="Admission.Booking.Patient.PatientSurname"></label>
+                <label class="col-sm-2 col-form-label" asp-for="Admission.BookingNewPatient.Patient.PatientSurname"></label>
                 <div class="col-sm-10">
-                    <input readonly class="form-control" asp-for="Admission.Booking.Patient.PatientSurname" value="@Model.Admission.Booking.Patient.PatientSurname">
+                    <input readonly class="form-control" asp-for="Admission.BookingNewPatient.Patient.PatientSurname" value="@Model.Admission.BookingNewPatient.Patient.PatientSurname">
                 </div>
             </div>
             <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" asp-for="Admission.Booking.Patient.EmailAddress"></label>
+                <label class="col-sm-2 col-form-label" asp-for="Admission.BookingNewPatient.Patient.EmailAddress"></label>
                 <div class="col-sm-10">
-                    <input readonly class="form-control" asp-for="Admission.Booking.Patient.EmailAddress" value="@Model.Admission.Booking.Patient.EmailAddress">
+                    <input readonly class="form-control" asp-for="Admission.BookingNewPatient.Patient.EmailAddress" value="@Model.Admission.BookingNewPatient.Patient.EmailAddress">
                 </div>
             </div>
             <div class="mb-3 row">
-                <label class="col-sm-2 col-form-label" asp-for="Admission.Booking.Patient.PatientIDNO"></label>
+                <label class="col-sm-2 col-form-label" asp-for="Admission.BookingNewPatient.Patient.PatientIDNO"></label>
                 <div class="col-sm-10">
-                    <input readonly class="form-control" asp-for="Admission.Booking.Patient.PatientIDNO" value="@Model.Admission.Booking.Patient.PatientIDNO">
+                    <input readonly class="form-control" asp-for="Admission.BookingNewPatient.Patient.PatientIDNO" value="@Model.Admission.BookingNewPatient.Patient.PatientIDNO">
                 </div>
             </div>
             <form asp-action="Discharge" method="post">
@@ -52,4 +52,3 @@
         </div>
     </div>
 </div>
- *@

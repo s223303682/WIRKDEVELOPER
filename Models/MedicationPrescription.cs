@@ -13,10 +13,13 @@ namespace WIRKDEVELOPER.Models
         public int PharmacyMedicationID { get; set; } // Corrected
         public virtual PharmacyMedication PharmacyMedication { get; set; }
 
+        [ForeignKey("Prescription")]
+        public int Prescription { get; set; }
+        public virtual Prescription? Prescriptions { get; set; }
 
-        
         [Required(ErrorMessage = "*Required")]
         public int Quantity { get; set; }
+        public int QuantityGiven { get; set; } = 0;
         [Required(ErrorMessage = "*Required")]
         public string Instruction { get; set; }
 

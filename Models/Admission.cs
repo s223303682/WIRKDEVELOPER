@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WIRKDEVELOPER.Models.Account;
 
 namespace WIRKDEVELOPER.Models
 {
@@ -8,48 +9,41 @@ namespace WIRKDEVELOPER.Models
     {
         [Key]
         public int AdmissionID { get; set; }
-        public string PatientName { get; set; }
-        [ForeignKey("PatientID")]
-        [DisplayName("Patient Name")]
-        public virtual Patient Patient { get; set; }
-        public string PatientGender { get; set; }
-        [DisplayName("Gender")]
+        [ForeignKey("Booking")]
+        public int BookingNewPatientID { get; set; }
+        public virtual BookingNewPatient? BookingNewPatient { get; set; }
 
-        public int PatientPhone { get; set; }
-        [DisplayName("Phone")]
+        [ForeignKey("Bed")]
+        public int BedId { get; set; }
+        public virtual Bed? Bed { get; set; }
 
-        public string PatientEmail { get; set; }
-        [DisplayName("Email")]
-
-        public string province { get; set; }
-        [DisplayName("Province")]
-
-        public string Address1 { get; set; }
-        [DisplayName("Address 1")]
-
-        public string Address2 { get; set; }
-        [DisplayName("Address 2")]
-
-        public string City { get; set; }
-        [DisplayName("City")]
-
-        public string Surbub { get; set; }
-
-        public int BedNumber { get; set; }
-        [ForeignKey("BedID")]
-        public string ConditionName { get; set; }
-        [ForeignKey("ConditionID")]
-        public string WardName { get; set; }
-        [ForeignKey("WardID")] 
-        public string AllergiesName { get; set; }
-        [ForeignKey("AlergiesID")] 
-        public string MedicationName { get; set; }
-        [ForeignKey("MedicationID")] 
-        public int TreatmentCode { get; set; }
-        [ForeignKey("TreatmentID")]
-        public string zip { get; set; }
+        [ForeignKey("Nurse")]
+        public int NurseId { get; set; }
+        public virtual Nurse? Nurse { get; set; }
         [Required]
-        [DisplayName(" Date")]
-        public DateTime? Date { get; set; } = DateTime.Now;
+        public double Height { get; set; }
+        [Required]
+
+        public double Weight { get; set; }
+        public string Status { get; set; } = "Admitted";
+
+        [Required]
+        public DateTime Date { get; set; }
+        [NotMapped]
+        public int Pat { get; set; }
     }
+    public class Discharge
+    {
+        [Key]
+        public int ID { get; set; }
+        [ForeignKey("Admission")]
+        public int AdmissionId { get; set; }
+        public virtual Admission? Admission { get; set; }
+
+        [Display(Name = "Notes"), StringLength(150)]
+        public string NurseNotes { get; set; }
+        public DateTime Date { get; set; }
+
+    }
+
 }

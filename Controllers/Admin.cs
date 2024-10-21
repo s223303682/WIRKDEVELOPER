@@ -506,7 +506,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         public IActionResult AllergyList()
         {
-            IEnumerable<AnAllergies> list = _Context.anallergies;
+            IEnumerable<Models.AnAllergies> list = _Context.anallergies;
             return View(list);
         }
         public IActionResult CreateAllergy()
@@ -516,7 +516,7 @@ namespace WIRKDEVELOPER.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateAllergy(AnAllergies allergies)
+        public IActionResult CreateAllergy(Models.AnAllergies allergies)
         {
             //if (ModelState.IsValid)
             
