@@ -1,0 +1,42 @@
+﻿@model WIRKDEVELOPER.Models.NotesOfOrders
+
+@{
+    Layout = "AnaesthesiologistLayout";
+}
+
+<div class="mx-0 mx-sm-auto">
+    <div class="card w-75">
+        <div class="card-body">
+            <div class="card-header bg-primary">
+                <h3 class="card-title text-white mt-2" id="exampleModalLabel">UPDATE NOTE</h3>
+            </div>
+
+            <h4>Update Note for Medication</h4>
+            <div>
+                <strong>Patient:</strong> @Model.PatientName <br />
+                <strong>Medication:</strong> @Model.PharmacyMedicationName
+            </div>
+
+            <hr />
+
+            <form asp-action="UpdateNote" method="post">
+                <div class="form-group">
+                    <label asp-for="NoteText" class="control-label">Note</label>
+                    <textarea asp-for="NoteText" class="form-control"></textarea>
+                    <span asp-validation-for="NoteText" class="text-danger"></span>
+                </div>
+                <input type="hidden" asp-for="OrderMedicationID" />
+                <div class="form-group">
+                    <input type="submit" value="Update Note" class="btn btn-primary" />
+                    <a asp-action="ListNotes" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -578,12 +578,12 @@ namespace WIRKDEVELOPER.Controllers
             return View(receivedMedications);
         }
 
-        // GET: Notes/Create
+        // GET: Create Note
         public IActionResult CreateNote(int orderMedicationID)
         {
             var medication = _Context.ordermedication
                 .Include(om => om.PharmacyMedication)
-                 .Include(om => om.Order)
+                .Include(om => om.Order)
                 .ThenInclude(o => o.Addm)
                 .FirstOrDefault(om => om.OrderMedicationID == orderMedicationID);
 
@@ -604,29 +604,85 @@ namespace WIRKDEVELOPER.Controllers
             return View(viewModel);
         }
 
-        // POST: Notes/Create
+        // POST: Create Note
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateNote(NotesOfOrders viewModel)
         {
-            //if (ModelState.IsValid)
-            
-                var note = new Notes
-                {
-                    OrderMedicationID = viewModel.OrderMedicationID,
-                    NoteText = viewModel.NoteText,
-                    CreatedAt = DateTime.Now
-                };
+            var note = new Notes
+            {
+                OrderMedicationID = viewModel.OrderMedicationID,
+                NoteText = viewModel.NoteText,
+                CreatedAt = DateTime.Now
+            };
 
-                _Context.notes.Add(note);
-                await _Context.SaveChangesAsync();
+            _Context.notes.Add(note);
+            await _Context.SaveChangesAsync();
 
-                return RedirectToAction("ListNotes");
-            
+            return RedirectToAction("ListNotes");
+        }
 
-            // If the model is invalid, return the same view
+        // GET: Update Note
+        public IActionResult UpdateNote(int orderMedicationID)
+        {
+            var note = _Context.notes
+                .FirstOrDefault(n => n.OrderMedicationID == orderMedicationID);
+
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new NotesOfOrders
+            {
+                OrderMedicationID = note.OrderMedicationID,
+                NoteText = note.NoteText
+            };
+
             return View(viewModel);
         }
+
+        // POST: Update Note
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateNote(NotesOfOrders viewModel)
+        {
+            var note = _Context.notes
+                .FirstOrDefault(n => n.OrderMedicationID == viewModel.OrderMedicationID);
+
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+            note.NoteText = viewModel.NoteText;
+            note.CreatedAt = DateTime.Now;
+
+            _Context.notes.Update(note);
+            await _Context.SaveChangesAsync();
+
+            return RedirectToAction("ListNotes");
+        }
+
+        // POST: Delete Note
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteNote(int orderMedicationID)
+        {
+            var note = _Context.notes
+                .FirstOrDefault(n => n.OrderMedicationID == orderMedicationID);
+
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+            _Context.notes.Remove(note);
+            await _Context.SaveChangesAsync();
+
+            return RedirectToAction("ListNotes");
+        }
+
         public async Task<IActionResult> GenerateReport(DateTime startDate, DateTime endDate)
         {
             var orders = await _Context.order
